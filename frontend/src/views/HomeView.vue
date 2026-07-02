@@ -17,34 +17,42 @@ const pickI18n = (field) => {
 }
 
 const heroMetrics = computed(() => [
-  { label: t('home.hero.metricCapacity'), value: t('home.hero.metricCapacityValue') },
+  { label: t('home.hero.metricFactories'), value: t('home.hero.metricFactoriesValue') },
+  { label: t('home.hero.metricProcesses'), value: t('home.hero.metricProcessesValue') },
+  { label: t('home.hero.metricQuotes'), value: t('home.hero.metricQuotesValue') },
   { label: t('home.hero.metricMarkets'), value: t('home.hero.metricMarketsValue') },
-  { label: t('home.hero.metricYears'), value: t('home.hero.metricYearsValue') },
-  { label: t('home.hero.metricCert'), value: t('home.hero.metricCertValue') },
 ])
 
-const capabilityItems = computed(() => [
+const howItWorksItems = computed(() => [
   {
-    title: t('home.capabilities.production'),
-    desc: t('home.capabilities.productionDesc'),
-    link: '/capabilities/production',
+    title: t('home.howItWorks.step1Title'),
+    desc: t('home.howItWorks.step1Desc'),
   },
   {
-    title: t('home.capabilities.quality'),
-    desc: t('home.capabilities.qualityDesc'),
-    link: '/capabilities/quality',
+    title: t('home.howItWorks.step2Title'),
+    desc: t('home.howItWorks.step2Desc'),
   },
   {
-    title: t('home.capabilities.cert'),
-    desc: t('home.capabilities.certDesc'),
-    link: '/capabilities/certifications',
+    title: t('home.howItWorks.step3Title'),
+    desc: t('home.howItWorks.step3Desc'),
   },
 ])
 
-const serviceSteps = computed(() => [
-  t('home.services.step1'),
-  t('home.services.step2'),
-  t('home.services.step3'),
+const roleCards = computed(() => [
+  {
+    title: t('home.roles.buyerTitle'),
+    desc: t('home.roles.buyerDesc'),
+    cta: t('home.roles.buyerCta'),
+    link: '/rfq/new',
+    primary: true,
+  },
+  {
+    title: t('home.roles.factoryTitle'),
+    desc: t('home.roles.factoryDesc'),
+    cta: t('home.roles.factoryCta'),
+    link: '/partners',
+    primary: false,
+  },
 ])
 
 onMounted(async () => {
@@ -74,7 +82,7 @@ onMounted(async () => {
           <p class="hero-subtitle">{{ t('home.hero.subtitle') }}</p>
           <div class="hero-actions">
             <RouterLink to="/rfq/new" class="btn btn-primary">{{ t('home.hero.ctaRfq') }}</RouterLink>
-            <RouterLink to="/contact" class="btn btn-secondary">{{ t('home.hero.ctaContact') }}</RouterLink>
+            <RouterLink to="/partners" class="btn btn-secondary">{{ t('home.hero.ctaPartner') }}</RouterLink>
           </div>
         </div>
         <div class="hero-visual" aria-hidden="true">
@@ -89,7 +97,7 @@ onMounted(async () => {
               <rect x="180" y="140" width="80" height="48" stroke="rgba(45,90,138,0.5)" stroke-width="1.5" />
               <path d="M300 220 L340 260 L300 260 Z" stroke="rgba(45,90,138,0.4)" stroke-width="1" fill="rgba(30,58,95,0.15)" />
               <text x="48" y="56" fill="rgba(45,90,138,0.6)" font-size="10" font-family="monospace">RYSEN</text>
-              <text x="48" y="308" fill="rgba(45,90,138,0.4)" font-size="9" font-family="monospace">PRECISION MFG</text>
+              <text x="48" y="308" fill="rgba(45,90,138,0.4)" font-size="9" font-family="monospace">MARKETPLACE</text>
             </svg>
             <div class="blueprint-corner blueprint-corner--tl" />
             <div class="blueprint-corner blueprint-corner--br" />
@@ -155,40 +163,39 @@ onMounted(async () => {
         </div>
       </section>
 
-      <!-- Capabilities -->
+      <!-- How It Works -->
       <section class="section">
         <div class="container">
           <div class="section-header">
-            <span class="section-eyebrow">{{ t('home.capabilities.eyebrow') }}</span>
-            <h2>{{ t('home.capabilities.title') }}</h2>
-            <p class="section-desc">{{ t('home.capabilities.desc') }}</p>
+            <span class="section-eyebrow">{{ t('home.howItWorks.eyebrow') }}</span>
+            <h2>{{ t('home.howItWorks.title') }}</h2>
           </div>
           <div class="grid-3">
-            <article v-for="cap in capabilityItems" :key="cap.link" class="cap-card">
-              <div class="cap-index" aria-hidden="true" />
-              <h3>{{ cap.title }}</h3>
-              <p>{{ cap.desc }}</p>
-              <RouterLink :to="cap.link" class="cap-link">{{ t('home.capabilities.link') }} →</RouterLink>
+            <article v-for="(item, idx) in howItWorksItems" :key="idx" class="cap-card">
+              <span class="step-badge">{{ String(idx + 1).padStart(2, '0') }}</span>
+              <h3>{{ item.title }}</h3>
+              <p>{{ item.desc }}</p>
             </article>
           </div>
         </div>
       </section>
 
-      <!-- OEM-ODM Services -->
+      <!-- Roles -->
       <section class="section section-dark">
-        <div class="container services-grid">
-          <div class="services-content">
-            <span class="section-eyebrow services-eyebrow">{{ t('home.services.eyebrow') }}</span>
-            <h2>{{ t('home.services.title') }}</h2>
-            <p class="section-desc services-desc">{{ t('home.services.desc') }}</p>
-            <RouterLink to="/oem-odm" class="btn btn-primary">{{ t('home.services.link') }}</RouterLink>
+        <div class="container">
+          <div class="section-header">
+            <span class="section-eyebrow services-eyebrow">{{ t('home.roles.eyebrow') }}</span>
+            <h2>{{ t('home.roles.title') }}</h2>
           </div>
-          <ol class="services-steps">
-            <li v-for="(step, idx) in serviceSteps" :key="idx">
-              <span class="step-num">{{ String(idx + 1).padStart(2, '0') }}</span>
-              <span class="step-text">{{ step }}</span>
-            </li>
-          </ol>
+          <div class="grid-2 roles-grid">
+            <article v-for="role in roleCards" :key="role.link" class="role-card">
+              <h3>{{ role.title }}</h3>
+              <p>{{ role.desc }}</p>
+              <RouterLink :to="role.link" :class="['btn', role.primary ? 'btn-primary' : 'btn-secondary', 'role-cta']">
+                {{ role.cta }}
+              </RouterLink>
+            </article>
+          </div>
         </div>
       </section>
 
@@ -256,7 +263,7 @@ onMounted(async () => {
         </div>
         <div class="cta-actions">
           <RouterLink to="/rfq/new" class="btn btn-primary">{{ t('home.cta.rfq') }}</RouterLink>
-          <RouterLink to="/contact" class="btn btn-secondary cta-btn-light">{{ t('home.cta.contact') }}</RouterLink>
+          <RouterLink to="/shop" class="btn btn-secondary cta-btn-light">{{ t('home.cta.shop') }}</RouterLink>
         </div>
       </div>
     </section>
@@ -534,6 +541,55 @@ onMounted(async () => {
   background: var(--color-steel);
   margin-bottom: var(--space-lg);
   border-radius: 1px;
+}
+
+.step-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-steel);
+  margin-bottom: var(--space-md);
+}
+
+.roles-grid {
+  margin-top: var(--space-xl);
+}
+
+.role-card {
+  padding: var(--space-2xl);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+
+  h3 {
+    font-size: 1.25rem;
+    color: #fff;
+    margin-bottom: var(--space-md);
+  }
+
+  p {
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: var(--space-xl);
+  }
+}
+
+.role-cta {
+  display: inline-flex;
+}
+
+.role-card .btn-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #fff;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.4);
+    color: #fff;
+  }
 }
 
 .cap-link {
