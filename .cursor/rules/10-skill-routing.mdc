@@ -1,0 +1,108 @@
+---
+description: 技能路由入口：按任务类型先读取对应的 .cursor/skills 文档
+alwaysApply: true
+---
+
+# 技能路由入口
+
+当任务命中以下类型时，先读取并遵循对应的技能文档，再继续执行。
+
+## 部署与运维
+
+适用：Docker、Compose、更新部署、服务启停、日志、数据库、运行环境排错。
+
+先读取：
+
+- `.cursor/skills/docker-deploy/SKILL.md`
+
+## 自检与发布前验证
+
+适用：自检、回归、冒烟、lint、build、健康检查、服务状态确认、部署后验证。
+
+先读取：
+
+- `.cursor/skills/self-check-after-change/SKILL.md`
+
+若执行前需要识别 Compose 命令、服务名或前端目录，先读取或复用 `.cursor/skills/docker-deploy/SKILL.md` 的探测结果。
+
+## 测试后排障
+
+适用：开发后测试报错、页面或接口异常、需要看日志和定位原因。
+
+先读取：
+
+- `.cursor/skills/debug-after-test/SKILL.md`
+
+若问题发生在 Docker 或 Compose 环境，也可同时读取 `.cursor/skills/docker-deploy/SKILL.md`。
+
+## 前端界面任务
+
+适用：前端页面、组件、界面改版、官网、落地页、后台页面、设计增强、从零生成 UI。
+
+先读取：
+
+- `.cursor/skills/frontend_art_direction_skill/cursor_frontend_art_direction_skill_zh.md`
+
+执行时先判断任务属于 `external`、`internal` 或 `hybrid`，再决定设计强度、信息组织、组件策略和实现方式。
+
+## 功能方案设计
+
+适用：新功能或较大改版前先出方案；需要实现步骤、风险、验收标准与范围边界，尚未确认即不应大改代码。
+
+先读取：
+
+- `.cursor/skills/feature-planning/SKILL.md`
+
+## 按方案实现
+
+适用：已有经确认的方案、任务列表或 `feature-planning` 产出；要求严格按步骤编码、禁止擅自扩大范围。
+
+先读取：
+
+- `.cursor/skills/feature-implementation/SKILL.md`
+
+## 缺陷修复
+
+适用：修 bug、异常行为、回归问题；强调根因、最小修复与回归检查点。
+
+先读取：
+
+- `.cursor/skills/bugfix-harness/SKILL.md`
+
+若需日志与运行时证据，可组合读取 `.cursor/skills/debug-after-test/SKILL.md`。
+
+## 提交前代码审查
+
+适用：Code review、合并前检查、判断「是否可提交」；输出必改项、可优化项与提交结论。
+
+先读取：
+
+- `.cursor/skills/review-harness/SKILL.md`
+
+## 后端新功能开发
+
+适用：新增接口、新增业务模块、新增序列化器、修改权限逻辑、涉及多租户或组织级数据边界的查询与授权。
+
+先读取：
+
+- `.cursor/skills/backend-feature-guide/SKILL.md`
+
+## 数据库迁移与模型变更
+
+适用：新增字段、修改字段、删除字段、新增索引约束、数据回填迁移。
+
+先读取：
+
+- `.cursor/skills/backend-migration-and-model/SKILL.md`
+
+## 组合规则
+
+- 一个任务同时命中多个类型时，按最相关的技能先读，必要时组合读取多个技能。
+- 新功能推荐顺序：无方案时先 `feature-planning`，用户确认后 `feature-implementation`，收尾前 `review-harness`；需要环境验证时再加 `self-check-after-change` 与 `docker-deploy`。
+- 后端新功能：在 `feature-implementation` 或已确认方案的前提下，组合 `backend-feature-guide`；含模型/迁移时先 `backend-migration-and-model`。
+- 缺陷修复：`bugfix-harness` 为主；需日志与容器时组合 `debug-after-test` 与 `docker-deploy`；合并前可 `review-harness` 与 `self-check-after-change`。
+- 涉及部署前后的验证，优先组合读取 `docker-deploy` 与 `self-check-after-change`。
+- 涉及测试后排障且运行在容器环境，优先组合读取 `debug-after-test` 与 `docker-deploy`。
+- 涉及前端改版后还要验证上线结果，可组合读取 `frontend_art_direction_skill`、`self-check-after-change` 与 `docker-deploy`。
+- 涉及后端新功能且包含模型字段变更，先读 `backend-migration-and-model`，再读 `backend-feature-guide`。
+- 涉及后端新功能且部署后需验证，组合读取 `backend-feature-guide`、`self-check-after-change` 与 `docker-deploy`。

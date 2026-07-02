@@ -1,0 +1,62 @@
+import logging
+
+from rest_framework import status
+from rest_framework.exceptions import APIException, ValidationError
+from rest_framework.views import exception_handler
+
+from core.responses import error_response
+
+logger = logging.getLogger(__name__)
+
+HTTP_STATUS_TO_CODE = {
+    status.HTTP_401_UNAUTHORIZED: "AUTH_TOKEN_INVALID",
+    status.HTTP_403_FORBIDDEN: "AUTH_PERMISSION_DENIED",
+    status.HTTP_404_NOT_FOUND: "COMMON_NOT_FOUND",
+    status.HTTP_500_INTERNAL_SERVER_ERROR: "COMMON_INTERNAL_ERROR",
+}
+
+
+class AppAPIException(APIException):
+    status_code = status.HTTP_400_BAD_REQUEST
+    default_code = "COMMON_VALIDATION_ERROR"
+    default_detail = "请求失败"
+
+    def __init__(self, detail=None, code=None, errors=None):
+        self.errors = errors or {}
+        super().__init__(detail=detail, code=code or self.default_code)
+
+
+def custom_exception_handler(exc, context):
+    request = context.get("request")
+    response = exception_handler(exc, context)
+
+    if response is not None:
+        code = getattr(exc, "default_code", None) or HTTP_STATUS_TO_CODE.get(
+            response.status_code, "COMMON_VALIDATION_ERROR"
+        )
+        if isinstance(exc, ValidationError):
+            code = "COMMON_VALIDATION_ERROR"
+        errors = getattr(exc, "errors", None)
+        if errors is None and isinstance(exc.detail, dict):
+            errors = exc.detail
+        elif errors is None and hasattr(exc, "detail"):
+            errors = {"detail": exc.detail}
+
+        if response.status_code >= 500:
+            logger.exception("Unhandled API error", extra={"request_id": getattr(request, "request_id", "")})
+
+        return error_response(
+            code=code,
+            message=str(exc.detail) if hasattr(exc, "detail") else "请求失败",
+            errors=errors if isinstance(errors, dict) else {},
+            status=response.status_code,
+            request=request,
+        )
+
+    logger.exception("Unhandled exception", extra={"request_id": getattr(request, "request_id", "")})
+    return error_response(
+        code="COMMON_INTERNAL_ERROR",
+        message="服务器内部错误",
+        status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        request=request,
+    )

@@ -1,0 +1,76 @@
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpass}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-oem_db}
+      MYSQL_USER: ${MYSQL_USER:-oem_user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-oem_pass}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    env_file: .env
+    volumes:
+      - ./backend:/app
+      - media_data:/app/media
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: sh -c "python manage.py migrate && python manage.py create_default_admin && python manage.py seed_demo_data && python manage.py runserver 0.0.0.0:8000"
+
+  frontend:
+    build: ./frontend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost/api}
+    command: npm run dev -- --host 0.0.0.0 --port 5173
+
+  admin:
+    build: ./admin
+    volumes:
+      - ./admin:/app
+      - /app/node_modules
+    environment:
+      VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost/api}
+      VITE_ADMIN_BASE_PATH: ${VITE_ADMIN_BASE_PATH:-/admin}
+    command: npm run dev -- --host 0.0.0.0 --port 5174
+
+  caddy:
+    image: caddy:2-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+      - media_data:/media
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - backend
+      - frontend
+      - admin
+
+volumes:
+  mysql_data:
+  media_data:
+  caddy_data:
+  caddy_config:

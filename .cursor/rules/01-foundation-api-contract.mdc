@@ -1,0 +1,54 @@
+---
+description: 基础约束：API 响应包结构、状态码与错误码基线
+alwaysApply: true
+---
+
+# 基础约束：API 契约
+
+本规则定义跨项目可复用的 API 响应包结构与错误码约定。
+
+## 成功响应包
+
+```json
+{
+  "code": "OK",
+  "message": "成功",
+  "data": {},
+  "request_id": ""
+}
+```
+
+## 错误响应包
+
+```json
+{
+  "code": "VALIDATION_ERROR",
+  "message": "校验失败",
+  "errors": {},
+  "request_id": ""
+}
+```
+
+## 字段语义
+
+- `code`：稳定的机器可读标识，供客户端分支逻辑使用。
+- `message`：面向用户的可读摘要。
+- `data`：成功响应下的业务载荷。
+- `errors`：校验失败或业务失败时的结构化明细。
+- `request_id`：与日志关联的追踪 ID。
+
+## HTTP 状态码映射
+
+- `200/201`：成功
+- `400`：校验或业务规则不通过
+- `401`：未认证或令牌无效
+- `403`：无权限
+- `404`：资源不存在
+- `409`：冲突
+- `500`：服务器内部错误
+
+## 错误码命名
+
+- 使用带业务域上下文的 `UPPER_SNAKE_CASE`。
+- 推荐模式：`MODULE_SCENARIO_REASON`。
+- 示例：`AUTH_TOKEN_EXPIRED`、`ORDER_ALREADY_VOID`、`HR_LEAVE_DATE_INVALID`。
