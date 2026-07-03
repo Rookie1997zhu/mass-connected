@@ -28,11 +28,18 @@ class User(AbstractBaseUser, PermissionsMixin):
         ("member", "Member"),
         ("factory", "Factory"),
     ]
+    MEMBER_TYPE_CHOICES = [
+        ("individual", "Individual"),
+        ("enterprise", "Enterprise"),
+    ]
 
     email = models.EmailField(unique=True)
     name = models.CharField(max_length=120, blank=True)
     phone = models.CharField(max_length=32, blank=True)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default="member")
+    member_type = models.CharField(
+        max_length=20, choices=MEMBER_TYPE_CHOICES, null=True, blank=True
+    )
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -52,13 +59,25 @@ class FactoryProfile(models.Model):
         ("pending", "Pending"),
         ("approved", "Approved"),
         ("rejected", "Rejected"),
+        ("suspended", "Suspended"),
+        ("blacklist", "Blacklist"),
+        ("observing", "Observing"),
+        ("priority", "Priority"),
     ]
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="factory_profile")
     company_name = models.CharField(max_length=200)
+    short_name = models.CharField(max_length=80, blank=True)
     region = models.CharField(max_length=120, blank=True)
+    country = models.CharField(max_length=80, blank=True)
+    city = models.CharField(max_length=80, blank=True)
     intro = models.TextField(blank=True)
     contact_phone = models.CharField(max_length=32, blank=True)
+    payment_terms = models.CharField(max_length=200, blank=True)
+    admin_note = models.TextField(blank=True)
+    score = models.PositiveSmallIntegerField(default=0)
+    is_public = models.BooleanField(default=True)
+    business_license = models.FileField(upload_to="supplier/license/%Y/%m/", null=True, blank=True)
     processes = models.ManyToManyField(
         "rfq.ServiceCategory", blank=True, related_name="factory_profiles"
     )
@@ -71,3 +90,29 @@ class FactoryProfile(models.Model):
 
     def __str__(self):
         return self.company_name
+
+
+class SupplierTag(models.Model):
+    profile = models.ForeignKey(FactoryProfile, on_delete=models.CASCADE, related_name="tags")
+    tag_name = models.CharField(max_length=64)
+
+    class Meta:
+        ordering = ["tag_name", "id"]
+        unique_together = [("profile", "tag_name")]
+
+    def __str__(self):
+        return self.tag_name
+
+
+class SupplierAttachment(models.Model):
+    profile = models.ForeignKey(FactoryProfile, on_delete=models.CASCADE, related_name="attachments")
+    file = models.FileField(upload_to="supplier/attachments/%Y/%m/")
+    file_name = models.CharField(max_length=255)
+    category = models.CharField(max_length=32, blank=True, default="qualification")
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-uploaded_at"]
+
+    def __str__(self):
+        return self.file_name

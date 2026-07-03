@@ -42,4 +42,4 @@ docker compose up --build
 
 ## Project Spec
 
-See [OEM Manufacturing Company Website & Platform (Multi-language).md](OEM%20Manufacturing%20Company%20Website%20&%20Platform%20(Multi-language).md)
+See [MASS CONNECTED 平台文档.md](MASS%20CONNECTED%20%E5%B9%B3%E5%8F%B0%E6%96%87%E6%A1%A3.md) and the requirement docs under `project/`.

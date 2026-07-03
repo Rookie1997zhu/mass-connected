@@ -1,7 +1,7 @@
-# OEM 平台开发完成清单
+# MASS CONNECTED 平台开发完成清单
 
-> 依据 [OEM Manufacturing Company Website & Platform (Multi-language).md](OEM%20Manufacturing%20Company%20Website%20&%20Platform%20(Multi-language).md)、[RFQ 平台化演进方案.md](RFQ%E5%B9%B3%E5%8F%B0%E5%8C%96%E6%BC%94%E8%BF%9B%E6%96%B9%E6%A1%88.md) 与开发路线图（P0–P6）整理。  
-> 更新日期：2026-07-02（含 P7 制造撮合平台 + 自营商城）
+> 依据 [MASS CONNECTED 平台文档.md](MASS%20CONNECTED%20%E5%B9%B3%E5%8F%B0%E6%96%87%E6%A1%A3.md) 与 `project/` 目录 7 份需求书，以及开发路线图（P0–P9）整理。  
+> 更新日期：2026-07-03（含 P9 MASS CONNECTED 平台化改版：供应商指派制 + 简单/详细报价 + 积分 + MY PAGE + 项目进度 + 合同/付款 + 通知 + PDF）
 
 ## 阶段总览
 
@@ -13,7 +13,11 @@
 - [x] **P4+** 首页重设计与设计系统
 - [x] **P5** 集成联调与验收
 - [x] **P6** RFQ 平台化改造（退役电商，新增按工艺在线询价）
-- [x] **P7** 制造撮合平台 + 自营商城（工厂入驻/需求大厅/多供应商报价 + 重建 catalog/order）
+- [x] **P7** 制造撮合平台 + 自营商城（重建 catalog/order）
+- [x] **P8** 个人/企业会员体系 + 生产订单
+- [x] **P9** MASS CONNECTED 平台化改版（供应商指派制 + 简单/详细报价 + 积分 + MY PAGE + 项目进度 + 合同/付款 + 通知 + PDF）
+
+> **说明**：P7/P8 中「供应商自助入驻 + 公开需求大厅抢单 + 单层报价直达客户 + 生产订单」等能力已在 **P9 改版**，相关旧条目已按新模型更新，历史保留不再适用的部分见各节标注。
 
 ---
 
@@ -213,7 +217,7 @@
 
 ## P6 RFQ 平台化改造
 
-> 对应 [RFQ 平台化演进方案.md](RFQ%E5%B9%B3%E5%8F%B0%E5%8C%96%E6%BC%94%E8%BF%9B%E6%96%B9%E6%A1%88.md)。采用 **A 路线（单公司 RFQ）+ B-ready 架构**，服务按**制造工艺**组织；退役零售商城与产品目录。  
+> 历史阶段（RFQ 平台化改造）。采用 **A 路线（单公司 RFQ）+ B-ready 架构**，服务按**制造工艺**组织；退役零售商城与产品目录。当前平台形态见 [MASS CONNECTED 平台文档.md](MASS%20CONNECTED%20%E5%B9%B3%E5%8F%B0%E6%96%87%E6%A1%A3.md)。  
 > 关键决策：工艺分类**下线（软删除）而非物理删除**；保留会员体系，**游客必须注册登录后方可提交询价**。
 
 ### 后端：新增 rfq 模块
@@ -280,10 +284,12 @@
 
 ### 后端：需求大厅与工厂报价（激活 B 路线）
 
-- [x] RFQ 提交支持 `scope=public|internal`（买家 opt-in 公开到需求大厅）
-- [x] 工厂端：`GET /api/factory/rfqs`（公开需求列表，脱敏）、`GET /api/factory/rfqs/{id}`、`POST .../quotes`（`Quote.supplier=工厂`）、`GET /api/factory/quotes`
-- [x] `QuoteSerializer` 增加 `supplier_name` / `supplier_type`（platform/factory）
-- [x] 买家「我的 RFQ」可接受任意来源报价；接受后 RFQ→won
+> ⚠️ **已被 P9 改版取代**：原「公开需求大厅 + 工厂自由抢单」模式已下线，改为「管理员指派制」。以下条目保留为历史，不再作为当前行为，详见 P9「供应商体系改版」与「详细报价改版」。
+
+- [x] ~~RFQ `scope=public|internal`~~ → RFQ 由管理员指派，不再依赖公开抢单
+- [x] ~~工厂端 `/api/factory/rfqs` 抢单式报价~~ → 改为 `/api/supplier/quote-requests`（仅见被指派）
+- [x] `QuoteSerializer` 增加 `supplier_name` / `supplier_type`（platform/factory，保留）
+- [x] ~~买家可接受任意来源报价~~ → 改为「平台汇总方案 A/B/C，客户仅确认平台可见方案」
 
 ### 后端：重建 catalog + order
 
@@ -301,8 +307,8 @@
 ### 官网前台
 
 - [x] 导航重构：**制造报价**（发布请求/寻找需求/合作伙伴）+ **商城**（产品分类）+ **关于**（能力/OEM-ODM/案例/资讯/支持/联系）
-- [x] 账户区按角色：member→我的RFQ/我的订单/购物车；factory→需求大厅/我的报价
-- [x] 工厂页：入驻申请 `/partners`、需求大厅 `/demand-hall`、需求详情+报价、我的报价 `/factory/quotes`
+- [x] 账户区按角色：member→我的RFQ/我的订单/购物车；factory→需求大厅/我的报价（**P8 已演进**，见 P8 节）
+- [x] 工厂页：入驻申请 `/partners`、需求大厅 `/demand-hall`、需求详情+报价、我的报价 `/factory/quotes`（**P8**：`/partners` 改为企业目录，入驻合并至企业注册）
 - [x] RFQ 向导增加「公开到需求大厅」开关；我的 RFQ 详情显示多供应商报价来源
 - [x] 商城：分类列表 `/shop`、商品详情、购物车/结算/我的订单
 - [x] i18n 四语补齐导航/工厂/大厅/入驻/商城文案
@@ -312,6 +318,157 @@
 - [x] `migrate` + `seed_demo_data`；`GET /api/health` healthy
 - [x] `frontend` + `admin` `npm run build` 通过
 - [x] 端到端冒烟：公开 RFQ → 工厂入驻审核 → 工厂报价 → 买家接受；商城加购下单闭环
+
+---
+
+## P8 个人/企业会员体系 + 生产订单
+
+> 对应 [.cursor/plans/会员类型拆分方案_79d8b7c1.plan.md](.cursor/plans/会员类型拆分方案_79d8b7c1.plan.md)。前台会员统一 `role=member`，以 `member_type` 区分个人/企业；企业注册即含入驻申请，审核通过后同一账号具备买方 + 卖方双能力；接受工厂报价后生成生产订单，卖方需显式接单。
+
+### 后端：会员类型与权限
+
+- [x] `User.member_type`：`individual`（个人会员）/ `enterprise`（企业会员）
+- [x] 数据迁移：存量 `role=member` → `individual`；存量 `role=factory` → `member` + `enterprise`（保留 `FactoryProfile`）
+- [x] `IsBuyerRole`：所有前台 `role=member` 用户（个人 + 企业）可使用买方 API
+- [x] `IsSupplierRole`：企业会员且 `FactoryProfile.status=approved`（兼容 legacy `role=factory`）
+- [x] `UserSerializer` 增加 `member_type`、`factory_profile` 摘要
+- [x] 合并注册：`POST /api/member/auth/register` 支持 `member_type`；企业注册创建 `FactoryProfile(pending)` 并返回 JWT
+- [x] 企业会员 **pending 可登录** 使用买方能力；卖方 API 未审核返回 403
+- [x] `POST /api/factory/auth/register` 废弃（返回 **410** `FACTORY_REGISTER_DEPRECATED`）
+
+### 后端：公开需求大厅与入驻企业目录
+
+> ⚠️ **部分已被 P9 改版取代**：需求大厅由「供应商自由抢单入口」降级为内部/可选展示；供应商报价改为指派制。
+
+- [x] `GET /api/public/demand-hall`、`GET /api/public/demand-hall/{id}`（AllowAny，保留为展示，非抢单入口）
+- [x] `GET /api/public/partners`（AllowAny，已审核 `FactoryProfile`，脱敏展示企业名/地区/工艺/简介）
+- [x] ~~工厂报价 API `/api/factory/*`~~ → P9 改为 `/api/supplier/quote-requests`（指派制，`IsSupplierRole`）
+
+### 后端：生产订单（ProductionOrder）
+
+> 🔄 **P9 演进**：`ProductionOrder` 保留为报价确认后的成交凭据，并在付款确认后**升级/触发**生成 `Project`（项目/生产进度体系，见 P9）。
+
+- [x] `ProductionOrder` 模型：`order_no`、关联 RFQ/Quote/buyer/supplier、状态机（`pending_confirm` → `confirmed` → `in_production` → `completed` / `cancelled`）
+- [x] 接受报价（`POST .../quotes/{id}/accept`）在事务中创建 `ProductionOrder(pending_confirm)`（平台报价无 supplier 时返回错误）
+- [x] 买家：`GET /api/member/production-orders`、详情
+- [x] 卖方：`GET /api/supplier/production-orders`、`POST .../confirm`、`POST .../reject`
+- [x] 管理端：`GET/PATCH /api/admin/production-orders`
+- [x] 迁移：`accounts.0003_user_member_type_migrate_factory`、`rfq.0002_productionorder`
+
+### 管理后台
+
+- [x] 工厂管理列表增加 **会员类型**（`member_type`）列
+- [x] 新增 **生产订单** 页（`/admin/production-orders`）：列表、状态筛选、运营改状态
+- [x] i18n 补齐 `productionOrders`、`factories.memberType`（ko/zh/en）
+
+### 官网前台
+
+- [x] 注册页 Tab：**个人会员** / **企业会员**（企业含公司名/地区/简介/工艺多选）
+- [x] `/partners` 改为 **入驻企业目录**（调用 `/api/public/partners`），移除入驻申请表单，引导企业会员注册
+- [x] 需求大厅 `/demand-hall` 保留展示；~~公开报价表单~~ → P9 改为供应商在「我的报价请求」中对被指派项目报价
+- [x] ~~RFQ 向导默认 `scope=public`~~ → P9 改为管理员指派供应商
+- [x] Auth Store：`isBuyer` / `isEnterprise` / `isSupplier` / `isFactoryPending`；路由 `requiresSupplier` 守卫
+- [x] 买家生产订单：`/my/production-orders`、详情；接受报价后提示并跳转
+- [x] 卖方接单：`/supplier/orders`（确认/拒绝待接单生产订单）
+- [x] 导航：需求大厅、生产订单、接单管理（卖方）；审核中显示「入驻审核中」
+- [x] i18n 四语补齐 `register.*`、`partners.directory*`、`productionOrder.*`、`nav.partnersDirectory` 等
+
+### 部署与验收
+
+- [x] `docker compose` 迁移已应用（`accounts.0003`、`rfq.0002`）；`backend` 重启后 `manage.py check` 通过
+- [x] 六服务（mysql/redis/backend/frontend/admin/caddy）重启后正常运行
+- [x] `frontend` + `admin` 本地 `npm run build` 通过（2026-07-03）
+- [ ] 浏览器端到端：个人注册 → RFQ → 企业报价 → 接受 → 生产订单 → 卖方 confirm（待人工复测）
+- [ ] 浏览器端到端：企业注册 → 后台审核 → 同一账号买方+卖方能力（待人工复测）
+
+---
+
+## P9 MASS CONNECTED 平台化改版
+
+> 对应 [MASS CONNECTED 平台文档.md](MASS%20CONNECTED%20%E5%B9%B3%E5%8F%B0%E6%96%87%E6%A1%A3.md) 与 `project/` 7 份需求书。将平台改造为「管理员居中运营的制造服务撮合平台」：供应商指派制、双通道报价、方案 A/B/C、积分、MY PAGE、项目进度、合同/付款、通知、PDF。
+
+### 供应商体系改版（指派制）
+
+- [x] 供应商账号由**管理员建号**（`/api/admin/suppliers` 列表/创建），停用供应商自助注册
+- [x] `QuoteRequest` 指派记录模型（`request_no`、rfq、supplier、status、deadline、admin_note、is_urgent、created_by），`unique_together=(rfq, supplier)`
+- [x] 管理端指派：`POST /api/admin/rfqs/{id}/assign`、`GET /api/admin/rfqs/{id}/quote-requests`
+- [x] 供应商端：`GET /api/supplier/quote-requests[/{id}]`、`POST .../quotes`（仅见被指派项目）
+- [x] 前台需求大厅降级为展示；`DemandDetailView` 移除公开抢单表单，引导供应商到「我的报价请求」
+- [x] admin 新增「供应商」页 + 侧边导航 + i18n；前台新增 `/supplier/quote-requests[/{id}]`
+
+### 详细报价改版（方案 A/B/C + 加价）
+
+- [x] `RFQ` 扩展 9.6 状态机：新增 `pending_review`/`assigned`/`comparing`/`customer_confirming`
+- [x] `RFQ.markup_percent` 平台加价率；`PATCH /api/admin/rfqs/{id}/status` 支持同时更新状态与加价率
+- [x] `Quote` 增加 `quote_request`、`is_customer_visible`、`plan_label`（A/B/C）
+- [x] `CustomerPlanSerializer` / `MemberRFQDetailSerializer`：对客户加价、**隐藏供应商身份**，以方案卡片展示
+- [x] 会员接受方案校验 `is_customer_visible`；接受后更新 `QuoteRequest` 状态并发通知
+- [x] admin RFQ 详情：加价率编辑、指派供应商、Quote 方案标签与对客户可见开关
+- [x] 前台 `MyRfqDetailView` 改为方案 A/B/C 卡片确认
+
+### 简单报价引擎（simplequote）
+
+- [x] `QuoteParam`（后台参数）、`SimpleQuote`（自动估价，inputs/result JSON、PDF、积分消耗）模型
+- [x] `calculator.py` 参数驱动引擎：注塑模具 / 3D 打印 / PCB / 软件 / IC，含费用明细
+- [x] 会员：`GET/POST /api/member/simple-quotes`、详情、`POST .../convert`（转详细报价，消耗积分）
+- [x] 管理：`GET/POST /api/admin/quote-params`、`PATCH /api/admin/quote-params/{id}`
+- [x] 前台 `/simple-quote` 动态表单 + 结果 + PDF 下载 + 转 RFQ；admin「报价参数」页 + i18n
+
+### 积分系统（points）
+
+- [x] `PointWallet` / `PointTransaction` / `PointRule` / `RechargeOrder` 模型
+- [x] `services.py`：`ensure_wallet` / `get_rule_amount` / `add_points` / `spend_points`（余额不足抛错）/ `grant_register_bonus`
+- [x] 注册赠送积分（接入 `MemberRegisterView`）、报价消耗积分
+- [x] 会员：钱包 / 流水 / 充值（`/api/member/points/*`）
+- [x] 管理：积分规则、用户积分调整、充值人工确认（`/api/admin/points/*`）
+- [x] admin「积分」页（规则 + 充值确认）+ 侧边导航 + i18n
+
+### MY PAGE 个人中心（前台）
+
+- [x] `/my` 统一个人中心：概览 / 简单报价 / 详细报价 / 项目 / 合同 / 付款 / 积分 / 通知 / 企业资料 / 账户设置 / 退出登录
+- [x] 各标签按需拉取数据；新增会员 dashboard 聚合接口调用
+- [x] i18n 四语补齐 `mypage.*`、`simpleQuote.*`、`quoteRequest.*`、`myRfqs.plans/plan/confirmPlan` 等
+
+### 项目 / 生产进度（project）
+
+- [x] `Project` / `ProjectStage` / `ProjectUpdate` / `ProjectTodo` / `ProjectIssue` 模型
+- [x] `services.py`：`recalc_progress`、`create_project_from_production_order`（默认阶段 + 通知）
+- [x] 会员：`GET /api/member/projects[/{id}]`、`POST .../todos/{id}/toggle`
+- [x] 供应商：`GET /api/supplier/projects[/{id}]`、`POST .../updates`、`PATCH .../stages/{id}`、`POST .../issues`
+- [x] 管理：`GET /api/admin/projects[/{id}]`、`POST .../todos`、`POST .../stages`
+- [x] 前台 `MyProjectDetailView`（阶段/时间轴/进度/待办勾选）；admin「项目」页 + i18n
+
+### 合同 / 付款（contract / payment）
+
+- [x] `Contract` 模型（`contract_no`、关联 rfq/quote/production_order、buyer/supplier、amount、status、PDF）
+- [x] `Payment` 模型（`payment_no`、contract、buyer、amount、method、status、proof）
+- [x] 报价确认后在事务中生成 `ProductionOrder` → `Contract` → `Payment` 并发通知
+- [x] 付款 V1 **人工确认**：会员上传凭证，管理员 `POST /api/admin/payments/{id}/confirm`，确认后触发转项目
+- [x] 会员：`/api/member/contracts[/{id}]`、`/api/member/payments`、`POST .../{id}/proof`
+- [x] admin「合同」「付款」页 + i18n
+
+### 通知中心（notification）
+
+- [x] `Notification` 模型（user、type、title、content、related_type、related_id、is_read）
+- [x] `services.notify` 服务；接入报价确认、供应商指派、项目创建、付款、积分调整等事件
+- [x] 会员：列表 / 未读数 / 标记已读 / 全部已读（`/api/member/notifications/*`）
+- [x] MY PAGE 通知标签页
+
+### PDF 基础设施
+
+- [x] `requirements.txt` 引入 `reportlab>=4.2,<5`
+- [x] `core/pdf.py`：`build_quotation_pdf` 通用 PDF 生成（简单报价书、合同）
+- [x] 简单报价书、合同 PDF 落地 `/media/`，可下载
+
+### 部署与验收（P9）
+
+- [x] 6 个新 app 迁移已生成并应用（notification/points/simplequote/project/contract/payment + rfq 0003）
+- [x] `manage.py check` 通过；`makemigrations --check` 无遗漏
+- [x] `frontend` + `admin` `npm run build` 通过
+- [x] 六服务重启后正常运行；`GET /api/health` healthy（database/redis ok）
+- [x] 新接口路由冒烟：13 个新端点返回 401（鉴权拦截，非 404）
+- [x] 端到端冒烟：注册→赠送积分→简单报价（PDF + 扣积分）→钱包扣减正确；3D 打印估价计算正确
+- [x] 浏览器详细测试前端显示与样式（见测试报告）
 
 ---
 
@@ -342,4 +499,5 @@ docker compose up --build -d
 | API 健康检查 | http://localhost/api/health |
 
 **默认管理员**：`admin@oem.co` / `Admin123!`  
-**会员注册**：通过 `/register` 注册后可在 `/rfq/new` 提交询价
+**会员注册**：`/register` 选择 **个人会员** 或 **企业会员**；注册即赠送积分，可在 `/simple-quote` 自动估价或 `/rfq/new` 提交详细询价，并在 `/my`（MY PAGE）跟踪报价、项目、合同、付款与积分。  
+**供应商**：由管理员在后台「供应商」建号；供应商在 `/supplier/quote-requests` 对**被指派**的报价请求报价，不再公开抢单。

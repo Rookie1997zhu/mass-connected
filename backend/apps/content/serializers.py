@@ -26,7 +26,17 @@ class DownloadSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Download
-        fields = ["id", "title", "url", "file_type", "locale", "sort_order", "is_active"]
+        fields = [
+            "id",
+            "title",
+            "file",
+            "url",
+            "file_type",
+            "locale",
+            "sort_order",
+            "is_active",
+        ]
+        read_only_fields = ["id", "url"]
 
     def get_url(self, obj):
         request = self.context.get("request")

@@ -3,13 +3,16 @@ import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PageShell from '../../components/PageShell.vue'
-import { acceptQuote, fetchMyRfq } from '../../api'
+import { acceptQuote, downloadRfqQuotePdf, fetchMyRfq } from '../../api'
+import { useRouter } from 'vue-router'
 
 const { t } = useI18n()
 const route = useRoute()
+const router = useRouter()
 const rfq = ref(null)
 const loading = ref(true)
 const message = ref('')
+const successMessage = ref('')
 
 const load = async () => {
   const res = await fetchMyRfq(route.params.id)
@@ -24,11 +27,30 @@ onMounted(async () => {
   }
 })
 
+const onDownloadPdf = async () => {
+  const res = await downloadRfqQuotePdf(rfq.value.id)
+  const blob = new Blob([res], { type: 'application/pdf' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `${rfq.value.rfq_no}-comparison.pdf`
+  a.click()
+  URL.revokeObjectURL(url)
+}
+
 const onAccept = async (quoteId) => {
   message.value = ''
+  successMessage.value = ''
   try {
-    await acceptQuote(rfq.value.id, quoteId)
+    const res = await acceptQuote(rfq.value.id, quoteId)
+    const orderNo = res.data?.production_order?.order_no
+    successMessage.value = orderNo
+      ? t('productionOrder.created', { orderNo })
+      : t('myRfqs.acceptSuccess')
     await load()
+    if (orderNo) {
+      setTimeout(() => router.push('/my/production-orders'), 1500)
+    }
   } catch (e) {
     message.value = e.message || t('rfq.acceptFailed')
   }
@@ -60,43 +82,52 @@ const onAccept = async (quoteId) => {
         </li>
       </ul>
 
-      <h2 class="section-sub">{{ t('myRfqs.quotes') }}</h2>
+      <h2 class="section-sub">{{ t('myRfqs.plans') }}</h2>
+      <button v-if="rfq.plans?.length" type="button" class="btn btn-secondary btn-sm mb" @click="onDownloadPdf">{{ t('myRfqs.downloadPdf') }}</button>
+      <p v-if="successMessage" class="page-message page-message--success">{{ successMessage }}</p>
       <p v-if="message" class="page-message page-message--error">{{ message }}</p>
-      <p v-if="!rfq.quotes?.length" class="page-empty">{{ t('myRfqs.noQuotes') }}</p>
-      <table v-else class="quote-table">
+      <p v-if="!rfq.plans?.length" class="page-empty">{{ t('myRfqs.noPlans') }}</p>
+      <table v-else-if="rfq.plans.length > 1" class="quote-table mb">
         <thead>
           <tr>
-            <th>{{ t('myRfqs.supplier') }}</th>
-            <th>{{ t('rfq.price') }}</th>
-            <th>{{ t('rfq.leadTime') }}</th>
-            <th>{{ t('rfq.validUntil') }}</th>
-            <th>{{ t('rfq.note') }}</th>
-            <th>{{ t('common.status') }}</th>
             <th></th>
+            <th v-for="p in rfq.plans" :key="p.id">{{ t('myRfqs.plan') }} {{ p.plan_label || p.id }}</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="q in rfq.quotes" :key="q.id">
-            <td>{{ q.supplier_name }} ({{ q.supplier_type === 'factory' ? t('myRfqs.factory') : t('myRfqs.platform') }})</td>
-            <td>{{ q.currency }} {{ Number(q.price_amount).toLocaleString() }}</td>
-            <td>{{ q.lead_time_days }}</td>
-            <td>{{ q.valid_until || '—' }}</td>
-            <td>{{ q.note || '—' }}</td>
-            <td>{{ q.status }}</td>
-            <td>
-              <button
-                v-if="q.status === 'sent'"
-                type="button"
-                class="btn btn-primary btn-sm"
-                @click="onAccept(q.id)"
-              >
-                {{ t('myRfqs.accept') }}
-              </button>
-              <span v-else-if="q.status === 'accepted'" class="accepted">✓</span>
-            </td>
-          </tr>
+          <tr><td>{{ t('rfq.price') }}</td><td v-for="p in rfq.plans" :key="p.id">{{ p.currency }} {{ Number(p.price_amount).toLocaleString() }}</td></tr>
+          <tr><td>{{ t('myRfqs.unitPrice') }}</td><td v-for="p in rfq.plans" :key="p.id">{{ p.unit_price ? Number(p.unit_price).toLocaleString() : '—' }}</td></tr>
+          <tr><td>{{ t('myRfqs.moldFee') }}</td><td v-for="p in rfq.plans" :key="p.id">{{ p.mold_fee ? Number(p.mold_fee).toLocaleString() : '—' }}</td></tr>
+          <tr><td>{{ t('myRfqs.sampleFee') }}</td><td v-for="p in rfq.plans" :key="p.id">{{ p.sample_fee ? Number(p.sample_fee).toLocaleString() : '—' }}</td></tr>
+          <tr><td>{{ t('myRfqs.moq') }}</td><td v-for="p in rfq.plans" :key="p.id">{{ p.moq || '—' }}</td></tr>
+          <tr><td>{{ t('rfq.leadTime') }}</td><td v-for="p in rfq.plans" :key="p.id">{{ p.lead_time_days }}</td></tr>
+          <tr><td>{{ t('myRfqs.paymentTerms') }}</td><td v-for="p in rfq.plans" :key="p.id">{{ p.payment_terms || '—' }}</td></tr>
         </tbody>
       </table>
+      <div v-if="rfq.plans?.length" class="plan-grid">
+        <article v-for="p in rfq.plans" :key="p.id" class="plan-card" :class="{ 'plan-card--accepted': p.status === 'accepted' }">
+          <div class="plan-head">
+            <span class="plan-label">{{ t('myRfqs.plan') }} {{ p.plan_label || '-' }}</span>
+            <span v-if="p.status === 'accepted'" class="accepted">✓ {{ t('myRfqs.confirmed') }}</span>
+          </div>
+          <p class="plan-price">{{ p.currency }} {{ Number(p.price_amount).toLocaleString() }}</p>
+          <ul class="plan-meta">
+            <li>{{ t('rfq.leadTime') }}: {{ p.lead_time_days }}</li>
+            <li>{{ t('rfq.validUntil') }}: {{ p.valid_until || '—' }}</li>
+            <li v-if="p.moq">{{ t('myRfqs.moq') }}: {{ p.moq }}</li>
+            <li v-if="p.payment_terms">{{ t('myRfqs.paymentTerms') }}: {{ p.payment_terms }}</li>
+            <li v-if="p.note">{{ p.note }}</li>
+          </ul>
+          <button
+            v-if="p.status === 'sent'"
+            type="button"
+            class="btn btn-primary btn-sm"
+            @click="onAccept(p.id)"
+          >
+            {{ t('myRfqs.confirmPlan') }}
+          </button>
+        </article>
+      </div>
     </template>
   </PageShell>
 </template>
@@ -115,6 +146,13 @@ const onAccept = async (quoteId) => {
 }
 .section-sub { font-size: 1.125rem; margin: var(--space-xl) 0 var(--space-md); }
 .att-list { padding-left: 1.2rem; a { color: var(--color-steel); } }
+.plan-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--space-lg); }
+.plan-card { border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-lg); display: flex; flex-direction: column; gap: var(--space-sm); }
+.plan-card--accepted { border-color: var(--color-steel); background: var(--color-steel-muted); }
+.plan-head { display: flex; justify-content: space-between; align-items: center; }
+.plan-label { font-weight: 700; font-size: 1rem; }
+.plan-price { font-size: 1.375rem; font-weight: 700; margin: 0; }
+.plan-meta { list-style: none; padding: 0; margin: 0; font-size: 0.875rem; opacity: 0.75; display: flex; flex-direction: column; gap: 0.25rem; }
 .quote-table {
   width: 100%;
   border-collapse: collapse;
@@ -127,7 +165,7 @@ const onAccept = async (quoteId) => {
   }
   th { font-size: 0.75rem; text-transform: uppercase; color: var(--color-text); opacity: 0.6; }
 }
-.accepted { color: var(--color-steel); font-weight: 700; }
+.mb { margin-bottom: var(--space-md); }
 @media (max-width: 640px) {
   .detail-grid { grid-template-columns: 1fr; }
 }

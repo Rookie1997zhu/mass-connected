@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { RouterLink } from 'vue-router'
 import PageShell from '../../components/PageShell.vue'
 import { fetchOrders } from '../../api'
 
@@ -30,6 +31,7 @@ onMounted(async () => {
           <th>{{ t('orders.total') }}</th>
           <th>{{ t('common.status') }}</th>
           <th>{{ t('orders.date') }}</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -38,6 +40,7 @@ onMounted(async () => {
           <td>KRW {{ Number(o.total_amount).toLocaleString() }}</td>
           <td>{{ o.status }}</td>
           <td>{{ o.created_at?.slice(0, 10) }}</td>
+          <td><RouterLink :to="`/my/orders/${o.id}`" class="link">{{ t('common.view') }}</RouterLink></td>
         </tr>
       </tbody>
     </table>

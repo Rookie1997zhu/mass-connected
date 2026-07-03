@@ -96,7 +96,7 @@ onMounted(async () => {
               <circle cx="100" cy="80" r="24" stroke="rgba(45,90,138,0.5)" stroke-width="1.5" />
               <rect x="180" y="140" width="80" height="48" stroke="rgba(45,90,138,0.5)" stroke-width="1.5" />
               <path d="M300 220 L340 260 L300 260 Z" stroke="rgba(45,90,138,0.4)" stroke-width="1" fill="rgba(30,58,95,0.15)" />
-              <text x="48" y="56" fill="rgba(45,90,138,0.6)" font-size="10" font-family="monospace">RYSEN</text>
+              <text x="48" y="56" fill="rgba(45,90,138,0.6)" font-size="10" font-family="monospace">MASS CONNECTED</text>
               <text x="48" y="308" fill="rgba(45,90,138,0.4)" font-size="9" font-family="monospace">MARKETPLACE</text>
             </svg>
             <div class="blueprint-corner blueprint-corner--tl" />

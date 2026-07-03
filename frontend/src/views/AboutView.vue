@@ -6,7 +6,7 @@ import PageShell from '../components/PageShell.vue'
 import { fetchContentPage } from '../api'
 import { sanitizeHtml } from '../utils/sanitize'
 
-const { locale } = useI18n()
+const { locale, t } = useI18n()
 const route = useRoute()
 const content = ref(null)
 const pageKey = computed(() => {
@@ -36,7 +36,7 @@ watch(pageKey, load)
 
 <template>
   <PageShell>
-    <h1 class="page-title">About</h1>
+    <h1 class="page-title">{{ t('nav.about') }}</h1>
     <p v-if="!content" class="page-empty">{{ $t('common.empty') }}</p>
     <article v-else>
       <h2>{{ pick(content.title) }}</h2>

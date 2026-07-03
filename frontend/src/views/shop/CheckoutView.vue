@@ -1,14 +1,30 @@
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PageShell from '../../components/PageShell.vue'
-import { createOrder } from '../../api'
+import { createOrder, fetchCart } from '../../api'
 
 const { t } = useI18n()
 const router = useRouter()
 const form = ref({ shipping_name: '', shipping_phone: '', shipping_address: '', remark: '' })
+const cartItems = ref([])
+const cartTotal = ref(0)
 const error = ref('')
+const loading = ref(true)
+
+onMounted(async () => {
+  try {
+    const res = await fetchCart()
+    cartItems.value = res.data.items || []
+    cartTotal.value = res.data.total_amount || cartItems.value.reduce(
+      (sum, i) => sum + Number(i.line_total || i.unit_price * i.quantity || 0),
+      0,
+    )
+  } finally {
+    loading.value = false
+  }
+})
 
 const submit = async () => {
   error.value = ''
@@ -24,6 +40,17 @@ const submit = async () => {
 <template>
   <PageShell>
     <h1 class="page-title">{{ t('checkout.title') }}</h1>
+    <section v-if="!loading && cartItems.length" class="cart-summary card">
+      <h2 class="section-sub">{{ t('cart.title') }}</h2>
+      <ul class="cart-lines">
+        <li v-for="item in cartItems" :key="item.id">
+          <span>{{ item.product_name_text || item.product_name }}</span>
+          <span>× {{ item.quantity }}</span>
+          <span>KRW {{ Number(item.line_total || item.unit_price * item.quantity).toLocaleString() }}</span>
+        </li>
+      </ul>
+      <p class="cart-total">{{ t('cart.total') }}: KRW {{ Number(cartTotal).toLocaleString() }}</p>
+    </section>
     <form class="checkout-form card" @submit.prevent="submit">
       <p v-if="error" class="page-message page-message--error">{{ error }}</p>
       <label>{{ t('checkout.name') }}<input v-model="form.shipping_name" required /></label>
@@ -36,5 +63,9 @@ const submit = async () => {
 </template>
 
 <style scoped lang="scss">
+.cart-summary { max-width: 32rem; padding: var(--space-lg); margin-bottom: var(--space-lg); }
+.section-sub { font-size: 1rem; margin: 0 0 var(--space-md); }
+.cart-lines { list-style: none; padding: 0; margin: 0 0 var(--space-md); li { display: flex; justify-content: space-between; gap: 0.5rem; padding: 0.35rem 0; font-size: 0.9rem; border-bottom: 1px solid var(--color-border); } }
+.cart-total { font-weight: 600; margin: 0; }
 .checkout-form { max-width: 32rem; padding: var(--space-xl); display: flex; flex-direction: column; gap: var(--space-md); label { display: flex; flex-direction: column; gap: 0.375rem; font-size: 0.875rem; font-weight: 500; } input, textarea { padding: 0.625rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); } }
 </style>

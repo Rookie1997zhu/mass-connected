@@ -1,156 +1,87 @@
 <script setup>
 import { onMounted, ref } from 'vue'
+import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { useRouter } from 'vue-router'
 import PageShell from '../../components/PageShell.vue'
-import { fetchServiceCategories } from '../../api'
-import { useAuthStore } from '../../stores/auth'
+import { fetchPartners, fetchServiceCategories } from '../../api'
 
 const { t, locale } = useI18n()
-const router = useRouter()
-const auth = useAuthStore()
-
+const items = ref([])
 const categories = ref([])
-const form = ref({
-  email: '',
-  password: '',
-  name: '',
-  phone: '',
-  company_name: '',
-  region: '',
-  intro: '',
-  contact_phone: '',
-  process_ids: [],
-})
-const error = ref('')
-const success = ref('')
-const submitting = ref(false)
+const categoryId = ref('')
+const loading = ref(true)
 
 const pick = (field) => {
   if (!field || typeof field !== 'object') return field || ''
   return field[locale.value] || field.ko || field.en || Object.values(field)[0] || ''
 }
 
-onMounted(async () => {
-  const res = await fetchServiceCategories()
-  categories.value = res.data.items || []
-})
-
-const toggleProcess = (id) => {
-  const idx = form.value.process_ids.indexOf(id)
-  if (idx >= 0) form.value.process_ids.splice(idx, 1)
-  else form.value.process_ids.push(id)
+const load = async () => {
+  const params = {}
+  if (categoryId.value) params.service_category_id = categoryId.value
+  const res = await fetchPartners(params)
+  items.value = res.data.items || []
 }
 
-const submit = async () => {
-  error.value = ''
-  success.value = ''
-  submitting.value = true
+onMounted(async () => {
   try {
-    await auth.registerFactory(form.value)
-    success.value = t('partners.submitSuccess')
-    setTimeout(() => router.push('/login'), 2000)
-  } catch (e) {
-    error.value = e.message || t('partners.submitFailed')
+    const catRes = await fetchServiceCategories()
+    categories.value = catRes.data.items || []
+    await load()
   } finally {
-    submitting.value = false
+    loading.value = false
+  }
+})
+
+const onFilter = async () => {
+  loading.value = true
+  try {
+    await load()
+  } finally {
+    loading.value = false
   }
 }
 </script>
 
 <template>
   <PageShell>
-    <h1 class="page-title">{{ t('partners.title') }}</h1>
-    <p class="page-lead">{{ t('partners.desc') }}</p>
+    <h1 class="page-title">{{ t('partners.directoryTitle') }}</h1>
+    <p class="page-lead">{{ t('partners.directoryDesc') }}</p>
 
-    <div class="partner-grid">
-      <section class="partner-info card">
-        <h2>{{ t('partners.benefitsTitle') }}</h2>
-        <ul>
-          <li>{{ t('partners.benefit1') }}</li>
-          <li>{{ t('partners.benefit2') }}</li>
-          <li>{{ t('partners.benefit3') }}</li>
-        </ul>
-      </section>
-
-      <form class="partner-form card" @submit.prevent="submit">
-        <h2>{{ t('partners.formTitle') }}</h2>
-        <p v-if="error" class="page-message page-message--error">{{ error }}</p>
-        <p v-if="success" class="page-message page-message--success">{{ success }}</p>
-
-        <label>{{ t('account.email') }}<input v-model="form.email" type="email" required /></label>
-        <label>{{ t('account.password') }}<input v-model="form.password" type="password" required minlength="8" /></label>
-        <label>{{ t('account.name') }}<input v-model="form.name" required /></label>
-        <label>{{ t('partners.companyName') }}<input v-model="form.company_name" required /></label>
-        <label>{{ t('partners.region') }}<input v-model="form.region" /></label>
-        <label>{{ t('account.phone') }}<input v-model="form.phone" /></label>
-        <label>{{ t('partners.intro') }}<textarea v-model="form.intro" rows="3" /></label>
-
-        <fieldset>
-          <legend>{{ t('partners.processes') }}</legend>
-          <label v-for="c in categories" :key="c.id" class="process-check">
-            <input type="checkbox" :checked="form.process_ids.includes(c.id)" @change="toggleProcess(c.id)" />
-            {{ pick(c.name) }}
-          </label>
-        </fieldset>
-
-        <button type="submit" class="btn btn-primary" :disabled="submitting">
-          {{ submitting ? t('common.loading') : t('partners.submit') }}
-        </button>
-      </form>
+    <div class="filters">
+      <select v-model="categoryId" @change="onFilter">
+        <option value="">{{ t('demandHall.allCategories') }}</option>
+        <option v-for="c in categories" :key="c.id" :value="c.id">{{ pick(c.name) }}</option>
+      </select>
     </div>
+
+    <p v-if="loading" class="page-empty">{{ t('common.loading') }}</p>
+    <p v-else-if="!items.length" class="page-empty">{{ t('partners.directoryEmpty') }}</p>
+    <div v-else class="partner-list">
+      <article v-for="item in items" :key="item.id" class="partner-card card">
+        <h2>{{ item.company_name }}</h2>
+        <p v-if="item.region" class="muted">{{ item.region }}</p>
+        <p v-if="item.intro" class="intro">{{ item.intro }}</p>
+        <ul v-if="item.process_names?.length" class="tags">
+          <li v-for="(name, idx) in item.process_names" :key="idx">{{ name }}</li>
+        </ul>
+      </article>
+    </div>
+
+    <p class="cta">
+      {{ t('partners.directoryCta') }}
+      <RouterLink to="/register?type=enterprise">{{ t('register.enterprise') }}</RouterLink>
+    </p>
   </PageShell>
 </template>
 
 <style scoped lang="scss">
-.page-lead {
-  color: var(--color-text-muted);
-  margin-bottom: var(--space-xl);
-}
-
-.partner-grid {
-  display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  gap: var(--space-xl);
-}
-
-.partner-info ul {
-  padding-left: 1.25rem;
-  line-height: 1.8;
-}
-
-.partner-form {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
-
-  label {
-    display: flex;
-    flex-direction: column;
-    gap: 0.375rem;
-    font-size: 0.875rem;
-    font-weight: 500;
-  }
-
-  input,
-  textarea {
-    padding: 0.625rem 0.75rem;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-sm);
-  }
-}
-
-.process-check {
-  display: flex;
-  flex-direction: row !important;
-  align-items: center;
-  gap: 0.5rem !important;
-  margin-bottom: 0.375rem;
-}
-
-@media (max-width: 768px) {
-  .partner-grid {
-    grid-template-columns: 1fr;
-  }
-}
+.page-lead { color: var(--color-text-muted); margin-bottom: var(--space-lg); }
+.filters { margin-bottom: var(--space-lg); select { padding: 0.5rem; border-radius: var(--radius-sm); border: 1px solid var(--color-border); } }
+.partner-list { display: grid; gap: var(--space-md); grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+.partner-card { padding: var(--space-lg); h2 { margin: 0 0 0.5rem; font-size: 1.125rem; } }
+.muted { color: var(--color-text-muted); font-size: 0.875rem; margin: 0 0 0.5rem; }
+.intro { font-size: 0.9375rem; margin: 0 0 0.75rem; line-height: 1.5; }
+.tags { display: flex; flex-wrap: wrap; gap: 0.375rem; list-style: none; padding: 0; margin: 0; li { font-size: 0.75rem; padding: 0.125rem 0.5rem; background: var(--color-steel-muted); border-radius: var(--radius-sm); } }
+.cta { margin-top: var(--space-xl); text-align: center; color: var(--color-text-muted); a { color: var(--color-steel); font-weight: 600; margin-left: 0.25rem; } }
 </style>

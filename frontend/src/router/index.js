@@ -21,40 +21,98 @@ const routes = [
       { path: 'register', name: 'register', component: () => import('../views/RegisterView.vue') },
       { path: 'partners', name: 'partners', component: () => import('../views/factory/PartnerApplyView.vue') },
       {
+        path: 'my',
+        name: 'my-page',
+        component: () => import('../views/mypage/MyPageView.vue'),
+        meta: { requiresAuth: true, requiresBuyer: true },
+      },
+      {
+        path: 'my/projects/:id',
+        name: 'my-project-detail',
+        component: () => import('../views/mypage/MyProjectDetailView.vue'),
+        meta: { requiresAuth: true, requiresBuyer: true },
+      },
+      {
+        path: 'simple-quote',
+        name: 'simple-quote',
+        component: () => import('../views/quote/SimpleQuoteView.vue'),
+        meta: { requiresAuth: true, requiresBuyer: true },
+      },
+      {
         path: 'rfq/new',
         name: 'rfq-create',
         component: () => import('../views/rfq/RfqCreateView.vue'),
-        meta: { requiresAuth: true, roles: ['member'] },
+        meta: { requiresAuth: true, requiresBuyer: true },
       },
       {
         path: 'my/rfqs',
         name: 'my-rfqs',
         component: () => import('../views/rfq/MyRfqListView.vue'),
-        meta: { requiresAuth: true, roles: ['member'] },
+        meta: { requiresAuth: true, requiresBuyer: true },
       },
       {
         path: 'my/rfqs/:id',
         name: 'my-rfq-detail',
         component: () => import('../views/rfq/MyRfqDetailView.vue'),
-        meta: { requiresAuth: true, roles: ['member'] },
+        meta: { requiresAuth: true, requiresBuyer: true },
+      },
+      {
+        path: 'my/production-orders',
+        name: 'my-production-orders',
+        component: () => import('../views/rfq/MyProductionOrdersView.vue'),
+        meta: { requiresAuth: true, requiresBuyer: true },
+      },
+      {
+        path: 'my/production-orders/:id',
+        name: 'my-production-order-detail',
+        component: () => import('../views/rfq/MyProductionOrderDetailView.vue'),
+        meta: { requiresAuth: true, requiresBuyer: true },
       },
       {
         path: 'demand-hall',
         name: 'demand-hall',
         component: () => import('../views/factory/DemandHallView.vue'),
-        meta: { requiresAuth: true, roles: ['factory'] },
       },
       {
         path: 'demand-hall/:id',
         name: 'demand-detail',
         component: () => import('../views/factory/DemandDetailView.vue'),
-        meta: { requiresAuth: true, roles: ['factory'] },
       },
       {
         path: 'factory/quotes',
         name: 'factory-quotes',
         component: () => import('../views/factory/MyQuotesView.vue'),
-        meta: { requiresAuth: true, roles: ['factory'] },
+        meta: { requiresAuth: true, requiresSupplier: true },
+      },
+      {
+        path: 'supplier/quote-requests',
+        name: 'supplier-quote-requests',
+        component: () => import('../views/supplier/QuoteRequestsView.vue'),
+        meta: { requiresAuth: true, requiresSupplier: true },
+      },
+      {
+        path: 'supplier/quote-requests/:id',
+        name: 'supplier-quote-request-detail',
+        component: () => import('../views/supplier/QuoteRequestDetailView.vue'),
+        meta: { requiresAuth: true, requiresSupplier: true },
+      },
+      {
+        path: 'supplier/orders',
+        name: 'supplier-orders',
+        component: () => import('../views/supplier/SupplierOrdersView.vue'),
+        meta: { requiresAuth: true, requiresSupplier: true },
+      },
+      {
+        path: 'supplier/projects',
+        name: 'supplier-projects',
+        component: () => import('../views/supplier/SupplierProjectsView.vue'),
+        meta: { requiresAuth: true, requiresSupplier: true },
+      },
+      {
+        path: 'supplier/projects/:id',
+        name: 'supplier-project-detail',
+        component: () => import('../views/supplier/SupplierProjectDetailView.vue'),
+        meta: { requiresAuth: true, requiresSupplier: true },
       },
       { path: 'shop', name: 'shop', component: () => import('../views/shop/ShopListView.vue') },
       { path: 'shop/products/:id', name: 'product-detail', component: () => import('../views/shop/ProductDetailView.vue') },
@@ -62,19 +120,25 @@ const routes = [
         path: 'shop/cart',
         name: 'cart',
         component: () => import('../views/shop/CartView.vue'),
-        meta: { requiresAuth: true, roles: ['member'] },
+        meta: { requiresAuth: true, requiresBuyer: true },
       },
       {
         path: 'shop/checkout',
         name: 'checkout',
         component: () => import('../views/shop/CheckoutView.vue'),
-        meta: { requiresAuth: true, roles: ['member'] },
+        meta: { requiresAuth: true, requiresBuyer: true },
       },
       {
         path: 'my/orders',
         name: 'my-orders',
         component: () => import('../views/shop/OrdersView.vue'),
-        meta: { requiresAuth: true, roles: ['member'] },
+        meta: { requiresAuth: true, requiresBuyer: true },
+      },
+      {
+        path: 'my/orders/:id',
+        name: 'my-order-detail',
+        component: () => import('../views/shop/OrderDetailView.vue'),
+        meta: { requiresAuth: true, requiresBuyer: true },
       },
     ],
   },
@@ -91,10 +155,10 @@ router.beforeEach((to) => {
   if (!auth.isLoggedIn) {
     return { name: 'login', query: { redirect: to.fullPath } }
   }
-  const roles = to.meta.roles
-  if (roles?.length && !roles.includes(auth.role)) {
-    if (auth.isFactory) return { name: 'demand-hall' }
-    if (auth.isMember) return { name: 'my-rfqs' }
+  if (to.meta.requiresSupplier && !auth.isSupplier) {
+    return { name: 'my-rfqs' }
+  }
+  if (to.meta.requiresBuyer && !auth.isBuyer) {
     return { name: 'login' }
   }
 })

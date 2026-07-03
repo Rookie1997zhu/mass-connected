@@ -3,13 +3,18 @@ import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RouterLink, RouterView } from 'vue-router'
 import NavDropdown from '../components/NavDropdown.vue'
-import { fetchNavigation } from '../api'
+import {
+  fetchNavigation,
+  fetchSupplierUnreadCount,
+  fetchUnreadCount,
+} from '../api'
 import { useAuthStore } from '../stores/auth'
 
 const { t, locale } = useI18n()
 const auth = useAuthStore()
 const menuOpen = ref(false)
 const apiNavGroups = ref(null)
+const unreadCount = ref(0)
 
 const setLocale = (value) => {
   locale.value = value
@@ -35,7 +40,7 @@ const fallbackNavGroups = computed(() => [
     items: [
       { path: '/rfq/new', label: t('nav.postRequest') },
       { path: '/demand-hall', label: t('nav.findDemands') },
-      { path: '/partners', label: t('nav.partners') },
+      { path: '/partners', label: t('nav.partnersDirectory') },
     ],
   },
   {
@@ -82,7 +87,24 @@ const loadNavigation = async () => {
   }
 }
 
-onMounted(loadNavigation)
+const loadUnreadCount = async () => {
+  if (!auth.isLoggedIn) {
+    unreadCount.value = 0
+    return
+  }
+  try {
+    const fetcher = auth.user?.role === 'factory' ? fetchSupplierUnreadCount : fetchUnreadCount
+    const res = await fetcher()
+    unreadCount.value = res.data?.count ?? res.data?.unread ?? 0
+  } catch {
+    unreadCount.value = 0
+  }
+}
+
+onMounted(async () => {
+  await loadNavigation()
+  await loadUnreadCount()
+})
 </script>
 
 <template>
@@ -90,7 +112,7 @@ onMounted(loadNavigation)
     <header class="header">
       <div class="header-inner container">
         <RouterLink to="/" class="logo" @click="closeMenu">
-          <img src="/rysen-logo.png" alt="Rysen" class="logo-img" />
+          <img src="/mass-connected-logo.png" alt="MASS CONNECTED" class="logo-img" />
         </RouterLink>
 
         <nav class="nav-desktop" aria-label="Main">
@@ -115,23 +137,32 @@ onMounted(loadNavigation)
             <option value="ja">JA</option>
           </select>
 
-          <template v-if="auth.isLoggedIn && auth.isMember">
-            <RouterLink to="/my/rfqs" class="btn btn-sm btn-secondary nav-auth">
-              {{ t('nav.myRfqs') }}
+          <template v-if="auth.isLoggedIn && auth.isBuyer">
+            <RouterLink to="/simple-quote" class="btn btn-sm btn-secondary nav-auth">
+              {{ t('simpleQuote.title') }}
             </RouterLink>
-            <RouterLink to="/my/orders" class="btn btn-sm btn-secondary nav-auth">
-              {{ t('nav.myOrders') }}
-            </RouterLink>
+            <template v-if="auth.isSupplier">
+              <RouterLink to="/supplier/quote-requests" class="btn btn-sm btn-secondary nav-auth">
+                {{ t('quoteRequest.title') }}
+              </RouterLink>
+              <RouterLink to="/supplier/projects" class="btn btn-sm btn-secondary nav-auth">
+                {{ t('nav.supplierProjects') }}
+              </RouterLink>
+              <RouterLink to="/supplier/orders" class="btn btn-sm btn-secondary nav-auth">
+                {{ t('nav.supplierOrders') }}
+              </RouterLink>
+              <RouterLink to="/my?tab=notifications" class="btn btn-sm btn-secondary nav-auth nav-mypage">
+                {{ t('mypage.notifications') }}
+                <span v-if="unreadCount > 0" class="nav-badge">{{ unreadCount > 99 ? '99+' : unreadCount }}</span>
+              </RouterLink>
+            </template>
+            <span v-else-if="auth.isFactoryPending" class="nav-pending">{{ t('nav.factoryPending') }}</span>
             <RouterLink to="/shop/cart" class="btn btn-sm btn-secondary nav-auth">
               {{ t('nav.cart') }}
             </RouterLink>
-          </template>
-          <template v-else-if="auth.isLoggedIn && auth.isFactory">
-            <RouterLink to="/demand-hall" class="btn btn-sm btn-primary nav-auth">
-              {{ t('nav.demandHall') }}
-            </RouterLink>
-            <RouterLink to="/factory/quotes" class="btn btn-sm btn-secondary nav-auth">
-              {{ t('nav.myQuotes') }}
+            <RouterLink to="/my" class="btn btn-sm btn-primary nav-auth nav-mypage">
+              {{ t('mypage.title') }}
+              <span v-if="unreadCount > 0" class="nav-badge">{{ unreadCount > 99 ? '99+' : unreadCount }}</span>
             </RouterLink>
           </template>
           <template v-else>
@@ -181,14 +212,17 @@ onMounted(loadNavigation)
             </template>
           </template>
           <div class="nav-mobile-auth">
-            <template v-if="auth.isLoggedIn && auth.isMember">
-              <RouterLink to="/my/rfqs" @click="closeMenu">{{ t('nav.myRfqs') }}</RouterLink>
+            <template v-if="auth.isLoggedIn && auth.isBuyer">
+              <RouterLink to="/my" @click="closeMenu">{{ t('mypage.title') }}</RouterLink>
+              <RouterLink to="/simple-quote" @click="closeMenu">{{ t('simpleQuote.title') }}</RouterLink>
+              <RouterLink to="/demand-hall" @click="closeMenu">{{ t('nav.demandHall') }}</RouterLink>
+              <template v-if="auth.isSupplier">
+                <RouterLink to="/supplier/quote-requests" @click="closeMenu">{{ t('quoteRequest.title') }}</RouterLink>
+                <RouterLink to="/supplier/projects" @click="closeMenu">{{ t('nav.supplierProjects') }}</RouterLink>
+                <RouterLink to="/supplier/orders" @click="closeMenu">{{ t('nav.supplierOrders') }}</RouterLink>
+              </template>
               <RouterLink to="/my/orders" @click="closeMenu">{{ t('nav.myOrders') }}</RouterLink>
               <RouterLink to="/shop/cart" @click="closeMenu">{{ t('nav.cart') }}</RouterLink>
-            </template>
-            <template v-else-if="auth.isLoggedIn && auth.isFactory">
-              <RouterLink to="/demand-hall" @click="closeMenu">{{ t('nav.demandHall') }}</RouterLink>
-              <RouterLink to="/factory/quotes" @click="closeMenu">{{ t('nav.myQuotes') }}</RouterLink>
             </template>
             <template v-else>
               <RouterLink to="/login" @click="closeMenu">{{ t('nav.login') }}</RouterLink>
@@ -207,7 +241,7 @@ onMounted(loadNavigation)
       <div class="container footer-grid">
         <div class="footer-brand">
           <RouterLink to="/" class="footer-logo">
-            <img src="/rysen-logo.png" alt="Rysen" class="footer-logo-img" />
+            <img src="/mass-connected-logo.png" alt="MASS CONNECTED" class="footer-logo-img" />
           </RouterLink>
           <p class="footer-tagline">{{ t('footer.tagline') }}</p>
         </div>
@@ -215,7 +249,7 @@ onMounted(loadNavigation)
           <h4>{{ t('nav.manufacturingQuote') }}</h4>
           <RouterLink to="/rfq/new">{{ t('nav.postRequest') }}</RouterLink>
           <RouterLink to="/demand-hall">{{ t('nav.findDemands') }}</RouterLink>
-          <RouterLink to="/partners">{{ t('nav.partners') }}</RouterLink>
+          <RouterLink to="/partners">{{ t('nav.partnersDirectory') }}</RouterLink>
         </div>
         <div class="footer-col">
           <h4>{{ t('nav.shop') }}</h4>
@@ -269,7 +303,7 @@ onMounted(loadNavigation)
 }
 
 .logo-img {
-  height: 1.625rem;
+  height: 3rem;
   width: auto;
   display: block;
 }
@@ -401,7 +435,7 @@ onMounted(loadNavigation)
 }
 
 .footer-logo-img {
-  height: 1.5rem;
+  height: 2.25rem;
   width: auto;
   display: block;
   filter: brightness(0) invert(1);
@@ -449,6 +483,23 @@ onMounted(loadNavigation)
     color: rgba(255, 255, 255, 0.45);
     margin: 0;
   }
+}
+
+.nav-mypage { position: relative; }
+.nav-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.1rem;
+  height: 1.1rem;
+  padding: 0 0.25rem;
+  margin-left: 0.35rem;
+  border-radius: 999px;
+  background: #ef4444;
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  line-height: 1;
 }
 
 @media (max-width: 1024px) {

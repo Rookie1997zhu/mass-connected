@@ -11,6 +11,7 @@ from apps.order.serializers import (
     OrderDetailSerializer,
     OrderListSerializer,
 )
+from apps.notification.services import notify_staff
 from core.pagination import StandardPagination
 from core.permissions import IsAdminRole, IsMemberRole
 from core.responses import error_response, success_response
@@ -114,6 +115,13 @@ class MemberOrderListCreateView(APIView):
             item.product.stock = max(0, item.product.stock - item.quantity)
             item.product.save(update_fields=["stock", "updated_at"])
         cart_items.delete()
+        notify_staff(
+            "order",
+            "新商城订单",
+            f"订单 {order.order_no} 已创建，金额 {order.total_amount:,} {order.currency}。",
+            related_type="order",
+            related_id=order.id,
+        )
         return success_response(
             OrderDetailSerializer(order, context={"lang": get_lang(request)}).data,
             message="订单已创建",

@@ -3,10 +3,10 @@ import { createI18n } from 'vue-i18n'
 const homeMessages = {
   ko: {
     hero: {
-      eyebrow: 'Rysen · 제조 서비스 매칭 플랫폼',
+      eyebrow: 'MASS CONNECTED · 제조 서비스 매칭 플랫폼',
       title: '글로벌 구매와\n인증 제조 공장을 연결',
       subtitle:
-        '제조 수요를 등록하면 여러 공장이 온라인으로 견적합니다. 표준 부품은 Rysen 자사 몰에서 바로 구매하세요. 견적부터 조달까지 한곳에서.',
+        '제조 수요를 등록하면 여러 공장이 온라인으로 견적합니다. 표준 부품은 MASS CONNECTED 자사 몰에서 바로 구매하세요. 견적부터 조달까지 한곳에서.',
       ctaRfq: '제조 요청 등록',
       ctaPartner: '공장 입점',
       metricFactories: '입점 공장',
@@ -21,7 +21,7 @@ const homeMessages = {
     intro: {
       eyebrow: '플랫폼 소개',
       title: '제조 조달을 더 쉽고 투명하게',
-      desc: 'Rysen은 구매자와 제조 공장을 연결하는 온라인 플랫폼입니다. 공정별 RFQ 등록과 도면 업로드, 인증 공장의 온라인 견적, 다중 비교 후 거래까지 지원합니다. 표준 부품은 자사 몰에서 소량·긴급 조달도 가능합니다.',
+      desc: 'MASS CONNECTED은 구매자와 제조 공장을 연결하는 온라인 플랫폼입니다. 공정별 RFQ 등록과 도면 업로드, 인증 공장의 온라인 견적, 다중 비교 후 거래까지 지원합니다. 표준 부품은 자사 몰에서 소량·긴급 조달도 가능합니다.',
       linkAbout: '플랫폼 알아보기',
     },
     howItWorks: {
@@ -72,10 +72,10 @@ const homeMessages = {
   },
   zh: {
     hero: {
-      eyebrow: 'Rysen · 制造服务撮合平台',
+      eyebrow: 'MASS CONNECTED · 制造服务撮合平台',
       title: '连接全球采购与\n认证制造工厂',
       subtitle:
-        '发布制造需求，多家工厂在线报价；标准件可在 Rysen 自营商城即买即采。从询价到采购，一站完成。',
+        '发布制造需求，多家工厂在线报价；标准件可在 MASS CONNECTED 自营商城即买即采。从询价到采购，一站完成。',
       ctaRfq: '发布制造需求',
       ctaPartner: '工厂入驻',
       metricFactories: '入驻工厂',
@@ -90,7 +90,7 @@ const homeMessages = {
     intro: {
       eyebrow: '平台介绍',
       title: '让制造采购更简单、更透明',
-      desc: 'Rysen 为买家与制造工厂搭建在线协作通道：按工艺发布 RFQ、上传图纸，认证工厂在需求大厅响应报价；买家可多家比价、择优成交。标准件可在自营商城满足小批量、快交付的即采需求。',
+      desc: 'MASS CONNECTED 为买家与制造工厂搭建在线协作通道：按工艺发布 RFQ、上传图纸，认证工厂在需求大厅响应报价；买家可多家比价、择优成交。标准件可在自营商城满足小批量、快交付的即采需求。',
       linkAbout: '了解平台',
     },
     howItWorks: {
@@ -141,10 +141,10 @@ const homeMessages = {
   },
   en: {
     hero: {
-      eyebrow: 'Rysen · Manufacturing Marketplace',
+      eyebrow: 'MASS CONNECTED · Manufacturing Marketplace',
       title: 'Connect Global Buyers\nwith Verified Factories',
       subtitle:
-        'Post manufacturing needs and receive quotes from multiple verified factories. Source standard parts from the Rysen shop—from RFQ to purchase, all in one place.',
+        'Post manufacturing needs and receive quotes from multiple verified factories. Source standard parts from the MASS CONNECTED shop—from RFQ to purchase, all in one place.',
       ctaRfq: 'Post a Request',
       ctaPartner: 'Factory Onboarding',
       metricFactories: 'Partner Factories',
@@ -159,8 +159,8 @@ const homeMessages = {
     intro: {
       eyebrow: 'About the Platform',
       title: 'Simpler, More Transparent Sourcing',
-      desc: 'Rysen connects buyers and manufacturing partners online: post RFQs by process, upload drawings, and receive quotes from verified factories in the demand hall. Compare offers and close with confidence—or buy standard parts from our shop for quick fulfillment.',
-      linkAbout: 'Learn About Rysen',
+      desc: 'MASS CONNECTED connects buyers and manufacturing partners online: post RFQs by process, upload drawings, and receive quotes from verified factories in the demand hall. Compare offers and close with confidence—or buy standard parts from our shop for quick fulfillment.',
+      linkAbout: 'Learn About MASS CONNECTED',
     },
     howItWorks: {
       eyebrow: 'How It Works',
@@ -210,10 +210,10 @@ const homeMessages = {
   },
   ja: {
     hero: {
-      eyebrow: 'Rysen · 製造サービスマッチング',
+      eyebrow: 'MASS CONNECTED · 製造サービスマッチング',
       title: 'グローバル調達と\n認証製造工場をつなぐ',
       subtitle:
-        '製造ニーズを公開すると複数工場がオンライン見積。標準部品は Rysen 自社ショップで即購入。見積から調達までワンストップ。',
+        '製造ニーズを公開すると複数工場がオンライン見積。標準部品は MASS CONNECTED 自社ショップで即購入。見積から調達までワンストップ。',
       ctaRfq: '製造依頼を投稿',
       ctaPartner: '工場入居',
       metricFactories: '入居工場',
@@ -228,7 +228,7 @@ const homeMessages = {
     intro: {
       eyebrow: 'プラットフォーム',
       title: '製造調達を、もっとシンプルに',
-      desc: 'Rysen はバイヤーと製造パートナーをつなぐオンラインプラットフォーム。工程別 RFQ と図面アップロード、認証工場のオンライン見積、複数比較での成約を支援。標準部品は自社ショップで小ロット・短納期にも対応。',
+      desc: 'MASS CONNECTED はバイヤーと製造パートナーをつなぐオンラインプラットフォーム。工程別 RFQ と図面アップロード、認証工場のオンライン見積、複数比較での成約を支援。標準部品は自社ショップで小ロット・短納期にも対応。',
       linkAbout: 'プラットフォーム詳細',
     },
     howItWorks: {
@@ -287,6 +287,11 @@ const messages = {
       postRequest: '요청 게시',
       findDemands: '수요 찾기',
       partners: '파트너 입점',
+      partnersDirectory: '입점 기업',
+      productionOrders: '생산 주문',
+      supplierOrders: '수주 관리',
+      supplierProjects: '내 프로젝트',
+      factoryPending: '입점 심사 중',
       shop: '쇼핑몰',
       shopCategories: '제품 분류',
       about: '소개',
@@ -309,7 +314,7 @@ const messages = {
       close: '닫기',
     },
     footer: {
-      tagline: 'Rysen 제조 서비스 매칭 플랫폼',
+      tagline: 'MASS CONNECTED 제조 서비스 매칭 플랫폼',
       company: '회사',
       about: '회사 소개',
       capabilities: '생산 역량',
@@ -321,10 +326,22 @@ const messages = {
       support: '지원',
       contact: '문의',
       faq: 'FAQ',
-      copyright: '© {year} Rysen. All rights reserved.',
+      copyright: '© {year} MASS CONNECTED. All rights reserved.',
     },
-    common: { loading: '로딩 중...', empty: '데이터 없음', submit: '제출', cancel: '취소', status: '상태' },
+    common: { loading: '로딩 중...', empty: '데이터 없음', submit: '제출', cancel: '취소', status: '상태', view: '보기' },
+    contact: {
+      name: '이름', company: '회사', email: '이메일', phone: '전화', productInterest: '관심 제품', message: '메시지',
+      submitSuccess: '문의가 접수되었습니다', submitFailed: '제출에 실패했습니다',
+    },
     account: { email: '이메일', password: '비밀번호', name: '이름', phone: '전화' },
+    register: {
+      individual: '개인 회원',
+      enterprise: '기업 회원',
+      individualDesc: '제조 견적 요청 및 생산 주문을 이용합니다.',
+      enterpriseDesc: '기업 정보 등록 후 입점 심사를 거쳐 견적·수주 기능을 이용합니다.',
+      enterpriseSubmit: '기업 회원 가입',
+      failed: '가입에 실패했습니다',
+    },
     capabilities: { processTitle: '공정별 온라인 견적', getQuote: '견적 받기' },
     rfq: {
       createTitle: '견적 요청',
@@ -355,14 +372,28 @@ const messages = {
       publishPublic: '수요 홀 공개',
       publishPublicHint: '승인된 공장이 내 요청을 보고 견적할 수 있습니다',
     },
-    myRfqs: { title: '내 견적 요청', quotes: '견적', noQuotes: '아직 받은 견적이 없습니다.', accept: '수락', supplier: '공급처', factory: '공장', platform: '플랫폼' },
-    demandHall: { title: '수요 홀', desc: '공개된 제조 수요를 확인하고 견적하세요.', allCategories: '전체 공정', quotesCount: '{count}건 견적', submitQuote: '견적 제출', quoteSubmitted: '견적이 제출되었습니다', quoteFailed: '견적 제출 실패', myQuote: '내 견적', rfqNo: 'RFQ 번호', view: '보기' },
-    partners: { title: '파트너 공장 입점', desc: '제조 파트너로 입점하여 공개 수요에 견적하세요.', benefitsTitle: '입점 혜택', benefit1: '공개 RFQ 수요 접근', benefit2: '온라인 견적 및 수주', benefit3: '플랫폼 검증 파트너', formTitle: '입점 신청', companyName: '공장명', region: '지역', intro: '소개', processes: '가능 공정', submit: '신청 제출', submitSuccess: '신청 완료, 관리자 승인을 기다려 주세요', submitFailed: '신청 실패' },
+    myRfqs: { title: '내 견적 요청', quotes: '견적', noQuotes: '아직 받은 견적이 없습니다.', accept: '수락', acceptSuccess: '견적을 수락했습니다', supplier: '공급처', factory: '공장', platform: '플랫폼', plans: '견적 방안', plan: '방안', noPlans: '아직 공개된 방안이 없습니다.', confirmPlan: '이 방안 확정', confirmed: '확정됨', unitPrice: '단가', moldFee: '금형비', sampleFee: '샘플비', moq: 'MOQ', paymentTerms: '결제 조건', downloadPdf: '견적 PDF 다운로드', leadTimeDays: '납기(일)' },
+    demandHall: { title: '수요 홀', desc: '다른 구매자가 공개한 제조 수요를 둘러보세요. 공장 파트너는 온라인으로 견적할 수 있습니다.', allCategories: '전체 공정', quotesCount: '{count}건 견적', submitQuote: '견적 제출', quoteSubmitted: '견적이 제출되었습니다', quoteFailed: '견적 제출 실패', myQuote: '내 견적', quoteFactoryOnly: '견적 제출은 승인된 공장 파트너만 가능합니다. 입점 신청을 통해 공장 계정을 등록하세요.', assignmentOnly: '이제 견적은 관리자가 지정한 견적 요청을 통해서만 제출할 수 있습니다.', rfqNo: 'RFQ 번호', view: '보기' },
+    partners: { title: '파트너 공장 입점', desc: '제조 파트너로 입점하여 공개 수요에 견적하세요.', directoryTitle: '입점 기업', directoryDesc: '플랫폼에 입점한 제조 기업을 확인하세요.', directoryEmpty: '아직 입점 기업이 없습니다.', directoryCta: '제조 파트너가 되시겠습니까?', benefitsTitle: '입점 혜택', benefit1: '공개 RFQ 수요 접근', benefit2: '온라인 견적 및 수주', benefit3: '플랫폼 검증 파트너', formTitle: '입점 신청', companyName: '공장명', region: '지역', intro: '소개', processes: '가능 공정', submit: '신청 제출', submitSuccess: '신청 완료, 관리자 승인을 기다려 주세요', submitFailed: '신청 실패' },
+    productionOrder: { buyerTitle: '내 생산 주문', supplierTitle: '수주 관리', orderNo: '주문번호', allStatus: '전체 상태', pendingConfirm: '확인 대기', confirmedStatus: '확인됨', cancelled: '취소됨', confirm: '수주 확인', reject: '거절', confirmed: '수주가 확인되었습니다', confirmFailed: '수주 확인 실패', rejected: '주문을 거절했습니다', rejectFailed: '거절 실패', created: '생산 주문 {orderNo} 이 생성되었습니다', confirmedAt: '수주 확인일' },
     factory: { myQuotesTitle: '내 견적서' },
     shop: { title: '자사 쇼핑몰', desc: '표준 부품 및 제품을 구매하세요.', categories: '분류', all: '전체', product: '상품', price: '가격', quantity: '수량', stock: '재고', addToCart: '장바구니 담기', addedToCart: '장바구니에 추가됨' },
     cart: { title: '장바구니', empty: '장바구니가 비어 있습니다', remove: '삭제', total: '합계', checkout: '결제하기' },
     checkout: { title: '주문/결제', name: '수령인', phone: '전화', address: '주소', remark: '비고', submit: '주문하기' },
-    orders: { title: '내 주문', orderNo: '주문번호', total: '합계', date: '날짜', createFailed: '주문 실패' },
+    orders: { title: '내 주문', orderNo: '주문번호', total: '합계', date: '날짜', createFailed: '주문 실패', items: '주문 항목' },
+    mypage: {
+      title: 'MY PAGE', dashboard: '대시보드', overview: '개요', simpleQuotes: '간편 견적', detailQuotes: '상세 견적', projects: '프로젝트', contracts: '계약', payments: '결제', points: '포인트', notifications: '알림', profile: '기업 정보', settings: '계정 설정', logout: '로그아웃',
+      pointsBalance: '포인트 잔액', unread: '안읽음', pendingPayments: '결제 대기', viewAll: '전체 보기', empty: '데이터가 없습니다', save: '저장', saved: '저장되었습니다', createdAt: '생성일', amount: '금액', status: '상태', download: '다운로드', uploadProof: '증빙 업로드', proofUploaded: '증빙이 제출되었습니다', signContract: '계약 서명', contractSigned: '계약이 서명되었습니다', markAllRead: '모두 읽음', recharge: '충전', rechargeAmount: '충전 금액(KRW)', submitRecharge: '충전 신청', rechargeSubmitted: '충전 신청이 접수되었습니다', balance: '잔액', totalEarned: '총 획득', totalSpent: '총 사용', progress: '진행률', todos: '할 일', files: '파일', fileName: '파일명', source: '출처', uploadFile: '파일 업로드', companyName: '회사명', region: '지역', country: '국가', city: '도시', intro: '소개', contactPhone: '연락처', paymentTerms: '결제 조건', businessLicense: '사업자등록증', viewLicense: '등록증 보기', rechargeHistory: '충전 신청 내역', transactionHistory: '포인트 거래 내역', timeline: '타임라인',
+    },
+    simpleQuote: {
+      title: '간편 견적', desc: '표준 제조 공정에 대해 즉시 예상 견적을 받고 PDF를 생성합니다. (포인트 차감)', type: '견적 유형', injection: '사출 금형', print3d: '3D 프린팅', pcb: 'PCB', software: '소프트웨어', ic: 'IC 설계', productName: '제품명', generate: '견적 생성', result: '견적 결과', total: '합계', unitPrice: '단가', moldFee: '금형비', convert: '상세 견적으로 전환', converted: '상세 견적으로 전환되었습니다', myQuotes: '내 간편 견적', material: '소재', weight: '중량(g)', cavity: '캐비티 수', quantity: '수량', moldType: '금형 등급', packaging: '포장 포함', printHours: '출력 시간(h)', postProcess: '후처리', failed: '견적 생성 실패',
+    },
+    quoteRequest: {
+      title: '견적 요청', desc: '관리자가 지정한 견적 요청만 표시됩니다.', requestNo: '요청번호', deadline: '마감일', submitQuote: '견적 제출', submitted: '견적이 제출되었습니다', quoted: '견적 완료', assigned: '요청 접수', empty: '지정된 견적 요청이 없습니다', adminNote: '요청 메모',
+    },
+    supplierProject: {
+      title: '내 프로젝트', desc: '진행 중인 생산 프로젝트를 관리합니다.', empty: '진행 중인 프로젝트가 없습니다', projectNo: '프로젝트 번호', projectTitle: '프로젝트명', expectedDelivery: '예상 납기', stages: '단계', postUpdate: '진행 업데이트', updatePlaceholder: '진행 내용을 입력하세요', noStage: '단계 미지정', customerVisible: '고객에게 공개', submitUpdate: '업데이트 등록', reportIssue: '문제 보고', issueTitle: '문제 제목', issueDesc: '문제 설명', submitIssue: '문제 등록', timeline: '타임라인', internalOnly: '내부', issues: '문제 목록', files: '프로젝트 파일', stagePending: '대기', stageInProgress: '진행 중', stageCompleted: '완료', severityLow: '낮음', severityMedium: '보통', severityHigh: '높음',
+    },
     home: homeMessages.ko,
   },
   zh: {
@@ -372,6 +403,11 @@ const messages = {
       postRequest: '发布请求',
       findDemands: '寻找需求',
       partners: '合作伙伴',
+      partnersDirectory: '入驻企业',
+      productionOrders: '生产订单',
+      supplierOrders: '接单管理',
+      supplierProjects: '我的项目',
+      factoryPending: '入驻审核中',
       shop: '商城',
       shopCategories: '产品分类',
       about: '关于',
@@ -394,7 +430,7 @@ const messages = {
       close: '关闭',
     },
     footer: {
-      tagline: 'Rysen 制造服务撮合平台',
+      tagline: 'MASS CONNECTED 制造服务撮合平台',
       company: '公司',
       about: '公司介绍',
       capabilities: '生产能力',
@@ -406,10 +442,22 @@ const messages = {
       support: '支持',
       contact: '联系',
       faq: 'FAQ',
-      copyright: '© {year} Rysen. All rights reserved.',
+      copyright: '© {year} MASS CONNECTED. All rights reserved.',
     },
-    common: { loading: '加载中...', empty: '暂无数据', submit: '提交', cancel: '取消', status: '状态' },
+    common: { loading: '加载中...', empty: '暂无数据', submit: '提交', cancel: '取消', status: '状态', view: '查看' },
+    contact: {
+      name: '姓名', company: '公司', email: '邮箱', phone: '电话', productInterest: '感兴趣的产品', message: '留言',
+      submitSuccess: '咨询已提交', submitFailed: '提交失败',
+    },
     account: { email: '邮箱', password: '密码', name: '姓名', phone: '电话' },
+    register: {
+      individual: '个人会员',
+      enterprise: '企业会员',
+      individualDesc: '提交制造询价、接受报价并管理生产订单。',
+      enterpriseDesc: '注册企业信息，审核通过后可报价接单，同时保留买方能力。',
+      enterpriseSubmit: '注册企业会员',
+      failed: '注册失败',
+    },
     capabilities: { processTitle: '按工艺在线询价', getQuote: '获取报价' },
     rfq: {
       createTitle: '在线询价',
@@ -440,14 +488,28 @@ const messages = {
       publishPublic: '公开到需求大厅',
       publishPublicHint: '审核通过的工厂可查看并报价',
     },
-    myRfqs: { title: '我的询价单', quotes: '报价', noQuotes: '暂未收到报价。', accept: '接受', supplier: '报价方', factory: '工厂', platform: '平台' },
-    demandHall: { title: '需求大厅', desc: '浏览买家公开发布的制造需求并在线报价。', allCategories: '全部工艺', quotesCount: '{count} 条报价', submitQuote: '提交报价', quoteSubmitted: '报价已提交', quoteFailed: '报价提交失败', myQuote: '我的报价', rfqNo: 'RFQ 编号', view: '查看' },
-    partners: { title: '合作伙伴（工厂入驻）', desc: '入驻成为制造合作伙伴，获取公开需求并在线报价。', benefitsTitle: '入驻优势', benefit1: '访问公开 RFQ 需求', benefit2: '在线报价与接单', benefit3: '平台认证合作伙伴', formTitle: '入驻申请', companyName: '工厂名称', region: '地区', intro: '简介', processes: '擅长工艺', submit: '提交申请', submitSuccess: '申请已提交，请等待管理员审核', submitFailed: '申请失败' },
+    myRfqs: { title: '我的询价单', quotes: '报价', noQuotes: '暂未收到报价。', accept: '接受', acceptSuccess: '已接受报价', supplier: '报价方', factory: '工厂', platform: '平台', plans: '报价方案', plan: '方案', noPlans: '暂未公开可选方案。', confirmPlan: '确认此方案', confirmed: '已确认', unitPrice: '单价', moldFee: '模具费', sampleFee: '样品费', moq: 'MOQ', paymentTerms: '付款条件', downloadPdf: '下载报价 PDF', leadTimeDays: '交期(天)' },
+    demandHall: { title: '需求大厅', desc: '浏览其他买家公开发布的制造需求。入驻工厂可在线报价。', allCategories: '全部工艺', quotesCount: '{count} 条报价', submitQuote: '提交报价', quoteSubmitted: '报价已提交', quoteFailed: '报价提交失败', myQuote: '我的报价', quoteFactoryOnly: '提交报价仅限已审核通过的入驻企业。请注册企业会员并等待审核。', assignmentOnly: '现在报价仅可通过管理员指派的报价请求提交。', rfqNo: 'RFQ 编号', view: '查看' },
+    partners: { title: '合作伙伴（工厂入驻）', desc: '入驻成为制造合作伙伴，获取公开需求并在线报价。', directoryTitle: '入驻企业', directoryDesc: '浏览平台已审核通过的制造合作企业。', directoryEmpty: '暂无入驻企业', directoryCta: '想成为制造合作伙伴？', benefitsTitle: '入驻优势', benefit1: '访问公开 RFQ 需求', benefit2: '在线报价与接单', benefit3: '平台认证合作伙伴', formTitle: '入驻申请', companyName: '工厂名称', region: '地区', intro: '简介', processes: '擅长工艺', submit: '提交申请', submitSuccess: '申请已提交，请等待管理员审核', submitFailed: '申请失败' },
+    productionOrder: { buyerTitle: '我的生产订单', supplierTitle: '接单管理', orderNo: '订单号', allStatus: '全部状态', pendingConfirm: '待确认', confirmedStatus: '已确认', cancelled: '已取消', confirm: '确认接单', reject: '拒绝', confirmed: '已确认接单', confirmFailed: '确认失败', rejected: '已拒绝订单', rejectFailed: '拒绝失败', created: '已创建生产订单 {orderNo}', confirmedAt: '接单时间' },
     factory: { myQuotesTitle: '我的报价' },
     shop: { title: '自营商城', desc: '购买本公司标准件与产品。', categories: '分类', all: '全部', product: '商品', price: '价格', quantity: '数量', stock: '库存', addToCart: '加入购物车', addedToCart: '已加入购物车' },
     cart: { title: '购物车', empty: '购物车为空', remove: '移除', total: '合计', checkout: '去结算' },
     checkout: { title: '结算', name: '收货人', phone: '电话', address: '地址', remark: '备注', submit: '提交订单' },
-    orders: { title: '我的订单', orderNo: '订单号', total: '合计', date: '日期', createFailed: '下单失败' },
+    orders: { title: '我的订单', orderNo: '订单号', total: '合计', date: '日期', createFailed: '下单失败', items: '订单明细' },
+    mypage: {
+      title: '个人中心', dashboard: '概览', overview: '概览', simpleQuotes: '简单报价', detailQuotes: '详细报价', projects: '我的项目', contracts: '合同', payments: '付款', points: '积分', notifications: '通知', profile: '企业资料', settings: '账户设置', logout: '退出登录',
+      pointsBalance: '积分余额', unread: '未读', pendingPayments: '待付款', viewAll: '查看全部', empty: '暂无数据', save: '保存', saved: '已保存', createdAt: '创建时间', amount: '金额', status: '状态', download: '下载', uploadProof: '上传凭证', proofUploaded: '凭证已提交', signContract: '确认签署', contractSigned: '合同已签署', markAllRead: '全部已读', recharge: '充值', rechargeAmount: '充值金额(KRW)', submitRecharge: '提交充值', rechargeSubmitted: '充值申请已提交', balance: '余额', totalEarned: '累计获得', totalSpent: '累计消耗', progress: '进度', todos: '待办', files: '文件中心', fileName: '文件名', source: '来源', uploadFile: '上传文件', companyName: '公司名称', region: '地区', country: '国家', city: '城市', intro: '简介', contactPhone: '联系电话', paymentTerms: '付款条件', businessLicense: '营业执照', viewLicense: '查看执照', rechargeHistory: '充值申请记录', transactionHistory: '积分流水', timeline: '时间线',
+    },
+    simpleQuote: {
+      title: '简单报价', desc: '针对标准制造工艺即时获得预估报价并生成 PDF（将消耗积分）。', type: '报价类型', injection: '注塑模具', print3d: '3D 打印', pcb: 'PCB', software: '软件开发', ic: 'IC 设计', productName: '产品名称', generate: '生成报价', result: '报价结果', total: '合计', unitPrice: '单价', moldFee: '模具费', convert: '转为详细报价', converted: '已转为详细报价', myQuotes: '我的简单报价', material: '材料', weight: '重量(g)', cavity: '型腔数', quantity: '数量', moldType: '模具等级', packaging: '含包装', printHours: '打印时长(h)', postProcess: '后处理', failed: '报价生成失败',
+    },
+    quoteRequest: {
+      title: '报价请求', desc: '仅显示管理员指派给您的报价请求。', requestNo: '请求编号', deadline: '截止日期', submitQuote: '提交报价', submitted: '报价已提交', quoted: '已报价', assigned: '待报价', empty: '暂无指派的报价请求', adminNote: '请求备注',
+    },
+    supplierProject: {
+      title: '我的项目', desc: '管理进行中的生产项目。', empty: '暂无进行中的项目', projectNo: '项目编号', projectTitle: '项目名称', expectedDelivery: '预计交付', stages: '阶段', postUpdate: '发布进度', updatePlaceholder: '请输入进度内容', noStage: '不指定阶段', customerVisible: '对客户可见', submitUpdate: '提交更新', reportIssue: '上报问题', issueTitle: '问题标题', issueDesc: '问题描述', submitIssue: '提交问题', timeline: '时间线', internalOnly: '内部', issues: '问题列表', files: '项目文件', stagePending: '待开始', stageInProgress: '进行中', stageCompleted: '已完成', severityLow: '低', severityMedium: '中', severityHigh: '高',
+    },
     home: homeMessages.zh,
   },
   en: {
@@ -457,6 +519,11 @@ const messages = {
       postRequest: 'Post Request',
       findDemands: 'Find Demands',
       partners: 'Partners',
+      partnersDirectory: 'Partner Companies',
+      productionOrders: 'Production Orders',
+      supplierOrders: 'Incoming Orders',
+      supplierProjects: 'My Projects',
+      factoryPending: 'Review pending',
       shop: 'Shop',
       shopCategories: 'Categories',
       about: 'About',
@@ -479,7 +546,7 @@ const messages = {
       close: 'Close',
     },
     footer: {
-      tagline: 'Rysen Manufacturing Marketplace',
+      tagline: 'MASS CONNECTED Manufacturing Marketplace',
       company: 'Company',
       about: 'About',
       capabilities: 'Capabilities',
@@ -491,10 +558,22 @@ const messages = {
       support: 'Support',
       contact: 'Contact',
       faq: 'FAQ',
-      copyright: '© {year} Rysen. All rights reserved.',
+      copyright: '© {year} MASS CONNECTED. All rights reserved.',
     },
-    common: { loading: 'Loading...', empty: 'No data', submit: 'Submit', cancel: 'Cancel', status: 'Status' },
+    common: { loading: 'Loading...', empty: 'No data', submit: 'Submit', cancel: 'Cancel', status: 'Status', view: 'View' },
+    contact: {
+      name: 'Name', company: 'Company', email: 'Email', phone: 'Phone', productInterest: 'Product Interest', message: 'Message',
+      submitSuccess: 'Your inquiry has been submitted', submitFailed: 'Submission failed',
+    },
     account: { email: 'Email', password: 'Password', name: 'Name', phone: 'Phone' },
+    register: {
+      individual: 'Individual',
+      enterprise: 'Enterprise',
+      individualDesc: 'Submit RFQs, compare quotes, and manage production orders.',
+      enterpriseDesc: 'Register your company; after approval you can quote and confirm orders while keeping buyer access.',
+      enterpriseSubmit: 'Register as enterprise',
+      failed: 'Registration failed',
+    },
     capabilities: { processTitle: 'Request a Quote by Process', getQuote: 'Get Quote' },
     rfq: {
       createTitle: 'Request a Quote',
@@ -525,14 +604,28 @@ const messages = {
       publishPublic: 'Publish to demand hall',
       publishPublicHint: 'Approved factories can view and quote on your request',
     },
-    myRfqs: { title: 'My RFQs', quotes: 'Quotes', noQuotes: 'No quotes received yet.', accept: 'Accept', supplier: 'Supplier', factory: 'Factory', platform: 'Platform' },
-    demandHall: { title: 'Demand Hall', desc: 'Browse public manufacturing requests and submit quotes.', allCategories: 'All processes', quotesCount: '{count} quotes', submitQuote: 'Submit Quote', quoteSubmitted: 'Quote submitted', quoteFailed: 'Failed to submit quote', myQuote: 'My Quote', rfqNo: 'RFQ No.', view: 'View' },
-    partners: { title: 'Partner Onboarding', desc: 'Join as a manufacturing partner to quote on public demands.', benefitsTitle: 'Benefits', benefit1: 'Access public RFQ demands', benefit2: 'Quote and win orders online', benefit3: 'Verified platform partner', formTitle: 'Apply', companyName: 'Company name', region: 'Region', intro: 'Introduction', processes: 'Processes', submit: 'Submit application', submitSuccess: 'Application submitted, pending admin review', submitFailed: 'Application failed' },
+    myRfqs: { title: 'My RFQs', quotes: 'Quotes', noQuotes: 'No quotes received yet.', accept: 'Accept', acceptSuccess: 'Quote accepted', supplier: 'Supplier', factory: 'Factory', platform: 'Platform', plans: 'Quote Plans', plan: 'Plan', noPlans: 'No plans available yet.', confirmPlan: 'Confirm this plan', confirmed: 'Confirmed', unitPrice: 'Unit Price', moldFee: 'Mold Fee', sampleFee: 'Sample Fee', moq: 'MOQ', paymentTerms: 'Payment Terms', downloadPdf: 'Download Quote PDF', leadTimeDays: 'Lead Time (days)' },
+    demandHall: { title: 'Demand Hall', desc: 'Browse manufacturing requests published by other buyers. Approved factory partners can submit quotes online.', allCategories: 'All processes', quotesCount: '{count} quotes', submitQuote: 'Submit Quote', quoteSubmitted: 'Quote submitted', quoteFailed: 'Failed to submit quote', myQuote: 'My Quote', quoteFactoryOnly: 'Only approved enterprise members can submit quotes. Register as an enterprise member.', assignmentOnly: 'Quotes are now submitted only through admin-assigned quote requests.', rfqNo: 'RFQ No.', view: 'View' },
+    partners: { title: 'Partner Onboarding', desc: 'Join as a manufacturing partner to quote on public demands.', directoryTitle: 'Partner Companies', directoryDesc: 'Browse approved manufacturing partners on the platform.', directoryEmpty: 'No partner companies yet', directoryCta: 'Want to become a partner?', benefitsTitle: 'Benefits', benefit1: 'Access public RFQ demands', benefit2: 'Quote and win orders online', benefit3: 'Verified platform partner', formTitle: 'Apply', companyName: 'Company name', region: 'Region', intro: 'Introduction', processes: 'Processes', submit: 'Submit application', submitSuccess: 'Application submitted, pending admin review', submitFailed: 'Application failed' },
+    productionOrder: { buyerTitle: 'My Production Orders', supplierTitle: 'Incoming Orders', orderNo: 'Order No.', allStatus: 'All statuses', pendingConfirm: 'Pending confirm', confirmedStatus: 'Confirmed', cancelled: 'Cancelled', confirm: 'Confirm order', reject: 'Reject', confirmed: 'Order confirmed', confirmFailed: 'Confirm failed', rejected: 'Order rejected', rejectFailed: 'Reject failed', created: 'Production order {orderNo} created', confirmedAt: 'Confirmed at' },
     factory: { myQuotesTitle: 'My Quotes' },
     shop: { title: 'Company Shop', desc: 'Purchase standard parts and products.', categories: 'Categories', all: 'All', product: 'Product', price: 'Price', quantity: 'Qty', stock: 'Stock', addToCart: 'Add to cart', addedToCart: 'Added to cart' },
     cart: { title: 'Cart', empty: 'Cart is empty', remove: 'Remove', total: 'Total', checkout: 'Checkout' },
     checkout: { title: 'Checkout', name: 'Recipient', phone: 'Phone', address: 'Address', remark: 'Remark', submit: 'Place order' },
-    orders: { title: 'My Orders', orderNo: 'Order No.', total: 'Total', date: 'Date', createFailed: 'Order failed' },
+    orders: { title: 'My Orders', orderNo: 'Order No.', total: 'Total', date: 'Date', createFailed: 'Order failed', items: 'Order Items' },
+    mypage: {
+      title: 'MY PAGE', dashboard: 'Dashboard', overview: 'Overview', simpleQuotes: 'Simple Quotes', detailQuotes: 'Detailed Quotes', projects: 'Projects', contracts: 'Contracts', payments: 'Payments', points: 'Points', notifications: 'Notifications', profile: 'Company Profile', settings: 'Account Settings', logout: 'Logout',
+      pointsBalance: 'Points Balance', unread: 'Unread', pendingPayments: 'Pending Payments', viewAll: 'View all', empty: 'No data', save: 'Save', saved: 'Saved', createdAt: 'Created', amount: 'Amount', status: 'Status', download: 'Download', uploadProof: 'Upload Proof', proofUploaded: 'Proof submitted', signContract: 'Sign Contract', contractSigned: 'Contract signed', markAllRead: 'Mark all read', recharge: 'Recharge', rechargeAmount: 'Recharge Amount (KRW)', submitRecharge: 'Submit Recharge', rechargeSubmitted: 'Recharge request submitted', balance: 'Balance', totalEarned: 'Total Earned', totalSpent: 'Total Spent', progress: 'Progress', todos: 'To-dos', files: 'Files', fileName: 'File Name', source: 'Source', uploadFile: 'Upload File', companyName: 'Company Name', region: 'Region', country: 'Country', city: 'City', intro: 'Introduction', contactPhone: 'Contact Phone', paymentTerms: 'Payment Terms', businessLicense: 'Business License', viewLicense: 'View License', rechargeHistory: 'Recharge Requests', transactionHistory: 'Point Transactions', timeline: 'Timeline',
+    },
+    simpleQuote: {
+      title: 'Simple Quote', desc: 'Get an instant estimate for standard processes and generate a PDF (points apply).', type: 'Quote Type', injection: 'Injection Mold', print3d: '3D Printing', pcb: 'PCB', software: 'Software', ic: 'IC Design', productName: 'Product Name', generate: 'Generate Quote', result: 'Result', total: 'Total', unitPrice: 'Unit Price', moldFee: 'Mold Fee', convert: 'Convert to Detailed Quote', converted: 'Converted to detailed quote', myQuotes: 'My Simple Quotes', material: 'Material', weight: 'Weight (g)', cavity: 'Cavities', quantity: 'Quantity', moldType: 'Mold Grade', packaging: 'Include packaging', printHours: 'Print Hours', postProcess: 'Post-process', failed: 'Failed to generate quote',
+    },
+    quoteRequest: {
+      title: 'Quote Requests', desc: 'Only quote requests assigned to you by the admin are shown.', requestNo: 'Request No.', deadline: 'Deadline', submitQuote: 'Submit Quote', submitted: 'Quote submitted', quoted: 'Quoted', assigned: 'Awaiting quote', empty: 'No assigned quote requests', adminNote: 'Admin Note',
+    },
+    supplierProject: {
+      title: 'My Projects', desc: 'Manage your active production projects.', empty: 'No active projects', projectNo: 'Project No.', projectTitle: 'Title', expectedDelivery: 'Expected Delivery', stages: 'Stages', postUpdate: 'Post Update', updatePlaceholder: 'Enter progress update', noStage: 'No stage', customerVisible: 'Visible to customer', submitUpdate: 'Submit Update', reportIssue: 'Report Issue', issueTitle: 'Issue title', issueDesc: 'Issue description', submitIssue: 'Submit Issue', timeline: 'Timeline', internalOnly: 'Internal', issues: 'Issues', files: 'Project Files', stagePending: 'Pending', stageInProgress: 'In Progress', stageCompleted: 'Completed', severityLow: 'Low', severityMedium: 'Medium', severityHigh: 'High',
+    },
     home: homeMessages.en,
   },
   ja: {
@@ -542,6 +635,11 @@ const messages = {
       postRequest: 'リクエスト投稿',
       findDemands: '需要を探す',
       partners: 'パートナー',
+      partnersDirectory: '入居企業',
+      productionOrders: '生産注文',
+      supplierOrders: '受注管理',
+      supplierProjects: 'マイプロジェクト',
+      factoryPending: '審査中',
       shop: 'ショップ',
       shopCategories: '製品分類',
       about: '概要',
@@ -564,7 +662,7 @@ const messages = {
       close: '閉じる',
     },
     footer: {
-      tagline: 'Rysen 製造サービスマッチング',
+      tagline: 'MASS CONNECTED 製造サービスマッチング',
       company: '会社',
       about: '会社概要',
       capabilities: '生産能力',
@@ -576,10 +674,22 @@ const messages = {
       support: 'サポート',
       contact: 'お問い合わせ',
       faq: 'FAQ',
-      copyright: '© {year} Rysen. All rights reserved.',
+      copyright: '© {year} MASS CONNECTED. All rights reserved.',
     },
-    common: { loading: '読み込み中...', empty: 'データなし', submit: '送信', cancel: 'キャンセル', status: 'ステータス' },
+    common: { loading: '読み込み中...', empty: 'データなし', submit: '送信', cancel: 'キャンセル', status: 'ステータス', view: '表示' },
+    contact: {
+      name: 'お名前', company: '会社名', email: 'メール', phone: '電話', productInterest: '関心製品', message: 'メッセージ',
+      submitSuccess: 'お問い合わせを受け付けました', submitFailed: '送信に失敗しました',
+    },
     account: { email: 'メール', password: 'パスワード', name: '名前', phone: '電話' },
+    register: {
+      individual: '個人会員',
+      enterprise: '法人会員',
+      individualDesc: '製造見積の依頼、比較、生産注文の管理ができます。',
+      enterpriseDesc: '企業情報を登録し、審査後に見積・受注機能を利用できます（買い手機能も利用可能）。',
+      enterpriseSubmit: '法人会員登録',
+      failed: '登録に失敗しました',
+    },
     capabilities: { processTitle: '工程別オンライン見積もり', getQuote: '見積もりを取得' },
     rfq: {
       createTitle: 'オンライン見積もり',
@@ -610,14 +720,28 @@ const messages = {
       publishPublic: '需要ホールに公開',
       publishPublicHint: '承認済み工場が閲覧・見積できます',
     },
-    myRfqs: { title: '見積履歴', quotes: '見積', noQuotes: 'まだ見積もりはありません。', accept: '承認', supplier: '見積元', factory: '工場', platform: 'プラットフォーム' },
-    demandHall: { title: '需要ホール', desc: '公開された製造需要を閲覧し、見積を提出します。', allCategories: '全工程', quotesCount: '{count}件の見積', submitQuote: '見積提出', quoteSubmitted: '見積を提出しました', quoteFailed: '見積提出に失敗', myQuote: '自分の見積', rfqNo: 'RFQ番号', view: '表示' },
-    partners: { title: 'パートナー工場入居', desc: '製造パートナーとして入居し、公開需要に見積します。', benefitsTitle: '入居メリット', benefit1: '公開RFQへのアクセス', benefit2: 'オンライン見積・受注', benefit3: '認証パートナー', formTitle: '入居申請', companyName: '工場名', region: '地域', intro: '紹介', processes: '対応工程', submit: '申請する', submitSuccess: '申請完了、管理者承認をお待ちください', submitFailed: '申請失敗' },
+    myRfqs: { title: '見積履歴', quotes: '見積', noQuotes: 'まだ見積もりはありません。', accept: '承認', acceptSuccess: '見積を承認しました', supplier: '見積元', factory: '工場', platform: 'プラットフォーム', plans: '見積プラン', plan: 'プラン', noPlans: '公開されたプランはまだありません。', confirmPlan: 'このプランを確定', confirmed: '確定済み', unitPrice: '単価', moldFee: '金型費', sampleFee: 'サンプル費', moq: 'MOQ', paymentTerms: '支払条件', downloadPdf: '見積PDFダウンロード', leadTimeDays: '納期(日)' },
+    demandHall: { title: '需要ホール', desc: '他のバイヤーが公開した製造需要を閲覧できます。承認済み企業会員はオンラインで見積できます。', allCategories: '全工程', quotesCount: '{count}件の見積', submitQuote: '見積提出', quoteSubmitted: '見積を提出しました', quoteFailed: '見積提出に失敗', myQuote: '自分の見積', quoteFactoryOnly: '見積提出は承認済み法人会員のみ可能です。法人会員として登録してください。', assignmentOnly: '見積は管理者が割り当てた見積依頼からのみ提出できます。', rfqNo: 'RFQ番号', view: '表示' },
+    partners: { title: 'パートナー工場入居', desc: '製造パートナーとして入居し、公開需要に見積します。', directoryTitle: '入居企業', directoryDesc: 'プラットフォームに入居した製造企業を閲覧できます。', directoryEmpty: '入居企業はまだありません', directoryCta: '製造パートナーになりませんか？', benefitsTitle: '入居メリット', benefit1: '公開RFQへのアクセス', benefit2: 'オンライン見積・受注', benefit3: '認証パートナー', formTitle: '入居申請', companyName: '工場名', region: '地域', intro: '紹介', processes: '対応工程', submit: '申請する', submitSuccess: '申請完了、管理者承認をお待ちください', submitFailed: '申請失敗' },
+    productionOrder: { buyerTitle: '生産注文', supplierTitle: '受注管理', orderNo: '注文番号', allStatus: '全ステータス', pendingConfirm: '確認待ち', confirmedStatus: '確認済み', cancelled: 'キャンセル', confirm: '受注確認', reject: '拒否', confirmed: '受注を確認しました', confirmFailed: '確認に失敗', rejected: '注文を拒否しました', rejectFailed: '拒否に失敗', created: '生産注文 {orderNo} を作成しました', confirmedAt: '受注確認日時' },
     factory: { myQuotesTitle: '見積一覧' },
     shop: { title: '自社ショップ', desc: '標準部品・製品を購入。', categories: '分類', all: 'すべて', product: '商品', price: '価格', quantity: '数量', stock: '在庫', addToCart: 'カートに追加', addedToCart: 'カートに追加しました' },
     cart: { title: 'カート', empty: 'カートは空です', remove: '削除', total: '合計', checkout: 'レジへ' },
     checkout: { title: '注文', name: '受取人', phone: '電話', address: '住所', remark: '備考', submit: '注文する' },
-    orders: { title: '注文履歴', orderNo: '注文番号', total: '合計', date: '日付', createFailed: '注文失敗' },
+    orders: { title: '注文履歴', orderNo: '注文番号', total: '合計', date: '日付', createFailed: '注文失敗', items: '注文明細' },
+    mypage: {
+      title: 'MY PAGE', dashboard: 'ダッシュボード', overview: '概要', simpleQuotes: '簡易見積', detailQuotes: '詳細見積', projects: 'プロジェクト', contracts: '契約', payments: '支払い', points: 'ポイント', notifications: '通知', profile: '企業情報', settings: 'アカウント設定', logout: 'ログアウト',
+      pointsBalance: 'ポイント残高', unread: '未読', pendingPayments: '支払い待ち', viewAll: 'すべて表示', empty: 'データがありません', save: '保存', saved: '保存しました', createdAt: '作成日', amount: '金額', status: 'ステータス', download: 'ダウンロード', uploadProof: '証憑アップロード', proofUploaded: '証憑を提出しました', signContract: '契約に署名', contractSigned: '契約に署名しました', markAllRead: 'すべて既読', recharge: 'チャージ', rechargeAmount: 'チャージ金額(KRW)', submitRecharge: 'チャージ申請', rechargeSubmitted: 'チャージ申請を受け付けました', balance: '残高', totalEarned: '累計獲得', totalSpent: '累計使用', progress: '進捗', todos: 'タスク', files: 'ファイル', fileName: 'ファイル名', source: '出典', uploadFile: 'ファイルアップロード', companyName: '会社名', region: '地域', country: '国', city: '都市', intro: '紹介', contactPhone: '連絡先', paymentTerms: '支払条件', businessLicense: '営業許可証', viewLicense: '許可証を見る', rechargeHistory: 'チャージ申請履歴', transactionHistory: 'ポイント取引履歴', timeline: 'タイムライン',
+    },
+    simpleQuote: {
+      title: '簡易見積', desc: '標準工程の概算見積を即時取得しPDFを生成します（ポイント消費）。', type: '見積タイプ', injection: '射出成形', print3d: '3Dプリント', pcb: 'PCB', software: 'ソフトウェア', ic: 'IC設計', productName: '製品名', generate: '見積作成', result: '見積結果', total: '合計', unitPrice: '単価', moldFee: '金型費', convert: '詳細見積へ変換', converted: '詳細見積へ変換しました', myQuotes: '簡易見積履歴', material: '材料', weight: '重量(g)', cavity: 'キャビティ数', quantity: '数量', moldType: '金型グレード', packaging: '梱包を含む', printHours: '造形時間(h)', postProcess: '後処理', failed: '見積作成に失敗しました',
+    },
+    quoteRequest: {
+      title: '見積依頼', desc: '管理者から割り当てられた見積依頼のみ表示されます。', requestNo: '依頼番号', deadline: '締切', submitQuote: '見積提出', submitted: '見積を提出しました', quoted: '見積済み', assigned: '見積待ち', empty: '割り当てられた見積依頼はありません', adminNote: '依頼メモ',
+    },
+    supplierProject: {
+      title: 'マイプロジェクト', desc: '進行中の生産プロジェクトを管理します。', empty: '進行中のプロジェクトはありません', projectNo: 'プロジェクト番号', projectTitle: 'プロジェクト名', expectedDelivery: '予定納期', stages: 'ステージ', postUpdate: '進捗更新', updatePlaceholder: '進捗内容を入力', noStage: 'ステージ未指定', customerVisible: '顧客に公開', submitUpdate: '更新を登録', reportIssue: '問題報告', issueTitle: '問題タイトル', issueDesc: '問題説明', submitIssue: '問題を登録', timeline: 'タイムライン', internalOnly: '内部', issues: '問題一覧', files: 'プロジェクトファイル', stagePending: '待機', stageInProgress: '進行中', stageCompleted: '完了', severityLow: '低', severityMedium: '中', severityHigh: '高',
+    },
     home: homeMessages.ja,
   },
 }

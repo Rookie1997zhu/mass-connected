@@ -30,6 +30,9 @@ const onSubmit = async () => {
 <template>
   <div class="login-page">
     <el-card class="card">
+      <div class="login-logo">
+        <img src="/mass-connected-logo.png" alt="MASS CONNECTED" />
+      </div>
       <div class="card-header">
         <h2>{{ t('login.title') }}</h2>
         <el-select :model-value="locale" class="locale-select" @change="setLocale">
@@ -51,6 +54,8 @@ const onSubmit = async () => {
 <style scoped>
 .login-page { min-height: 100vh; display: grid; place-items: center; background: #f3f4f6; }
 .card { width: 420px; }
+.login-logo { display: flex; justify-content: center; margin-bottom: 1.25rem; }
+.login-logo img { height: 3.25rem; width: auto; }
 .card-header { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1rem; }
 .card-header h2 { margin: 0; }
 .locale-select { width: 120px; }

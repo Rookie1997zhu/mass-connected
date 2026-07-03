@@ -17,7 +17,7 @@ const submitting = ref(false)
 
 const form = ref({
   service_category: null,
-  scope: 'internal',
+  scope: 'public',
   quantity: 1,
   material: '',
   tolerance: '',

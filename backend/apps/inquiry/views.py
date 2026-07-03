@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 
 from apps.inquiry.models import Inquiry
 from apps.inquiry.serializers import InquirySerializer
+from apps.notification.services import notify_staff
 from core.pagination import StandardPagination
 from core.permissions import IsAdminRole
 from core.responses import success_response
@@ -14,6 +15,13 @@ class PublicInquiryCreateView(APIView):
         serializer = InquirySerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         inquiry = serializer.save(source=request.data.get("source", "contact"))
+        notify_staff(
+            "inquiry",
+            "新询盘",
+            f"收到新询盘：{inquiry.name or inquiry.email or '匿名'}",
+            related_type="inquiry",
+            related_id=inquiry.id,
+        )
         return success_response(
             InquirySerializer(inquiry).data,
             message="提交成功",

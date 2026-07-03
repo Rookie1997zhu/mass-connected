@@ -35,6 +35,7 @@ const setStatus = async (row, status) => {
     </div>
     <el-table :data="items">
       <el-table-column prop="company_name" :label="t('factories.company')" />
+      <el-table-column prop="member_type" :label="t('factories.memberType')" width="120" />
       <el-table-column prop="email" :label="t('common.email')" />
       <el-table-column prop="name" :label="t('common.name')" />
       <el-table-column prop="region" :label="t('factories.region')" />

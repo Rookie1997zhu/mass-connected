@@ -167,6 +167,7 @@ class AdminFAQDetailView(APIView):
 
 class AdminDownloadView(APIView):
     permission_classes = [IsAdminRole]
+    parser_classes = [MultiPartParser, FormParser]
 
     def get(self, request):
         qs = Download.objects.all().order_by("sort_order")
@@ -176,7 +177,16 @@ class AdminDownloadView(APIView):
         )
 
     def post(self, request):
-        serializer = DownloadSerializer(data=request.data)
+        import json
+
+        data = request.data.copy()
+        title = data.get("title")
+        if isinstance(title, str):
+            try:
+                data["title"] = json.loads(title)
+            except json.JSONDecodeError:
+                data["title"] = {"ko": title}
+        serializer = DownloadSerializer(data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return success_response(serializer.data, status=status.HTTP_201_CREATED, request=request)

@@ -1,0 +1,43 @@
+from django.urls import path
+
+from apps.project.views import (
+    AdminProjectDetailView,
+    AdminProjectFileDeleteView,
+    AdminProjectFileListCreateView,
+    AdminProjectListView,
+    AdminProjectStageCreateView,
+    AdminProjectTodoCreateView,
+    MemberFileCenterView,
+    MemberProjectDetailView,
+    MemberProjectFileListView,
+    MemberProjectListView,
+    MemberProjectTodoToggleView,
+    MemberTodoAggregateView,
+    SupplierProjectDetailView,
+    SupplierProjectFileListCreateView,
+    SupplierProjectIssueCreateView,
+    SupplierProjectListView,
+    SupplierProjectStageUpdateView,
+    SupplierProjectUpdateCreateView,
+)
+
+urlpatterns = [
+    path("member/todos", MemberTodoAggregateView.as_view()),
+    path("member/files", MemberFileCenterView.as_view()),
+    path("member/projects", MemberProjectListView.as_view()),
+    path("member/projects/<int:pk>", MemberProjectDetailView.as_view()),
+    path("member/projects/<int:pk>/files", MemberProjectFileListView.as_view()),
+    path("member/projects/<int:pk>/todos/<int:todo_id>/toggle", MemberProjectTodoToggleView.as_view()),
+    path("supplier/projects", SupplierProjectListView.as_view()),
+    path("supplier/projects/<int:pk>", SupplierProjectDetailView.as_view()),
+    path("supplier/projects/<int:pk>/files", SupplierProjectFileListCreateView.as_view()),
+    path("supplier/projects/<int:pk>/updates", SupplierProjectUpdateCreateView.as_view()),
+    path("supplier/projects/<int:pk>/stages/<int:stage_id>", SupplierProjectStageUpdateView.as_view()),
+    path("supplier/projects/<int:pk>/issues", SupplierProjectIssueCreateView.as_view()),
+    path("admin/projects", AdminProjectListView.as_view()),
+    path("admin/projects/<int:pk>", AdminProjectDetailView.as_view()),
+    path("admin/projects/<int:pk>/files", AdminProjectFileListCreateView.as_view()),
+    path("admin/projects/<int:pk>/files/<int:file_id>", AdminProjectFileDeleteView.as_view()),
+    path("admin/projects/<int:pk>/todos", AdminProjectTodoCreateView.as_view()),
+    path("admin/projects/<int:pk>/stages", AdminProjectStageCreateView.as_view()),
+]
