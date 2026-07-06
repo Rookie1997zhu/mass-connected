@@ -141,6 +141,9 @@ onMounted(async () => {
             <RouterLink to="/simple-quote" class="btn btn-sm btn-secondary nav-auth">
               {{ t('simpleQuote.title') }}
             </RouterLink>
+            <RouterLink to="/packaging/box" class="btn btn-sm btn-secondary nav-auth">
+              {{ t('packaging.title') }}
+            </RouterLink>
             <template v-if="auth.isSupplier">
               <RouterLink to="/supplier/quote-requests" class="btn btn-sm btn-secondary nav-auth">
                 {{ t('quoteRequest.title') }}
@@ -215,6 +218,7 @@ onMounted(async () => {
             <template v-if="auth.isLoggedIn && auth.isBuyer">
               <RouterLink to="/my" @click="closeMenu">{{ t('mypage.title') }}</RouterLink>
               <RouterLink to="/simple-quote" @click="closeMenu">{{ t('simpleQuote.title') }}</RouterLink>
+              <RouterLink to="/packaging/box" @click="closeMenu">{{ t('packaging.title') }}</RouterLink>
               <RouterLink to="/demand-hall" @click="closeMenu">{{ t('nav.demandHall') }}</RouterLink>
               <template v-if="auth.isSupplier">
                 <RouterLink to="/supplier/quote-requests" @click="closeMenu">{{ t('quoteRequest.title') }}</RouterLink>

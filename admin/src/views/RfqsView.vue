@@ -3,13 +3,11 @@ import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { ElMessage } from 'element-plus'
 import {
-  assignRfqSuppliers,
   cancelQuoteRequest,
   createRfqQuote,
   fetchRfq,
   fetchRfqQuoteRequests,
   fetchRfqs,
-  fetchSuppliers,
   reviseQuoteRequest,
   updateRfqQuote,
   updateRfqStatus,
@@ -20,7 +18,6 @@ const items = ref([])
 const statusFilter = ref('')
 const detailDialog = ref(false)
 const detail = ref(null)
-const suppliers = ref([])
 const quoteRequests = ref([])
 
 const RFQ_STATUSES = [
@@ -51,45 +48,17 @@ const emptyQuote = () => ({
 })
 const quoteForm = ref(emptyQuote())
 
-const assignForm = ref({ supplier_ids: [], deadline: null, admin_note: '', is_urgent: false, tag_filter: '' })
-const tagOptions = ref([])
-
-const loadSuppliers = async (tag) => {
-  const params = tag ? { tag } : {}
-  const res = await fetchSuppliers(params)
-  suppliers.value = res.data.items || []
-  const tags = new Set()
-  for (const s of suppliers.value) {
-    for (const t of s.tags || []) tags.add(t.tag_name)
-  }
-  tagOptions.value = [...tags].sort()
-}
-
-const onTagFilterChange = async () => {
-  await loadSuppliers(assignForm.value.tag_filter || undefined)
-  assignForm.value.supplier_ids = assignForm.value.supplier_ids.filter((id) =>
-    suppliers.value.some((s) => s.id === id),
-  )
-}
-
 const load = async () => {
   const params = statusFilter.value ? { status: statusFilter.value } : {}
   const res = await fetchRfqs(params)
   items.value = res.data.items || []
 }
-onMounted(async () => {
-  await load()
-  try {
-    await loadSuppliers()
-  } catch { /* suppliers optional */ }
-})
+onMounted(load)
 
 const openDetail = async (row) => {
   const res = await fetchRfq(row.id)
   detail.value = res.data
   quoteForm.value = emptyQuote()
-  assignForm.value = { supplier_ids: [], deadline: null, admin_note: '', is_urgent: false, tag_filter: '' }
-  await loadSuppliers()
   try {
     const qr = await fetchRfqQuoteRequests(row.id)
     quoteRequests.value = qr.data.items || []
@@ -141,20 +110,6 @@ const onCancelQuoteRequest = async (qr) => {
   const res = await fetchRfqQuoteRequests(detail.value.id)
   quoteRequests.value = res.data.items || []
 }
-
-const submitAssign = async () => {
-  if (!assignForm.value.supplier_ids.length) {
-    ElMessage.warning(t('common.assignSuppliers'))
-    return
-  }
-  await assignRfqSuppliers(detail.value.id, assignForm.value)
-  const res = await fetchRfq(detail.value.id)
-  detail.value = res.data
-  const qr = await fetchRfqQuoteRequests(detail.value.id)
-  quoteRequests.value = qr.data.items || []
-  ElMessage.success(t('common.success'))
-  await load()
-}
 </script>
 
 <template>
@@ -197,29 +152,6 @@ const submitAssign = async () => {
           </el-descriptions-item>
           <el-descriptions-item :label="t('rfqs.note')" :span="2">{{ detail.remark }}</el-descriptions-item>
         </el-descriptions>
-
-        <h4>{{ t('common.assignSuppliers') }}</h4>
-        <el-form :inline="true">
-          <el-form-item :label="t('suppliers.tagFilter')">
-            <el-select v-model="assignForm.tag_filter" clearable style="width: 160px" @change="onTagFilterChange">
-              <el-option v-for="tag in tagOptions" :key="tag" :label="tag" :value="tag" />
-            </el-select>
-          </el-form-item>
-          <el-form-item :label="t('nav.suppliers')">
-            <el-select v-model="assignForm.supplier_ids" multiple style="width: 280px">
-              <el-option v-for="s in suppliers" :key="s.id" :label="s.company_name || s.email" :value="s.id" />
-            </el-select>
-          </el-form-item>
-          <el-form-item :label="t('common.deadline')">
-            <el-date-picker v-model="assignForm.deadline" type="date" value-format="YYYY-MM-DD" />
-          </el-form-item>
-          <el-form-item :label="t('common.adminNote')">
-            <el-input v-model="assignForm.admin_note" />
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="submitAssign">{{ t('common.assign') }}</el-button>
-          </el-form-item>
-        </el-form>
 
         <h4>{{ t('rfqs.quoteRequests') }}</h4>
         <p v-if="!quoteRequests.length" class="muted">—</p>

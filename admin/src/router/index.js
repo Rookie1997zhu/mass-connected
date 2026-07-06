@@ -15,6 +15,7 @@ const routes = [
       { path: 'suppliers', name: 'suppliers', component: () => import('../views/SuppliersView.vue') },
       { path: 'rfqs', name: 'rfqs', component: () => import('../views/RfqsView.vue') },
       { path: 'quote-params', name: 'quote-params', component: () => import('../views/QuoteParamsView.vue') },
+      { path: 'quote-tables', name: 'quote-tables', component: () => import('../views/QuoteTablesView.vue') },
       { path: 'points', name: 'points', component: () => import('../views/PointsView.vue') },
       { path: 'members', name: 'members', component: () => import('../views/MembersView.vue') },
       { path: 'projects', name: 'projects', component: () => import('../views/ProjectsView.vue') },

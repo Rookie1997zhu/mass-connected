@@ -4,6 +4,39 @@ from django.utils import timezone
 from apps.catalog.models import Category, Product
 from apps.content.models import Case, ContentPage, FAQ, NavItem, News
 from apps.rfq.models import ServiceCategory
+from apps.simplequote.calculator import DEFAULT_PARAMS
+
+INJECTION_PARAM_META = {
+    "mold_base_ABS": ("基本模具费 ABS 普通", "RMB"),
+    "mold_base_ABS_Gf": ("基本模具费 ABS+Gf", "RMB"),
+    "mold_base_PC": ("基本模具费 PC", "RMB"),
+    "mold_base_PA66": ("基本模具费 PA66", "RMB"),
+    "mold_base_PP": ("基本模具费 PP", "RMB"),
+    "unit_price_kg_ABS": ("基本单价 ABS 普通", "RMB/kg"),
+    "unit_price_kg_ABS_Gf": ("基本单价 ABS+Gf", "RMB/kg"),
+    "unit_price_kg_PC": ("基本单价 PC", "RMB/kg"),
+    "unit_price_kg_PA66": ("基本单价 PA66", "RMB/kg"),
+    "unit_price_kg_PP": ("基本单价 PP", "RMB/kg"),
+    "unit_base_ABS": ("基本报价(1g以下) ABS 普通", "RMB"),
+    "unit_base_ABS_Gf": ("基本报价(1g以下) ABS+Gf", "RMB"),
+    "unit_base_PC": ("基本报价(1g以下) PC", "RMB"),
+    "unit_base_PA66": ("基本报价(1g以下) PA66", "RMB"),
+    "unit_base_PP": ("基本报价(1g以下) PP", "RMB"),
+    "slider_unit": ("滑块每个加价", "RMB"),
+    "precision_add": ("精密度 ≤0.2mm 加价", "RMB"),
+    "loss_factor": ("耗材重量损耗系数", "x"),
+    "color_transparent": ("透明加重比例", "rate"),
+    "color_semi": ("半透明加重比例", "rate"),
+    "packaging_rate": ("包装费比例", "rate"),
+    "profit_rate": ("利润率", "rate"),
+    "rmb_to_krw": ("RMB→KRW 展示汇率", "KRW/RMB"),
+    "moq_kg": ("未指定 PANTONE 时 MOQ", "KG"),
+    "density_ABS": ("材料密度 ABS 普通", "g/cm³"),
+    "density_ABS_Gf": ("材料密度 ABS+Gf", "g/cm³"),
+    "density_PC": ("材料密度 PC", "g/cm³"),
+    "density_PA66": ("材料密度 PA66", "g/cm³"),
+    "density_PP": ("材料密度 PP", "g/cm³"),
+}
 
 SERVICE_CATEGORIES = [
     {
@@ -153,6 +186,15 @@ class Command(BaseCommand):
     help = "Seed demo service categories, shop catalog and content data"
 
     def handle(self, *args, **options):
+        from apps.simplequote.models import QuoteParam
+
+        for key, value in DEFAULT_PARAMS.get("injection", {}).items():
+            label, unit = INJECTION_PARAM_META.get(key, ("", ""))
+            QuoteParam.objects.get_or_create(
+                quote_type="injection",
+                param_key=key,
+                defaults={"value": value, "label": label, "unit": unit, "is_active": True},
+            )
         for item in SERVICE_CATEGORIES:
             ServiceCategory.objects.get_or_create(
                 slug=item["slug"],

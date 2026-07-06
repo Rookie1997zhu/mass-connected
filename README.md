@@ -29,6 +29,35 @@ docker compose up --build
 - Admin: http://localhost/admin/
 - API health: http://localhost/api/health
 
+### 局域网访问（同 WiFi / 同网段设备）
+
+1. 查本机 IP（Windows PowerShell）：
+
+```powershell
+ipconfig
+```
+
+找到当前网络的 **IPv4 地址**（如 `192.168.1.100`）。
+
+2. 确保 Docker Desktop 已启动，且本项目 `docker compose up` 正在运行。
+
+3. 其他设备浏览器访问：
+
+- 官网：`http://<本机IP>/`（例：`http://192.168.1.100/`）
+- 管理后台：`http://<本机IP>/admin/`
+
+4. 若无法访问，请检查：
+
+- Windows 防火墙是否放行 **80 端口**（或临时关闭防火墙测试）
+- 访问设备与电脑是否在同一局域网
+- `.env` 中 `VITE_API_BASE_URL=/api`（不要用 `http://localhost/api`）
+
+修改 `.env` 或 `docker-compose.yml` 后需重启：
+
+```bash
+docker compose up -d --force-recreate frontend admin caddy backend
+```
+
 ## Default Accounts
 
 - Admin: `admin@oem.co` / `Admin123!`

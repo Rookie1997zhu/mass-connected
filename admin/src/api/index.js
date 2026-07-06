@@ -108,7 +108,6 @@ export const addSupplierAttachment = (id, formData) =>
 export const deleteSupplierAttachment = (id, data) => http.delete(`/admin/suppliers/${id}/attachments`, { data })
 
 // RFQ 指派 & 报价请求
-export const assignRfqSuppliers = (id, data) => http.post(`/admin/rfqs/${id}/assign`, data)
 export const fetchRfqQuoteRequests = (id) => http.get(`/admin/rfqs/${id}/quote-requests`)
 export const reviseQuoteRequest = (id) => http.post(`/admin/quote-requests/${id}/revise`)
 export const cancelQuoteRequest = (id) => http.post(`/admin/quote-requests/${id}/cancel`)
@@ -134,6 +133,10 @@ export const fetchMembers = (params) => http.get('/admin/members', { params })
 export const fetchQuoteParams = (params) => http.get('/admin/quote-params', { params })
 export const saveQuoteParam = (data) => http.post('/admin/quote-params', data)
 export const updateQuoteParam = (id, data) => http.patch(`/admin/quote-params/${id}`, data)
+
+export const fetchQuoteTables = (params) => http.get('/admin/quote-tables', { params })
+export const saveQuoteTable = (data) => http.post('/admin/quote-tables', data)
+export const updateQuoteTable = (id, data) => http.patch(`/admin/quote-tables/${id}`, data)
 
 // 项目
 export const fetchProjects = (params) => http.get('/admin/projects', { params })

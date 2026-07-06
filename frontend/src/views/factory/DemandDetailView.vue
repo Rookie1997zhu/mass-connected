@@ -1,20 +1,47 @@
 <script setup>
 import { onMounted, ref } from 'vue'
-import { useRoute, RouterLink } from 'vue-router'
+import { useRoute, useRouter, RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PageShell from '../../components/PageShell.vue'
-import { fetchDemandDetail } from '../../api'
+import { fetchDemandDetail, grabDemand } from '../../api'
 import { useAuthStore } from '../../stores/auth'
 
 const { t } = useI18n()
 const auth = useAuthStore()
 const route = useRoute()
+const router = useRouter()
 const rfq = ref(null)
 const loading = ref(true)
+const grabbing = ref(false)
+const error = ref('')
+const message = ref('')
 
 const load = async () => {
   const res = await fetchDemandDetail(route.params.id)
   rfq.value = res.data
+}
+
+const goQuote = (quoteRequestId) => {
+  router.push(`/supplier/quote-requests/${quoteRequestId}`)
+}
+
+const onGrab = async () => {
+  if (!auth.isSupplier) return
+  error.value = ''
+  message.value = ''
+  grabbing.value = true
+  try {
+    const res = await grabDemand(route.params.id)
+    message.value = res.message || t('demandHall.grabSuccess')
+    await load()
+    if (res.data?.id) {
+      goQuote(res.data.id)
+    }
+  } catch (e) {
+    error.value = e.message || t('demandHall.grabFailed')
+  } finally {
+    grabbing.value = false
+  }
 }
 
 onMounted(async () => {
@@ -50,8 +77,32 @@ onMounted(async () => {
 
       <section v-if="auth.isSupplier" class="card quote-hint">
         <h2>{{ t('demandHall.submitQuote') }}</h2>
-        <p class="page-lead">{{ t('demandHall.assignmentOnly') }}</p>
-        <RouterLink to="/supplier/quote-requests" class="btn btn-primary">{{ t('nav.quoteRequests') }}</RouterLink>
+        <p v-if="error" class="page-message page-message--error">{{ error }}</p>
+        <p v-if="message" class="page-message page-message--success">{{ message }}</p>
+
+        <section v-if="rfq.my_quote" class="quote-existing">
+          <p>{{ t('demandHall.myQuote') }}: KRW {{ Number(rfq.my_quote.price_amount).toLocaleString() }}</p>
+          <p>{{ t('mypage.status') }}: {{ rfq.my_quote.status }}</p>
+        </section>
+
+        <template v-else-if="rfq.my_quote_request">
+          <p class="page-lead">{{ t('demandHall.alreadyGrabbed') }}</p>
+          <button type="button" class="btn btn-primary" @click="goQuote(rfq.my_quote_request.id)">
+            {{ t('demandHall.goQuote') }}
+          </button>
+        </template>
+
+        <template v-else>
+          <p class="page-lead">{{ t('demandHall.grabHint') }}</p>
+          <button type="button" class="btn btn-primary" :disabled="grabbing" @click="onGrab">
+            {{ grabbing ? t('common.loading') : t('demandHall.grab') }}
+          </button>
+        </template>
+      </section>
+
+      <section v-else-if="!auth.isLoggedIn" class="card quote-hint">
+        <p class="page-lead">{{ t('demandHall.quoteFactoryOnly') }}</p>
+        <RouterLink to="/login" class="btn btn-primary">{{ t('nav.login') }}</RouterLink>
       </section>
     </template>
   </PageShell>

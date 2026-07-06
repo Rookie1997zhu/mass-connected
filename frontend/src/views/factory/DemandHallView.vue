@@ -4,8 +4,10 @@ import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PageShell from '../../components/PageShell.vue'
 import { fetchDemandHall, fetchServiceCategories } from '../../api'
+import { useAuthStore } from '../../stores/auth'
 
 const { t } = useI18n()
+const auth = useAuthStore()
 const items = ref([])
 const categories = ref([])
 const categoryId = ref('')
@@ -60,7 +62,10 @@ const onFilter = async () => {
         </div>
         <p>{{ item.service_category_name }} · {{ t('rfq.quantity') }}: {{ item.quantity }}</p>
         <p class="muted">{{ item.material || '—' }}</p>
-        <p class="quotes-count">{{ t('demandHall.quotesCount', { count: item.quotes_count }) }}</p>
+        <div class="demand-foot">
+          <p class="quotes-count">{{ t('demandHall.quotesCount', { count: item.quotes_count }) }}</p>
+          <span v-if="auth.isSupplier" class="grab-badge">{{ t('demandHall.grab') }}</span>
+        </div>
       </RouterLink>
     </div>
   </PageShell>
@@ -74,5 +79,7 @@ const onFilter = async () => {
 .demand-head { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
 .badge { font-size: 0.75rem; padding: 0.125rem 0.5rem; background: var(--color-steel-muted); border-radius: var(--radius-sm); }
 .muted { color: var(--color-text-muted); font-size: 0.875rem; }
-.quotes-count { margin-top: 0.5rem; font-size: 0.8125rem; color: var(--color-steel); }
+.demand-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem; }
+.quotes-count { font-size: 0.8125rem; color: var(--color-steel); margin: 0; }
+.grab-badge { font-size: 0.75rem; padding: 0.125rem 0.5rem; background: var(--color-steel); color: #fff; border-radius: var(--radius-sm); }
 </style>

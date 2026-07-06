@@ -20,7 +20,7 @@
 
 MASS CONNECTED 是一个**以制造工艺为主轴的制造服务撮合平台**，连接采购方（会员）与制造供应商（工厂），由平台居中运营：
 
-- 会员提交需求 → 平台审核并内部评估 → 指派给合适的供应商 → 供应商报价 → 平台汇总加价后以「方案 A/B/C」呈现给客户 → 客户确认 → 生成合同 → 付款 → 转为项目并跟踪生产进度。
+- 会员提交需求 → 平台审核并内部评估 → 供应商在需求大厅**自主抢单** → 供应商报价 → 平台汇总加价后以「方案 A/B/C」呈现给客户 → 客户确认 → 生成合同 → 付款 → 转为项目并跟踪生产进度。
 - 提供**简单报价**（自动估价）与**详细报价**（人工撮合）两条报价通道。
 - 以**积分**作为平台内的服务货币（注册赠送、报价消耗、人工充值）。
 - 以 **MY PAGE 个人中心**聚合会员的报价、项目、合同、付款、积分与通知。
@@ -53,7 +53,7 @@ Caddy 路由（`caddy/Caddyfile`）：
 | 应用 | 职责 |
 |------|------|
 | `accounts` | 用户与鉴权：`User`（role/member_type）、`FactoryProfile`（供应商资料）、JWT 登录/注册/刷新 |
-| `rfq` | 详细报价主体：`ServiceCategory`、`RFQ`、`RFQAttachment`、`Quote`、`QuoteRequest`（指派记录）、`ProductionOrder` |
+| `rfq` | 详细报价主体：`ServiceCategory`、`RFQ`、`RFQAttachment`、`Quote`、`QuoteRequest`（抢单/报价记录）、`ProductionOrder` |
 | `simplequote` | 简单报价引擎：`QuoteParam`（后台参数）、`SimpleQuote`（自动估价 + PDF） |
 | `points` | 积分系统：`PointWallet`、`PointTransaction`、`PointRule`、`RechargeOrder` |
 | `project` | 项目/生产进度：`Project`、`ProjectStage`、`ProjectUpdate`、`ProjectTodo`、`ProjectIssue` |
@@ -80,7 +80,7 @@ Caddy 路由（`caddy/Caddyfile`）：
 | `IsAdminRole` | 后台管理员（super_admin / operator 等） |
 
 - 未登录访问会员/供应商/管理接口返回 **401**；越权按角色返回 **401/403**。
-- **供应商账号由管理员创建**（不开放供应商自助注册），供应商仅能看到被指派给自己的报价请求与项目。
+- **供应商账号由管理员创建**（不开放供应商自助注册），已审核供应商可在需求大厅**自主抢单**公开 RFQ 并提交报价。
 
 ---
 
@@ -94,8 +94,8 @@ flowchart TD
   simple -->|可转| detail[详细报价 RFQ]
   mypage --> detail
   detail --> adminReview[管理员审核 + 内部评估 + 设定加价率]
-  adminReview --> assign[指派供应商 生成 QuoteRequest]
-  assign --> supQuote[供应商填写报价 Quote]
+  adminReview --> grab[供应商需求大厅抢单 生成 QuoteRequest]
+  grab --> supQuote[供应商填写报价 Quote]
   supQuote --> compare[平台汇总 加价 标记方案 A/B/C]
   compare --> custConfirm[客户在 MY PAGE 确认方案]
   custConfirm --> order[生成 ProductionOrder]
@@ -108,12 +108,16 @@ flowchart TD
 ### 5.1 简单报价
 参数驱动的自动估价引擎，V1 覆盖注塑模具、3D 打印、PCB、软件、IC。会员填写表单 → 引擎按 `QuoteParam`（后台可维护）计算单价/总价与费用明细 → 生成 PDF 报价书 → 扣减积分 → 记录于 MY PAGE，可一键转为详细报价 RFQ。
 
+**注塑自动报价（AUTO QUOTATION）**：按「模具费 +（每零件）制品单价」两块计算，支持 **FAMILY 多零件一模**（要求材料一致）；以 **RMB** 计价并换算展示 KRW；颜色（透明/半透明）、滑块、精密度、包装、利润率均参数化；生成对齐韩文模板的报价单 PDF（含金形单价/制品单价、计算基准明细、MOQ 25KG、有效期 2 周）；报价有效期 14 天。生产费用/运输费用/VAT 一期留空由人工补充。
+
+**二期阶段 A/B/C（STP 几何解析 + 倒扣推断 + 图纸 OCR，已上线）**：注塑表单支持上传 `.stp/.step`（≤30MB），后端用 OpenCASCADE（`cadquery-ocp`）解析体积与包围盒尺寸，按材料密度自动回填单件重量（可手改）；同时做倒扣分析给出主拔模方向与**滑块建议数**，并按几何规则给出**材料建议**（均为建议值 + 置信度，标注"需人工确认"，可编辑）。另支持上传 2D 工程图（PDF/PNG/JPG，≤15MB）经离线 Tesseract OCR 抽取材料/精密度/颜色作可编辑建议回填；识别结果与原始文件均不保存、不落库。详见 `project/注塑模具自动报价需求.md`、`project/注塑自动报价二期技术方案.md`。
+
 ### 5.2 详细报价（RFQ）
 9.6 状态机：`draft → submitted → pending_review → assigned → quoting → quoted → comparing → customer_confirming → negotiating → won / closed`。
 
 - 客户提交 RFQ（工艺/规格/附件）→ **自动通知管理员**。
-- 管理员审核（含 **pending_review 受理**）、设定 `markup_percent` 加价率、把 RFQ **指派**给一个或多个已审核供应商（生成 `QuoteRequest`）；可**要求修订**或**取消指派**；超期未报价自动标记 **expired**。
-- 供应商仅在「我的报价请求」中看到被指派项目并填写 `Quote`。
+- 管理员审核（含 **pending_review 受理**）、设定 `markup_percent` 加价率；供应商在需求大厅**自主抢单**（生成 `QuoteRequest`）并填写 `Quote`；管理员可**要求修订**或**取消抢单**；超期未报价自动标记 **expired**。
+- 供应商在「我的报价请求」中查看已抢单项目并提交报价。
 - 管理员为每条 Quote 标记 `plan_label`（A/B/C）与 `is_customer_visible`；**开放后通知买家**；客户端仅看到经加价、**隐藏供应商身份**的方案。
 - 客户在 MY PAGE 确认某个方案 → RFQ 转 `won`，创建 `ProductionOrder` 与 `Contract`、`Payment`。
 - **供应商拒单**时：生产订单取消，RFQ 回退至比选，关联合同/付款作废，并通知买家与管理员。
@@ -142,11 +146,12 @@ flowchart TD
 - 公开：`GET /api/public/service-categories`、`GET /api/public/demand-hall[/{id}]`
 - 会员：`GET/POST /api/member/rfqs`、`GET /api/member/rfqs/{id}`、`POST .../attachments`、`POST .../quotes/{quoteId}/accept`、`GET /api/member/production-orders[/{id}]`
 - 供应商：`GET /api/supplier/quote-requests[/{id}]`、`POST .../quotes`、`GET /api/supplier/quotes`、`GET /api/supplier/production-orders`、`POST .../confirm|reject`
-- 管理：`GET/POST /api/admin/service-categories[/{id}]`、`GET /api/admin/stats`、`GET /api/admin/rfqs[/{id}]`、`PATCH .../status`（含 `markup_percent`）、`POST .../quotes`、`POST .../assign`、`GET .../quote-requests`、`POST /api/admin/quote-requests/{id}/revise|cancel`、`PATCH /api/admin/quotes/{id}`、`GET/PATCH /api/admin/production-orders[/{id}]`
+- 管理：`GET/POST /api/admin/service-categories[/{id}]`、`GET /api/admin/stats`、`GET /api/admin/rfqs[/{id}]`、`PATCH .../status`（含 `markup_percent`）、`POST .../quotes`、`GET .../quote-requests`、`POST /api/admin/quote-requests/{id}/revise|cancel`、`PATCH /api/admin/quotes/{id}`、`GET/PATCH /api/admin/production-orders[/{id}]`
+- 供应商抢单：`POST /api/supplier/demand-hall/{id}/grab`
 
 ### 6.3 简单报价（simplequote）
-- 会员：`GET/POST /api/member/simple-quotes`、`GET /api/member/simple-quotes/{id}`、`POST .../convert`
-- 管理：`GET/POST /api/admin/quote-params`、`PATCH /api/admin/quote-params/{id}`
+- 会员：`GET/POST /api/member/simple-quotes`、`GET /api/member/simple-quotes/{id}`、`POST .../convert`、`POST /api/member/simple-quotes/parse-stp`（注塑 STP 几何解析，返回体积/尺寸/密度表 + 倒扣滑块建议 + 材料建议）、`POST /api/member/simple-quotes/parse-drawing`（2D 图纸 OCR，返回材料/精密度/颜色建议）
+- 管理：`GET/POST /api/admin/quote-params`、`PATCH /api/admin/quote-params/{id}`（含 `density_*` 材料密度）
 
 ### 6.4 积分（points）
 - 会员：`GET /api/member/points/wallet`、`GET .../transactions`、`POST .../recharge`
@@ -177,7 +182,7 @@ flowchart TD
 ## 7. 前端（frontend）
 
 - MY PAGE 个人中心 `/my`：概览 / 简单报价 / 详细报价 / 项目 / 合同（**在线签署**）/ 付款 / 积分（**充值历史**）/ 通知 / 企业资料 / 设置；**导航栏未读角标**。
-- 简单报价 `/simple-quote`：按类型动态表单 → 生成 → 结果与 PDF → 转详细报价。
+- 简单报价 `/simple-quote`：按类型动态表单 →（注塑可上传 STP 自动算体积/重量 + 滑块/材料建议，可上传 2D 图纸 OCR 回填材料/精密度/颜色）→ 生成 → 结果与 PDF → 转详细报价。
 - 我的详细报价 `/my/rfqs/{id}`：以方案 A/B/C 卡片展示（隐藏供应商身份），确认方案。
 - 项目详情 `/my/projects/{id}`：阶段、时间轴、进度、待办勾选。
 - 商城：`/shop/checkout` 购物车摘要；`/my/orders/:id` 订单详情。
@@ -191,10 +196,10 @@ flowchart TD
 
 侧边导航：仪表盘（**统计卡片**）、工艺分类、工厂/企业、**供应商**、RFQ、**报价参数**、**积分**、**项目**、**合同**、**付款**、生产订单、商品分类/商品/订单、询盘、案例/资讯/FAQ/**下载资源**/内容页/导航、管理员。**顶栏通知铃铛**。
 
-- RFQ 管理：状态机流转（含 pending_review）、加价率编辑、指派供应商、**报价请求跟踪/修订/取消**、Quote 方案标签与对客户可见开关。
+- RFQ 管理：状态机流转（含 pending_review）、加价率编辑、**报价请求跟踪/修订/取消**、Quote 方案标签与对客户可见开关。
 - 供应商：管理员建号。
 - 积分：规则维护（**含新建**）、充值人工确认、用户积分调整。
-- 报价参数：简单报价各工艺单价维护。
+- 报价参数：简单报价各工艺单价维护（注塑含材料密度 `density_*`）。
 - 项目/合同/付款：进度维护、**项目待办创建**、合同/凭证下载、付款确认（触发转项目）。
 - CMS：**FAQ 编辑**、**下载资源管理**、询盘**详情查看**。
 - i18n 三语（ko/zh/en）。
@@ -222,7 +227,7 @@ docker compose up --build -d
 ## 10. 本期不做（范围外）
 
 - 在线支付网关（付款 V1 为人工确认，接口预留）
-- AI 智能估价、STP/CAD 自动解析
+- STP **3D 在线预览**；基于历史成交数据训练的材料 AI 模型（当前为几何规则 + OCR 兜底）；OCR 训练/云 API
 - 云对象存储（MinIO / S3 / OSS）
 - SEO 服务端渲染（SSR）、在线客服/实时聊天
 - 第三方登录（Kakao 等）、推荐佣金 / Manager 分销、App 推送

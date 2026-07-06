@@ -3,6 +3,21 @@ import uuid
 from django.db import models
 
 
+class QuoteTable(models.Model):
+    """简单报价多列表格（费率阶梯、计分表、定价行等），后台可维护。"""
+
+    quote_type = models.CharField(max_length=32)
+    table_key = models.CharField(max_length=64)
+    rows = models.JSONField(default=list, blank=True)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["quote_type", "table_key"]
+        unique_together = [("quote_type", "table_key")]
+
+
 class QuoteParam(models.Model):
     """简单报价参数（材料单价、机时费率、模具等级价等），后台可维护。"""
 
@@ -25,9 +40,11 @@ class SimpleQuote(models.Model):
     TYPE_CHOICES = [
         ("injection", "Injection Mold"),
         ("print3d", "3D Printing"),
-        ("pcb", "PCB"),
+        ("pcba", "PCBA Assembly"),
+        ("pcb", "PCB Development"),
         ("software", "Software"),
         ("ic", "IC Design"),
+        ("paper_box", "Paper Box"),
     ]
     STATUS_CHOICES = [
         ("draft", "Draft"),

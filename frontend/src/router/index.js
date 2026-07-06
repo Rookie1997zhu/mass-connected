@@ -33,9 +33,21 @@ const routes = [
         meta: { requiresAuth: true, requiresBuyer: true },
       },
       {
+        path: 'my/nda',
+        name: 'my-nda',
+        component: () => import('../views/mypage/NdaSignView.vue'),
+        meta: { requiresAuth: true, requiresBuyer: true },
+      },
+      {
         path: 'simple-quote',
         name: 'simple-quote',
         component: () => import('../views/quote/SimpleQuoteView.vue'),
+        meta: { requiresAuth: true, requiresBuyer: true },
+      },
+      {
+        path: 'packaging/box',
+        name: 'packaging-box',
+        component: () => import('../views/packaging/BoxGeneratorView.vue'),
         meta: { requiresAuth: true, requiresBuyer: true },
       },
       {

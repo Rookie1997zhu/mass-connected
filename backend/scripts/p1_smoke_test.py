@@ -86,8 +86,16 @@ rfq_for_qr = RFQ.objects.filter(quote_requests__isnull=False).first()
 if rfq_for_qr:
     r = client.get(f"/api/admin/rfqs/{rfq_for_qr.id}/quote-requests", HTTP_HOST="localhost")
     ok("admin_rfq_quote_requests", r.json().get("code") == "OK", f"rfq={rfq_for_qr.id}")
+    r = client.post(
+        f"/api/admin/rfqs/{rfq_for_qr.id}/assign",
+        data=json.dumps({"supplier_ids": []}),
+        content_type="application/json",
+        HTTP_HOST="localhost",
+    )
+    ok("admin_assign_removed", r.status_code == 404)
 else:
     ok("admin_rfq_quote_requests", True, "skipped — no quote requests")
+    ok("admin_assign_removed", True, "skipped — no rfq")
 
 # Buyer — find any member
 buyer = User.objects.filter(role="member").first()
@@ -195,6 +203,43 @@ if supplier:
     r = client.get("/api/supplier/contracts", HTTP_HOST="localhost")
     ok("supplier_contracts_list", r.json().get("code") == "OK")
 
+    public_rfq = (
+        RFQ.objects.filter(scope="public", status__in={"submitted", "quoting", "quoted", "negotiating"})
+        .exclude(quote_requests__supplier=supplier)
+        .first()
+    )
+    if not public_rfq:
+        public_rfq = RFQ.objects.filter(
+            scope="public", status__in={"submitted", "quoting", "quoted", "negotiating"}
+        ).first()
+    if public_rfq:
+        r = client.post(f"/api/supplier/demand-hall/{public_rfq.id}/grab", HTTP_HOST="localhost")
+        grab_data = r.json()
+        grab_ok = grab_data.get("code") == "OK" and grab_data.get("data", {}).get("id")
+        ok("supplier_demand_grab", grab_ok, grab_data.get("message", ""))
+        qr_id = grab_data.get("data", {}).get("id")
+        existing_quote = QuoteRequest.objects.filter(id=qr_id, supplier=supplier).first() if qr_id else None
+        if existing_quote and not existing_quote.quotes.exists():
+            r2 = client.post(
+                f"/api/supplier/quote-requests/{qr_id}/quotes",
+                data=json.dumps(
+                    {
+                        "price_amount": 1000000,
+                        "currency": "KRW",
+                        "lead_time_days": 14,
+                        "note": "smoke grab quote",
+                    }
+                ),
+                content_type="application/json",
+                HTTP_HOST="localhost",
+            )
+            ok("supplier_grab_quote", r2.json().get("code") == "OK", r2.json().get("message", ""))
+        else:
+            ok("supplier_grab_quote", True, "skipped — quote already exists")
+    else:
+        ok("supplier_demand_grab", True, "skipped — no public RFQ")
+        ok("supplier_grab_quote", True, "skipped — no public RFQ")
+
     pending_po = ProductionOrder.objects.filter(supplier=supplier, status="pending_confirm").first()
     if pending_po:
         rfq_before = pending_po.rfq.status
@@ -210,6 +255,8 @@ if supplier:
     else:
         ok("supplier_reject_rollback", True, "skipped — no pending_confirm PO")
 else:
+    ok("supplier_demand_grab", True, "skipped — no supplier")
+    ok("supplier_grab_quote", True, "skipped — no supplier")
     ok("supplier_files_list", True, "skipped — no supplier")
     ok("supplier_file_upload", True, "skipped — no supplier")
     ok("supplier_notifications_unread", True, "skipped — no supplier")

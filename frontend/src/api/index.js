@@ -33,9 +33,10 @@ export const acceptQuote = (rfqId, quoteId) =>
 
 export const fetchDemandHall = (params) => http.get('/public/demand-hall', { params })
 export const fetchDemandDetail = (id) => http.get(`/public/demand-hall/${id}`)
+export const grabDemand = (rfqId) => http.post(`/supplier/demand-hall/${rfqId}/grab`)
 export const fetchMyFactoryQuotes = (params) => http.get('/supplier/quotes', { params })
 
-// 供应商指派制报价请求
+// 供应商抢单报价请求
 export const fetchSupplierQuoteRequests = (params) => http.get('/supplier/quote-requests', { params })
 export const fetchSupplierQuoteRequest = (id) => http.get(`/supplier/quote-requests/${id}`)
 export const submitSupplierQuote = (id, data) => http.post(`/supplier/quote-requests/${id}/quotes`, data)
@@ -65,7 +66,24 @@ export const downloadRfqQuotePdf = (id) =>
 export const fetchSimpleQuotes = (params) => http.get('/member/simple-quotes', { params })
 export const fetchSimpleQuote = (id) => http.get(`/member/simple-quotes/${id}`)
 export const createSimpleQuote = (data) => http.post('/member/simple-quotes', data)
+export const fetchFefcoCatalog = () => http.get('/packaging/fefco-catalog')
 export const convertSimpleQuote = (id, data) => http.post(`/member/simple-quotes/${id}/convert`, data)
+// 几何/OCR 解析为同步计算，耗时可达数十秒，需覆盖后端解析超时（STP 20s / OCR 25s）
+export const stpParse = (formData) =>
+  http.post('/member/simple-quotes/parse-stp', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+    timeout: 60000,
+  })
+export const drawingParse = (formData) =>
+  http.post('/member/simple-quotes/parse-drawing', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+    timeout: 60000,
+  })
+export const shippingEstimate = (data) => http.post('/member/simple-quotes/shipping-estimate', data)
+
+export const fetchNdaTemplate = () => http.get('/member/nda/template')
+export const fetchNdaList = (params) => http.get('/member/nda', { params })
+export const signNda = (data) => http.post('/member/nda/sign', data)
 
 // 项目
 export const fetchMyProjects = (params) => http.get('/member/projects', { params })

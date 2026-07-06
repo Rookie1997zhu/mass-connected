@@ -306,6 +306,7 @@ class DemandHallDetailSerializer(serializers.ModelSerializer):
     service_category_name = serializers.SerializerMethodField()
     attachments = RFQAttachmentSerializer(many=True, read_only=True)
     my_quote = serializers.SerializerMethodField()
+    my_quote_request = serializers.SerializerMethodField()
 
     class Meta:
         model = RFQ
@@ -325,6 +326,7 @@ class DemandHallDetailSerializer(serializers.ModelSerializer):
             "status",
             "attachments",
             "my_quote",
+            "my_quote_request",
             "created_at",
             "updated_at",
         ]
@@ -341,6 +343,19 @@ class DemandHallDetailSerializer(serializers.ModelSerializer):
         if not quote:
             return None
         return QuoteSerializer(quote).data
+
+    def get_my_quote_request(self, obj):
+        request = self.context.get("request")
+        if not request or not request.user.is_authenticated:
+            return None
+        qr = obj.quote_requests.filter(supplier=request.user).exclude(status="cancelled").first()
+        if not qr:
+            return None
+        return {
+            "id": qr.id,
+            "request_no": qr.request_no,
+            "status": qr.status,
+        }
 
 
 class RFQDetailSerializer(serializers.ModelSerializer):

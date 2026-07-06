@@ -1,6 +1,20 @@
 from rest_framework import serializers
 
-from apps.simplequote.models import QuoteParam, SimpleQuote
+from apps.simplequote.models import QuoteParam, QuoteTable, SimpleQuote
+
+
+class QuoteTableSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = QuoteTable
+        fields = [
+            "id",
+            "quote_type",
+            "table_key",
+            "rows",
+            "is_active",
+            "updated_at",
+        ]
+        read_only_fields = ["id", "updated_at"]
 
 
 class SimpleQuoteSerializer(serializers.ModelSerializer):
@@ -51,9 +65,11 @@ class SimpleQuoteListSerializer(serializers.ModelSerializer):
 
 class SimpleQuoteCreateSerializer(serializers.Serializer):
     quote_type = serializers.ChoiceField(
-        choices=["injection", "print3d", "pcb", "software", "ic"]
+        choices=["injection", "print3d", "pcba", "pcb", "software", "ic", "paper_box"]
     )
     product_name = serializers.CharField(max_length=200, required=False, allow_blank=True)
+    # currency 一般由服务端按报价类型决定（注塑=CNY），此处仅作前向兼容可选入参。
+    currency = serializers.CharField(max_length=3, required=False, allow_blank=True)
     inputs = serializers.DictField(required=False, default=dict)
 
 

@@ -1,6 +1,10 @@
+# 监听所有网卡；局域网设备可通过本机 IP 访问（如 http://192.168.x.x/）
 :80 {
 	handle /api/* {
-		reverse_proxy backend:8000
+		reverse_proxy backend:8000 {
+			# 统一 Host，避免局域网 IP 访问时 Django ALLOWED_HOSTS 校验失败
+			header_up Host localhost
+		}
 	}
 
 	handle /media/* {

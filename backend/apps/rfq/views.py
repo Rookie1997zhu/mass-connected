@@ -17,7 +17,6 @@ from apps.rfq.models import (
 from apps.rfq.serializers import (
     AdminProductionOrderSerializer,
     AdminQuoteCreateSerializer,
-    AdminQuoteRequestCreateSerializer,
     CustomerPlanSerializer,
     DemandHallDetailSerializer,
     DemandHallListSerializer,
@@ -33,7 +32,6 @@ from apps.rfq.serializers import (
     apply_markup,
 )
 from core.pdf import build_comparison_pdf
-from apps.accounts.models import User
 from apps.notification.services import notify, notify_staff
 from core.pagination import StandardPagination
 from core.permissions import IsAdminRole, IsBuyerRole, IsSupplierRole
@@ -312,8 +310,54 @@ class PublicDemandHallDetailView(APIView):
         )
 
 
+class SupplierDemandHallGrabView(APIView):
+    """供应商在需求大厅自主抢单。"""
+
+    permission_classes = [IsSupplierRole]
+
+    def post(self, request, pk):
+        rfq = get_object_or_404(open_demand_hall_queryset(), pk=pk)
+        qr, is_new = QuoteRequest.objects.get_or_create(
+            rfq=rfq,
+            supplier=request.user,
+            defaults={
+                "status": "viewed",
+                "created_by": request.user,
+            },
+        )
+        if not is_new:
+            if qr.status == "cancelled":
+                return error_response(
+                    "QUOTE_REQUEST_CANCELLED",
+                    "该需求的抢单已取消，无法再次抢单",
+                    request=request,
+                )
+            return success_response(
+                QuoteRequestSerializer(qr, context={"lang": get_lang(request)}).data,
+                message="您已抢过此需求",
+                request=request,
+            )
+        if rfq.status in {"submitted", "pending_review"}:
+            rfq.status = "quoting"
+            rfq.save(update_fields=["status", "updated_at"])
+        supplier_name = getattr(getattr(request.user, "factory_profile", None), "company_name", "") or request.user.email
+        notify_staff(
+            "quote_request",
+            "供应商已抢单",
+            f"供应商 {supplier_name} 已抢单 RFQ {rfq.rfq_no}，请及时跟进。",
+            related_type="quote_request",
+            related_id=qr.id,
+        )
+        return success_response(
+            QuoteRequestSerializer(qr, context={"lang": get_lang(request)}).data,
+            message="抢单成功",
+            status=status.HTTP_201_CREATED,
+            request=request,
+        )
+
+
 class SupplierQuoteRequestListView(APIView):
-    """供应商仅能看到被管理员指派的报价请求。"""
+    """供应商查看自己抢单或参与的报价请求。"""
 
     permission_classes = [IsSupplierRole]
     pagination_class = StandardPagination
@@ -360,7 +404,7 @@ class SupplierQuoteRequestDetailView(APIView):
 
 
 class SupplierQuoteRequestQuoteView(APIView):
-    """供应商针对被指派的报价请求提交报价。"""
+    """供应商针对抢单后的报价请求提交报价。"""
 
     permission_classes = [IsSupplierRole]
 
@@ -730,72 +774,6 @@ class AdminQuoteDetailView(APIView):
                 send_email=True,
             )
         return success_response(QuoteSerializer(quote).data, request=request)
-
-
-class AdminRFQAssignView(APIView):
-    """管理员把 RFQ 指派给指定供应商，生成报价请求。"""
-
-    permission_classes = [IsAdminRole]
-
-    def post(self, request, pk):
-        rfq = get_object_or_404(RFQ, pk=pk)
-        serializer = AdminQuoteRequestCreateSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        supplier_ids = serializer.validated_data["supplier_ids"]
-        deadline = serializer.validated_data.get("deadline")
-        admin_note = serializer.validated_data.get("admin_note", "")
-        is_urgent = serializer.validated_data.get("is_urgent", False)
-
-        suppliers = User.objects.filter(id__in=supplier_ids, role="factory")
-        tag_filter = request.data.get("tag_filter") or request.query_params.get("tag")
-        if tag_filter:
-            suppliers = suppliers.filter(factory_profile__tags__tag_name=tag_filter).distinct()
-        valid_statuses = {"approved", "priority", "observing"}
-        valid_ids = {
-            s.id
-            for s in suppliers
-            if getattr(getattr(s, "factory_profile", None), "status", "") in valid_statuses
-        }
-        if not valid_ids:
-            return error_response(
-                "SUPPLIER_INVALID",
-                "没有可指派的已审核供应商",
-                request=request,
-            )
-        created = []
-        for supplier in suppliers:
-            if supplier.id not in valid_ids:
-                continue
-            qr, is_new = QuoteRequest.objects.get_or_create(
-                rfq=rfq,
-                supplier=supplier,
-                defaults={
-                    "deadline": deadline,
-                    "admin_note": admin_note,
-                    "is_urgent": is_urgent,
-                    "created_by": request.user,
-                },
-            )
-            if is_new:
-                created.append(qr)
-                notify(
-                    supplier,
-                    "quote_request",
-                    "新的报价请求",
-                    f"您有一个新的报价请求 {qr.request_no}，请及时报价。",
-                    related_type="quote_request",
-                    related_id=qr.id,
-                    send_email=True,
-                )
-        if rfq.status in {"submitted", "pending_review"}:
-            rfq.status = "assigned"
-            rfq.save(update_fields=["status", "updated_at"])
-        return success_response(
-            {"items": QuoteRequestSerializer(created, many=True, context={"lang": get_lang(request)}).data},
-            message="已指派供应商",
-            status=status.HTTP_201_CREATED,
-            request=request,
-        )
 
 
 class AdminRFQQuoteRequestListView(APIView):

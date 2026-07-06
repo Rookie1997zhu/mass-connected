@@ -9,6 +9,8 @@ from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import mm
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.cidfonts import UnicodeCIDFont
 from reportlab.platypus import (
     Paragraph,
     SimpleDocTemplate,
@@ -19,9 +21,30 @@ from reportlab.platypus import (
 
 BRAND = "MASS CONNECTED"
 
+# reportlab 内置 CID 字体，支持韩文/中文/日文，无需打包字体文件。
+CJK_FONT = "HYSMyeongJo-Medium"
+_CJK_REGISTERED = False
+
+
+def _ensure_cjk_font():
+    """注册 CJK 字体，避免报价单中韩文/中文缺字。失败时回退默认字体。"""
+    global _CJK_REGISTERED
+    if _CJK_REGISTERED:
+        return CJK_FONT
+    try:
+        pdfmetrics.registerFont(UnicodeCIDFont(CJK_FONT))
+        _CJK_REGISTERED = True
+        return CJK_FONT
+    except Exception:
+        return "Helvetica"
+
 
 def _styles():
     styles = getSampleStyleSheet()
+    font = _ensure_cjk_font()
+    for style_name in ("Normal", "Title", "Heading1", "Heading2", "Heading3"):
+        if style_name in styles.byName:
+            styles[style_name].fontName = font
     return styles
 
 
@@ -146,6 +169,446 @@ def build_quotation_pdf(*, title, quote_no, meta_rows, line_items, total_label, 
         "报价有效期以文档标注为准，逾期需重新确认。",
     ]
     for note in (notes or default_notes):
+        story.append(Paragraph(f"• {note}", styles["Normal"]))
+
+    doc.build(story)
+    pdf = buffer.getvalue()
+    buffer.close()
+    return pdf
+
+
+def _fmt_amount(value, decimals=0):
+    if value is None:
+        return "-"
+    try:
+        number = float(value)
+    except (TypeError, ValueError):
+        return str(value)
+    if decimals:
+        return f"{number:,.{decimals}f}"
+    return f"{int(round(number)):,}"
+
+
+_COLOR_LABELS = {
+    "transparent": "투명 / 透明",
+    "semi": "반투명 / 半透明",
+    "normal": "일반 / 普通",
+    "pantone": "PANTONE",
+}
+
+
+def build_injection_quotation_pdf(*, quote_no, product_name, inputs, result, valid_until, created_at):
+    """注塑（사출·금형）自动报价单 PDF，对齐 AUTO QUOTATION 模板。金额单位 RMB。"""
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(
+        buffer,
+        pagesize=A4,
+        leftMargin=15 * mm,
+        rightMargin=15 * mm,
+        topMargin=15 * mm,
+        bottomMargin=15 * mm,
+    )
+    styles = _styles()
+    font = _ensure_cjk_font()
+    story = []
+
+    mold = result.get("mold", {}) or {}
+    parts = result.get("parts", []) or []
+    rmb_to_krw = result.get("rmb_to_krw") or 0
+    total = result.get("total", 0)
+    total_krw = result.get("total_krw")
+
+    story.append(Paragraph(f"<b>{BRAND}</b>", styles["Title"]))
+    story.append(Paragraph("사출·금형견적 / AUTO QUOTATION", styles["Heading2"]))
+    story.append(Spacer(1, 6))
+
+    # 基本信息 + 右上汇总
+    file_name = inputs.get("file_name", "-") or "-"
+    mold_material = inputs.get("mold_material", "-") or "-"
+    head_rows = [
+        ["견적번호 / 编号", quote_no, "금형·단가 / 模具单价", f"{_fmt_amount(result.get('mold_fee'))} RMB"],
+        ["고객사 / 客户", product_name, "제품·단가 합계 / 制品单价合计", f"{_fmt_amount(result.get('product_total'))} RMB"],
+        ["작성일 / 作成", created_at, "금형재질 / 模具材质", mold_material],
+        ["파일명 / 文件", file_name, "유효기간 / 有效期", valid_until],
+    ]
+    head_table = Table(head_rows, colWidths=[30 * mm, 55 * mm, 40 * mm, 55 * mm])
+    head_table.setStyle(
+        TableStyle(
+            [
+                ("FONTNAME", (0, 0), (-1, -1), font),
+                ("FONTSIZE", (0, 0), (-1, -1), 8),
+                ("TEXTCOLOR", (0, 0), (0, -1), colors.grey),
+                ("TEXTCOLOR", (2, 0), (2, -1), colors.grey),
+                ("TOPPADDING", (0, 0), (-1, -1), 3),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
+            ]
+        )
+    )
+    story.append(head_table)
+    story.append(Spacer(1, 10))
+
+    # 1. 금형비
+    story.append(Paragraph("1. 금형비 / 模具费", styles["Heading3"]))
+    mold_rows = [
+        ["항목 / Item", "금액 / Amount (RMB)"],
+        [f"기본금형비 / 基本模具费 ({mold.get('material', '-')})", _fmt_amount(mold.get("base"))],
+        [f"슬라이드 / 滑块 x{mold.get('slider_count', 0)}", _fmt_amount(mold.get("slider_fee"))],
+        ["정밀도 / 精密度 (≤0.2mm)", _fmt_amount(mold.get("precision_fee"))],
+        [f"이윤 / 利润 (+{int(round(float(mold.get('profit_rate', 0)) * 100))}%) 후 합계", _fmt_amount(result.get("mold_fee"))],
+    ]
+    story.append(_amount_table(mold_rows, font))
+    story.append(Spacer(1, 8))
+
+    # 2. 제품단가 TOTAL
+    story.append(Paragraph("2. 제품단가 TOTAL / 制品单价", styles["Heading3"]))
+    part_rows = [["재질/材料", "색상/颜色", "중량(g)", "수량", "개당단가(RMB)"]]
+    for part in parts:
+        part_rows.append(
+            [
+                str(part.get("material", "-")),
+                _COLOR_LABELS.get(part.get("color", "normal"), part.get("color", "-")),
+                _fmt_amount(part.get("weight_g"), 2),
+                _fmt_amount(part.get("quantity")),
+                _fmt_amount(part.get("unit_price"), 4),
+            ]
+        )
+    part_table = Table(part_rows, colWidths=[35 * mm, 40 * mm, 25 * mm, 25 * mm, 35 * mm])
+    part_table.setStyle(
+        TableStyle(
+            [
+                ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#1f2937")),
+                ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+                ("FONTNAME", (0, 0), (-1, -1), font),
+                ("FONTSIZE", (0, 0), (-1, -1), 8),
+                ("ALIGN", (2, 0), (-1, -1), "RIGHT"),
+                ("GRID", (0, 0), (-1, -1), 0.4, colors.HexColor("#d1d5db")),
+                ("TOPPADDING", (0, 0), (-1, -1), 4),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
+            ]
+        )
+    )
+    story.append(part_table)
+    story.append(Spacer(1, 6))
+
+    # 生产/运输/VAT（一期留空手动填）+ 合计
+    total_rows = [
+        ["생산비용 / 生产费用", _fmt_amount(result.get("production_fee"))],
+        ["운송비용 / 运输费用", _fmt_amount(result.get("shipping_fee"))],
+        ["VAT", _fmt_amount(result.get("vat"))],
+        ["총단가 / 总单价 (RMB)", _fmt_amount(total)],
+    ]
+    if rmb_to_krw and total_krw is not None:
+        total_rows.append([f"환산 / 换算 (KRW @ {_fmt_amount(rmb_to_krw)})", _fmt_amount(total_krw)])
+    story.append(_amount_table(total_rows, font, highlight_last=True))
+    story.append(Spacer(1, 8))
+
+    # 3. 산정기준명세서
+    story.append(Paragraph("3. 산정기준명세서 / 计算基准明细", styles["Heading3"]))
+    if parts:
+        first = parts[0]
+        detail_rows = [["단계 / 步骤", "값 / 值 (RMB)"]]
+        for item in first.get("breakdown", []):
+            detail_rows.append([item.get("label", "-"), _fmt_amount(item.get("amount"), 4)])
+        story.append(_amount_table(detail_rows, font))
+        story.append(Spacer(1, 6))
+
+    moq_kg = result.get("moq_kg", 25)
+    notes = [
+        f"PANTONE 미지정 시 MOQ {_fmt_amount(moq_kg)}KG 적용.",
+        "상기 단가는 참고용이며 실제 견적과 약 80% 정확도입니다.",
+        "본 견적서는 작성일로부터 2주간 유지됩니다.",
+        "FAMILY 견적 지원. 재질이 다를 경우 분리 업로드가 필요합니다.",
+    ]
+    for note in notes:
+        story.append(Paragraph(f"• {note}", styles["Normal"]))
+
+    doc.build(story)
+    pdf = buffer.getvalue()
+    buffer.close()
+    return pdf
+
+
+def build_nda_pdf(*, title, version, company_name, body, signed_at):
+    """保密协议 PDF。"""
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(
+        buffer,
+        pagesize=A4,
+        leftMargin=18 * mm,
+        rightMargin=18 * mm,
+        topMargin=18 * mm,
+        bottomMargin=18 * mm,
+    )
+    styles = _styles()
+    font = _ensure_cjk_font()
+    story = []
+
+    story.append(Paragraph(f"<b>{BRAND}</b>", styles["Title"]))
+    story.append(Paragraph(title, styles["Heading2"]))
+    story.append(Paragraph(f"版本 / Version: {version}", styles["Normal"]))
+    story.append(Paragraph(f"签署日期 / Signed: {signed_at}", styles["Normal"]))
+    story.append(Paragraph(f"客户 / Client: {company_name}", styles["Normal"]))
+    story.append(Spacer(1, 12))
+
+    for paragraph in (body or "").split("\n"):
+        text = paragraph.strip()
+        if text:
+            story.append(Paragraph(text, styles["Normal"]))
+            story.append(Spacer(1, 4))
+
+    story.append(Spacer(1, 16))
+    story.append(Paragraph("供方 / CONNECTED: 커넥티드（CONNECTED）", styles["Normal"]))
+    story.append(Paragraph(f"客户 / Client: {company_name}", styles["Normal"]))
+
+    doc.build(story)
+    pdf = buffer.getvalue()
+    buffer.close()
+    return pdf
+
+
+def build_paper_box_quotation_pdf(*, quote_no, product_name, inputs, result, valid_until, created_at):
+    """纸盒包装报价单 PDF。"""
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(
+        buffer,
+        pagesize=A4,
+        leftMargin=15 * mm,
+        rightMargin=15 * mm,
+        topMargin=15 * mm,
+        bottomMargin=15 * mm,
+    )
+    styles = _styles()
+    font = _ensure_cjk_font()
+    story = []
+
+    geometry = result.get("geometry") or {}
+    story.append(Paragraph(f"<b>{BRAND}</b>", styles["Title"]))
+    story.append(Paragraph("纸盒包装 견적 / Paper Box Quote (FEFCO 0201)", styles["Heading2"]))
+    story.append(Spacer(1, 6))
+
+    meta_rows = [
+        ["견적번호 / 编号", quote_no, "고객 / 客户", product_name or "-"],
+        ["盒型 / Box", f"FEFCO {result.get('box_code', '0201')}", "材质 / Board", str(result.get("board_type", "-"))],
+        [
+            "展开尺寸 / Blank",
+            f"{geometry.get('blank_width_mm', '-')} x {geometry.get('blank_height_mm', '-')} mm",
+            "展开面积 / Area",
+            f"{result.get('unfold_area_m2', '-')} m²",
+        ],
+        ["작성일 / 作成", created_at, "유효기간 / 有效期", valid_until],
+        ["数量 / Qty", str(result.get("quantity", 1)), "印刷色数 / Colors", str(result.get("print_colors", 0))],
+    ]
+    meta_table = Table(meta_rows, colWidths=[30 * mm, 55 * mm, 30 * mm, 55 * mm])
+    meta_table.setStyle(
+        TableStyle(
+            [
+                ("FONTNAME", (0, 0), (-1, -1), font),
+                ("FONTSIZE", (0, 0), (-1, -1), 8),
+                ("TOPPADDING", (0, 0), (-1, -1), 3),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
+            ]
+        )
+    )
+    story.append(meta_table)
+    story.append(Spacer(1, 10))
+
+    story.append(Paragraph("1. 费用明细 / Cost Breakdown", styles["Heading3"]))
+    line_rows = [["항목 / Item", "금액(RMB)"]]
+    for item in result.get("breakdown") or []:
+        line_rows.append([str(item.get("label", "-")), _fmt_amount(item.get("amount"))])
+    story.append(_amount_table(line_rows, font))
+    story.append(Spacer(1, 8))
+
+    total_rows = [
+        ["单价 / Unit (RMB)", _fmt_amount(result.get("unit_price"), 4)],
+        ["합계 / Total (RMB)", _fmt_amount(result.get("total"))],
+    ]
+    if result.get("total_krw"):
+        total_rows.append(["환산 / KRW", _fmt_amount(result.get("total_krw"))])
+    story.append(_amount_table(total_rows, font, highlight_last=True))
+
+    notes = [
+        "展开面积由系统按 FEFCO 0201 标准公式重算，刀版图请以前端导出文件为准。",
+        "本报价为系统自动生成的初步报价，仅供参考。",
+        "最终价格以详细报价及双方确认内容为准。",
+    ]
+    for note in notes:
+        story.append(Paragraph(f"• {note}", styles["Normal"]))
+
+    doc.build(story)
+    pdf = buffer.getvalue()
+    buffer.close()
+    return pdf
+
+
+def _amount_table(rows, font, highlight_last=False):
+    """两列（项目/金额）表格，首行表头，可选高亮末行合计。"""
+    table = Table(rows, colWidths=[110 * mm, 55 * mm])
+    style = [
+        ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#1f2937")),
+        ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+        ("FONTNAME", (0, 0), (-1, -1), font),
+        ("FONTSIZE", (0, 0), (-1, -1), 9),
+        ("ALIGN", (1, 0), (1, -1), "RIGHT"),
+        ("GRID", (0, 0), (-1, -1), 0.4, colors.HexColor("#d1d5db")),
+        ("TOPPADDING", (0, 0), (-1, -1), 5),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
+    ]
+    if highlight_last:
+        style.append(("BACKGROUND", (0, -1), (-1, -1), colors.HexColor("#f3f4f6")))
+    table.setStyle(TableStyle(style))
+    return table
+
+
+def build_pcba_quotation_pdf(*, quote_no, product_name, inputs, result, valid_until, created_at):
+    """PCBA 加工费报价单 PDF。"""
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(
+        buffer,
+        pagesize=A4,
+        leftMargin=15 * mm,
+        rightMargin=15 * mm,
+        topMargin=15 * mm,
+        bottomMargin=15 * mm,
+    )
+    styles = _styles()
+    font = _ensure_cjk_font()
+    story = []
+
+    story.append(Paragraph(f"<b>{BRAND}</b>", styles["Title"]))
+    story.append(Paragraph("PCBA 가공비 견적 / PCBA Assembly Quote", styles["Heading2"]))
+    story.append(Spacer(1, 6))
+
+    meta_rows = [
+        ["견적번호 / 编号", quote_no, "고객 / 客户", product_name or "-"],
+        ["작성일 / 作成", created_at, "유효기간 / 有效期", valid_until],
+        ["PCB 수량 / PCB Qty", str(result.get("pcb_quantity", 1)), "ARRAY 수", str(result.get("array_count", 1))],
+    ]
+    meta_table = Table(meta_rows, colWidths=[30 * mm, 55 * mm, 30 * mm, 55 * mm])
+    meta_table.setStyle(
+        TableStyle(
+            [
+                ("FONTNAME", (0, 0), (-1, -1), font),
+                ("FONTSIZE", (0, 0), (-1, -1), 8),
+                ("TOPPADDING", (0, 0), (-1, -1), 3),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
+            ]
+        )
+    )
+    story.append(meta_table)
+    story.append(Spacer(1, 10))
+
+    story.append(Paragraph("1. 고정비 / 基础固定费", styles["Heading3"]))
+    fixed_rows = [["항목 / Item", "금액(RMB)"]]
+    for item in (result.get("breakdown") or [])[:3]:
+        fixed_rows.append([item.get("label", "-"), _fmt_amount(item.get("amount"))])
+    story.append(_amount_table(fixed_rows, font))
+    story.append(Spacer(1, 8))
+
+    story.append(Paragraph("2. 부품별 가공비 / 元件加工费", styles["Heading3"]))
+    comp_rows = [["封装/Package", "Tech", "Qty", "Score", "Fee(RMB)"]]
+    for line in result.get("line_items") or []:
+        comp_rows.append(
+            [
+                str(line.get("package", "-")),
+                str(line.get("tech", "-")),
+                str(line.get("qty", 0)),
+                str(line.get("score", 0)),
+                _fmt_amount(line.get("fee_rmb"), 4),
+            ]
+        )
+    comp_table = Table(comp_rows, colWidths=[40 * mm, 25 * mm, 20 * mm, 25 * mm, 35 * mm])
+    comp_table.setStyle(
+        TableStyle(
+            [
+                ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#1f2937")),
+                ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+                ("FONTNAME", (0, 0), (-1, -1), font),
+                ("FONTSIZE", (0, 0), (-1, -1), 8),
+                ("GRID", (0, 0), (-1, -1), 0.4, colors.HexColor("#d1d5db")),
+            ]
+        )
+    )
+    story.append(comp_table)
+    story.append(Spacer(1, 8))
+
+    total_rows = [
+        ["합계 / Total (RMB)", _fmt_amount(result.get("total"))],
+    ]
+    if result.get("total_krw"):
+        total_rows.append(["환산 / KRW", _fmt_amount(result.get("total_krw"))])
+    story.append(_amount_table(total_rows, font, highlight_last=True))
+
+    excludes = result.get("excludes") or []
+    notes = ["본 견적은 SMT/DIP 가공비(인건비)만 포함합니다."]
+    notes.extend([f"미포함: {x}" for x in excludes])
+    for note in notes:
+        story.append(Paragraph(f"• {note}", styles["Normal"]))
+
+    doc.build(story)
+    pdf = buffer.getvalue()
+    buffer.close()
+    return pdf
+
+
+def build_pcb_dev_quotation_pdf(*, quote_no, product_name, inputs, result, valid_until, created_at):
+    """PCB 开发成本报价单 PDF。"""
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(
+        buffer,
+        pagesize=A4,
+        leftMargin=15 * mm,
+        rightMargin=15 * mm,
+        topMargin=15 * mm,
+        bottomMargin=15 * mm,
+    )
+    styles = _styles()
+    font = _ensure_cjk_font()
+    story = []
+
+    base_item = result.get("base_item") or {}
+    story.append(Paragraph(f"<b>{BRAND}</b>", styles["Title"]))
+    story.append(Paragraph("PCB 개발비 견적 / PCB Development Quote", styles["Heading2"]))
+    story.append(Spacer(1, 6))
+
+    meta_rows = [
+        ["견적번호 / 编号", quote_no, "고객 / 客户", product_name or "-"],
+        ["개발유형 / Type", base_item.get("label_zh", "-"), "개발기간 / Days", str(result.get("development_days", "-"))],
+        ["작성일 / 作成", created_at, "유효기간 / 有效期", valid_until],
+    ]
+    meta_table = Table(meta_rows, colWidths=[30 * mm, 55 * mm, 30 * mm, 55 * mm])
+    meta_table.setStyle(
+        TableStyle(
+            [
+                ("FONTNAME", (0, 0), (-1, -1), font),
+                ("FONTSIZE", (0, 0), (-1, -1), 8),
+                ("TOPPADDING", (0, 0), (-1, -1), 3),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
+            ]
+        )
+    )
+    story.append(meta_table)
+    story.append(Spacer(1, 10))
+
+    story.append(Paragraph("1. 비용明細 / 费用明细", styles["Heading3"]))
+    line_rows = [["항목 / Item", "금액(KRW)"]]
+    for item in result.get("breakdown") or []:
+        line_rows.append([str(item.get("label", "-")), _fmt_amount(item.get("amount"))])
+    story.append(_amount_table(line_rows, font))
+
+    story.append(Spacer(1, 8))
+    total_rows = [["개발비 합계 / Total (VAT 별도)", _fmt_amount(result.get("total"))]]
+    story.append(_amount_table(total_rows, font, highlight_last=True))
+
+    notes = [
+        "VAT 미포함 / 不含增值税",
+        "≤300만원 개발비 100% 선불 / 300万韩元以下开发费100%预付",
+        "광고 동의 시 개발비 10% 할인 적용 가능",
+        "배송비는 PCB 개발 견적용 간소 규칙 적용",
+    ]
+    if result.get("ad_consent"):
+        notes.append("광고 동의: 예 / 广告同意: 是")
+    for note in notes:
         story.append(Paragraph(f"• {note}", styles["Normal"]))
 
     doc.build(story)

@@ -71,6 +71,12 @@ const profileForm = ref({ name: '', phone: '', company_name: '', region: '', int
 const licenseFile = ref(null)
 
 const money = (v, c = 'KRW') => `${c} ${Number(v || 0).toLocaleString()}`
+const quoteTypeLabel = (quoteType) => {
+  if (quoteType === 'paper_box') return t('packaging.title')
+  const key = quoteType === 'print3d' ? 'print3d' : quoteType
+  return t(`simpleQuote.${key}`)
+}
+const quoteDetailLink = (quote) => (quote.quote_type === 'paper_box' ? '/packaging/box' : `/simple-quote?id=${quote.id}`)
 
 const loadTab = async (tab) => {
   loading.value = true
@@ -251,21 +257,23 @@ const onLogout = () => {
         <div class="stat-card"><span class="stat-num">{{ dashboard.pending_payments_count }}</span><span class="stat-label">{{ t('mypage.pendingPayments') }}</span></div>
         <div class="stat-card"><span class="stat-num">{{ dashboard.unread_notifications }}</span><span class="stat-label">{{ t('mypage.notifications') }}</span></div>
         <RouterLink to="/simple-quote" class="stat-card stat-card--cta">＋ {{ t('simpleQuote.title') }}</RouterLink>
+        <RouterLink to="/my/nda" class="stat-card">{{ t('nda.title') }}</RouterLink>
       </div>
 
       <!-- Simple quotes -->
       <div v-else-if="activeTab === 'simple-quotes'">
         <RouterLink to="/simple-quote" class="btn btn-primary btn-sm mb">＋ {{ t('simpleQuote.title') }}</RouterLink>
+        <RouterLink to="/packaging/box" class="btn btn-secondary btn-sm mb">＋ {{ t('packaging.title') }}</RouterLink>
         <p v-if="!simpleQuotes.length" class="page-empty">{{ t('mypage.empty') }}</p>
         <table v-else class="data-table">
           <thead><tr><th>No.</th><th>{{ t('simpleQuote.type') }}</th><th>{{ t('mypage.amount') }}</th><th>{{ t('mypage.status') }}</th><th></th></tr></thead>
           <tbody>
             <tr v-for="q in simpleQuotes" :key="q.id">
               <td>{{ q.quote_no }}</td>
-              <td>{{ t('simpleQuote.' + (q.quote_type === 'print3d' ? 'print3d' : q.quote_type)) }}</td>
+              <td>{{ quoteTypeLabel(q.quote_type) }}</td>
               <td>{{ money(q.total_amount, q.currency) }}</td>
               <td>{{ q.status }}</td>
-              <td><RouterLink :to="`/simple-quote?id=${q.id}`" class="link">{{ t('demandHall.view') }}</RouterLink></td>
+              <td><RouterLink :to="quoteDetailLink(q)" class="link">{{ t('demandHall.view') }}</RouterLink></td>
             </tr>
           </tbody>
         </table>
