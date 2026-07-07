@@ -4,9 +4,11 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PageShell from '../../components/PageShell.vue'
 import { acceptQuote, downloadRfqQuotePdf, fetchMyRfq } from '../../api'
+import { useLocaleCurrency } from '../../composables/useLocaleCurrency'
 import { useRouter } from 'vue-router'
 
 const { t } = useI18n()
+const { formatMoney } = useLocaleCurrency()
 const route = useRoute()
 const router = useRouter()
 const rfq = ref(null)
@@ -95,10 +97,10 @@ const onAccept = async (quoteId) => {
           </tr>
         </thead>
         <tbody>
-          <tr><td>{{ t('rfq.price') }}</td><td v-for="p in rfq.plans" :key="p.id">{{ p.currency }} {{ Number(p.price_amount).toLocaleString() }}</td></tr>
-          <tr><td>{{ t('myRfqs.unitPrice') }}</td><td v-for="p in rfq.plans" :key="p.id">{{ p.unit_price ? Number(p.unit_price).toLocaleString() : '—' }}</td></tr>
-          <tr><td>{{ t('myRfqs.moldFee') }}</td><td v-for="p in rfq.plans" :key="p.id">{{ p.mold_fee ? Number(p.mold_fee).toLocaleString() : '—' }}</td></tr>
-          <tr><td>{{ t('myRfqs.sampleFee') }}</td><td v-for="p in rfq.plans" :key="p.id">{{ p.sample_fee ? Number(p.sample_fee).toLocaleString() : '—' }}</td></tr>
+          <tr><td>{{ t('rfq.price') }}</td><td v-for="p in rfq.plans" :key="p.id">{{ formatMoney({ amount: p.price_amount, currency: p.currency }) }}</td></tr>
+          <tr><td>{{ t('myRfqs.unitPrice') }}</td><td v-for="p in rfq.plans" :key="p.id">{{ p.unit_price ? formatMoney({ amount: p.unit_price, currency: p.currency }) : '—' }}</td></tr>
+          <tr><td>{{ t('myRfqs.moldFee') }}</td><td v-for="p in rfq.plans" :key="p.id">{{ p.mold_fee ? formatMoney({ amount: p.mold_fee, currency: p.currency }) : '—' }}</td></tr>
+          <tr><td>{{ t('myRfqs.sampleFee') }}</td><td v-for="p in rfq.plans" :key="p.id">{{ p.sample_fee ? formatMoney({ amount: p.sample_fee, currency: p.currency }) : '—' }}</td></tr>
           <tr><td>{{ t('myRfqs.moq') }}</td><td v-for="p in rfq.plans" :key="p.id">{{ p.moq || '—' }}</td></tr>
           <tr><td>{{ t('rfq.leadTime') }}</td><td v-for="p in rfq.plans" :key="p.id">{{ p.lead_time_days }}</td></tr>
           <tr><td>{{ t('myRfqs.paymentTerms') }}</td><td v-for="p in rfq.plans" :key="p.id">{{ p.payment_terms || '—' }}</td></tr>
@@ -110,7 +112,7 @@ const onAccept = async (quoteId) => {
             <span class="plan-label">{{ t('myRfqs.plan') }} {{ p.plan_label || '-' }}</span>
             <span v-if="p.status === 'accepted'" class="accepted">✓ {{ t('myRfqs.confirmed') }}</span>
           </div>
-          <p class="plan-price">{{ p.currency }} {{ Number(p.price_amount).toLocaleString() }}</p>
+          <p class="plan-price">{{ formatMoney({ amount: p.price_amount, currency: p.currency }) }}</p>
           <ul class="plan-meta">
             <li>{{ t('rfq.leadTime') }}: {{ p.lead_time_days }}</li>
             <li>{{ t('rfq.validUntil') }}: {{ p.valid_until || '—' }}</li>

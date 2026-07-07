@@ -5,8 +5,10 @@ import { useI18n } from 'vue-i18n'
 import PageShell from '../../components/PageShell.vue'
 import { fetchDemandDetail, grabDemand } from '../../api'
 import { useAuthStore } from '../../stores/auth'
+import { useLocaleCurrency } from '../../composables/useLocaleCurrency'
 
 const { t } = useI18n()
+const { formatMoney } = useLocaleCurrency()
 const auth = useAuthStore()
 const route = useRoute()
 const router = useRouter()
@@ -81,7 +83,7 @@ onMounted(async () => {
         <p v-if="message" class="page-message page-message--success">{{ message }}</p>
 
         <section v-if="rfq.my_quote" class="quote-existing">
-          <p>{{ t('demandHall.myQuote') }}: KRW {{ Number(rfq.my_quote.price_amount).toLocaleString() }}</p>
+          <p>{{ t('demandHall.myQuote') }}: {{ formatMoney({ amount: rfq.my_quote.price_amount, currency: rfq.my_quote.currency || 'KRW' }) }}</p>
           <p>{{ t('mypage.status') }}: {{ rfq.my_quote.status }}</p>
         </section>
 

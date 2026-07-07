@@ -4,8 +4,10 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PageShell from '../../components/PageShell.vue'
 import { fetchMyProductionOrder } from '../../api'
+import { useLocaleCurrency } from '../../composables/useLocaleCurrency'
 
 const { t } = useI18n()
+const { formatMoney } = useLocaleCurrency()
 const route = useRoute()
 const order = ref(null)
 const loading = ref(true)
@@ -28,7 +30,7 @@ onMounted(async () => {
       <dl class="detail-grid">
         <div><dt>{{ t('demandHall.rfqNo') }}</dt><dd>{{ order.rfq_no }}</dd></div>
         <div><dt>{{ t('myRfqs.supplier') }}</dt><dd>{{ order.supplier_name }}</dd></div>
-        <div><dt>{{ t('rfq.price') }}</dt><dd>{{ order.currency }} {{ Number(order.price_amount).toLocaleString() }}</dd></div>
+        <div><dt>{{ t('rfq.price') }}</dt><dd>{{ formatMoney({ amount: order.price_amount, currency: order.currency }) }}</dd></div>
         <div><dt>{{ t('rfq.leadTime') }}</dt><dd>{{ order.lead_time_days }}</dd></div>
         <div><dt>{{ t('common.status') }}</dt><dd>{{ order.status }}</dd></div>
         <div v-if="order.confirmed_at"><dt>{{ t('productionOrder.confirmedAt') }}</dt><dd>{{ order.confirmed_at }}</dd></div>

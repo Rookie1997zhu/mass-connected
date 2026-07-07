@@ -5,8 +5,10 @@ import { useI18n } from 'vue-i18n'
 import PageShell from '../../components/PageShell.vue'
 import { addToCart, fetchProduct } from '../../api'
 import { useAuthStore } from '../../stores/auth'
+import { useLocaleCurrency } from '../../composables/useLocaleCurrency'
 
 const { t } = useI18n()
+const { formatMoney } = useLocaleCurrency()
 const route = useRoute()
 const router = useRouter()
 const auth = useAuthStore()
@@ -37,7 +39,7 @@ const addCart = async () => {
       </div>
       <div class="detail-info">
         <h1 class="page-title">{{ product.name_text }}</h1>
-        <p class="price">KRW {{ Number(product.price_amount).toLocaleString() }}</p>
+        <p class="price">{{ formatMoney({ amount: product.price_amount, currency: product.currency || 'KRW' }) }}</p>
         <p class="desc">{{ product.description_text }}</p>
         <p>{{ t('shop.stock') }}: {{ product.stock }}</p>
         <label>{{ t('shop.quantity') }}

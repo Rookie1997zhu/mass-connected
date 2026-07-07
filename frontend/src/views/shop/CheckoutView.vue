@@ -4,8 +4,10 @@ import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PageShell from '../../components/PageShell.vue'
 import { createOrder, fetchCart } from '../../api'
+import { useLocaleCurrency } from '../../composables/useLocaleCurrency'
 
 const { t } = useI18n()
+const { formatMoney } = useLocaleCurrency()
 const router = useRouter()
 const form = ref({ shipping_name: '', shipping_phone: '', shipping_address: '', remark: '' })
 const cartItems = ref([])
@@ -46,10 +48,10 @@ const submit = async () => {
         <li v-for="item in cartItems" :key="item.id">
           <span>{{ item.product_name_text || item.product_name }}</span>
           <span>× {{ item.quantity }}</span>
-          <span>KRW {{ Number(item.line_total || item.unit_price * item.quantity).toLocaleString() }}</span>
+          <span>{{ formatMoney({ amount: item.line_total || item.unit_price * item.quantity, currency: item.currency || 'KRW' }) }}</span>
         </li>
       </ul>
-      <p class="cart-total">{{ t('cart.total') }}: KRW {{ Number(cartTotal).toLocaleString() }}</p>
+      <p class="cart-total">{{ t('cart.total') }}: {{ formatMoney({ amount: cartTotal, currency: 'KRW' }) }}</p>
     </section>
     <form class="checkout-form card" @submit.prevent="submit">
       <p v-if="error" class="page-message page-message--error">{{ error }}</p>

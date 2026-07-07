@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <title>FEFCO 0713</title>
+  <defs>
+    <linearGradient id="eFront" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d9a066"/>
+      <stop offset="1" stop-color="#b97f3d"/>
+    </linearGradient>
+    <linearGradient id="eSide" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#c08e4d"/>
+      <stop offset="1" stop-color="#9c6a2f"/>
+    </linearGradient>
+    <linearGradient id="eTop" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#eab97a"/>
+      <stop offset="1" stop-color="#d9a066"/>
+    </linearGradient>
+  </defs>
+  <!-- tall narrow carton: top face -->
+  <polygon points="24,8 40,5 50,9 34,12" fill="url(#eTop)"
+           stroke="#7a521f" stroke-width="1.3" stroke-linejoin="round"/>
+  <!-- front face (tall) -->
+  <polygon points="24,8 34,12 34,56 24,52" fill="url(#eFront)"
+           stroke="#7a521f" stroke-width="1.5" stroke-linejoin="round"/>
+  <!-- side face (tall) -->
+  <polygon points="50,9 34,12 34,56 50,53" fill="url(#eSide)"
+           stroke="#7a521f" stroke-width="1.5" stroke-linejoin="round"/>
+  <!-- tuck crease near the top -->
+  <line x1="24" y1="14" x2="34" y2="18" stroke="#7a521f"
+        stroke-width="1" stroke-dasharray="2,2"/>
+  <line x1="50" y1="15" x2="34" y2="18" stroke="#7a521f"
+        stroke-width="1" stroke-dasharray="2,2"/>
+  <line x1="34" y1="12" x2="34" y2="56" stroke="#7a521f"
+        stroke-width="1" stroke-dasharray="2,2"/>
+</svg>

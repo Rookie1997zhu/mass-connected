@@ -6,10 +6,18 @@
 解析在独立进程中执行并设超时，避免坏文件拖垮请求。
 """
 
+import base64
 import multiprocessing as mp
+import os
+import tempfile
 from datetime import datetime, timezone
+from queue import Empty
 
 PARSE_TIMEOUT_SEC = 20
+# 预览网格三角化精度（mm）；越大网格越粗、响应越小
+PREVIEW_MESH_DEFLECTION = 0.8
+# STL 二进制上限（约 8MB），超出则降级或跳过
+PREVIEW_MESH_MAX_BYTES = 8 * 1024 * 1024
 
 # 残余倒扣面积占比超过该值才建议加滑块（低于视为解析噪声/圆角）
 UNDERCUT_AREA_RATIO_MIN = 0.02
@@ -161,6 +169,55 @@ def _cluster_slider_count(normals):
     return max(1, len(buckets))
 
 
+def export_preview_mesh(shape, linear_deflection=PREVIEW_MESH_DEFLECTION):
+    """将 shape 三角化为 STL 并 base64 编码，供前端 3D 预览（best-effort）。"""
+    from OCP.BRepMesh import BRepMesh_IncrementalMesh
+    from OCP.StlAPI import StlAPI_Writer
+
+    def _try_export(deflection):
+        mesh = BRepMesh_IncrementalMesh(shape, deflection, False, deflection, True)
+        mesh.Perform()
+        if not mesh.IsDone():
+            return None, "mesh_failed"
+        tmp_path = None
+        try:
+            with tempfile.NamedTemporaryFile(suffix=".stl", delete=False) as tmp:
+                tmp_path = tmp.name
+            writer = StlAPI_Writer()
+            writer.ASCIIMode = False
+            if not writer.Write(shape, tmp_path):
+                return None, "stl_write_failed"
+            with open(tmp_path, "rb") as fh:
+                data = fh.read()
+            if not data:
+                return None, "empty_stl"
+            if len(data) > PREVIEW_MESH_MAX_BYTES:
+                return None, "too_large"
+            return {
+                "format": "stl",
+                "encoding": "base64",
+                "data": base64.b64encode(data).decode("ascii"),
+            }, "ok"
+        finally:
+            if tmp_path and os.path.exists(tmp_path):
+                try:
+                    os.remove(tmp_path)
+                except OSError:
+                    pass
+
+    try:
+        preview_mesh, status = _try_export(linear_deflection)
+        if preview_mesh is not None:
+            return preview_mesh, status
+        # 粗化一次再试
+        preview_mesh, status = _try_export(linear_deflection * 2.5)
+        if preview_mesh is not None:
+            return preview_mesh, "simplified"
+        return None, status or "unavailable"
+    except Exception:  # noqa: BLE001
+        return None, "unavailable"
+
+
 def recommend_material_by_geometry(volume_cm3, bbox_mm, surface_area_cm2):
     """基于几何特征的低置信度材料推荐（无历史数据时的规则兜底）。
 
@@ -239,6 +296,13 @@ def _parse_step_sync(path):
     except Exception:  # noqa: BLE001
         material_suggestion = None
 
+    preview_mesh = None
+    preview_mesh_status = "unavailable"
+    try:
+        preview_mesh, preview_mesh_status = export_preview_mesh(shape)
+    except Exception:  # noqa: BLE001
+        preview_mesh_status = "unavailable"
+
     return {
         "parse_status": "ok",
         "engine": "ocp",
@@ -247,6 +311,8 @@ def _parse_step_sync(path):
         "bbox_mm": bbox_mm,
         "undercut": undercut,
         "material_suggestion": material_suggestion,
+        "preview_mesh": preview_mesh,
+        "preview_mesh_status": preview_mesh_status,
         "error": None,
     }
 
@@ -262,22 +328,32 @@ def parse_step(path, timeout=PARSE_TIMEOUT_SEC):
     """解析 STEP 文件。独立进程 + 超时，返回结构化 geometry dict。
 
     parse_status: ok / error / timeout。调用方据此映射错误码。
+
+    必须先 queue.get 再 proc.join：大结果（含 preview_mesh）超过管道缓冲区时，
+    若先 join 会导致子进程无法退出并误报 timeout。
     """
     ctx = mp.get_context("fork")
     queue = ctx.Queue()
     proc = ctx.Process(target=_worker, args=(path, queue), daemon=True)
     proc.start()
-    proc.join(timeout)
 
+    try:
+        result = queue.get(timeout=timeout)
+    except Empty:
+        if proc.is_alive():
+            proc.terminate()
+        proc.join()
+        return {
+            "parse_status": "timeout",
+            "engine": "ocp",
+            "error": "parse timeout",
+            "parsed_at": _now_iso(),
+        }
+
+    proc.join(timeout=5)
     if proc.is_alive():
         proc.terminate()
         proc.join()
-        return {"parse_status": "timeout", "engine": "ocp", "error": "parse timeout", "parsed_at": _now_iso()}
-
-    try:
-        result = queue.get_nowait()
-    except Exception:  # noqa: BLE001
-        result = {"parse_status": "error", "error": "no result from parser"}
 
     result.setdefault("engine", "ocp")
     result["parsed_at"] = _now_iso()

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<package xmlns="https://wiki.freecad.org/Package_Metadata" format="1">
+  <name>Packaging</name>
+  <description>
+    Parametric design of cardboard boxes and dielines (FEFCO standards) for
+    FreeCAD. Provides 3D box features that unfold into 2D cutting plans with
+    cut, crease and perforation layers, exportable to DXF and SVG.
+  </description>
+  <version>1.0.0</version>
+  <date>2026-05-27</date>
+  <maintainer email="aiingresso@gmail.com">Packaging Workbench Team</maintainer>
+  <license file="LICENSE">LGPL-2.1-or-later</license>
+
+  <url type="repository" branch="main">https://github.com/stoneproof-tech/PackagingWorkbench</url>
+  <url type="bugtracker">https://github.com/stoneproof-tech/PackagingWorkbench/issues</url>
+  <url type="readme">https://github.com/stoneproof-tech/PackagingWorkbench/blob/main/README.md</url>
+
+  <icon>resources/icons/Packaging.svg</icon>
+
+  <content>
+    <workbench>
+      <classname>PackagingWorkbench</classname>
+      <name>Packaging</name>
+      <icon>resources/icons/Packaging.svg</icon>
+      <subdirectory>./</subdirectory>
+      <description>
+        Parametric cardboard packaging workbench: FEFCO boxes, trays, cartons
+        and automatic 2D dieline generation.
+      </description>
+      <author email="aiingresso@gmail.com">Packaging Workbench Team</author>
+      <date>2026-05-27</date>
+      <version>1.0.0</version>
+      <tag>packaging</tag>
+      <tag>cardboard</tag>
+      <tag>fefco</tag>
+      <tag>dieline</tag>
+      <tag>unfold</tag>
+      <freecadmin>1.0</freecadmin>
+    </workbench>
+  </content>
+</package>

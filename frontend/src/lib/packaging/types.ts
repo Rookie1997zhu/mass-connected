@@ -52,3 +52,20 @@ export interface DielinePreview {
   viewBox: string
   previewMode?: 'detailed' | 'blank'
 }
+
+export type DimField = 'length' | 'width' | 'height'
+
+export interface DimAnnotation {
+  field: DimField
+  axis: 'horizontal' | 'vertical'
+  labelX: number
+  labelY: number
+  labelWidth: number
+  labelHeight: number
+  fontSize: number
+  arrowSvg: string
+  displayValue: number
+  /** 标尺线中心（与 label 对齐） */
+  lineX: number
+  lineY: number
+}

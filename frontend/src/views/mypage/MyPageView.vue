@@ -28,8 +28,10 @@ import {
   uploadPaymentProof,
   toggleProjectTodo,
 } from '../../api'
+import { useLocaleCurrency } from '../../composables/useLocaleCurrency'
 
 const { t } = useI18n()
+const { formatMoney } = useLocaleCurrency()
 const auth = useAuthStore()
 const route = useRoute()
 const router = useRouter()
@@ -70,7 +72,17 @@ const rechargeProof = ref(null)
 const profileForm = ref({ name: '', phone: '', company_name: '', region: '', intro: '', contact_phone: '', country: '', city: '', payment_terms: '' })
 const licenseFile = ref(null)
 
-const money = (v, c = 'KRW') => `${c} ${Number(v || 0).toLocaleString()}`
+const money = (v, c = 'KRW', quote = null) => {
+  if (quote) {
+    return formatMoney({
+      amount: v,
+      currency: quote.currency,
+      totalKrw: quote.result?.total_krw,
+      rmbToKrw: quote.result?.rmb_to_krw,
+    })
+  }
+  return formatMoney({ amount: v, currency: c })
+}
 const quoteTypeLabel = (quoteType) => {
   if (quoteType === 'paper_box') return t('packaging.title')
   const key = quoteType === 'print3d' ? 'print3d' : quoteType
@@ -271,7 +283,7 @@ const onLogout = () => {
             <tr v-for="q in simpleQuotes" :key="q.id">
               <td>{{ q.quote_no }}</td>
               <td>{{ quoteTypeLabel(q.quote_type) }}</td>
-              <td>{{ money(q.total_amount, q.currency) }}</td>
+              <td>{{ money(q.total_amount, q.currency, q) }}</td>
               <td>{{ q.status }}</td>
               <td><RouterLink :to="quoteDetailLink(q)" class="link">{{ t('demandHall.view') }}</RouterLink></td>
             </tr>
@@ -406,7 +418,7 @@ const onLogout = () => {
             <tr v-for="r in recharges" :key="r.id">
               <td>{{ (r.created_at || '').slice(0, 10) }}</td>
               <td>{{ r.recharge_no }}</td>
-              <td>KRW {{ Number(r.amount_krw).toLocaleString() }}</td>
+              <td>{{ formatMoney({ amount: r.amount_krw, currency: 'KRW' }) }}</td>
               <td>{{ r.status }}</td>
             </tr>
           </tbody>

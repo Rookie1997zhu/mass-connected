@@ -68,6 +68,7 @@ export const fetchSimpleQuote = (id) => http.get(`/member/simple-quotes/${id}`)
 export const createSimpleQuote = (data) => http.post('/member/simple-quotes', data)
 export const fetchFefcoCatalog = () => http.get('/packaging/fefco-catalog')
 export const convertSimpleQuote = (id, data) => http.post(`/member/simple-quotes/${id}/convert`, data)
+export const previewSimpleQuote = (data) => http.post('/member/simple-quotes/preview', data)
 // 几何/OCR 解析为同步计算，耗时可达数十秒，需覆盖后端解析超时（STP 20s / OCR 25s）
 export const stpParse = (formData) =>
   http.post('/member/simple-quotes/parse-stp', formData, {

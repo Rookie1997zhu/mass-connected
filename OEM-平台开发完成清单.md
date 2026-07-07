@@ -1,7 +1,7 @@
 # MASS CONNECTED 平台开发完成清单
 
 > 依据 [MASS CONNECTED 平台文档.md](MASS%20CONNECTED%20%E5%B9%B3%E5%8F%B0%E6%96%87%E6%A1%A3.md) 与 `project/` 目录 7 份需求书，以及开发路线图（P0–P9）整理。  
-> 更新日期：2026-07-03（含 P9 MASS CONNECTED 平台化改版：供应商指派制 + 简单/详细报价 + 积分 + MY PAGE + 项目进度 + 合同/付款 + 通知 + PDF）
+> 更新日期：2026-07-07（含 P9 平台化改版 + 纸盒包装生成器 paper_box）
 
 ## 阶段总览
 
@@ -409,10 +409,21 @@
 ### 简单报价引擎（simplequote）
 
 - [x] `QuoteParam`（后台参数）、`SimpleQuote`（自动估价，inputs/result JSON、PDF、积分消耗）模型
-- [x] `calculator.py` 参数驱动引擎：注塑模具 / 3D 打印 / PCB / 软件 / IC，含费用明细
+- [x] `calculator.py` 参数驱动引擎：注塑模具 / 3D 打印 / PCB / 软件 / IC / **纸盒包装 paper_box**，含费用明细
 - [x] 会员：`GET/POST /api/member/simple-quotes`、详情、`POST .../convert`（转详细报价，消耗积分）
 - [x] 管理：`GET/POST /api/admin/quote-params`、`PATCH /api/admin/quote-params/{id}`
 - [x] 前台 `/simple-quote` 动态表单 + 结果 + PDF 下载 + 转 RFQ；admin「报价参数」页 + i18n
+
+### 纸盒包装生成器（paper_box）
+
+- [x] 后端 `packaging.py`：`unfold_by_code` 权威展开（0201/0427/0713/0716）；内/外/制造尺寸换算
+- [x] `calc_paper_box` + `build_paper_box_quotation_pdf`；`quote_type=paper_box`；币种 CNY + KRW 换算
+- [x] `GET /api/packaging/fefco-catalog`；`models`/`serializers` 增 `paper_box`
+- [x] 前端 `/packaging/box`：`BoxGeneratorView.vue` + `lib/packaging/*`（Maker.js 刀版引擎）
+- [x] P0 盒型 0201/0427 详细刀版预览；0713/0716 展开轮廓预览；0201 CAD 标尺 + 点击编辑尺寸
+- [x] 0201 圆角开槽、`npm run test:packaging` 几何断言；客户端 PDF / Illustrator (.ai) / DXF 导出
+- [x] FEFCO 侧栏 hover/图钉折叠；MY PAGE 简单报价跳转 `/packaging/box`；i18n `packaging.*` 四语
+- [x] admin「报价参数」类型下拉含 `paper_box`
 
 ### 积分系统（points）
 

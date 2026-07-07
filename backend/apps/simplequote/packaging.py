@@ -26,6 +26,17 @@ def _to_float(value, default=0.0):
         return default
 
 
+def _board_allowances(thickness_mm):
+    """瓦楞纸板制造↔内/外尺寸容差（B 楞 3mm 参考：内 -4/-4/-8，外 +2/+2/+4）。"""
+    t = max(0.1, _to_float(thickness_mm, 1.5))
+    return {
+        "internal_lw": (4.0 / 3.0) * t,
+        "internal_h": (8.0 / 3.0) * t,
+        "external_lw": (2.0 / 3.0) * t,
+        "external_h": (4.0 / 3.0) * t,
+    }
+
+
 def manufacturing_dims(length_mm, width_mm, height_mm, thickness_mm, dimension_type):
     """将用户输入尺寸换算为制造尺寸（mm）。
 
@@ -37,13 +48,42 @@ def manufacturing_dims(length_mm, width_mm, height_mm, thickness_mm, dimension_t
         _to_float(height_mm),
         max(0.1, _to_float(thickness_mm, 1.5)),
     )
+    allow = _board_allowances(t)
     dim_type = str(dimension_type or "internal").lower()
     if dim_type == "manufacturing":
         return l, w, h, t
+    if dim_type == "internal":
+        return (
+            l + allow["internal_lw"],
+            w + allow["internal_lw"],
+            h + allow["internal_h"],
+            t,
+        )
     if dim_type == "external":
-        return max(MIN_DIM_MM, l - 2 * t), max(MIN_DIM_MM, w - 2 * t), max(MIN_DIM_MM, h - 2 * t), t
-    # internal（默认）
+        return (
+            max(MIN_DIM_MM, l - allow["external_lw"]),
+            max(MIN_DIM_MM, w - allow["external_lw"]),
+            max(MIN_DIM_MM, h - allow["external_h"]),
+            t,
+        )
     return l, w, h, t
+
+
+def size_triple_from_manufacturing(length_mm, width_mm, height_mm, thickness_mm):
+    """由制造尺寸推算内/外尺寸。"""
+    allow = _board_allowances(thickness_mm)
+    return {
+        "internal": {
+            "length_mm": round(length_mm - allow["internal_lw"], 2),
+            "width_mm": round(width_mm - allow["internal_lw"], 2),
+            "height_mm": round(height_mm - allow["internal_h"], 2),
+        },
+        "external": {
+            "length_mm": round(length_mm + allow["external_lw"], 2),
+            "width_mm": round(width_mm + allow["external_lw"], 2),
+            "height_mm": round(height_mm + allow["external_h"], 2),
+        },
+    }
 
 
 def _validate_dims(l, w, h):
@@ -73,7 +113,7 @@ def unfold_size_0201(length_mm, width_mm, height_mm, thickness_mm=1.5, dimension
 
     标准 RSC 公式：
     - 展开宽 = 2(L + W) + 接头舌
-    - 展开高 = W + 2H
+    - 展开高 = H + W
     """
     l, w, h, t = manufacturing_dims(length_mm, width_mm, height_mm, thickness_mm, dimension_type)
     _validate_dims(l, w, h)
@@ -82,22 +122,22 @@ def unfold_size_0201(length_mm, width_mm, height_mm, thickness_mm=1.5, dimension
     glue_tab = max(15.0, glue_tab)
 
     blank_width_mm = 2 * (l + w) + glue_tab
-    blank_height_mm = w + 2 * h
+    blank_height_mm = h + w
     return _build_result("0201", l, w, h, t, glue_tab, blank_width_mm, blank_height_mm)
 
 
 def unfold_size_0427(length_mm, width_mm, height_mm, thickness_mm=1.5, dimension_type="internal", glue_tab_mm=None):
-    """FEFCO 0427 飞机盒 / 文件夹式邮寄盒。
+    """FEFCO 0427 翻盖自锁飞机盒（RETF / 文件夹式）。
 
-    展开宽 = 2(L + W) + 接头舌
-    展开高 = H + W + 插舌余量(≈0.5W)
+    展开宽 = L + 2W（左右侧墙各 W）
+    展开高 = 2H + 2W + 插舌高（≈ H - 厚度）
     """
     l, w, h, t = manufacturing_dims(length_mm, width_mm, height_mm, thickness_mm, dimension_type)
     _validate_dims(l, w, h)
     glue_tab = max(15.0, _to_float(glue_tab_mm, DEFAULT_GLUE_TAB_MM))
-    tuck_allowance = max(10.0, w * 0.5)
-    blank_width_mm = 2 * (l + w) + glue_tab
-    blank_height_mm = h + w + tuck_allowance
+    tuck_height = max(h - t, h * 0.9, 12.0)
+    blank_width_mm = l + 2 * w
+    blank_height_mm = 2 * h + 2 * w + tuck_height
     return _build_result("0427", l, w, h, t, glue_tab, blank_width_mm, blank_height_mm)
 
 

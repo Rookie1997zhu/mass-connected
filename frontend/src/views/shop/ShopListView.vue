@@ -4,8 +4,10 @@ import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PageShell from '../../components/PageShell.vue'
 import { fetchCategories, fetchProducts } from '../../api'
+import { useLocaleCurrency } from '../../composables/useLocaleCurrency'
 
 const { t, locale } = useI18n()
+const { formatMoney } = useLocaleCurrency()
 const categories = ref([])
 const products = ref([])
 const categoryId = ref('')
@@ -80,7 +82,7 @@ const onFilter = async () => {
               <div v-else class="cover-placeholder" />
             </div>
             <h3>{{ p.name_text }}</h3>
-            <p class="price">KRW {{ Number(p.price_amount).toLocaleString() }}</p>
+            <p class="price">{{ formatMoney({ amount: p.price_amount, currency: p.currency || 'KRW' }) }}</p>
           </RouterLink>
         </div>
       </section>

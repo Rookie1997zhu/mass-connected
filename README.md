@@ -72,3 +72,8 @@ docker compose up -d --force-recreate frontend admin caddy backend
 ## Project Spec
 
 See [MASS CONNECTED 平台文档.md](MASS%20CONNECTED%20%E5%B9%B3%E5%8F%B0%E6%96%87%E6%A1%A3.md) and the requirement docs under `project/`.
+
+**Feature modules (examples)**:
+
+- Simple quote (`/simple-quote`): injection, 3D print, PCB, software, IC
+- **Paper box generator** (`/packaging/box`): FEFCO dieline preview + `paper_box` auto quote (see `project/纸盒包装生成器方案书 V1.0.md`)

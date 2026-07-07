@@ -1,11 +1,21 @@
 import makerjs from 'makerjs'
+import { build0427Segments, compute0427BlankSize } from './dieline0427'
+import {
+  addBleedRect,
+  addHorizontalCutWithGaps,
+  addSegment,
+  addVerticalSlotRounded,
+  slotWidthFromThickness,
+} from './dielineUtils'
 import { getBoxTemplate } from './fefcoCatalog'
 import type {
   BoxParams,
   BoxCode,
+  DimAnnotation,
   DielineGeometry,
   DielinePreview,
   DimensionType,
+  DimField,
   LineKind,
   LineSegment,
   SizeTriple,
@@ -16,7 +26,6 @@ const MM_PER_IN = 25.4
 const DEFAULT_GLUE_TAB_MM = 25
 const MIN_DIM_MM = 10
 const MAX_DIM_MM = 2000
-const BLEED_MM = 3
 
 export function toMm(value: number, unit: Unit): number {
   return unit === 'in' ? value * MM_PER_IN : value
@@ -26,6 +35,17 @@ export function fromMm(value: number, unit: Unit): number {
   return unit === 'in' ? value / MM_PER_IN : value
 }
 
+function boardAllowances(thicknessMm: number) {
+  // B 楞 3mm 参考：内 -4/-4/-8 mm，外 +2/+2/+4 mm
+  const t = Math.max(0.1, thicknessMm)
+  return {
+    internalLw: (4 / 3) * t,
+    internalH: (8 / 3) * t,
+    externalLw: (2 / 3) * t,
+    externalH: (4 / 3) * t,
+  }
+}
+
 function toManufacturingMm(
   length: number,
   width: number,
@@ -33,41 +53,51 @@ function toManufacturingMm(
   thicknessMm: number,
   dimensionType: DimensionType,
 ): SizeTriple {
-  const t = Math.max(0.1, thicknessMm)
+  const allow = boardAllowances(thicknessMm)
   if (dimensionType === 'manufacturing') {
     return { length, width, height }
   }
-  if (dimensionType === 'external') {
+  if (dimensionType === 'internal') {
     return {
-      length: Math.max(MIN_DIM_MM, length - 2 * t),
-      width: Math.max(MIN_DIM_MM, width - 2 * t),
-      height: Math.max(MIN_DIM_MM, height - 2 * t),
+      length: length + allow.internalLw,
+      width: width + allow.internalLw,
+      height: height + allow.internalH,
     }
   }
-  return { length, width, height }
+  return {
+    length: Math.max(MIN_DIM_MM, length - allow.externalLw),
+    width: Math.max(MIN_DIM_MM, width - allow.externalLw),
+    height: Math.max(MIN_DIM_MM, height - allow.externalH),
+  }
 }
 
 function sizeTripleFromManufacturing(m: SizeTriple, thicknessMm: number): { internal: SizeTriple; external: SizeTriple } {
-  const t = thicknessMm
+  const allow = boardAllowances(thicknessMm)
   return {
-    internal: { ...m },
+    internal: {
+      length: m.length - allow.internalLw,
+      width: m.width - allow.internalLw,
+      height: m.height - allow.internalH,
+    },
     external: {
-      length: m.length + 2 * t,
-      width: m.width + 2 * t,
-      height: m.height + 2 * t,
+      length: m.length + allow.externalLw,
+      width: m.width + allow.externalLw,
+      height: m.height + allow.externalH,
     },
   }
 }
 
-function computeBlankSize(code: BoxCode, m: SizeTriple, glueTab: number): { blankWidthMm: number; blankHeightMm: number } {
+function computeBlankSize(code: BoxCode, m: SizeTriple, glueTab: number, thicknessMm = 1.5): { blankWidthMm: number; blankHeightMm: number } {
   const L = m.length
   const W = m.width
   const H = m.height
   switch (code) {
     case '0201':
-      return { blankWidthMm: 2 * (L + W) + glueTab, blankHeightMm: W + 2 * H }
-    case '0427':
-      return { blankWidthMm: 2 * (L + W) + glueTab, blankHeightMm: H + W + Math.max(10, W * 0.5) }
+      return { blankWidthMm: 2 * (L + W) + glueTab, blankHeightMm: W + H }
+    case '0427': {
+      const blank = compute0427BlankSize(L, W, H, thicknessMm)
+      return { blankWidthMm: blank.blankWidthMm, blankHeightMm: blank.blankHeightMm }
+    }
     case '0713':
       return { blankWidthMm: 2 * (L + W) + glueTab, blankHeightMm: 2 * H + W }
     case '0716':
@@ -106,7 +136,7 @@ export function computeGeometry(params: BoxParams, glueTabMm = DEFAULT_GLUE_TAB_
   )
   const { internal, external } = sizeTripleFromManufacturing(manufacturing, thicknessMm)
   const glueTab = Math.max(15, glueTabMm)
-  const { blankWidthMm, blankHeightMm } = computeBlankSize(params.boxCode, manufacturing, glueTab)
+  const { blankWidthMm, blankHeightMm } = computeBlankSize(params.boxCode, manufacturing, glueTab, thicknessMm)
   const unfoldAreaM2 = (blankWidthMm / 1000) * (blankHeightMm / 1000)
 
   return {
@@ -122,74 +152,64 @@ export function computeGeometry(params: BoxParams, glueTabMm = DEFAULT_GLUE_TAB_
   }
 }
 
-function addSegment(segments: LineSegment[], x1: number, y1: number, x2: number, y2: number, kind: LineKind) {
-  segments.push({ x1, y1, x2, y2, kind })
-}
-
-function build0201Segments(geo: DielineGeometry): LineSegment[] {
+export function build0201Segments(geo: DielineGeometry): LineSegment[] {
   const L = geo.manufacturing.length
   const W = geo.manufacturing.width
   const H = geo.manufacturing.height
   const glue = geo.glueTabMm
-  const flap = W / 2
-  const bodyTop = flap
-  const bodyBottom = flap + H
-  const totalW = glue + 2 * L + 2 * W
-  const totalH = W + 2 * H
 
   const xGlue = 0
   const xL1 = glue
   const xW1 = glue + L
   const xL2 = glue + L + W
   const xW2 = glue + L + W + L
-  const xEnd = totalW
+  const xEnd = glue + 2 * L + 2 * W
+
+  const yTop = 0
+  const yBodyTop = W / 2
+  const yBodyBot = W / 2 + H
+  const yBot = W + H
+
+  const slotW = slotWidthFromThickness(geo.thicknessMm)
+  const half = slotW / 2
+  const slitXs = [xW1, xL2, xW2]
+  const slitGaps = slitXs.map((x) => [x - half, x + half] as [number, number])
 
   const segments: LineSegment[] = []
 
-  // bleed（外扩参考框）
-  addSegment(segments, -BLEED_MM, -BLEED_MM, totalW + BLEED_MM, -BLEED_MM, 'bleed')
-  addSegment(segments, totalW + BLEED_MM, -BLEED_MM, totalW + BLEED_MM, totalH + BLEED_MM, 'bleed')
-  addSegment(segments, totalW + BLEED_MM, totalH + BLEED_MM, -BLEED_MM, totalH + BLEED_MM, 'bleed')
-  addSegment(segments, -BLEED_MM, totalH + BLEED_MM, -BLEED_MM, -BLEED_MM, 'bleed')
+  addBleedRect(segments, xEnd, yBot)
 
-  // 外轮廓 cut
-  addSegment(segments, xGlue, bodyTop, xGlue, bodyBottom, 'cut')
-  addSegment(segments, xGlue, bodyTop, xL1, bodyTop, 'cut')
-  addSegment(segments, xGlue, bodyBottom, xL1, bodyBottom, 'cut')
-  addSegment(segments, xL1, bodyTop, xL1, 0, 'cut')
-  addSegment(segments, xL1, 0, xW1, 0, 'cut')
-  addSegment(segments, xW1, 0, xW1, totalH, 'cut')
-  addSegment(segments, xW1, totalH, xL2, totalH, 'cut')
-  addSegment(segments, xL2, totalH, xL2, bodyBottom, 'cut')
-  addSegment(segments, xL2, bodyBottom, xW2, bodyBottom, 'cut')
-  addSegment(segments, xL2, bodyTop, xW2, bodyTop, 'cut')
-  addSegment(segments, xW2, bodyTop, xW2, 0, 'cut')
-  addSegment(segments, xW2, 0, xEnd, 0, 'cut')
-  addSegment(segments, xEnd, 0, xEnd, totalH, 'cut')
-  addSegment(segments, xEnd, totalH, xW2 + W, totalH, 'cut')
-  addSegment(segments, xL2, bodyTop, xL2, 0, 'cut')
-  addSegment(segments, xL2, 0, xW2, 0, 'cut')
+  // 外轮廓 cut（顶底边在槽位留缝）
+  addHorizontalCutWithGaps(segments, yBot, xL1, xEnd, slitGaps)
+  addSegment(segments, xEnd, yBot, xEnd, yTop, 'cut')
+  addHorizontalCutWithGaps(segments, yTop, xL1, xEnd, slitGaps)
+  addSegment(segments, xL1, yTop, xL1, yBodyTop, 'cut')
+  addSegment(segments, xL1, yBodyTop, xGlue, yBodyTop, 'cut')
+  addSegment(segments, xGlue, yBodyTop, xGlue, yBodyBot, 'cut')
+  addSegment(segments, xGlue, yBodyBot, xL1, yBodyBot, 'cut')
+  addSegment(segments, xL1, yBodyBot, xL1, yBot, 'cut')
 
-  // 竖向压线
-  ;[xGlue, xL1, xW1, xL2, xW2, xEnd].forEach((x) => {
-    addSegment(segments, x, 0, x, totalH, 'crease')
-  })
+  // 摇盖开槽（圆角竖槽，宽约板厚）
+  for (const xi of slitXs) {
+    addVerticalSlotRounded(segments, xi, yTop, yBodyTop, slotW, geo.thicknessMm)
+    addVerticalSlotRounded(segments, xi, yBodyBot, yBot, slotW, geo.thicknessMm)
+  }
 
-  // 横向压线（W 面板折线）
-  addSegment(segments, xW1, bodyTop, xW1 + W, bodyTop, 'crease')
-  addSegment(segments, xW1, bodyBottom, xW1 + W, bodyBottom, 'crease')
-  addSegment(segments, xW2, bodyTop, xW2 + W, bodyTop, 'crease')
-  addSegment(segments, xW2, bodyBottom, xW2 + W, bodyBottom, 'crease')
+  // 竖向压线（4 面板折痕）
+  for (const xi of [xL1, xW1, xL2, xW2]) {
+    addSegment(segments, xi, yBodyTop, xi, yBodyBot, 'crease')
+  }
+
+  // 横向压线（body 与摇盖分界）
+  addSegment(segments, xL1, yBodyTop, xEnd, yBodyTop, 'crease')
+  addSegment(segments, xL1, yBodyBot, xEnd, yBodyBot, 'crease')
 
   return segments
 }
 
 function buildBlankOutlineSegments(totalW: number, totalH: number): LineSegment[] {
   const segments: LineSegment[] = []
-  addSegment(segments, -BLEED_MM, -BLEED_MM, totalW + BLEED_MM, -BLEED_MM, 'bleed')
-  addSegment(segments, totalW + BLEED_MM, -BLEED_MM, totalW + BLEED_MM, totalH + BLEED_MM, 'bleed')
-  addSegment(segments, totalW + BLEED_MM, totalH + BLEED_MM, -BLEED_MM, totalH + BLEED_MM, 'bleed')
-  addSegment(segments, -BLEED_MM, totalH + BLEED_MM, -BLEED_MM, -BLEED_MM, 'bleed')
+  addBleedRect(segments, totalW, totalH)
   addSegment(segments, 0, 0, totalW, 0, 'cut')
   addSegment(segments, totalW, 0, totalW, totalH, 'cut')
   addSegment(segments, totalW, totalH, 0, totalH, 'cut')
@@ -209,13 +229,21 @@ export function buildPreview(params: BoxParams): DielinePreview {
   }
 
   const geometry = computeGeometry(params)
-  const pad = 40
-  const viewBox = `${-pad} ${-pad} ${geometry.blankWidthMm + pad * 2} ${geometry.blankHeightMm + pad * 2}`
+  const viewBox = computePreviewViewBox(geometry)
 
   if (params.boxCode === '0201') {
     return {
       geometry,
       segments: build0201Segments(geometry),
+      viewBox,
+      previewMode: 'detailed',
+    }
+  }
+
+  if (params.boxCode === '0427') {
+    return {
+      geometry,
+      segments: build0427Segments(geometry),
       viewBox,
       previewMode: 'detailed',
     }
@@ -229,43 +257,166 @@ export function buildPreview(params: BoxParams): DielinePreview {
   }
 }
 
-const STROKE: Record<LineKind, { color: string; dash?: string; width: number }> = {
-  bleed: { color: '#22c55e', width: 0.8 },
-  cut: { color: '#2563eb', width: 1.2 },
-  crease: { color: '#ef4444', dash: '6 4', width: 1 },
+function computePreviewViewBox(geometry: DielineGeometry): string {
+  const padSide = Math.max(30, geometry.blankWidthMm * 0.03)
+  const padTop = Math.max(24, geometry.blankHeightMm * 0.03)
+  const padBottom = Math.max(36, geometry.blankHeightMm * 0.05)
+  const w = geometry.blankWidthMm + padSide * 2
+  const h = geometry.blankHeightMm + padTop + padBottom
+  return `${-padSide} ${-padTop} ${w} ${h}`
 }
 
-function escapeXml(value: string): string {
-  return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;')
+/** 屏幕像素线宽（配合 vector-effect=non-scaling-stroke） */
+const STROKE_PX: Record<LineKind, { color: string; dash?: string; width: number; linecap: 'butt' | 'square' }> = {
+  bleed: { color: '#22c55e', width: 1, linecap: 'butt' },
+  cut: { color: '#2563eb', width: 1.2, linecap: 'butt' },
+  crease: { color: '#ef4444', dash: '6 4', width: 1, linecap: 'butt' },
+}
+
+const DIM_COLOR = '#2563eb'
+
+const DIM_LINE_BASE =
+  `stroke="${DIM_COLOR}" stroke-width="1.5" vector-effect="non-scaling-stroke" shape-rendering="geometricPrecision"`
+
+function buildHorizDimLine(x1: number, x2: number, y: number, gapHalf: number): string {
+  void gapHalf
+  return `<line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}" ${DIM_LINE_BASE} marker-start="url(#dim-arrow)" marker-end="url(#dim-arrow)" />`
+}
+
+function buildVertDimLine(x: number, y1: number, y2: number, gapHalf: number): string {
+  void gapHalf
+  return `<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" ${DIM_LINE_BASE} marker-start="url(#dim-arrow)" marker-end="url(#dim-arrow)" />`
+}
+
+function dimTextGapHalf(fontSize: number, labelWidth: number): number {
+  return Math.max(fontSize * 0.9, labelWidth * 0.42)
+}
+
+function renderLineSvg(seg: LineSegment): string {
+  const style = STROKE_PX[seg.kind]
+  const dash = style.dash ? ` stroke-dasharray="${style.dash}"` : ''
+  return `<line x1="${seg.x1}" y1="${seg.y1}" x2="${seg.x2}" y2="${seg.y2}" stroke="${style.color}" stroke-width="${style.width}" vector-effect="non-scaling-stroke" shape-rendering="geometricPrecision" stroke-linecap="${style.linecap}"${dash} />`
+}
+
+function dimLabelFontSize(geometry: DielineGeometry): number {
+  return Math.max(12, geometry.blankWidthMm * 0.011)
+}
+
+function dimValueFromGeometry(
+  geometry: DielineGeometry,
+  field: DimField,
+  dimensionType: DimensionType,
+): number {
+  const triple =
+    dimensionType === 'internal'
+      ? geometry.internal
+      : dimensionType === 'external'
+        ? geometry.external
+        : geometry.manufacturing
+  return triple[field]
+}
+
+function dimLabelSize(fontSize: number): { labelWidth: number; labelHeight: number } {
+  return { labelWidth: fontSize * 4.8, labelHeight: fontSize * 1.35 }
+}
+
+/** 0201 尺寸箭头（无文字），供标注层叠加 */
+export function renderDimensionArrowsOnly0201(geometry: DielineGeometry): string {
+  return get0201DimAnnotations(geometry, 'mm', 'manufacturing')
+    .map((ann) => ann.arrowSvg)
+    .join('')
+}
+
+/** 0201 可编辑标注元数据（防重叠布局） */
+export function get0201DimAnnotations(
+  geometry: DielineGeometry,
+  unit: Unit,
+  dimensionType: DimensionType,
+): DimAnnotation[] {
+  const L = geometry.manufacturing.length
+  const W = geometry.manufacturing.width
+  const H = geometry.manufacturing.height
+  const glue = geometry.glueTabMm
+  const yBodyTop = W / 2
+  const yBodyBot = W / 2 + H
+  const xL1 = glue
+  const xW1 = glue + L
+  const xL2 = glue + L + W
+  const yMid = (yBodyTop + yBodyBot) / 2
+  const inset = Math.max(10, L * 0.02)
+  const fontSize = dimLabelFontSize(geometry)
+  const { labelWidth, labelHeight } = dimLabelSize(fontSize)
+  const gapHalf = dimTextGapHalf(fontSize, labelWidth)
+
+  const lX1 = xL1 + inset
+  const lX2 = xW1 - inset
+  const lLineY = yMid
+  const lArrow = buildHorizDimLine(lX1, lX2, lLineY, gapHalf)
+  const horizontalLabelOffset = fontSize * 1.05
+
+  const wX1 = xW1 + inset
+  const wX2 = xL2 - inset
+  const wLineY = yBodyBot - inset
+  const wArrow = buildHorizDimLine(wX1, wX2, wLineY, gapHalf)
+
+  const hY1 = yBodyTop + inset
+  const hY2 = yBodyBot - inset
+  const hLineX = xL2 + L * 0.5
+  const hArrow = buildVertDimLine(hLineX, hY1, hY2, gapHalf)
+  const hLabelOffset = fontSize * 2.5
+
+  return [
+    {
+      field: 'length',
+      axis: 'horizontal',
+      labelX: (lX1 + lX2) / 2,
+      labelY: lLineY - horizontalLabelOffset,
+      lineX: (lX1 + lX2) / 2,
+      lineY: lLineY,
+      labelWidth,
+      labelHeight,
+      fontSize,
+      arrowSvg: lArrow,
+      displayValue: fromMm(dimValueFromGeometry(geometry, 'length', dimensionType), unit),
+    },
+    {
+      field: 'width',
+      axis: 'horizontal',
+      labelX: (wX1 + wX2) / 2,
+      labelY: wLineY - horizontalLabelOffset,
+      lineX: (wX1 + wX2) / 2,
+      lineY: wLineY,
+      labelWidth,
+      labelHeight,
+      fontSize,
+      arrowSvg: wArrow,
+      displayValue: fromMm(dimValueFromGeometry(geometry, 'width', dimensionType), unit),
+    },
+    {
+      field: 'height',
+      axis: 'vertical',
+      labelX: hLineX + hLabelOffset,
+      labelY: (hY1 + hY2) / 2,
+      lineX: hLineX,
+      lineY: (hY1 + hY2) / 2,
+      labelWidth,
+      labelHeight,
+      fontSize,
+      arrowSvg: hArrow,
+      displayValue: fromMm(dimValueFromGeometry(geometry, 'height', dimensionType), unit),
+    },
+  ]
+}
+
+/** 仅刀版线稿 SVG（不含尺寸标注） */
+export function renderPreviewLinesSvg(preview: DielinePreview): string {
+  const { segments, viewBox } = preview
+  const lines = segments.map(renderLineSvg).join('')
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" style="background:#f8fafc">${lines}</svg>`
 }
 
 export function renderPreviewSvg(preview: DielinePreview, unit: Unit): string {
-  const { geometry, segments, viewBox } = preview
-  const lines = segments
-    .map((seg) => {
-      const style = STROKE[seg.kind]
-      const dash = style.dash ? ` stroke-dasharray="${style.dash}"` : ''
-      return `<line x1="${seg.x1}" y1="${seg.y1}" x2="${seg.x2}" y2="${seg.y2}" stroke="${style.color}" stroke-width="${style.width}"${dash} />`
-    })
-    .join('')
-
-  const lDisp = fromMm(geometry.manufacturing.length, unit).toFixed(unit === 'in' ? 4 : 1)
-  const wDisp = fromMm(geometry.manufacturing.width, unit).toFixed(unit === 'in' ? 4 : 1)
-  const hDisp = fromMm(geometry.manufacturing.height, unit).toFixed(unit === 'in' ? 4 : 1)
-  const unitLabel = unit === 'in' ? 'in' : 'mm'
-
-  const dimL = `<text x="${geometry.glueTabMm + geometry.manufacturing.length / 2}" y="${geometry.blankHeightMm + 24}" text-anchor="middle" font-size="11" fill="#64748b">${lDisp} ${unitLabel}</text>`
-  const dimW = `<text x="${geometry.blankWidthMm + 20}" y="${geometry.manufacturing.width / 2 + geometry.manufacturing.height}" text-anchor="middle" font-size="11" fill="#64748b" transform="rotate(90 ${geometry.blankWidthMm + 20} ${geometry.manufacturing.width / 2 + geometry.manufacturing.height})">${wDisp} ${unitLabel}</text>`
-
-  const summary = [
-    `M ${lDisp} x ${wDisp} x ${hDisp} ${unitLabel}`,
-    `Blank ${geometry.blankWidthMm.toFixed(1)} x ${geometry.blankHeightMm.toFixed(1)} mm`,
-    `Area ${geometry.unfoldAreaM2.toFixed(4)} m²`,
-  ]
-    .map((line, i) => `<text x="8" y="${16 + i * 14}" font-size="11" fill="#334155">${escapeXml(line)}</text>`)
-    .join('')
-
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}" width="100%" height="100%" style="background:#f8fafc">${summary}${lines}${dimL}${dimW}</svg>`
+  return renderPreviewLinesSvg(preview)
 }
 
 function segmentsToMakerModel(segments: LineSegment[], kinds: LineKind[]): makerjs.IModel {
@@ -288,11 +439,6 @@ export function exportDxf(preview: DielinePreview): string {
     },
   }
   return makerjs.exporter.toDXF(model)
-}
-
-export function exportSvg(preview: DielinePreview): string {
-  const model = segmentsToMakerModel(preview.segments, ['cut', 'crease'])
-  return makerjs.exporter.toSVG(model, { units: makerjs.unitType.Millimeter })
 }
 
 export function unfoldAreaM2(params: BoxParams): number {

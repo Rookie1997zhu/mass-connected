@@ -25,6 +25,7 @@
 
   /* Layout */
   --container-max: 1200px;
+  --container-max-wide: 1440px;
   --header-height: 4rem;
   --radius-sm: 4px;
   --radius-md: 8px;

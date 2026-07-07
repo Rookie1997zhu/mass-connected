@@ -9,8 +9,9 @@
 > - `project/供应商系统与工厂协作需求.md`
 > - `project/积分系统与平台运营规则需求.md`
 > - `project/项目管理与生产进度系统需求.md`
+> - `project/纸盒包装生成器方案书 V1.0.md`（纸盒包装生成器产品方案）
 >
-> 更新日期：2026-07-03（含 P2 收尾补齐）
+> 更新日期：2026-07-07（含纸盒包装生成器 `paper_box`）
 
 技术栈：`Vue 3` + `Vite` + `Pinia` + `vue-i18n`、`Django REST Framework`、`MySQL 8.4`、`Redis 7`、`Docker Compose`、`Caddy 2`（统一入口 + 自动 HTTPS）。后端仅提供 DRF API，**不使用 Django Admin**。
 
@@ -106,11 +107,64 @@ flowchart TD
 ```
 
 ### 5.1 简单报价
-参数驱动的自动估价引擎，V1 覆盖注塑模具、3D 打印、PCB、软件、IC。会员填写表单 → 引擎按 `QuoteParam`（后台可维护）计算单价/总价与费用明细 → 生成 PDF 报价书 → 扣减积分 → 记录于 MY PAGE，可一键转为详细报价 RFQ。
+参数驱动的自动估价引擎，V1 覆盖注塑模具、3D 打印、PCB、软件、IC、**纸盒包装（paper_box）**。会员填写表单 → 引擎按 `QuoteParam`（后台可维护）计算单价/总价与费用明细 → 生成 PDF 报价书 → 扣减积分 → 记录于 MY PAGE，可一键转为详细报价 RFQ。
+
+**纸盒包装生成器（paper_box，C 方案）**：独立页面 `/packaging/box`，前端 TypeScript + Maker.js 实时刀版预览（所见即所得），后端独立重算展开面积与计价（权威、防篡改）。P0 盒型 **0201 / 0427 / 0713 / 0716** 均已开放预览与报价；0201/0427 为详细刀版线稿，0713/0716 为展开轮廓预览。支持 mm/in、内/外/制造尺寸换算、客户端 PDF / Illustrator (.ai) / DXF 导出、0201 刀版可点击编辑 L/W/H 尺寸标注。计价币种 **CNY**，附 KRW 换算，有效期 14 天。详见下文 §5.1.1 与 `project/纸盒包装生成器方案书 V1.0.md`。
 
 **注塑自动报价（AUTO QUOTATION）**：按「模具费 +（每零件）制品单价」两块计算，支持 **FAMILY 多零件一模**（要求材料一致）；以 **RMB** 计价并换算展示 KRW；颜色（透明/半透明）、滑块、精密度、包装、利润率均参数化；生成对齐韩文模板的报价单 PDF（含金形单价/制品单价、计算基准明细、MOQ 25KG、有效期 2 周）；报价有效期 14 天。生产费用/运输费用/VAT 一期留空由人工补充。
 
 **二期阶段 A/B/C（STP 几何解析 + 倒扣推断 + 图纸 OCR，已上线）**：注塑表单支持上传 `.stp/.step`（≤30MB），后端用 OpenCASCADE（`cadquery-ocp`）解析体积与包围盒尺寸，按材料密度自动回填单件重量（可手改）；同时做倒扣分析给出主拔模方向与**滑块建议数**，并按几何规则给出**材料建议**（均为建议值 + 置信度，标注"需人工确认"，可编辑）。另支持上传 2D 工程图（PDF/PNG/JPG，≤15MB）经离线 Tesseract OCR 抽取材料/精密度/颜色作可编辑建议回填；识别结果与原始文件均不保存、不落库。详见 `project/注塑模具自动报价需求.md`、`project/注塑自动报价二期技术方案.md`。
+
+#### 5.1.1 纸盒包装生成器（paper_box）
+
+**定位**：将 FEFCO 标准纸盒参数化刀版与简单报价集成到平台，不作为独立 Pacdora 类产品；前端负责交互预览与导出，后端负责展开面积权威计算与计价。
+
+**架构（C 方案）**：
+
+```mermaid
+flowchart LR
+  subgraph frontend [frontend /packaging/box]
+    form[FEFCO 侧栏 + 参数表单]
+    engine[boxEngine + Maker.js]
+    dims[DimAnnotationLayer 0201]
+    export[PDF/AI/DXF 客户端导出]
+  end
+  subgraph backend [backend simplequote]
+    pkg[packaging.py 展开公式]
+    calc[calc_paper_box 计价]
+    pdf[build_paper_box_quotation_pdf]
+  end
+  form --> engine --> dims
+  engine --> export
+  form -->|POST simple-quotes quote_type=paper_box| calc
+  calc --> pkg
+  calc --> pdf
+```
+
+| 层级 | 路径 / 模块 | 职责 |
+|------|-------------|------|
+| 页面 | `frontend/src/views/packaging/BoxGeneratorView.vue` | FEFCO 盒型库、参数表单、刀版预览、报价与转 RFQ |
+| 刀版引擎 | `frontend/src/lib/packaging/boxEngine.ts` | 0201/0427 详细线稿、0713/0716 展开轮廓、尺寸标注元数据 |
+| 刀版导出 | `frontend/src/lib/packaging/dielineExport.ts` | PDF / Illustrator (.ai) / DXF 客户端导出 |
+| 几何工具 | `dielineUtils.ts`、`dieline0427.ts` | 开槽/圆角槽、折线/割线/出血线、0427 锁舌与圆角 |
+| 标注层 | `components/packaging/DimAnnotationLayer.vue` | 0201 CAD 标尺线 + 点击编辑 L/W/H |
+| 盒型目录 | `fefcoCatalog.ts` / `backend/.../fefco_catalog.py` | P0 盒型元数据（预览/报价开关） |
+| 权威几何 | `backend/apps/simplequote/packaging.py` | 内/外/制造尺寸换算；按盒型计算 blank 宽高与 `unfold_area_m2` |
+| 计价 | `calculator.py` → `calc_paper_box` | 材料 + 印刷 + 模切 + 粘盒 + 利润；**忽略前端面积** |
+| PDF | `core/pdf.py` → `build_paper_box_quotation_pdf` | 纸盒报价书（CNY + KRW） |
+
+**P0 盒型与预览能力**：
+
+| FEFCO | 名称 | 预览 | 报价 | 展开公式（制造尺寸 L/W/H） |
+|-------|------|------|------|---------------------------|
+| 0201 | 普通开槽箱 RSC | 详细刀版（开槽/圆角槽/可编辑标注） | ✓ | 宽 `2(L+W)+接头舌`，高 `H+W` |
+| 0427 | 翻盖自锁飞机盒 | 详细刀版 | ✓ | 宽 `L+2W`，高 `2H+2W+插舌` |
+| 0713 | 插舌盒 | 展开轮廓 | ✓ | 宽 `2(L+W)+接头舌`，高 `2H+W` |
+| 0716 | 自动锁底盒 | 展开轮廓 | ✓ | 宽 `2(L+W)+接头舌`，高 `2H+1.25W` |
+
+**前端交互要点**：左侧 FEFCO 栏默认 52px 窄轨（hover/图钉展开）；预览区宽屏布局；刀版分色（出血绿 / 割线蓝 / 折线红）；`npm run test:packaging` 刀版几何断言。
+
+**计价参数（`QuoteParam`，`quote_type=paper_box`）**：`board_price_E/B/C/白卡`、`loss_factor`、`print_setup`、`print_per_color`、`die_cut_fee`、`glue_per_unit`、`profit_rate`、`rmb_to_krw`、`glue_tab_mm` 等，管理后台「报价参数」可维护。
 
 ### 5.2 详细报价（RFQ）
 9.6 状态机：`draft → submitted → pending_review → assigned → quoting → quoted → comparing → customer_confirming → negotiating → won / closed`。
@@ -150,8 +204,9 @@ flowchart TD
 - 供应商抢单：`POST /api/supplier/demand-hall/{id}/grab`
 
 ### 6.3 简单报价（simplequote）
-- 会员：`GET/POST /api/member/simple-quotes`、`GET /api/member/simple-quotes/{id}`、`POST .../convert`、`POST /api/member/simple-quotes/parse-stp`（注塑 STP 几何解析，返回体积/尺寸/密度表 + 倒扣滑块建议 + 材料建议）、`POST /api/member/simple-quotes/parse-drawing`（2D 图纸 OCR，返回材料/精密度/颜色建议）
-- 管理：`GET/POST /api/admin/quote-params`、`PATCH /api/admin/quote-params/{id}`（含 `density_*` 材料密度）
+- 会员：`GET/POST /api/member/simple-quotes`、`GET /api/member/simple-quotes/{id}`、`POST .../convert`、`POST /api/member/simple-quotes/parse-stp`（注塑 STP 几何解析，返回体积/尺寸/密度表 + 倒扣滑块建议 + 材料建议）、`POST /api/member/simple-quotes/parse-drawing`（2D 图纸 OCR，返回材料/精密度/颜色建议）、`GET /api/packaging/fefco-catalog`（FEFCO 盒型目录，含预览/报价开关）
+- 创建 `paper_box` 时 `inputs` 含：`box_code`、`length_mm`、`width_mm`、`height_mm`、`thickness_mm`、`dimension_type`（internal/external/manufacturing）、`board_type`（E/B/C/白卡）、`quantity`、`print_colors`；后端重算 `unfold_area_m2`，忽略前端面积字段
+- 管理：`GET/POST /api/admin/quote-params`、`PATCH /api/admin/quote-params/{id}`（含 `paper_box` 纸板单价与工艺费率）
 
 ### 6.4 积分（points）
 - 会员：`GET /api/member/points/wallet`、`GET .../transactions`、`POST .../recharge`
@@ -181,8 +236,9 @@ flowchart TD
 
 ## 7. 前端（frontend）
 
-- MY PAGE 个人中心 `/my`：概览 / 简单报价 / 详细报价 / 项目 / 合同（**在线签署**）/ 付款 / 积分（**充值历史**）/ 通知 / 企业资料 / 设置；**导航栏未读角标**。
+- MY PAGE 个人中心 `/my`：概览 / 简单报价 / 详细报价 / 项目 / 合同（**在线签署**）/ 付款 / 积分（**充值历史**）/ 通知 / 企业资料 / 设置；**导航栏未读角标**；`paper_box` 记录跳转 `/packaging/box`。
 - 简单报价 `/simple-quote`：按类型动态表单 →（注塑可上传 STP 自动算体积/重量 + 滑块/材料建议，可上传 2D 图纸 OCR 回填材料/精密度/颜色）→ 生成 → 结果与 PDF → 转详细报价。
+- **纸盒包装生成器** `/packaging/box`（`requiresAuth` + `requiresBuyer`）：FEFCO 盒型库 + 实时刀版预览 + 可编辑尺寸标注（0201）+ 刀版 PDF / Illustrator (.ai) / DXF 下载 + 生成 `paper_box` 报价（CNY/KRW）+ 转 RFQ；依赖 `frontend/src/lib/packaging/*`。
 - 我的详细报价 `/my/rfqs/{id}`：以方案 A/B/C 卡片展示（隐藏供应商身份），确认方案。
 - 项目详情 `/my/projects/{id}`：阶段、时间轴、进度、待办勾选。
 - 商城：`/shop/checkout` 购物车摘要；`/my/orders/:id` 订单详情。
@@ -199,7 +255,7 @@ flowchart TD
 - RFQ 管理：状态机流转（含 pending_review）、加价率编辑、**报价请求跟踪/修订/取消**、Quote 方案标签与对客户可见开关。
 - 供应商：管理员建号。
 - 积分：规则维护（**含新建**）、充值人工确认、用户积分调整。
-- 报价参数：简单报价各工艺单价维护（注塑含材料密度 `density_*`）。
+- 报价参数：简单报价各工艺单价维护（注塑含材料密度 `density_*`；**纸盒 `paper_box` 含纸板单价与模切/印刷/粘盒费率**）。
 - 项目/合同/付款：进度维护、**项目待办创建**、合同/凭证下载、付款确认（触发转项目）。
 - CMS：**FAQ 编辑**、**下载资源管理**、询盘**详情查看**。
 - i18n 三语（ko/zh/en）。

@@ -2,6 +2,7 @@
 defineProps({
   centered: { type: Boolean, default: false },
   wide: { type: Boolean, default: false },
+  containerWide: { type: Boolean, default: false },
 })
 </script>
 
@@ -9,7 +10,11 @@ defineProps({
   <section class="page" :class="{ 'page--centered': centered }">
     <div
       class="container"
-      :class="{ 'page-card': centered, 'page-card--wide': centered && wide }"
+      :class="{
+        'page-card': centered,
+        'page-card--wide': centered && wide,
+        'container--wide': containerWide && !centered,
+      }"
     >
       <slot />
     </div>
@@ -42,5 +47,9 @@ defineProps({
 
 .page-card--wide {
   max-width: 560px;
+}
+
+.container--wide {
+  max-width: min(96vw, var(--container-max-wide));
 }
 </style>

@@ -4,8 +4,10 @@ import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PageShell from '../../components/PageShell.vue'
 import { fetchCart, removeCartItem, updateCartItem } from '../../api'
+import { useLocaleCurrency } from '../../composables/useLocaleCurrency'
 
 const { t } = useI18n()
+const { formatMoney } = useLocaleCurrency()
 const items = ref([])
 const total = ref(0)
 const loading = ref(true)
@@ -53,7 +55,7 @@ const remove = async (id) => {
         <tbody>
           <tr v-for="item in items" :key="item.id">
             <td>{{ item.product_name }}</td>
-            <td>KRW {{ Number(item.unit_price_amount).toLocaleString() }}</td>
+            <td>{{ formatMoney({ amount: item.unit_price_amount, currency: item.currency || 'KRW' }) }}</td>
             <td>
               <input v-model.number="item.quantity" type="number" min="1" @change="updateQty(item)" />
             </td>
@@ -62,7 +64,7 @@ const remove = async (id) => {
         </tbody>
       </table>
       <div class="cart-footer">
-        <strong>{{ t('cart.total') }}: KRW {{ Number(total).toLocaleString() }}</strong>
+        <strong>{{ t('cart.total') }}: {{ formatMoney({ amount: total, currency: 'KRW' }) }}</strong>
         <RouterLink to="/shop/checkout" class="btn btn-primary">{{ t('cart.checkout') }}</RouterLink>
       </div>
     </template>

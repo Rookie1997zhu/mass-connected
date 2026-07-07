@@ -4,8 +4,10 @@ import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
 import PageShell from '../../components/PageShell.vue'
 import { fetchOrders } from '../../api'
+import { useLocaleCurrency } from '../../composables/useLocaleCurrency'
 
 const { t } = useI18n()
+const { formatMoney } = useLocaleCurrency()
 const items = ref([])
 const loading = ref(true)
 
@@ -37,7 +39,7 @@ onMounted(async () => {
       <tbody>
         <tr v-for="o in items" :key="o.id">
           <td>{{ o.order_no }}</td>
-          <td>KRW {{ Number(o.total_amount).toLocaleString() }}</td>
+          <td>{{ formatMoney({ amount: o.total_amount, currency: o.currency || 'KRW' }) }}</td>
           <td>{{ o.status }}</td>
           <td>{{ o.created_at?.slice(0, 10) }}</td>
           <td><RouterLink :to="`/my/orders/${o.id}`" class="link">{{ t('common.view') }}</RouterLink></td>

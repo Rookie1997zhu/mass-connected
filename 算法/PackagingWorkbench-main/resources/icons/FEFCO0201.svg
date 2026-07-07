@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <title>FEFCO 0201</title>
+  <defs>
+    <linearGradient id="fFront" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d9a066"/>
+      <stop offset="1" stop-color="#b97f3d"/>
+    </linearGradient>
+    <linearGradient id="fSide" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#c08e4d"/>
+      <stop offset="1" stop-color="#9c6a2f"/>
+    </linearGradient>
+    <linearGradient id="fFlap" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#eab97a"/>
+      <stop offset="1" stop-color="#d9a066"/>
+    </linearGradient>
+  </defs>
+  <!-- open top flaps (splayed outward) -->
+  <polygon points="22,20 34,26 22,30 9,24" fill="#e3b577"
+           stroke="#7a521f" stroke-width="1.3" stroke-linejoin="round"/>
+  <polygon points="34,26 46,20 56,24 46,30" fill="#d6a566"
+           stroke="#7a521f" stroke-width="1.3" stroke-linejoin="round"/>
+  <polygon points="22,20 34,14 46,20 34,26" fill="#f0c48a"
+           stroke="#7a521f" stroke-width="1.3" stroke-linejoin="round"/>
+  <!-- box body -->
+  <polygon points="14,26 34,33 34,55 14,48" fill="url(#fFront)"
+           stroke="#7a521f" stroke-width="1.5" stroke-linejoin="round"/>
+  <polygon points="54,26 34,33 34,55 54,48" fill="url(#fSide)"
+           stroke="#7a521f" stroke-width="1.5" stroke-linejoin="round"/>
+  <!-- corner creases -->
+  <line x1="34" y1="33" x2="34" y2="55" stroke="#7a521f"
+        stroke-width="1" stroke-dasharray="2,2"/>
+</svg>

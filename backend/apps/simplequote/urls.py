@@ -11,6 +11,7 @@ from apps.simplequote.views import (
     MemberSimpleQuoteListCreateView,
     DrawingParseView,
     ShippingEstimateView,
+    SimpleQuotePreviewView,
     StpParseView,
 )
 
@@ -18,6 +19,7 @@ urlpatterns = [
     path("packaging/fefco-catalog", FefcoCatalogView.as_view()),
     path("member/simple-quotes", MemberSimpleQuoteListCreateView.as_view()),
     path("member/simple-quotes/shipping-estimate", ShippingEstimateView.as_view()),
+    path("member/simple-quotes/preview", SimpleQuotePreviewView.as_view()),
     path("member/simple-quotes/parse-stp", StpParseView.as_view()),
     path("member/simple-quotes/parse-drawing", DrawingParseView.as_view()),
     path("member/simple-quotes/<int:pk>", MemberSimpleQuoteDetailView.as_view()),

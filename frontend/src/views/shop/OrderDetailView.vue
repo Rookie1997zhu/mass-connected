@@ -4,8 +4,10 @@ import { useRoute, RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PageShell from '../../components/PageShell.vue'
 import { fetchOrder } from '../../api'
+import { useLocaleCurrency } from '../../composables/useLocaleCurrency'
 
 const { t } = useI18n()
+const { formatMoney } = useLocaleCurrency()
 const route = useRoute()
 const order = ref(null)
 const loading = ref(true)
@@ -28,7 +30,7 @@ onMounted(async () => {
       <h1 class="page-title">{{ order.order_no }}</h1>
       <dl class="detail-list">
         <div><dt>{{ t('common.status') }}</dt><dd>{{ order.status }}</dd></div>
-        <div><dt>{{ t('orders.total') }}</dt><dd>KRW {{ Number(order.total_amount).toLocaleString() }}</dd></div>
+        <div><dt>{{ t('orders.total') }}</dt><dd>{{ formatMoney({ amount: order.total_amount, currency: order.currency || 'KRW' }) }}</dd></div>
         <div><dt>{{ t('orders.date') }}</dt><dd>{{ order.created_at?.slice(0, 16).replace('T', ' ') }}</dd></div>
         <div><dt>{{ t('checkout.name') }}</dt><dd>{{ order.shipping_name }}</dd></div>
         <div><dt>{{ t('checkout.phone') }}</dt><dd>{{ order.shipping_phone }}</dd></div>
@@ -48,7 +50,7 @@ onMounted(async () => {
           <tr v-for="item in order.items || []" :key="item.id">
             <td>{{ item.product_name_text || item.product_name }}</td>
             <td>{{ item.quantity }}</td>
-            <td>KRW {{ Number(item.line_total || item.unit_price * item.quantity).toLocaleString() }}</td>
+            <td>{{ formatMoney({ amount: item.line_total || item.unit_price * item.quantity, currency: order.currency || 'KRW' }) }}</td>
           </tr>
         </tbody>
       </table>

@@ -197,6 +197,13 @@ class MemberSimpleQuoteListCreateView(APIView):
                     param_overrides("pcba"),
                     table_overrides("pcba"),
                 )
+            elif quote_type == "injection":
+                result = calculate(
+                    quote_type,
+                    inputs,
+                    param_overrides(quote_type),
+                    table_overrides("shipping"),
+                )
             else:
                 result = calculate(quote_type, inputs, param_overrides(quote_type))
         except (InjectionQuoteError, PcbQuoteError, PcbaQuoteError, PaperBoxQuoteError) as exc:
@@ -302,6 +309,33 @@ class MemberSimpleQuoteConvertView(APIView):
             status=status.HTTP_201_CREATED,
             request=request,
         )
+
+
+class SimpleQuotePreviewView(APIView):
+    """注塑报价实时试算：仅计算、不扣点、不落库、不生成 PDF。"""
+
+    permission_classes = [IsBuyerRole]
+
+    def post(self, request):
+        data = request.data or {}
+        quote_type = data.get("quote_type")
+        if quote_type != "injection":
+            return error_response(
+                "SIMPLE_QUOTE_TYPE_INVALID", "预览仅支持注塑报价", request=request
+            )
+        inputs = data.get("inputs") or {}
+        try:
+            result = calculate(
+                quote_type,
+                inputs,
+                param_overrides(quote_type),
+                table_overrides("shipping"),
+            )
+        except InjectionQuoteError as exc:
+            return error_response("SIMPLE_QUOTE_INPUT_INVALID", str(exc), request=request)
+        except ValueError:
+            return error_response("SIMPLE_QUOTE_TYPE_INVALID", "暂不支持该报价类型", request=request)
+        return success_response(result, message="试算完成", request=request)
 
 
 INJECTION_MATERIALS = ["ABS", "ABS+Gf", "PC", "PA66", "PP"]

@@ -4,8 +4,10 @@ import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PageShell from '../../components/PageShell.vue'
 import { fetchMyFactoryQuotes } from '../../api'
+import { useLocaleCurrency } from '../../composables/useLocaleCurrency'
 
 const { t } = useI18n()
+const { formatMoney } = useLocaleCurrency()
 const items = ref([])
 const loading = ref(true)
 
@@ -37,7 +39,7 @@ onMounted(async () => {
       <tbody>
         <tr v-for="q in items" :key="q.id">
           <td>{{ q.rfq_no }}</td>
-          <td>KRW {{ Number(q.price_amount).toLocaleString() }}</td>
+          <td>{{ formatMoney({ amount: q.price_amount, currency: q.currency || 'KRW' }) }}</td>
           <td>{{ q.lead_time_days }}</td>
           <td>{{ q.status }}</td>
           <td>

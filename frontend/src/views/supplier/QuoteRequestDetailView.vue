@@ -4,8 +4,10 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PageShell from '../../components/PageShell.vue'
 import { fetchSupplierQuoteRequest, submitSupplierQuote } from '../../api'
+import { useLocaleCurrency } from '../../composables/useLocaleCurrency'
 
 const { t } = useI18n()
+const { formatMoney, displayCurrency } = useLocaleCurrency()
 const route = useRoute()
 const data = ref(null)
 const loading = ref(true)
@@ -74,7 +76,7 @@ const submit = async () => {
 
       <section v-if="data.my_quote" class="card quote-existing">
         <h2>{{ t('demandHall.myQuote') }}</h2>
-        <p>{{ t('rfq.price') }}: KRW {{ Number(data.my_quote.price_amount).toLocaleString() }}</p>
+        <p>{{ t('rfq.price') }}: {{ formatMoney({ amount: data.my_quote.price_amount, currency: data.my_quote.currency || 'KRW' }) }}</p>
         <p>{{ t('mypage.status') }}: {{ data.my_quote.status }}</p>
       </section>
 
@@ -82,7 +84,7 @@ const submit = async () => {
         <h2>{{ t('quoteRequest.submitQuote') }}</h2>
         <p v-if="error" class="page-message page-message--error">{{ error }}</p>
         <p v-if="message" class="page-message page-message--success">{{ message }}</p>
-        <label>{{ t('rfq.price') }} (KRW)<input v-model="form.price_amount" type="number" min="1" /></label>
+        <label>{{ t('rfq.price') }} ({{ displayCurrency }})<input v-model="form.price_amount" type="number" min="1" /></label>
         <label>{{ t('myRfqs.unitPrice') }}<input v-model="form.unit_price" type="number" min="0" /></label>
         <label>{{ t('myRfqs.moldFee') }}<input v-model="form.mold_fee" type="number" min="0" /></label>
         <label>{{ t('myRfqs.sampleFee') }}<input v-model="form.sample_fee" type="number" min="0" /></label>

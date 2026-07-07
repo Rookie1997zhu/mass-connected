@@ -290,10 +290,10 @@ def build_injection_quotation_pdf(*, quote_no, product_name, inputs, result, val
     story.append(part_table)
     story.append(Spacer(1, 6))
 
-    # 生产/运输/VAT（一期留空手动填）+ 合计
+    # 生产/运输/VAT + 合计
     total_rows = [
-        ["생산비용 / 生产费用", _fmt_amount(result.get("production_fee"))],
-        ["운송비용 / 运输费用", _fmt_amount(result.get("shipping_fee"))],
+        ["생산비용 / 生产费用 (개당)", _fmt_amount(result.get("production_fee"), 4)],
+        ["운송비용 / 运输费用 (整单)", _fmt_amount(result.get("shipping_fee"), 2)],
         ["VAT", _fmt_amount(result.get("vat"))],
         ["총단가 / 总单价 (RMB)", _fmt_amount(total)],
     ]
@@ -309,6 +309,8 @@ def build_injection_quotation_pdf(*, quote_no, product_name, inputs, result, val
         detail_rows = [["단계 / 步骤", "값 / 值 (RMB)"]]
         for item in first.get("breakdown", []):
             detail_rows.append([item.get("label", "-"), _fmt_amount(item.get("amount"), 4)])
+        if result.get("shipping_fee") is not None:
+            detail_rows.append(["운송비 / 运输费 (整单)", _fmt_amount(result.get("shipping_fee"), 2)])
         story.append(_amount_table(detail_rows, font))
         story.append(Spacer(1, 6))
 

@@ -4,8 +4,10 @@ import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PageShell from '../../components/PageShell.vue'
 import { fetchMyProductionOrders } from '../../api'
+import { useLocaleCurrency } from '../../composables/useLocaleCurrency'
 
 const { t } = useI18n()
+const { formatMoney } = useLocaleCurrency()
 const items = ref([])
 const loading = ref(true)
 
@@ -41,7 +43,7 @@ onMounted(async () => {
           </td>
           <td>{{ o.rfq_no }}</td>
           <td>{{ o.supplier_name }}</td>
-          <td>{{ o.currency }} {{ Number(o.price_amount).toLocaleString() }}</td>
+          <td>{{ formatMoney({ amount: o.price_amount, currency: o.currency }) }}</td>
           <td>{{ o.status }}</td>
         </tr>
       </tbody>
