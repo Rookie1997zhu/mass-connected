@@ -1,8 +1,146 @@
 import { build0201Segments, buildPreview, computeGeometry, exportDxf } from './boxEngine'
 import { buildDielinePdfBytes } from './dielineExport'
 import { build0427Segments } from './dieline0427'
+import { buildTuckEndSegments } from './dieline0713'
+import { buildAutoLockBottomSegments } from './dieline0716'
+import { buildFoldingShippingSegments } from './dielineFoldingShipping'
 import { REFERENCE_0201 } from './boxPresets'
+import { setFefcoCatalogFromApi } from './fefcoCatalog'
 import type { BoxParams, LineSegment } from './types'
+
+function seedTestCatalog() {
+  setFefcoCatalogFromApi({
+    categories: [
+      { code: '0200', name_i18n: { zh: '开槽箱' }, sort_order: 20 },
+      { code: '0400', name_i18n: { zh: '翻盖箱' }, sort_order: 40 },
+      { code: '0700', name_i18n: { zh: '插舌盒' }, sort_order: 70 },
+    ],
+    templates: [
+      {
+        code: '0201',
+        category_code: '0200',
+        engine_key: 'slotted_rsc',
+        quote_enabled: true,
+        preview_enabled: true,
+        sort_order: 1,
+        default_manufacturing_length_mm: 434,
+        default_manufacturing_width_mm: 214,
+        default_manufacturing_height_mm: 278,
+        default_internal_length_mm: 430,
+        default_internal_width_mm: 210,
+        default_internal_height_mm: 270,
+        default_external_length_mm: 436,
+        default_external_width_mm: 216,
+        default_external_height_mm: 282,
+        default_thickness_mm: 3,
+        min_length_mm: null,
+        max_length_mm: null,
+      },
+      {
+        code: '0210',
+        category_code: '0200',
+        engine_key: 'folding_shipping',
+        quote_enabled: true,
+        preview_enabled: true,
+        sort_order: 2,
+        default_manufacturing_length_mm: 354,
+        default_manufacturing_width_mm: 354,
+        default_manufacturing_height_mm: 208,
+        default_internal_length_mm: 350,
+        default_internal_width_mm: 350,
+        default_internal_height_mm: 200,
+        default_external_length_mm: 356,
+        default_external_width_mm: 356,
+        default_external_height_mm: 216,
+        default_thickness_mm: 3,
+      },
+      {
+        code: '0427',
+        category_code: '0400',
+        engine_key: 'mailer_folder',
+        quote_enabled: true,
+        preview_enabled: true,
+        sort_order: 3,
+        default_manufacturing_length_mm: 315,
+        default_manufacturing_width_mm: 202,
+        default_manufacturing_height_mm: 62,
+        default_thickness_mm: 1.5,
+        material_type: 'white_card',
+        flute_type: 'none',
+      },
+      {
+        code: '0713',
+        category_code: '0700',
+        engine_key: 'tuck_end',
+        quote_enabled: true,
+        preview_enabled: true,
+        sort_order: 4,
+        default_manufacturing_length_mm: 200,
+        default_manufacturing_width_mm: 150,
+        default_manufacturing_height_mm: 100,
+        default_thickness_mm: 1.5,
+        material_type: 'white_card',
+        flute_type: 'none',
+        flap_gap_mm: 2,
+      },
+      {
+        code: '0716',
+        category_code: '0700',
+        engine_key: 'auto_lock_bottom',
+        quote_enabled: true,
+        preview_enabled: true,
+        sort_order: 5,
+        default_manufacturing_length_mm: 200,
+        default_manufacturing_width_mm: 150,
+        default_manufacturing_height_mm: 100,
+        default_thickness_mm: 1.5,
+        material_type: 'white_card',
+        flute_type: 'none',
+        flap_gap_mm: 2,
+      },
+      {
+        code: '9998',
+        category_code: '0200',
+        engine_key: 'slotted_rsc',
+        quote_enabled: true,
+        preview_enabled: true,
+        sort_order: 99,
+        default_manufacturing_length_mm: 100,
+        default_manufacturing_width_mm: 80,
+        default_manufacturing_height_mm: 50,
+        default_thickness_mm: 1.5,
+        parametric_asset_status: 'mapped',
+        active_parametric_asset: {
+          id: 1,
+          source_format: 'svg',
+          version: 1,
+          mapping_status: 'mapped',
+          base_dimensions: { length: 100, width: 80, height: 50, thickness: 1.5 },
+          mapping_schema: {
+            schema_version: 1,
+            mapping_mode: 'orthogonal_scale',
+            base_dimensions: { length: 100, width: 80, height: 50, thickness: 1.5 },
+            entity_roles: { svg_00001: 'cut', svg_00002: 'crease', svg_00003: 'ignore' },
+            transform_rules: { x: 'length', y: 'height' },
+          },
+          parsed_geometry: {
+            schema_version: 1,
+            source_format: 'svg',
+            unit: 'mm',
+            bbox: { min_x: 0, min_y: 0, max_x: 100, max_y: 50 },
+            width: 100,
+            height: 50,
+            entities: [
+              { entity_id: 'svg_00001', type: 'line', role: 'cut', x1: 0, y1: 0, x2: 100, y2: 0 },
+              { entity_id: 'svg_00002', type: 'line', role: 'crease', x1: 100, y1: 0, x2: 100, y2: 50 },
+              { entity_id: 'svg_00003', type: 'line', role: 'ignore', x1: 0, y1: 50, x2: 100, y2: 50 },
+            ],
+          },
+        },
+      },
+    ],
+  })
+}
 
 function assert(condition: boolean, message: string): void {
   if (!condition) {
@@ -51,6 +189,7 @@ function to0201Params(): BoxParams {
 }
 
 export function runDielineAssertions(): void {
+  seedTestCatalog()
   const params = to0201Params()
   const geometry = computeGeometry(params)
   const preview = buildPreview(params)
@@ -111,4 +250,74 @@ export function runDielineAssertions(): void {
   const seg0427 = build0427Segments(geo0427)
   assert(countByKind(seg0427, 'cut') > 0, '0427 should still produce cut segments')
   assert(countByKind(seg0427, 'crease') > 0, '0427 should still produce crease segments')
+
+  const params0210: BoxParams = {
+    ...params,
+    boxCode: '0210',
+    length: 354,
+    width: 354,
+    height: 208,
+    thickness: 3,
+    dimensionType: 'manufacturing',
+  }
+  const geo0210 = computeGeometry(params0210)
+  const preview0210 = buildPreview(params0210)
+  const seg0210 = buildFoldingShippingSegments(geo0210)
+  assert(geo0210.blankWidthMm === 1441, '0210 blank width')
+  assert(geo0210.blankHeightMm === 562, '0210 blank height')
+  assert(countByKind(seg0210, 'crease') === 6, '0210 crease count')
+  assert(countByKind(seg0210, 'cut') > countByKind(build0201Segments(geo0210), 'cut') - 20, '0210 should have interlock slots')
+  assert(preview0210.previewMode === 'detailed', '0210 detailed preview')
+
+  const params0713: BoxParams = {
+    ...params,
+    boxCode: '0713',
+    length: 200,
+    width: 150,
+    height: 100,
+    thickness: 1.5,
+    dimensionType: 'manufacturing',
+  }
+  const preview0713 = buildPreview(params0713)
+  const seg0713 = buildTuckEndSegments(preview0713.geometry)
+  assert(preview0713.previewMode === 'detailed', '0713 detailed preview')
+  assert(countByKind(seg0713, 'cut') > 30, '0713 should have substantial cut geometry')
+  assert(countByKind(seg0713, 'crease') >= 6, '0713 should have body creases')
+
+  const params0716: BoxParams = {
+    ...params0713,
+    boxCode: '0716',
+  }
+  const preview0716 = buildPreview(params0716)
+  const seg0716 = buildAutoLockBottomSegments(preview0716.geometry)
+  assert(preview0716.previewMode === 'detailed', '0716 detailed preview')
+  assert(countByKind(seg0716, 'cut') > countByKind(seg0713, 'cut') - 5, '0716 should include lock-bottom cuts')
+  assert(countByKind(seg0716, 'crease') >= 7, '0716 should include lock crease')
+
+  const parametricPreview = buildPreview({
+    ...params,
+    boxCode: '9998',
+    length: 200,
+    width: 80,
+    height: 100,
+    thickness: 1.5,
+    dimensionType: 'manufacturing',
+  })
+  assert(parametricPreview.segments.length === 2, 'parametric template should skip ignored entities')
+  assert(parametricPreview.geometry.blankWidthMm === 200, 'parametric bbox width should scale by length')
+  assert(parametricPreview.geometry.blankHeightMm === 100, 'parametric bbox height should scale by height')
+  assert(exportDxf(parametricPreview).includes('LINE'), 'parametric DXF should reuse transformed segments')
+
+  const near = (a: number, b: number, tolerance = 0.2) => Math.abs(a - b) <= tolerance
+  const geoFromInternal = computeGeometry({ ...params, dimensionType: 'internal' })
+  const geoFromManufacturing = computeGeometry({
+    ...params,
+    length: geoFromInternal.manufacturing.length,
+    width: geoFromInternal.manufacturing.width,
+    height: geoFromInternal.manufacturing.height,
+    dimensionType: 'manufacturing',
+  })
+  assert(near(geoFromInternal.internal.length, geoFromManufacturing.internal.length), 'internal length stable across dimension type')
+  assert(near(geoFromInternal.external.length, geoFromManufacturing.external.length), 'external length stable across dimension type')
+  assert(near(geoFromInternal.manufacturing.length, geoFromManufacturing.manufacturing.length), 'manufacturing length stable across dimension type')
 }

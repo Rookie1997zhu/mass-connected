@@ -148,7 +148,7 @@ flowchart LR
 | 刀版导出 | `frontend/src/lib/packaging/dielineExport.ts` | PDF / Illustrator (.ai) / DXF 客户端导出 |
 | 几何工具 | `dielineUtils.ts`、`dieline0427.ts` | 开槽/圆角槽、折线/割线/出血线、0427 锁舌与圆角 |
 | 标注层 | `components/packaging/DimAnnotationLayer.vue` | 0201 CAD 标尺线 + 点击编辑 L/W/H |
-| 盒型目录 | `fefcoCatalog.ts` / `backend/.../fefco_catalog.py` | P0 盒型元数据（预览/报价开关） |
+| 盒型目录 | `fefcoCatalog.ts` / `DielineTemplate` + `fefco_catalog.py` | DB 驱动参数化模板库（`engine_key`、默认尺寸、封面图） |
 | 权威几何 | `backend/apps/simplequote/packaging.py` | 内/外/制造尺寸换算；按盒型计算 blank 宽高与 `unfold_area_m2` |
 | 计价 | `calculator.py` → `calc_paper_box` | 材料 + 印刷 + 模切 + 粘盒 + 利润；**忽略前端面积** |
 | PDF | `core/pdf.py` → `build_paper_box_quotation_pdf` | 纸盒报价书（CNY + KRW） |

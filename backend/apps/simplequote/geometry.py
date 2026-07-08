@@ -10,6 +10,7 @@ import base64
 import multiprocessing as mp
 import os
 import tempfile
+import time
 from datetime import datetime, timezone
 from queue import Empty
 
@@ -23,8 +24,19 @@ PREVIEW_MESH_MAX_BYTES = 8 * 1024 * 1024
 UNDERCUT_AREA_RATIO_MIN = 0.02
 # 侧向面判定：|法向·拔模轴| 小于该值视为与拔模轴近似垂直（侧壁）
 SIDE_WALL_DOT_MAX = 0.5
-# 倒扣分析面数上限：射线求交为 O(面数×6)，超过则跳过以保护核心体积/尺寸解析预算
-UNDERCUT_MAX_FACES = 800
+# 面数超过该值时对面做面积降采样（不再直接 skip）
+UNDERCUT_MAX_FACES_SOFT = 800
+# 倒扣射线总预算（采样点 × 2 方向 × 3 轴）
+UNDERCUT_RAY_BUDGET = 60000
+UNDERCUT_FACE_SAMPLE_MAX = 9
+UNDERCUT_FACE_SAMPLE_MIN = 1
+# 空间聚类：倒扣采样点质心距离阈值 = 对角线 × 该比例
+UNDERCUT_CLUSTER_DIST_RATIO = 0.15
+# 拔模轴 tie-break：倒扣面积相差在该比例内视为接近
+UNDERCUT_AXIS_TIE_RATIO = 0.05
+# 倒扣分析 wall-clock 软预算（秒）：射线求交对全模型求交，曲面复杂件开销高，
+# 到点即用已处理采样点提前收敛，保证整体解析不触发子进程超时。
+UNDERCUT_TIME_BUDGET_SEC = 8.0
 
 # 3 个主拔模轴（作为「轴」使用，两个模仁分别沿 ±轴 开模）
 _DRAW_AXES = [
@@ -40,69 +52,249 @@ def _now_iso():
 
 def _face_props(face):
     """返回单个面的（质心, 外法向单位向量, 面积）；失败返回 None。"""
+    samples = _sample_face(face, grid_n=1)
+    if not samples:
+        return None
+    point, normal, weight = samples[0]
+    total = sum(s[2] for s in samples) or weight
+    return (point, normal, total)
+
+
+def _grid_n_from_pts(pts_per_face):
+    pts_per_face = max(UNDERCUT_FACE_SAMPLE_MIN, min(UNDERCUT_FACE_SAMPLE_MAX, int(pts_per_face)))
+    if pts_per_face >= 9:
+        return 3
+    if pts_per_face >= 4:
+        return 2
+    return 1
+
+
+def _undercut_sampling_plan(face_count):
+    """按射线预算计算每面采样网格与是否降采样。"""
+    face_count = max(1, int(face_count))
+    pts = UNDERCUT_RAY_BUDGET // (face_count * 6)
+    pts = max(UNDERCUT_FACE_SAMPLE_MIN, min(UNDERCUT_FACE_SAMPLE_MAX, pts))
+    grid_n = _grid_n_from_pts(pts)
+    pts_per_face = grid_n * grid_n
+    downsampled = face_count > UNDERCUT_MAX_FACES_SOFT
+    if downsampled:
+        # 高面数件：仅保留大面积面 + 单点采样，确保在解析子进程预算内
+        grid_n = 1
+        pts_per_face = 1
+        budget_faces = max(1, UNDERCUT_RAY_BUDGET // (pts_per_face * 6))
+        max_faces = min(face_count, UNDERCUT_MAX_FACES_SOFT, budget_faces)
+    else:
+        max_faces = face_count
+    if pts_per_face < UNDERCUT_FACE_SAMPLE_MAX:
+        downsampled = True
+    return {
+        "grid_n": grid_n,
+        "pts_per_face": pts_per_face,
+        "max_faces": max_faces,
+        "downsampled": downsampled,
+    }
+
+
+def _sample_face(face, grid_n=1):
+    """在面 UV 网格上采样，返回 [(point_xyz, normal_xyz, weight), ...]。"""
     from OCP.BRep import BRep_Tool
+    from OCP.BRepClass import BRepClass_FaceClassifier
     from OCP.BRepGProp import BRepGProp
     from OCP.GProp import GProp_GProps
     from OCP.GeomLProp import GeomLProp_SLProps
-    from OCP.TopAbs import TopAbs_REVERSED
+    from OCP.TopAbs import TopAbs_IN, TopAbs_ON, TopAbs_REVERSED
     from OCP.BRepTools import BRepTools
+    from OCP.gp import gp_Pnt2d
 
     surface = BRep_Tool.Surface_s(face)
     if surface is None:
-        return None
+        return []
     umin, umax, vmin, vmax = BRepTools.UVBounds_s(face)
-    u = (umin + umax) / 2.0
-    v = (vmin + vmax) / 2.0
-    props = GeomLProp_SLProps(surface, u, v, 1, 1e-6)
-    if not props.IsNormalDefined():
-        return None
-    n = props.Normal()
-    nx, ny, nz = n.X(), n.Y(), n.Z()
-    if face.Orientation() == TopAbs_REVERSED:
-        nx, ny, nz = -nx, -ny, -nz
+    if umax <= umin or vmax <= vmin:
+        return []
+
     fprops = GProp_GProps()
     BRepGProp.SurfaceProperties_s(face, fprops)
-    area = fprops.Mass()
-    com = fprops.CentreOfMass()
-    return ((com.X(), com.Y(), com.Z()), (nx, ny, nz), area)
+    face_area = fprops.Mass()
+    if face_area <= 0:
+        return []
+
+    grid_n = max(1, min(3, int(grid_n)))
+    classifier = BRepClass_FaceClassifier()
+    samples = []
+    for i in range(grid_n):
+        for j in range(grid_n):
+            u = umin + (i + 0.5) * (umax - umin) / grid_n
+            v = vmin + (j + 0.5) * (vmax - vmin) / grid_n
+            classifier.Perform(face, gp_Pnt2d(u, v), 1e-6)
+            state = classifier.State()
+            if state not in (TopAbs_IN, TopAbs_ON):
+                continue
+            props = GeomLProp_SLProps(surface, u, v, 1, 1e-6)
+            if not props.IsNormalDefined():
+                continue
+            n = props.Normal()
+            nx, ny, nz = n.X(), n.Y(), n.Z()
+            if face.Orientation() == TopAbs_REVERSED:
+                nx, ny, nz = -nx, -ny, -nz
+            p = props.Value()
+            samples.append(((p.X(), p.Y(), p.Z()), (nx, ny, nz), 0.0))
+
+    if not samples:
+        return []
+
+    weight = face_area / len(samples)
+    return [(pt, n, weight) for pt, n, _ in samples]
 
 
-def analyze_undercut(shape):
-    """基于可见性(遮挡)的倒扣分析。
-
-    两板模沿某主拔模轴的 ±方向开模：某面若从其外侧沿 +轴 与 -轴 均被材料挡住
-    （无法脱模），则判定为倒扣面。选倒扣面积最小的轴为主拔模轴；残余倒扣占比
-    超阈值时按侧向法向聚类给出滑块建议数 + 置信度（建议值，需人工确认）。
-    """
+def _collect_face_samples(shape, plan):
+    """收集待分析面及其采样点（大面积面优先，可降采样）。"""
     from OCP.TopExp import TopExp_Explorer
     from OCP.TopAbs import TopAbs_FACE
     from OCP.TopoDS import TopoDS
-    from OCP.Bnd import Bnd_Box
-    from OCP.BRepBndLib import BRepBndLib
-    from OCP.IntCurvesFace import IntCurvesFace_ShapeIntersector
-    from OCP.gp import gp_Lin, gp_Pnt, gp_Dir
+    from OCP.BRepGProp import BRepGProp
+    from OCP.GProp import GProp_GProps
 
-    faces = []
+    face_entries = []
     explorer = TopExp_Explorer(shape, TopAbs_FACE)
     while explorer.More():
         face = TopoDS.Face_s(explorer.Current())
-        info = _face_props(face)
-        if info is not None:
-            faces.append(info)
+        fprops = GProp_GProps()
+        BRepGProp.SurfaceProperties_s(face, fprops)
+        area = fprops.Mass()
+        if area > 0:
+            face_entries.append((face, area))
         explorer.Next()
 
-    total_area = sum(f[2] for f in faces)
-    if not faces or total_area <= 0:
+    if not face_entries:
+        return [], 0.0
+
+    face_entries.sort(key=lambda item: item[1], reverse=True)
+    selected = face_entries[: plan["max_faces"]]
+    total_area = sum(item[1] for item in face_entries)
+
+    all_samples = []
+    for face, area in selected:
+        for point, normal, weight in _sample_face(face, plan["grid_n"]):
+            all_samples.append((point, normal, weight))
+
+    return all_samples, total_area
+
+
+def _dot(a, b):
+    return a[0] * b[0] + a[1] * b[1] + a[2] * b[2]
+
+
+def _axis_vec(name):
+    for label, vec in _DRAW_AXES:
+        if label == name:
+            return vec
+    return (0.0, 0.0, 1.0)
+
+
+def _side_direction_key(normal, draw_axis_name):
+    """倒扣侧向分组键（排除与拔模轴平行的分量）。"""
+    nx, ny, nz = normal
+    if draw_axis_name == "X":
+        nx = 0.0
+    elif draw_axis_name == "Y":
+        ny = 0.0
+    else:
+        nz = 0.0
+    length = (nx * nx + ny * ny + nz * nz) ** 0.5
+    if length < 1e-6:
         return None
-    # 面数过多时射线求交开销过大，跳过倒扣分析以保护体积/尺寸解析（best-effort）
-    if len(faces) > UNDERCUT_MAX_FACES:
-        return {
-            "draw_direction": None,
-            "undercut_area_ratio": None,
-            "suggested_sliders": None,
-            "confidence": "skipped",
-            "skipped_reason": "too_many_faces",
-        }
+    nx, ny, nz = nx / length, ny / length, nz / length
+    parts = []
+    if abs(nx) > 0.3:
+        parts.append("x+" if nx > 0 else "x-")
+    if abs(ny) > 0.3:
+        parts.append("y+" if ny > 0 else "y-")
+    if abs(nz) > 0.3:
+        parts.append("z+" if nz > 0 else "z-")
+    return "+".join(parts) if parts else None
+
+
+def _cluster_sliders_spatial(undercut_samples, diag, draw_axis_name, total_area):
+    """方向分组 + 空间位置聚类，返回 (slider_count, clusters)。"""
+    if not undercut_samples:
+        return 0, []
+
+    axis = _axis_vec(draw_axis_name)
+    cluster_dist = max(diag * UNDERCUT_CLUSTER_DIST_RATIO, 1e-3)
+    groups = {}
+    for point, normal, weight in undercut_samples:
+        if abs(_dot(normal, axis)) >= SIDE_WALL_DOT_MAX:
+            continue
+        key = _side_direction_key(normal, draw_axis_name)
+        if not key:
+            continue
+        groups.setdefault(key, []).append((point, normal, weight))
+
+    clusters = []
+    for side_key, items in groups.items():
+        remaining = list(items)
+        while remaining:
+            seed = remaining.pop(0)
+            cluster_pts = [seed]
+            i = 0
+            while i < len(remaining):
+                cand = remaining[i]
+                dx = cand[0][0] - seed[0][0]
+                dy = cand[0][1] - seed[0][1]
+                dz = cand[0][2] - seed[0][2]
+                if (dx * dx + dy * dy + dz * dz) ** 0.5 <= cluster_dist:
+                    cluster_pts.append(cand)
+                    remaining.pop(i)
+                else:
+                    i += 1
+            area_sum = sum(p[2] for p in cluster_pts)
+            cx = sum(p[0][0] * p[2] for p in cluster_pts) / max(area_sum, 1e-9)
+            cy = sum(p[0][1] * p[2] for p in cluster_pts) / max(area_sum, 1e-9)
+            cz = sum(p[0][2] * p[2] for p in cluster_pts) / max(area_sum, 1e-9)
+            clusters.append(
+                {
+                    "axis_side": side_key,
+                    "centroid": [round(cx, 2), round(cy, 2), round(cz, 2)],
+                    "area_ratio": round(area_sum / total_area, 4) if total_area else 0.0,
+                }
+            )
+
+    return len(clusters), clusters
+
+
+def _confidence_level(ratio, downsampled, cluster_count, sample_count):
+    if downsampled:
+        return "low"
+    if ratio >= 0.1 and cluster_count <= 4 and sample_count >= 20:
+        return "high"
+    if ratio >= UNDERCUT_AREA_RATIO_MIN:
+        return "medium"
+    return "medium"
+
+
+def analyze_undercut(shape):
+    """基于多点采样 + 遮挡检测的倒扣分析（建议值，需人工确认）。"""
+    from OCP.Bnd import Bnd_Box
+    from OCP.BRepBndLib import BRepBndLib
+    from OCP.IntCurvesFace import IntCurvesFace_ShapeIntersector
+    from OCP.TopExp import TopExp_Explorer
+    from OCP.TopAbs import TopAbs_FACE
+    from OCP.gp import gp_Lin, gp_Pnt, gp_Dir
+
+    explorer = TopExp_Explorer(shape, TopAbs_FACE)
+    face_count = 0
+    while explorer.More():
+        face_count += 1
+        explorer.Next()
+
+    if face_count <= 0:
+        return None
+
+    plan = _undercut_sampling_plan(face_count)
+    samples, total_area = _collect_face_samples(shape, plan)
+    if not samples or total_area <= 0:
+        return None
 
     box = Bnd_Box()
     BRepBndLib.Add_s(shape, box)
@@ -121,35 +313,80 @@ def analyze_undercut(shape):
         intersector.Perform(line, eps, ray_len)
         return intersector.NbPnt() > 0
 
-    best = None
-    for name, axis in _DRAW_AXES:
-        ax, ay, az = axis
-        undercut_area = 0.0
-        undercut_normals = []
-        for (cx, cy, cz), (nx, ny, nz), area in faces:
-            # 从面外侧稍偏出的点出发，避免打到自身
-            ox, oy, oz = cx + nx * eps, cy + ny * eps, cz + nz * eps
+    # 单遍采样：每个采样点一次性完成三轴 ±方向遮挡测试，便于时间预算到点即收敛。
+    # 射线对全模型求交，复杂曲面开销高，超预算则用已处理采样点估算。
+    axis_acc = {
+        name: {"undercut_area": 0.0, "undercut_samples": [], "open_area": 0.0}
+        for name, _axis in _DRAW_AXES
+    }
+    deadline = time.monotonic() + UNDERCUT_TIME_BUDGET_SEC
+    analyzed_area = 0.0
+    processed = 0
+    timed_out = False
+    for point, normal, weight in samples:
+        if time.monotonic() > deadline:
+            timed_out = True
+            break
+        nx, ny, nz = normal
+        ox = point[0] + nx * eps
+        oy = point[1] + ny * eps
+        oz = point[2] + nz * eps
+        for name, axis in _DRAW_AXES:
+            ax, ay, az = axis
             up_clear = not _blocked((ox, oy, oz), (ax, ay, az))
             down_clear = not _blocked((ox, oy, oz), (-ax, -ay, -az))
+            acc = axis_acc[name]
+            if abs(_dot(normal, axis)) > 0.7:
+                acc["open_area"] += weight
             if not up_clear and not down_clear:
-                undercut_area += area
-                undercut_normals.append((nx, ny, nz))
-        if best is None or undercut_area < best["undercut_area"]:
-            best = {"axis": name, "undercut_area": undercut_area, "normals": undercut_normals}
+                acc["undercut_area"] += weight
+                acc["undercut_samples"].append((point, normal, weight))
+        analyzed_area += weight
+        processed += 1
 
-    ratio = best["undercut_area"] / total_area if total_area else 0.0
+    if processed <= 0:
+        return None
+
+    axis_results = [
+        {"axis": name, **axis_acc[name]} for name, _axis in _DRAW_AXES
+    ]
+    best = min(axis_results, key=lambda item: item["undercut_area"])
+    # tie-break：倒扣面积接近时选开口面积（沿轴投影）更大者
+    eps_area = max(best["undercut_area"] * UNDERCUT_AXIS_TIE_RATIO, analyzed_area * 1e-6)
+    candidates = [
+        item
+        for item in axis_results
+        if item["undercut_area"] <= best["undercut_area"] + eps_area
+    ]
+    best = max(candidates, key=lambda item: item["open_area"])
+
+    # 超预算时仅处理了部分采样点，占比基于已分析面积，避免整体面积稀释导致低估
+    ratio_base = analyzed_area if timed_out else total_area
+    ratio = best["undercut_area"] / ratio_base if ratio_base else 0.0
     if ratio < UNDERCUT_AREA_RATIO_MIN:
         suggested_sliders = 0
-        confidence = "medium"
+        clusters = []
     else:
-        suggested_sliders = _cluster_slider_count(best["normals"])
-        confidence = "medium" if ratio > 0.1 else "low"
+        suggested_sliders, clusters = _cluster_sliders_spatial(
+            best["undercut_samples"], diag, best["axis"], ratio_base
+        )
+
+    downsampled = plan["downsampled"] or timed_out
+    confidence = _confidence_level(ratio, downsampled, suggested_sliders, processed)
 
     return {
         "draw_direction": best["axis"],
         "undercut_area_ratio": round(ratio, 4),
         "suggested_sliders": suggested_sliders,
         "confidence": confidence,
+        "undercut_clusters": clusters,
+        "sampling": {
+            "faces_total": face_count,
+            "faces_used": min(face_count, plan["max_faces"]),
+            "pts_per_face": plan["pts_per_face"],
+            "downsampled": downsampled,
+            "partial": timed_out,
+        },
     }
 
 

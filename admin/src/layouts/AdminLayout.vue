@@ -87,6 +87,7 @@ onMounted(loadUnreadCount)
         <el-menu-item index="/rfqs">{{ t('nav.rfqs') }}</el-menu-item>
         <el-menu-item index="/quote-params">{{ t('nav.quoteParams') }}</el-menu-item>
         <el-menu-item index="/quote-tables">{{ t('nav.quoteTables') }}</el-menu-item>
+        <el-menu-item index="/dieline-templates">{{ t('nav.dielineTemplates') }}</el-menu-item>
         <el-menu-item index="/points">{{ t('nav.points') }}</el-menu-item>
         <el-menu-item index="/members">{{ t('nav.members') }}</el-menu-item>
         <el-menu-item index="/projects">{{ t('nav.projects') }}</el-menu-item>

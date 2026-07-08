@@ -1,6 +1,13 @@
 from django.urls import path
 
 from apps.simplequote.views import (
+    AdminDielineCategoryDetailView,
+    AdminDielineCategoryView,
+    AdminDielineTemplateAssetActivateView,
+    AdminDielineTemplateAssetDetailView,
+    AdminDielineTemplateAssetView,
+    AdminDielineTemplateDetailView,
+    AdminDielineTemplateView,
     AdminQuoteParamDetailView,
     AdminQuoteParamView,
     AdminQuoteTableDetailView,
@@ -28,4 +35,17 @@ urlpatterns = [
     path("admin/quote-params/<int:pk>", AdminQuoteParamDetailView.as_view()),
     path("admin/quote-tables", AdminQuoteTableView.as_view()),
     path("admin/quote-tables/<int:pk>", AdminQuoteTableDetailView.as_view()),
+    path("admin/dieline-categories", AdminDielineCategoryView.as_view()),
+    path("admin/dieline-categories/<int:pk>", AdminDielineCategoryDetailView.as_view()),
+    path("admin/dieline-templates", AdminDielineTemplateView.as_view()),
+    path("admin/dieline-templates/<int:pk>", AdminDielineTemplateDetailView.as_view()),
+    path("admin/dieline-templates/<int:template_id>/assets", AdminDielineTemplateAssetView.as_view()),
+    path(
+        "admin/dieline-templates/<int:template_id>/assets/<int:asset_id>",
+        AdminDielineTemplateAssetDetailView.as_view(),
+    ),
+    path(
+        "admin/dieline-templates/<int:template_id>/assets/<int:asset_id>/activate",
+        AdminDielineTemplateAssetActivateView.as_view(),
+    ),
 ]

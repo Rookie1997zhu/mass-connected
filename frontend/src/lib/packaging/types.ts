@@ -1,5 +1,5 @@
-import type { BoxCode } from './fefcoCatalog'
-export type { BoxCode } from './fefcoCatalog'
+import type { BoxCode, EngineKey } from './fefcoCatalog'
+export type { BoxCode, EngineKey } from './fefcoCatalog'
 
 export type Unit = 'mm' | 'in'
 export type DimensionType = 'internal' | 'external' | 'manufacturing'

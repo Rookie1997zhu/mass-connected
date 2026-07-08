@@ -71,6 +71,26 @@ const colorLabel = (color) => {
   return map[color] || color
 }
 
+const undercutMetaHint = computed(() => {
+  const uc = undercut.value
+  if (!uc?.draw_direction) return ''
+  const parts = []
+  if (uc.confidence) {
+    const confidenceKey = {
+      high: 'confidenceHigh',
+      medium: 'confidenceMedium',
+      low: 'confidenceLow',
+    }[uc.confidence]
+    if (confidenceKey) {
+      parts.push(`${t('simpleQuote.confidence')}: ${t(`simpleQuote.${confidenceKey}`)}`)
+    }
+  }
+  if (uc.sampling?.downsampled) {
+    parts.push(t('simpleQuote.undercutDownsampled'))
+  }
+  return parts.join(' · ')
+})
+
 const handleGenerate = async () => {
   const data = await onGenerate()
   if (data) emit('generated', data)
@@ -141,6 +161,7 @@ const handleGenerate = async () => {
             {{ t('simpleQuote.sliderSuggest') }}: {{ undercut.suggested_sliders }}
             <em class="iq-badge">{{ t('simpleQuote.needReview') }}</em>
           </p>
+          <p v-if="undercutMetaHint" class="iq-suggest-meta">{{ undercutMetaHint }}</p>
           <p v-if="materialSuggestion" class="iq-suggest">
             {{ t('simpleQuote.materialSuggest') }}: {{ materialSuggestion.material }}
             <em class="iq-badge">{{ t('simpleQuote.needReview') }}</em>
@@ -394,6 +415,7 @@ const handleGenerate = async () => {
   .iq-unit { font-size: 0.85rem; flex-shrink: 0; }
 }
 .iq-geo-hint, .iq-suggest { font-size: 0.78rem; color: var(--color-text-muted); margin: 0; display: flex; flex-wrap: wrap; gap: 0.75rem; min-width: 0; word-break: break-word; }
+.iq-suggest-meta { font-size: 0.68rem; color: var(--color-text-muted); margin: -0.15rem 0 0; opacity: 0.85; line-height: 1.35; }
 .iq-badge { font-style: normal; font-size: 0.7rem; padding: 0.05rem 0.35rem; border-radius: var(--radius-sm); background: #fff3cd; color: #8a6d00; }
 .iq-tools { display: flex; flex-direction: column; gap: 0.35rem; }
 .iq-right { display: flex; flex-direction: column; gap: var(--space-md); min-width: 0; }

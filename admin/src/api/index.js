@@ -138,6 +138,26 @@ export const fetchQuoteTables = (params) => http.get('/admin/quote-tables', { pa
 export const saveQuoteTable = (data) => http.post('/admin/quote-tables', data)
 export const updateQuoteTable = (id, data) => http.patch(`/admin/quote-tables/${id}`, data)
 
+export const fetchDielineTemplates = () => http.get('/admin/dieline-templates')
+export const fetchDielineCategories = () => http.get('/admin/dieline-categories')
+export const saveDielineCategory = (data) => http.post('/admin/dieline-categories', data)
+export const updateDielineCategory = (id, data) => http.patch(`/admin/dieline-categories/${id}`, data)
+export const deleteDielineCategory = (id) => http.delete(`/admin/dieline-categories/${id}`)
+export const saveDielineTemplate = (formData) =>
+  http.post('/admin/dieline-templates', formData, { headers: { 'Content-Type': 'multipart/form-data' } })
+export const updateDielineTemplate = (id, formData) =>
+  http.patch(`/admin/dieline-templates/${id}`, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
+export const deleteDielineTemplate = (id) => http.delete(`/admin/dieline-templates/${id}`)
+export const fetchDielineTemplateAssets = (templateId) => http.get(`/admin/dieline-templates/${templateId}/assets`)
+export const uploadDielineTemplateAsset = (templateId, formData) =>
+  http.post(`/admin/dieline-templates/${templateId}/assets`, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
+export const updateDielineTemplateAsset = (templateId, assetId, data) =>
+  http.patch(`/admin/dieline-templates/${templateId}/assets/${assetId}`, data)
+export const activateDielineTemplateAsset = (templateId, assetId) =>
+  http.post(`/admin/dieline-templates/${templateId}/assets/${assetId}/activate`)
+export const deleteDielineTemplateAsset = (templateId, assetId) =>
+  http.delete(`/admin/dieline-templates/${templateId}/assets/${assetId}`)
+
 // 项目
 export const fetchProjects = (params) => http.get('/admin/projects', { params })
 export const fetchProject = (id) => http.get(`/admin/projects/${id}`)

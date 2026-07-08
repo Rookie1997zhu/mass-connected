@@ -1,5 +1,9 @@
 import makerjs from 'makerjs'
+import { boardTypeToFlute, resolveBoardAllowances, validateTemplateLimits } from './boardAllowances'
 import { build0427Segments, compute0427BlankSize } from './dieline0427'
+import { buildTuckEndSegments } from './dieline0713'
+import { buildAutoLockBottomSegments } from './dieline0716'
+import { buildFoldingShippingSegments } from './dielineFoldingShipping'
 import {
   addBleedRect,
   addHorizontalCutWithGaps,
@@ -8,14 +12,15 @@ import {
   slotWidthFromThickness,
 } from './dielineUtils'
 import { getBoxTemplate } from './fefcoCatalog'
+import { buildParametricSegments, hasMappedParametricAsset, viewBoxFromSegments } from './parametricTemplate'
 import type {
   BoxParams,
-  BoxCode,
   DimAnnotation,
   DielineGeometry,
   DielinePreview,
   DimensionType,
   DimField,
+  EngineKey,
   LineKind,
   LineSegment,
   SizeTriple,
@@ -35,15 +40,18 @@ export function fromMm(value: number, unit: Unit): number {
   return unit === 'in' ? value / MM_PER_IN : value
 }
 
-function boardAllowances(thicknessMm: number) {
-  // B 楞 3mm 参考：内 -4/-4/-8 mm，外 +2/+2/+4 mm
-  const t = Math.max(0.1, thicknessMm)
-  return {
-    internalLw: (4 / 3) * t,
-    internalH: (8 / 3) * t,
-    externalLw: (2 / 3) * t,
-    externalH: (4 / 3) * t,
-  }
+function boardAllowances(
+  thicknessMm: number,
+  template?: ReturnType<typeof getBoxTemplate>,
+  boardType?: string,
+) {
+  const fluteType = boardType ? boardTypeToFlute(boardType) : template?.fluteType
+  const materialType = template?.materialType
+  return resolveBoardAllowances(thicknessMm, {
+    fluteType,
+    materialType,
+    templateAllowances: template?.allowances,
+  })
 }
 
 function toManufacturingMm(
@@ -52,8 +60,10 @@ function toManufacturingMm(
   height: number,
   thicknessMm: number,
   dimensionType: DimensionType,
+  template?: ReturnType<typeof getBoxTemplate>,
+  boardType?: string,
 ): SizeTriple {
-  const allow = boardAllowances(thicknessMm)
+  const allow = boardAllowances(thicknessMm, template, boardType)
   if (dimensionType === 'manufacturing') {
     return { length, width, height }
   }
@@ -71,8 +81,13 @@ function toManufacturingMm(
   }
 }
 
-function sizeTripleFromManufacturing(m: SizeTriple, thicknessMm: number): { internal: SizeTriple; external: SizeTriple } {
-  const allow = boardAllowances(thicknessMm)
+function sizeTripleFromManufacturing(
+  m: SizeTriple,
+  thicknessMm: number,
+  template?: ReturnType<typeof getBoxTemplate>,
+  boardType?: string,
+): { internal: SizeTriple; external: SizeTriple } {
+  const allow = boardAllowances(thicknessMm, template, boardType)
   return {
     internal: {
       length: m.length - allow.internalLw,
@@ -87,30 +102,43 @@ function sizeTripleFromManufacturing(m: SizeTriple, thicknessMm: number): { inte
   }
 }
 
-function computeBlankSize(code: BoxCode, m: SizeTriple, glueTab: number, thicknessMm = 1.5): { blankWidthMm: number; blankHeightMm: number } {
+function computeBlankSize(engineKey: EngineKey, m: SizeTriple, glueTab: number, thicknessMm = 1.5): { blankWidthMm: number; blankHeightMm: number } {
   const L = m.length
   const W = m.width
   const H = m.height
-  switch (code) {
-    case '0201':
+  switch (engineKey) {
+    case 'slotted_rsc':
+    case 'folding_shipping':
       return { blankWidthMm: 2 * (L + W) + glueTab, blankHeightMm: W + H }
-    case '0427': {
+    case 'mailer_folder': {
       const blank = compute0427BlankSize(L, W, H, thicknessMm)
       return { blankWidthMm: blank.blankWidthMm, blankHeightMm: blank.blankHeightMm }
     }
-    case '0713':
+    case 'tuck_end':
       return { blankWidthMm: 2 * (L + W) + glueTab, blankHeightMm: 2 * H + W }
-    case '0716':
+    case 'auto_lock_bottom':
       return { blankWidthMm: 2 * (L + W) + glueTab, blankHeightMm: 2 * H + 1.25 * W }
     default:
-      throw new Error(`Unsupported box code: ${code}`)
+      throw new Error(`Unsupported engine: ${engineKey}`)
   }
 }
 
-export function computeGeometry(params: BoxParams, glueTabMm = DEFAULT_GLUE_TAB_MM): DielineGeometry {
+export function computeGeometry(params: BoxParams, glueTabMm?: number): DielineGeometry {
   const template = getBoxTemplate(params.boxCode)
   if (!template?.previewEnabled) {
     throw new Error('Box type preview not available yet')
+  }
+
+  const limitError = validateTemplateLimits(params.length, params.width, params.height, {
+    minLengthMm: template.minLengthMm,
+    maxLengthMm: template.maxLengthMm,
+    minWidthMm: template.minWidthMm,
+    maxWidthMm: template.maxWidthMm,
+    minHeightMm: template.minHeightMm,
+    maxHeightMm: template.maxHeightMm,
+  })
+  if (limitError) {
+    throw new Error(limitError)
   }
 
   const thicknessMm = Math.max(0.1, toMm(params.thickness, params.unit))
@@ -133,10 +161,17 @@ export function computeGeometry(params: BoxParams, glueTabMm = DEFAULT_GLUE_TAB_
     input.height,
     thicknessMm,
     params.dimensionType,
+    template,
+    params.boardType,
   )
-  const { internal, external } = sizeTripleFromManufacturing(manufacturing, thicknessMm)
-  const glueTab = Math.max(15, glueTabMm)
-  const { blankWidthMm, blankHeightMm } = computeBlankSize(params.boxCode, manufacturing, glueTab, thicknessMm)
+  const { internal, external } = sizeTripleFromManufacturing(
+    manufacturing,
+    thicknessMm,
+    template,
+    params.boardType,
+  )
+  const glueTab = Math.max(15, glueTabMm ?? template.defaultGlueTabMm ?? DEFAULT_GLUE_TAB_MM)
+  const { blankWidthMm, blankHeightMm } = computeBlankSize(template.engineKey, manufacturing, glueTab, thicknessMm)
   const unfoldAreaM2 = (blankWidthMm / 1000) * (blankHeightMm / 1000)
 
   return {
@@ -229,9 +264,32 @@ export function buildPreview(params: BoxParams): DielinePreview {
   }
 
   const geometry = computeGeometry(params)
+  const engineKey = template.engineKey
+
+  if (hasMappedParametricAsset(template.activeParametricAsset)) {
+    const segments = buildParametricSegments(template.activeParametricAsset, geometry)
+    if (segments.length) {
+      const xs = segments.flatMap((seg) => [seg.x1, seg.x2])
+      const ys = segments.flatMap((seg) => [seg.y1, seg.y2])
+      const blankWidthMm = Math.max(...xs) - Math.min(...xs)
+      const blankHeightMm = Math.max(...ys) - Math.min(...ys)
+      return {
+        geometry: {
+          ...geometry,
+          blankWidthMm,
+          blankHeightMm,
+          unfoldAreaM2: (blankWidthMm * blankHeightMm) / 1_000_000,
+        },
+        segments,
+        viewBox: viewBoxFromSegments(segments),
+        previewMode: 'detailed',
+      }
+    }
+  }
+
   const viewBox = computePreviewViewBox(geometry)
 
-  if (params.boxCode === '0201') {
+  if (engineKey === 'slotted_rsc') {
     return {
       geometry,
       segments: build0201Segments(geometry),
@@ -240,10 +298,39 @@ export function buildPreview(params: BoxParams): DielinePreview {
     }
   }
 
-  if (params.boxCode === '0427') {
+  if (engineKey === 'folding_shipping') {
+    return {
+      geometry,
+      segments: buildFoldingShippingSegments(geometry),
+      viewBox,
+      previewMode: 'detailed',
+    }
+  }
+
+  if (engineKey === 'mailer_folder') {
     return {
       geometry,
       segments: build0427Segments(geometry),
+      viewBox,
+      previewMode: 'detailed',
+    }
+  }
+
+  if (engineKey === 'tuck_end') {
+    const flapGap = template.flapGapMm ?? 2
+    return {
+      geometry,
+      segments: buildTuckEndSegments(geometry, flapGap),
+      viewBox,
+      previewMode: 'detailed',
+    }
+  }
+
+  if (engineKey === 'auto_lock_bottom') {
+    const flapGap = template.flapGapMm ?? 2
+    return {
+      geometry,
+      segments: buildAutoLockBottomSegments(geometry, flapGap),
       viewBox,
       previewMode: 'detailed',
     }
@@ -442,6 +529,10 @@ export function exportDxf(preview: DielinePreview): string {
 }
 
 export function unfoldAreaM2(params: BoxParams): number {
+  const template = getBoxTemplate(params.boxCode)
+  if (hasMappedParametricAsset(template?.activeParametricAsset)) {
+    return buildPreview(params).geometry.unfoldAreaM2
+  }
   return computeGeometry(params).unfoldAreaM2
 }
 

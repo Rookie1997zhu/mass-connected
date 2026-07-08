@@ -36,6 +36,160 @@ class QuoteParam(models.Model):
         unique_together = [("quote_type", "param_key")]
 
 
+class DielineCategory(models.Model):
+    """刀版盒型分类（管理员可维护）。"""
+
+    code = models.CharField(max_length=16, unique=True)
+    name_i18n = models.JSONField(default=dict, blank=True)
+    desc_i18n = models.JSONField(default=dict, blank=True)
+    sort_order = models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["sort_order", "code"]
+
+    def __str__(self):
+        return self.code
+
+
+class DielineTemplate(models.Model):
+    """刀版参数化模板（DB 驱动，管理员可维护）。"""
+
+    ENGINE_CHOICES = [
+        ("slotted_rsc", "Slotted RSC"),
+        ("folding_shipping", "Folding shipping box"),
+        ("mailer_folder", "Mailer folder"),
+        ("tuck_end", "Tuck end"),
+        ("auto_lock_bottom", "Auto lock bottom"),
+    ]
+    FLUTE_CHOICES = [
+        ("e", "E flute"),
+        ("b", "B flute"),
+        ("c", "C flute"),
+        ("bc", "BC flute"),
+        ("none", "Non-flute"),
+    ]
+    MATERIAL_CHOICES = [
+        ("corrugated", "Corrugated"),
+        ("white_card", "White card"),
+        ("kraft", "Kraft"),
+        ("coated", "Coated"),
+    ]
+    DIMENSION_TYPE_CHOICES = [
+        ("internal", "Internal"),
+        ("external", "External"),
+        ("manufacturing", "Manufacturing"),
+    ]
+    PRIORITY_CHOICES = [
+        ("P0", "P0"),
+        ("P1", "P1"),
+    ]
+
+    code = models.CharField(max_length=16, unique=True)
+    category = models.ForeignKey(
+        DielineCategory,
+        on_delete=models.PROTECT,
+        related_name="templates",
+        null=True,
+        blank=True,
+    )
+    category_code = models.CharField(max_length=16)
+    engine_key = models.CharField(max_length=32, choices=ENGINE_CHOICES)
+    name_i18n = models.JSONField(default=dict, blank=True)
+    desc_i18n = models.JSONField(default=dict, blank=True)
+    default_length_mm = models.DecimalField(max_digits=10, decimal_places=2, default=200)
+    default_width_mm = models.DecimalField(max_digits=10, decimal_places=2, default=150)
+    default_height_mm = models.DecimalField(max_digits=10, decimal_places=2, default=100)
+    default_manufacturing_length_mm = models.DecimalField(max_digits=10, decimal_places=2, default=200)
+    default_manufacturing_width_mm = models.DecimalField(max_digits=10, decimal_places=2, default=150)
+    default_manufacturing_height_mm = models.DecimalField(max_digits=10, decimal_places=2, default=100)
+    default_internal_length_mm = models.DecimalField(max_digits=10, decimal_places=2, default=200)
+    default_internal_width_mm = models.DecimalField(max_digits=10, decimal_places=2, default=150)
+    default_internal_height_mm = models.DecimalField(max_digits=10, decimal_places=2, default=100)
+    default_external_length_mm = models.DecimalField(max_digits=10, decimal_places=2, default=200)
+    default_external_width_mm = models.DecimalField(max_digits=10, decimal_places=2, default=150)
+    default_external_height_mm = models.DecimalField(max_digits=10, decimal_places=2, default=100)
+    default_thickness_mm = models.DecimalField(max_digits=8, decimal_places=2, default=1.5)
+    default_glue_tab_mm = models.DecimalField(max_digits=8, decimal_places=2, default=25)
+    flute_type = models.CharField(max_length=8, choices=FLUTE_CHOICES, default="b")
+    material_type = models.CharField(max_length=16, choices=MATERIAL_CHOICES, default="corrugated")
+    default_dimension_type = models.CharField(
+        max_length=16, choices=DIMENSION_TYPE_CHOICES, default="internal"
+    )
+    min_length_mm = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    max_length_mm = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    min_width_mm = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    max_width_mm = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    min_height_mm = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    max_height_mm = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    slot_gap_mm = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
+    crease_gap_mm = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
+    flap_gap_mm = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
+    structure_params = models.JSONField(default=dict, blank=True)
+    allowances = models.JSONField(default=dict, blank=True)
+    production_asset = models.FileField(
+        upload_to="dieline_production/%Y/%m/", null=True, blank=True
+    )
+    priority = models.CharField(max_length=8, choices=PRIORITY_CHOICES, default="P0")
+    quote_enabled = models.BooleanField(default=True)
+    preview_enabled = models.BooleanField(default=True)
+    sort_order = models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+    thumbnail = models.ImageField(upload_to="dieline_template/%Y/%m/", null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["sort_order", "code"]
+
+    def __str__(self):
+        return f"FEFCO {self.code}"
+
+
+class DielineTemplateAsset(models.Model):
+    """真实刀版资产版本：解析结果 + 人工参数映射。"""
+
+    FORMAT_CHOICES = [
+        ("dxf", "DXF"),
+        ("svg", "SVG"),
+        ("ai", "AI"),
+        ("pdf", "PDF"),
+    ]
+    STATUS_CHOICES = [
+        ("uploaded", "Uploaded"),
+        ("parsed", "Parsed"),
+        ("mapped", "Mapped"),
+        ("failed", "Failed"),
+        ("attachment_only", "Attachment only"),
+    ]
+
+    template = models.ForeignKey(
+        DielineTemplate,
+        on_delete=models.CASCADE,
+        related_name="assets",
+    )
+    source_file = models.FileField(upload_to="dieline_assets/%Y/%m/")
+    source_format = models.CharField(max_length=8, choices=FORMAT_CHOICES)
+    parsed_geometry = models.JSONField(default=dict, blank=True)
+    mapping_schema = models.JSONField(default=dict, blank=True)
+    base_dimensions = models.JSONField(default=dict, blank=True)
+    mapping_status = models.CharField(max_length=24, choices=STATUS_CHOICES, default="uploaded")
+    parse_errors = models.JSONField(default=dict, blank=True)
+    version = models.PositiveIntegerField(default=1)
+    is_active = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-is_active", "-version", "-created_at"]
+        unique_together = [("template", "version")]
+
+    def __str__(self):
+        return f"{self.template.code} asset v{self.version}"
+
+
 class SimpleQuote(models.Model):
     TYPE_CHOICES = [
         ("injection", "Injection Mold"),

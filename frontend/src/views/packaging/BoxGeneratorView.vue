@@ -5,10 +5,11 @@ import { useI18n } from 'vue-i18n'
 import DOMPurify from 'dompurify'
 import PageShell from '../../components/PageShell.vue'
 import DimAnnotationLayer from '../../components/packaging/DimAnnotationLayer.vue'
-import { convertSimpleQuote, createSimpleQuote } from '../../api'
+import { convertSimpleQuote, createSimpleQuote, fetchFefcoCatalog } from '../../api'
 import {
   buildPreview,
   buildQuoteInputs,
+  computeGeometry,
   downloadTextFile,
   exportDxf,
   fromMm,
@@ -16,16 +17,17 @@ import {
   renderPreviewLinesSvg,
 } from '../../lib/packaging/boxEngine'
 import { exportDielineAi, exportDielinePdf } from '../../lib/packaging/dielineExport'
-import { categoriesWithTemplates, getBoxTemplate } from '../../lib/packaging/fefcoCatalog'
-import { getBoxPreset } from '../../lib/packaging/boxPresets'
+import { categoriesWithTemplates, defaultDimsForTemplate, getBoxTemplate, getEngineKey, resetFefcoCatalog, setFefcoCatalogFromApi } from '../../lib/packaging/fefcoCatalog'
 import { useLocaleCurrency } from '../../composables/useLocaleCurrency'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const { fromQuote } = useLocaleCurrency()
 const router = useRouter()
 
-const fefcoCategories = categoriesWithTemplates()
-const activeCategory = ref(fefcoCategories[0]?.code || '0200')
+const fefcoCategories = ref([])
+const catalogLoading = ref(false)
+const catalogError = ref('')
+const activeCategory = ref('')
 
 const productName = ref('')
 const unit = ref('mm')
@@ -67,6 +69,7 @@ onMounted(() => {
   }
   syncMobile()
   mobileMq.addEventListener('change', syncMobile)
+  loadCatalog()
 })
 
 onUnmounted(() => {
@@ -74,8 +77,78 @@ onUnmounted(() => {
 })
 
 const activeTemplates = computed(() => {
-  const cat = fefcoCategories.find((c) => c.code === activeCategory.value)
+  const cat = fefcoCategories.value.find((c) => c.code === activeCategory.value)
   return cat?.templates || []
+})
+
+const localeKey = computed(() => {
+  const map = { 'zh-CN': 'zh', zh: 'zh', en: 'en', ko: 'ko', ja: 'ja' }
+  return map[locale.value] || 'en'
+})
+
+const templateLabel = (tpl, field = 'name') => {
+  if (!tpl) return ''
+  const i18n = field === 'name' ? tpl.nameI18n : tpl.descI18n
+  const key = field === 'name' ? tpl.nameKey : tpl.descKey
+  return i18n?.[localeKey.value] || i18n?.zh || i18n?.en || (key ? t(`packaging.${key}`) : tpl.code)
+}
+
+const categoryLabel = (cat, field = 'name') => {
+  if (!cat) return ''
+  const i18n = field === 'name' ? cat.nameI18n : cat.descI18n
+  const key = field === 'name' ? cat.nameKey : cat.descKey
+  return i18n?.[localeKey.value] || i18n?.zh || i18n?.en || cat.code || (key ? t(`packaging.${key}`) : '')
+}
+
+let suppressDimTypeWatch = false
+
+const applyTemplateDefaults = (tpl, dimType = dimensionType.value) => {
+  if (!tpl) return
+  const effectiveDimType = dimType || tpl.defaultDimensionType || 'internal'
+  const dims = defaultDimsForTemplate(tpl, effectiveDimType)
+  if (!dims?.lengthMm || !dims?.widthMm || !dims?.heightMm) return
+  length.value = dims.lengthMm
+  width.value = dims.widthMm
+  height.value = dims.heightMm
+  thickness.value = tpl.defaultThicknessMm ?? ''
+  unit.value = 'mm'
+}
+
+const roundDimForUnit = (mmValue) => {
+  const decimals = unit.value === 'in' ? 4 : 1
+  return Number(fromMm(mmValue, unit.value).toFixed(decimals))
+}
+
+const syncDimsForDimensionType = (newType, oldType) => {
+  if (!boxCode.value || !oldType || newType === oldType || !hasBoxDims.value) return
+  const tpl = getBoxTemplate(boxCode.value)
+  if (!tpl?.previewEnabled) return
+  try {
+    const geo = computeGeometry({
+      boxCode: boxCode.value,
+      length: Number(length.value),
+      width: Number(width.value),
+      height: Number(height.value),
+      thickness: Number(thickness.value),
+      unit: unit.value,
+      dimensionType: oldType,
+      boardType: boardType.value,
+      quantity: Math.max(1, Number(quantity.value) || 1),
+      printColors: Math.max(0, Number(printColors.value) || 0),
+    })
+    const target = geo[newType]
+    if (!target) return
+    length.value = roundDimForUnit(target.length)
+    width.value = roundDimForUnit(target.width)
+    height.value = roundDimForUnit(target.height)
+  } catch {
+    // 尺寸未通过校验时保持用户输入，避免切换口径时清空表单
+  }
+}
+
+const isSlottedRsc = computed(() => {
+  const ek = getEngineKey(boxCode.value)
+  return ek === 'slotted_rsc' || ek === 'folding_shipping'
 })
 
 const selectedTemplate = computed(() => getBoxTemplate(boxCode.value))
@@ -129,7 +202,7 @@ const previewLinesSvg = computed(() => {
 })
 
 const dimAnnotations = computed(() => {
-  if (!preview.value || preview.value.geometry.boxCode !== '0201') return []
+  if (!preview.value || !isSlottedRsc.value) return []
   return get0201DimAnnotations(preview.value.geometry, unit.value, dimensionType.value)
 })
 
@@ -165,16 +238,43 @@ watch([length, width, height, thickness, unit, dimensionType, boxCode], () => {
 })
 
 const selectBox = (code) => {
+  suppressDimTypeWatch = true
   boxCode.value = code
-  const preset = getBoxPreset(code)
-  if (preset) {
-    length.value = preset.length
-    width.value = preset.width
-    height.value = preset.height
-    thickness.value = preset.thickness
-    unit.value = preset.unit
-    dimensionType.value = preset.dimensionType
-    boardType.value = preset.boardType
+  const tpl = getBoxTemplate(code)
+  if (tpl?.defaultDimensionType) {
+    dimensionType.value = tpl.defaultDimensionType
+  }
+  applyTemplateDefaults(tpl, dimensionType.value)
+  suppressDimTypeWatch = false
+}
+
+watch(dimensionType, (newType, oldType) => {
+  if (suppressDimTypeWatch) return
+  syncDimsForDimensionType(newType, oldType)
+})
+
+const loadCatalog = async () => {
+  catalogLoading.value = true
+  catalogError.value = ''
+  try {
+    const res = await fetchFefcoCatalog()
+    setFefcoCatalogFromApi(res.data || {})
+    fefcoCategories.value = categoriesWithTemplates()
+    if (!fefcoCategories.value.length) {
+      catalogError.value = t('packaging.catalogEmpty')
+      activeCategory.value = ''
+      return
+    }
+    if (!fefcoCategories.value.some((c) => c.code === activeCategory.value)) {
+      activeCategory.value = fefcoCategories.value[0]?.code || ''
+    }
+  } catch {
+    resetFefcoCatalog()
+    fefcoCategories.value = []
+    catalogError.value = t('packaging.catalogLoadFailed')
+    activeCategory.value = ''
+  } finally {
+    catalogLoading.value = false
   }
 }
 
@@ -272,7 +372,10 @@ const onConvert = async () => {
           <h2>{{ t('packaging.fefcoLibrary') }}</h2>
           <p class="pkg-lib-desc">{{ t('packaging.fefcoLibraryDesc') }}</p>
 
-          <div class="pkg-cat-tabs">
+          <p v-if="catalogLoading" class="pkg-lib-status">{{ t('packaging.catalogLoading') }}</p>
+          <p v-else-if="catalogError" class="page-message page-message--error">{{ catalogError }}</p>
+
+          <div v-else class="pkg-cat-tabs">
             <button
               v-for="cat in fefcoCategories"
               :key="cat.code"
@@ -281,25 +384,26 @@ const onConvert = async () => {
               :class="{ active: activeCategory === cat.code }"
               @click="activeCategory = cat.code"
             >
-              {{ t(`packaging.${cat.nameKey}`) }}
+              {{ categoryLabel(cat) }}
             </button>
           </div>
 
-          <div class="pkg-box-grid">
+          <div v-if="!catalogLoading && !catalogError" class="pkg-box-grid">
             <button
               v-for="tpl in activeTemplates"
               :key="tpl.code"
               type="button"
               class="pkg-box-card"
               :class="{ active: boxCode === tpl.code, disabled: !tpl.previewEnabled }"
-              :title="t(`packaging.${tpl.descKey}`)"
+              :title="templateLabel(tpl, 'desc')"
               @click="selectBox(tpl.code)"
             >
+              <img v-if="tpl.thumbnailUrl" :src="tpl.thumbnailUrl" class="pkg-box-thumb" alt="" />
               <span class="pkg-box-head">
                 <span class="pkg-box-code">FEFCO {{ tpl.code }}</span>
-                <span class="pkg-box-name">{{ t(`packaging.${tpl.nameKey}`) }}</span>
+                <span class="pkg-box-name">{{ templateLabel(tpl, 'name') }}</span>
               </span>
-              <span class="pkg-box-desc">{{ t(`packaging.${tpl.descKey}`) }}</span>
+              <span class="pkg-box-desc">{{ templateLabel(tpl, 'desc') }}</span>
             </button>
           </div>
         </div>
@@ -393,13 +497,13 @@ const onConvert = async () => {
         <div v-else-if="preview" class="pkg-canvas-wrap">
           <div class="pkg-canvas" :style="canvasAspectStyle" v-html="previewLinesSvg" />
           <DimAnnotationLayer
-            v-if="preview.geometry.boxCode === '0201' && dimAnnotations.length"
+            v-if="isSlottedRsc && dimAnnotations.length"
             :annotations="dimAnnotations"
             :view-box="preview.viewBox"
             :unit="unit"
             @update:field="onDimFieldUpdate"
           />
-          <p v-if="preview.geometry.boxCode === '0201'" class="pkg-dim-hint">{{ t('packaging.dimEditHint') }}</p>
+          <p v-if="isSlottedRsc" class="pkg-dim-hint">{{ t('packaging.dimEditHint') }}</p>
           <div class="pkg-summary-overlay">
             <p><strong>{{ t('packaging.manufacturing') }}:</strong> {{ displaySize(preview.geometry.manufacturing) }}</p>
             <p><strong>{{ t('packaging.internal') }}:</strong> {{ displaySize(preview.geometry.internal) }}</p>
@@ -407,6 +511,7 @@ const onConvert = async () => {
           </div>
         </div>
         <p v-if="preview?.previewMode === 'blank'" class="pkg-stp-hint">{{ t('packaging.previewBlankNote') }}</p>
+        <p v-if="preview && preview.previewMode === 'detailed'" class="pkg-stp-hint">{{ t('packaging.structuralReferenceNote') }}</p>
 
         <div v-if="preview" class="pkg-meta-row">
           <p><strong>{{ t('packaging.blankSize') }}:</strong> {{ preview.geometry.blankWidthMm.toFixed(1) }} × {{ preview.geometry.blankHeightMm.toFixed(1) }} mm</p>
@@ -417,6 +522,13 @@ const onConvert = async () => {
           <button type="button" class="btn btn-secondary btn-sm" @click="onDownloadDielinePdf">{{ t('packaging.downloadDielinePdf') }}</button>
           <button type="button" class="btn btn-secondary btn-sm" @click="onDownloadDielineAi">{{ t('packaging.downloadDielineAi') }}</button>
           <button type="button" class="btn btn-secondary btn-sm" @click="onDownloadDxf">{{ t('packaging.downloadDxf') }}</button>
+          <a
+            v-if="selectedTemplate?.productionAssetUrl"
+            :href="selectedTemplate.productionAssetUrl"
+            target="_blank"
+            rel="noopener"
+            class="btn btn-secondary btn-sm"
+          >{{ t('packaging.downloadProductionAsset') }}</a>
         </div>
       </section>
 
@@ -648,6 +760,15 @@ const onConvert = async () => {
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
+
+  .pkg-box-thumb {
+    width: 100%;
+    height: 56px;
+    object-fit: contain;
+    border-radius: 4px;
+    background: #f8fafc;
+    margin-bottom: 0.15rem;
+  }
 
   &.active {
     border-color: var(--color-primary, #2563eb);

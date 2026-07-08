@@ -418,12 +418,12 @@
 
 - [x] 后端 `packaging.py`：`unfold_by_code` 权威展开（0201/0427/0713/0716）；内/外/制造尺寸换算
 - [x] `calc_paper_box` + `build_paper_box_quotation_pdf`；`quote_type=paper_box`；币种 CNY + KRW 换算
-- [x] `GET /api/packaging/fefco-catalog`；`models`/`serializers` 增 `paper_box`
+- [x] `GET /api/packaging/fefco-catalog`（DB 驱动）；`DielineTemplate` 模型 + admin CRUD `/api/admin/dieline-templates`
 - [x] 前端 `/packaging/box`：`BoxGeneratorView.vue` + `lib/packaging/*`（Maker.js 刀版引擎）
 - [x] P0 盒型 0201/0427 详细刀版预览；0713/0716 展开轮廓预览；0201 CAD 标尺 + 点击编辑尺寸
 - [x] 0201 圆角开槽、`npm run test:packaging` 几何断言；客户端 PDF / Illustrator (.ai) / DXF 导出
 - [x] FEFCO 侧栏 hover/图钉折叠；MY PAGE 简单报价跳转 `/packaging/box`；i18n `packaging.*` 四语
-- [x] admin「报价参数」类型下拉含 `paper_box`
+- [x] admin「报价参数」类型下拉含 `paper_box`；admin「刀版模板」页 `/dieline-templates`
 
 ### 积分系统（points）
 
