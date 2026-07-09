@@ -11,11 +11,17 @@ import {
   addVerticalSlotRounded,
   slotWidthFromThickness,
 } from './dielineUtils'
-import { getBoxTemplate } from './fefcoCatalog'
-import { buildParametricSegments, hasMappedParametricAsset, viewBoxFromSegments } from './parametricTemplate'
+import { getBoxTemplate, type DielineTemplateAsset } from './fefcoCatalog'
+import {
+  buildParametricDimensionAnnotations,
+  buildParametricSegments,
+  hasMappedParametricAsset,
+  viewBoxFromSegments,
+} from './parametricTemplate'
 import type {
   BoxParams,
   DimAnnotation,
+  DimLine,
   DielineGeometry,
   DielinePreview,
   DimensionType,
@@ -26,6 +32,8 @@ import type {
   SizeTriple,
   Unit,
 } from './types'
+
+export const PARAMETRIC_ASSET_REQUIRED = 'Parametric asset required for preview'
 
 const MM_PER_IN = 25.4
 const DEFAULT_GLUE_TAB_MM = 25
@@ -264,7 +272,6 @@ export function buildPreview(params: BoxParams): DielinePreview {
   }
 
   const geometry = computeGeometry(params)
-  const engineKey = template.engineKey
 
   if (hasMappedParametricAsset(template.activeParametricAsset)) {
     const segments = buildParametricSegments(template.activeParametricAsset, geometry)
@@ -283,65 +290,12 @@ export function buildPreview(params: BoxParams): DielinePreview {
         segments,
         viewBox: viewBoxFromSegments(segments),
         previewMode: 'detailed',
+        source: 'parametric',
       }
     }
   }
 
-  const viewBox = computePreviewViewBox(geometry)
-
-  if (engineKey === 'slotted_rsc') {
-    return {
-      geometry,
-      segments: build0201Segments(geometry),
-      viewBox,
-      previewMode: 'detailed',
-    }
-  }
-
-  if (engineKey === 'folding_shipping') {
-    return {
-      geometry,
-      segments: buildFoldingShippingSegments(geometry),
-      viewBox,
-      previewMode: 'detailed',
-    }
-  }
-
-  if (engineKey === 'mailer_folder') {
-    return {
-      geometry,
-      segments: build0427Segments(geometry),
-      viewBox,
-      previewMode: 'detailed',
-    }
-  }
-
-  if (engineKey === 'tuck_end') {
-    const flapGap = template.flapGapMm ?? 2
-    return {
-      geometry,
-      segments: buildTuckEndSegments(geometry, flapGap),
-      viewBox,
-      previewMode: 'detailed',
-    }
-  }
-
-  if (engineKey === 'auto_lock_bottom') {
-    const flapGap = template.flapGapMm ?? 2
-    return {
-      geometry,
-      segments: buildAutoLockBottomSegments(geometry, flapGap),
-      viewBox,
-      previewMode: 'detailed',
-    }
-  }
-
-  return {
-    geometry,
-    segments: buildBlankOutlineSegments(geometry.blankWidthMm, geometry.blankHeightMm),
-    viewBox,
-    previewMode: 'blank',
-  }
+  throw new Error(PARAMETRIC_ASSET_REQUIRED)
 }
 
 function computePreviewViewBox(geometry: DielineGeometry): string {
@@ -361,9 +315,95 @@ const STROKE_PX: Record<LineKind, { color: string; dash?: string; width: number;
 }
 
 const DIM_COLOR = '#2563eb'
+const PARAM_DIM_COLOR = '#f59e0b'
 
 const DIM_LINE_BASE =
   `stroke="${DIM_COLOR}" stroke-width="1.5" vector-effect="non-scaling-stroke" shape-rendering="geometricPrecision"`
+
+const PARAM_DIM_LINE_BASE =
+  `stroke="${PARAM_DIM_COLOR}" stroke-width="1.5" vector-effect="non-scaling-stroke" shape-rendering="geometricPrecision"`
+
+const PARAM_DIM_EXT_LINE_BASE =
+  `stroke="${PARAM_DIM_COLOR}" stroke-width="1" vector-effect="non-scaling-stroke" shape-rendering="geometricPrecision"`
+
+export interface ContentBbox {
+  minX: number
+  minY: number
+  maxX: number
+  maxY: number
+}
+
+function roundCoord(value: number): number {
+  return Math.round(value * 10000) / 10000
+}
+
+export function parseViewBoxString(viewBox: string): ContentBbox {
+  const parts = String(viewBox).trim().split(/\s+/).map(Number)
+  if (parts.length !== 4 || parts.some((value) => !Number.isFinite(value))) {
+    return { minX: 0, minY: 0, maxX: 100, maxY: 100 }
+  }
+  return {
+    minX: parts[0],
+    minY: parts[1],
+    maxX: parts[0] + parts[2],
+    maxY: parts[1] + parts[3],
+  }
+}
+
+export function contentBboxFromSegments(segments: LineSegment[]): ContentBbox {
+  if (!segments.length) return { minX: 0, minY: 0, maxX: 100, maxY: 100 }
+  const xs = segments.flatMap((seg) => [seg.x1, seg.x2])
+  const ys = segments.flatMap((seg) => [seg.y1, seg.y2])
+  return {
+    minX: Math.min(...xs),
+    minY: Math.min(...ys),
+    maxX: Math.max(...xs),
+    maxY: Math.max(...ys),
+  }
+}
+
+function mergeExtents(...boxes: ContentBbox[]): ContentBbox {
+  if (!boxes.length) return { minX: 0, minY: 0, maxX: 100, maxY: 100 }
+  return {
+    minX: Math.min(...boxes.map((box) => box.minX)),
+    minY: Math.min(...boxes.map((box) => box.minY)),
+    maxX: Math.max(...boxes.map((box) => box.maxX)),
+    maxY: Math.max(...boxes.map((box) => box.maxY)),
+  }
+}
+
+function labelExtents(ann: Pick<DimAnnotation, 'labelX' | 'labelY' | 'labelWidth' | 'labelHeight'>): ContentBbox {
+  return {
+    minX: ann.labelX - ann.labelWidth / 2,
+    minY: ann.labelY - ann.labelHeight / 2,
+    maxX: ann.labelX + ann.labelWidth / 2,
+    maxY: ann.labelY + ann.labelHeight / 2,
+  }
+}
+
+export function formatViewBox(box: ContentBbox, pad = 0): string {
+  const width = Math.max(10, box.maxX - box.minX + pad * 2)
+  const height = Math.max(10, box.maxY - box.minY + pad * 2)
+  return `${roundCoord(box.minX - pad)} ${roundCoord(box.minY - pad)} ${roundCoord(width)} ${roundCoord(height)}`
+}
+
+export function computeDimViewBox(preview: DielinePreview, annotations: DimAnnotation[]): string {
+  const base = parseViewBoxString(preview.viewBox)
+  if (!annotations.length) return preview.viewBox
+  const merged = mergeExtents(base, ...annotations.map((ann) => ann.extents))
+  const span = Math.max(merged.maxX - merged.minX, merged.maxY - merged.minY)
+  const pad = Math.max(12, span * 0.02)
+  return formatViewBox(merged, pad)
+}
+
+function buildParamDimLine(x1: number, y1: number, x2: number, y2: number, withArrows = true): string {
+  const markers = withArrows ? ' marker-start="url(#dim-arrow)" marker-end="url(#dim-arrow)"' : ''
+  return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" ${PARAM_DIM_LINE_BASE}${markers} />`
+}
+
+function buildParamExtLine(x1: number, y1: number, x2: number, y2: number): string {
+  return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" ${PARAM_DIM_EXT_LINE_BASE} />`
+}
 
 function buildHorizDimLine(x1: number, x2: number, y: number, gapHalf: number): string {
   void gapHalf
@@ -407,6 +447,173 @@ function dimLabelSize(fontSize: number): { labelWidth: number; labelHeight: numb
   return { labelWidth: fontSize * 4.8, labelHeight: fontSize * 1.35 }
 }
 
+function dimLine(x1: number, y1: number, x2: number, y2: number, role: DimLine['role']): DimLine {
+  return { x1, y1, x2, y2, role }
+}
+
+function makeHorizontalDimAnnotation(
+  field: DimField,
+  geometry: DielineGeometry,
+  unit: Unit,
+  dimensionType: DimensionType,
+  x1: number,
+  x2: number,
+  y: number,
+  labelY: number,
+  labelWidth: number,
+  labelHeight: number,
+  fontSize: number,
+  gapHalf: number,
+): DimAnnotation {
+  const ann = {
+    field,
+    axis: 'horizontal' as const,
+    labelX: (x1 + x2) / 2,
+    labelY,
+    lineX: (x1 + x2) / 2,
+    lineY: y,
+    labelWidth,
+    labelHeight,
+    fontSize,
+    arrowSvg: buildHorizDimLine(x1, x2, y, gapHalf),
+    dimLines: [dimLine(x1, y, x2, y, 'dimension')],
+    displayValue: fromMm(dimValueFromGeometry(geometry, field, dimensionType), unit),
+    extents: { minX: Math.min(x1, x2), minY: Math.min(y, labelY) - labelHeight / 2, maxX: Math.max(x1, x2), maxY: Math.max(y, labelY) + labelHeight / 2 },
+  }
+  ann.extents = mergeExtents({ minX: Math.min(x1, x2), minY: y, maxX: Math.max(x1, x2), maxY: y }, labelExtents(ann))
+  return ann
+}
+
+function makeVerticalDimAnnotation(
+  field: DimField,
+  geometry: DielineGeometry,
+  unit: Unit,
+  dimensionType: DimensionType,
+  x: number,
+  y1: number,
+  y2: number,
+  labelX: number,
+  labelWidth: number,
+  labelHeight: number,
+  fontSize: number,
+  gapHalf: number,
+): DimAnnotation {
+  const ann = {
+    field,
+    axis: 'vertical' as const,
+    labelX,
+    labelY: (y1 + y2) / 2,
+    lineX: x,
+    lineY: (y1 + y2) / 2,
+    labelWidth,
+    labelHeight,
+    fontSize,
+    arrowSvg: buildVertDimLine(x, y1, y2, gapHalf),
+    dimLines: [dimLine(x, y1, x, y2, 'dimension')],
+    displayValue: fromMm(dimValueFromGeometry(geometry, field, dimensionType), unit),
+    extents: { minX: Math.min(x, labelX) - labelWidth / 2, minY: Math.min(y1, y2), maxX: Math.max(x, labelX) + labelWidth / 2, maxY: Math.max(y1, y2) },
+  }
+  ann.extents = mergeExtents({ minX: x, minY: Math.min(y1, y2), maxX: x, maxY: Math.max(y1, y2) }, labelExtents(ann))
+  return ann
+}
+
+function parametricDimOffset(fontSize: number, contentBbox: ContentBbox): number {
+  const span = Math.max(contentBbox.maxX - contentBbox.minX, contentBbox.maxY - contentBbox.minY)
+  return Math.max(12, fontSize * 1.15, span * 0.03)
+}
+
+function makeConfiguredDimAnnotation(
+  ann: ReturnType<typeof buildParametricDimensionAnnotations>[number],
+  geometry: DielineGeometry,
+  unit: Unit,
+  dimensionType: DimensionType,
+  contentBbox: ContentBbox,
+): DimAnnotation {
+  const fontSize = dimLabelFontSize(geometry)
+  const { labelWidth, labelHeight } = dimLabelSize(fontSize)
+  const offset = parametricDimOffset(fontSize, contentBbox)
+  const anchorX1 = ann.x1
+  const anchorY1 = ann.y1
+  const anchorX2 = ann.x2
+  const anchorY2 = ann.y2
+
+  if (ann.axis === 'horizontal') {
+    const anchorY = (anchorY1 + anchorY2) / 2
+    const centerY = (contentBbox.minY + contentBbox.maxY) / 2
+    const outward = anchorY <= centerY ? -1 : 1
+    const dimLineY = anchorY + outward * offset
+    const labelOffset = outward * (fontSize * 0.95 + labelHeight * 0.35)
+    const labelY = dimLineY + labelOffset
+    const dimLines: DimLine[] = [
+      dimLine(anchorX1, anchorY1, anchorX1, dimLineY, 'extension'),
+      dimLine(anchorX2, anchorY2, anchorX2, dimLineY, 'extension'),
+      dimLine(anchorX1, dimLineY, anchorX2, dimLineY, 'dimension'),
+    ]
+    const arrowSvg = [
+      buildParamExtLine(anchorX1, anchorY1, anchorX1, dimLineY),
+      buildParamExtLine(anchorX2, anchorY2, anchorX2, dimLineY),
+      buildParamDimLine(anchorX1, dimLineY, anchorX2, dimLineY),
+    ].join('')
+    const result: DimAnnotation = {
+      field: ann.field,
+      axis: 'horizontal',
+      labelX: (anchorX1 + anchorX2) / 2,
+      labelY,
+      lineX: (anchorX1 + anchorX2) / 2,
+      lineY: dimLineY,
+      labelWidth,
+      labelHeight,
+      fontSize,
+      arrowSvg,
+      dimLines,
+      displayValue: fromMm(dimValueFromGeometry(geometry, ann.field, dimensionType), unit),
+      extents: { minX: 0, minY: 0, maxX: 0, maxY: 0 },
+    }
+    result.extents = mergeExtents(
+      { minX: Math.min(anchorX1, anchorX2), minY: Math.min(anchorY1, anchorY2, dimLineY), maxX: Math.max(anchorX1, anchorX2), maxY: Math.max(anchorY1, anchorY2, dimLineY) },
+      labelExtents(result),
+    )
+    return result
+  }
+
+  const anchorX = (anchorX1 + anchorX2) / 2
+  const centerX = (contentBbox.minX + contentBbox.maxX) / 2
+  const outward = anchorX <= centerX ? -1 : 1
+  const dimLineX = anchorX + outward * offset
+  const labelOffset = outward * (fontSize * 0.95 + labelWidth * 0.18)
+  const labelX = dimLineX + labelOffset
+  const dimLines: DimLine[] = [
+    dimLine(anchorX1, anchorY1, dimLineX, anchorY1, 'extension'),
+    dimLine(anchorX2, anchorY2, dimLineX, anchorY2, 'extension'),
+    dimLine(dimLineX, anchorY1, dimLineX, anchorY2, 'dimension'),
+  ]
+  const arrowSvg = [
+    buildParamExtLine(anchorX1, anchorY1, dimLineX, anchorY1),
+    buildParamExtLine(anchorX2, anchorY2, dimLineX, anchorY2),
+    buildParamDimLine(dimLineX, anchorY1, dimLineX, anchorY2),
+  ].join('')
+  const result: DimAnnotation = {
+    field: ann.field,
+    axis: 'vertical',
+    labelX,
+    labelY: (anchorY1 + anchorY2) / 2,
+    lineX: dimLineX,
+    lineY: (anchorY1 + anchorY2) / 2,
+    labelWidth,
+    labelHeight,
+    fontSize,
+    arrowSvg,
+    dimLines,
+    displayValue: fromMm(dimValueFromGeometry(geometry, ann.field, dimensionType), unit),
+    extents: { minX: 0, minY: 0, maxX: 0, maxY: 0 },
+  }
+  result.extents = mergeExtents(
+    { minX: Math.min(anchorX1, anchorX2, dimLineX), minY: Math.min(anchorY1, anchorY2), maxX: Math.max(anchorX1, anchorX2, dimLineX), maxY: Math.max(anchorY1, anchorY2) },
+    labelExtents(result),
+  )
+  return result
+}
+
 /** 0201 尺寸箭头（无文字），供标注层叠加 */
 export function renderDimensionArrowsOnly0201(geometry: DielineGeometry): string {
   return get0201DimAnnotations(geometry, 'mm', 'manufacturing')
@@ -438,68 +645,88 @@ export function get0201DimAnnotations(
   const lX1 = xL1 + inset
   const lX2 = xW1 - inset
   const lLineY = yMid
-  const lArrow = buildHorizDimLine(lX1, lX2, lLineY, gapHalf)
   const horizontalLabelOffset = fontSize * 1.05
 
   const wX1 = xW1 + inset
   const wX2 = xL2 - inset
   const wLineY = yBodyBot - inset
-  const wArrow = buildHorizDimLine(wX1, wX2, wLineY, gapHalf)
 
   const hY1 = yBodyTop + inset
   const hY2 = yBodyBot - inset
   const hLineX = xL2 + L * 0.5
-  const hArrow = buildVertDimLine(hLineX, hY1, hY2, gapHalf)
   const hLabelOffset = fontSize * 2.5
 
   return [
-    {
-      field: 'length',
-      axis: 'horizontal',
-      labelX: (lX1 + lX2) / 2,
-      labelY: lLineY - horizontalLabelOffset,
-      lineX: (lX1 + lX2) / 2,
-      lineY: lLineY,
+    makeHorizontalDimAnnotation(
+      'length',
+      geometry,
+      unit,
+      dimensionType,
+      lX1,
+      lX2,
+      lLineY,
+      lLineY - horizontalLabelOffset,
       labelWidth,
       labelHeight,
       fontSize,
-      arrowSvg: lArrow,
-      displayValue: fromMm(dimValueFromGeometry(geometry, 'length', dimensionType), unit),
-    },
-    {
-      field: 'width',
-      axis: 'horizontal',
-      labelX: (wX1 + wX2) / 2,
-      labelY: wLineY - horizontalLabelOffset,
-      lineX: (wX1 + wX2) / 2,
-      lineY: wLineY,
+      gapHalf,
+    ),
+    makeHorizontalDimAnnotation(
+      'width',
+      geometry,
+      unit,
+      dimensionType,
+      wX1,
+      wX2,
+      wLineY,
+      wLineY - horizontalLabelOffset,
       labelWidth,
       labelHeight,
       fontSize,
-      arrowSvg: wArrow,
-      displayValue: fromMm(dimValueFromGeometry(geometry, 'width', dimensionType), unit),
-    },
-    {
-      field: 'height',
-      axis: 'vertical',
-      labelX: hLineX + hLabelOffset,
-      labelY: (hY1 + hY2) / 2,
-      lineX: hLineX,
-      lineY: (hY1 + hY2) / 2,
+      gapHalf,
+    ),
+    makeVerticalDimAnnotation(
+      'height',
+      geometry,
+      unit,
+      dimensionType,
+      hLineX,
+      hY1,
+      hY2,
+      hLineX + hLabelOffset,
       labelWidth,
       labelHeight,
       fontSize,
-      arrowSvg: hArrow,
-      displayValue: fromMm(dimValueFromGeometry(geometry, 'height', dimensionType), unit),
-    },
+      gapHalf,
+    ),
   ]
 }
 
+export function getDimAnnotations(
+  preview: DielinePreview,
+  unit: Unit,
+  dimensionType: DimensionType,
+  engineKey?: EngineKey,
+  asset?: DielineTemplateAsset | null,
+): DimAnnotation[] {
+  if (preview.source === 'parametric') {
+    if (!asset) return []
+    const contentBbox = contentBboxFromSegments(preview.segments)
+    return buildParametricDimensionAnnotations(asset, preview.geometry)
+      .map((ann) => makeConfiguredDimAnnotation(ann, preview.geometry, unit, dimensionType, contentBbox))
+  }
+  if (engineKey === 'slotted_rsc' || engineKey === 'folding_shipping') {
+    return get0201DimAnnotations(preview.geometry, unit, dimensionType)
+  }
+  return []
+}
+
 /** 仅刀版线稿 SVG（不含尺寸标注） */
-export function renderPreviewLinesSvg(preview: DielinePreview): string {
+export function renderPreviewLinesSvg(preview: DielinePreview, overrideViewBox?: string): string {
   const { segments, viewBox } = preview
+  const effectiveViewBox = overrideViewBox || viewBox
   const lines = segments.map(renderLineSvg).join('')
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" style="background:#f8fafc">${lines}</svg>`
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${effectiveViewBox}" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" style="background:#f8fafc">${lines}</svg>`
 }
 
 export function renderPreviewSvg(preview: DielinePreview, unit: Unit): string {

@@ -275,6 +275,26 @@ class DielineTemplateSerializer(serializers.ModelSerializer):
         max_h = attrs.get("max_height_mm")
         if min_h is not None and max_h is not None and min_h > max_h:
             raise serializers.ValidationError({"min_height_mm": "最小高不能大于最大高"})
+
+        instance = self.instance
+        enabling_flags = any(
+            attrs.get(flag) if flag in attrs else (getattr(instance, flag) if instance else False)
+            for flag in ("is_active", "preview_enabled", "quote_enabled")
+        )
+        if enabling_flags:
+            has_mapped_asset = False
+            if instance is not None:
+                has_mapped_asset = instance.assets.filter(
+                    is_active=True,
+                    mapping_status="mapped",
+                ).exists()
+            if not has_mapped_asset:
+                from core.exceptions import AppAPIException
+
+                raise AppAPIException(
+                    detail="模板须上传 DXF/SVG 并完成映射激活后，才可对用户开放预览或报价",
+                    code="DIELINE_TEMPLATE_ASSET_REQUIRED",
+                )
         return attrs
 
     def get_thumbnail_url(self, obj):

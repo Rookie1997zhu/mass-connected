@@ -6,24 +6,7 @@ from django.db import migrations, models
 
 
 def backfill_precision_defaults(apps, schema_editor):
-    DielineTemplate = apps.get_model("simplequote", "DielineTemplate")
-    corrugated_codes = {"0201", "0210"}
-    tuck_codes = {"0713", "0716"}
-    for tpl in DielineTemplate.objects.all():
-        updates = {}
-        if tpl.code in corrugated_codes:
-            updates["flute_type"] = "b"
-            updates["material_type"] = "corrugated"
-        elif tpl.code == "0427":
-            updates["flute_type"] = "none"
-            updates["material_type"] = "white_card"
-        elif tpl.code in tuck_codes:
-            updates["flute_type"] = "none"
-            updates["material_type"] = "white_card"
-        if updates:
-            for key, value in updates.items():
-                setattr(tpl, key, value)
-            tpl.save(update_fields=list(updates.keys()))
+    pass
 
 
 def reverse_backfill(apps, schema_editor):

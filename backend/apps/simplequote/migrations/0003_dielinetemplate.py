@@ -4,70 +4,7 @@ from django.db import migrations, models
 
 
 def seed_dieline_templates(apps, schema_editor):
-    DielineTemplate = apps.get_model("simplequote", "DielineTemplate")
-    seeds = [
-        {
-            "code": "0201",
-            "category_code": "0200",
-            "engine_key": "slotted_rsc",
-            "default_length_mm": Decimal("434"),
-            "default_width_mm": Decimal("214"),
-            "default_height_mm": Decimal("278"),
-            "default_thickness_mm": Decimal("3"),
-            "sort_order": 1,
-        },
-        {
-            "code": "0427",
-            "category_code": "0400",
-            "engine_key": "mailer_folder",
-            "default_length_mm": Decimal("315"),
-            "default_width_mm": Decimal("202"),
-            "default_height_mm": Decimal("62"),
-            "default_thickness_mm": Decimal("1.5"),
-            "sort_order": 2,
-        },
-        {
-            "code": "0713",
-            "category_code": "0700",
-            "engine_key": "tuck_end",
-            "default_length_mm": Decimal("200"),
-            "default_width_mm": Decimal("150"),
-            "default_height_mm": Decimal("100"),
-            "default_thickness_mm": Decimal("1.5"),
-            "sort_order": 3,
-        },
-        {
-            "code": "0716",
-            "category_code": "0700",
-            "engine_key": "auto_lock_bottom",
-            "default_length_mm": Decimal("200"),
-            "default_width_mm": Decimal("150"),
-            "default_height_mm": Decimal("100"),
-            "default_thickness_mm": Decimal("1.5"),
-            "sort_order": 4,
-        },
-    ]
-    for item in seeds:
-        DielineTemplate.objects.update_or_create(
-            code=item["code"],
-            defaults={
-                "category_code": item["category_code"],
-                "engine_key": item["engine_key"],
-                "name_i18n": {},
-                "desc_i18n": {},
-                "default_length_mm": item["default_length_mm"],
-                "default_width_mm": item["default_width_mm"],
-                "default_height_mm": item["default_height_mm"],
-                "default_thickness_mm": item["default_thickness_mm"],
-                "default_glue_tab_mm": Decimal("25"),
-                "allowances": {},
-                "priority": "P0",
-                "quote_enabled": True,
-                "preview_enabled": True,
-                "sort_order": item["sort_order"],
-                "is_active": True,
-            },
-        )
+    pass
 
 
 def unseed_dieline_templates(apps, schema_editor):

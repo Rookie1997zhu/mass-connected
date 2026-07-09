@@ -9,11 +9,13 @@ import { convertSimpleQuote, createSimpleQuote, fetchFefcoCatalog } from '../../
 import {
   buildPreview,
   buildQuoteInputs,
+  computeDimViewBox,
   computeGeometry,
   downloadTextFile,
   exportDxf,
   fromMm,
-  get0201DimAnnotations,
+  getDimAnnotations,
+  PARAMETRIC_ASSET_REQUIRED,
   renderPreviewLinesSvg,
 } from '../../lib/packaging/boxEngine'
 import { exportDielineAi, exportDielinePdf } from '../../lib/packaging/dielineExport'
@@ -146,11 +148,6 @@ const syncDimsForDimensionType = (newType, oldType) => {
   }
 }
 
-const isSlottedRsc = computed(() => {
-  const ek = getEngineKey(boxCode.value)
-  return ek === 'slotted_rsc' || ek === 'folding_shipping'
-})
-
 const selectedTemplate = computed(() => getBoxTemplate(boxCode.value))
 
 const canQuote = computed(() => selectedTemplate.value?.quoteEnabled ?? false)
@@ -191,19 +188,32 @@ const preview = computed(() => {
   try {
     return buildPreview(params.value)
   } catch (err) {
-    previewError.value = err.message || t('packaging.invalidDims')
+    const message = err instanceof Error ? err.message : String(err)
+    previewError.value =
+      message === PARAMETRIC_ASSET_REQUIRED ? t('packaging.parametricAssetRequired') : message || t('packaging.invalidDims')
     return null
   }
 })
 
-const previewLinesSvg = computed(() => {
-  if (!preview.value) return ''
-  return DOMPurify.sanitize(renderPreviewLinesSvg(preview.value))
+const dimAnnotations = computed(() => {
+  if (!preview.value) return []
+  return getDimAnnotations(
+    preview.value,
+    unit.value,
+    dimensionType.value,
+    getEngineKey(boxCode.value),
+    selectedTemplate.value?.activeParametricAsset,
+  )
 })
 
-const dimAnnotations = computed(() => {
-  if (!preview.value || !isSlottedRsc.value) return []
-  return get0201DimAnnotations(preview.value.geometry, unit.value, dimensionType.value)
+const dimViewBox = computed(() => {
+  if (!preview.value) return ''
+  return computeDimViewBox(preview.value, dimAnnotations.value)
+})
+
+const previewLinesSvg = computed(() => {
+  if (!preview.value) return ''
+  return DOMPurify.sanitize(renderPreviewLinesSvg(preview.value, dimViewBox.value || preview.value.viewBox))
 })
 
 const onDimFieldUpdate = ({ field, value }) => {
@@ -497,13 +507,13 @@ const onConvert = async () => {
         <div v-else-if="preview" class="pkg-canvas-wrap">
           <div class="pkg-canvas" :style="canvasAspectStyle" v-html="previewLinesSvg" />
           <DimAnnotationLayer
-            v-if="isSlottedRsc && dimAnnotations.length"
+            v-if="dimAnnotations.length"
             :annotations="dimAnnotations"
-            :view-box="preview.viewBox"
+            :view-box="dimViewBox || preview.viewBox"
             :unit="unit"
             @update:field="onDimFieldUpdate"
           />
-          <p v-if="isSlottedRsc" class="pkg-dim-hint">{{ t('packaging.dimEditHint') }}</p>
+          <p v-if="dimAnnotations.length" class="pkg-dim-hint">{{ t('packaging.dimEditHint') }}</p>
           <div class="pkg-summary-overlay">
             <p><strong>{{ t('packaging.manufacturing') }}:</strong> {{ displaySize(preview.geometry.manufacturing) }}</p>
             <p><strong>{{ t('packaging.internal') }}:</strong> {{ displaySize(preview.geometry.internal) }}</p>

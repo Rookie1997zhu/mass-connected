@@ -230,23 +230,42 @@ def unfold_by_code(box_code, length_mm, width_mm, height_mm, thickness_mm=1.5, d
         raise PaperBoxGeometryError(f"不支持的 FEFCO 盒型: {code}")
     if not template.get("quote_enabled"):
         raise PaperBoxGeometryError(f"FEFCO {code} 尚未开放报价，敬请期待")
-    engine_key = template.get("engine_key") or template.get("algorithm_key")
-    handler = UNFOLD_HANDLERS.get(engine_key)
-    if not handler:
-        raise PaperBoxGeometryError(f"FEFCO {code} 展开公式尚未实现")
     _validate_template_limits(length_mm, width_mm, height_mm, template)
+
     resolved_glue = glue_tab_mm
     if resolved_glue is None:
         resolved_glue = template.get("default_glue_tab_mm", DEFAULT_GLUE_TAB_MM)
-    result = handler(
-        length_mm,
-        width_mm,
-        height_mm,
-        thickness_mm=thickness_mm,
-        dimension_type=dimension_type,
-        glue_tab_mm=resolved_glue,
-        template=template,
-    )
-    result["box_code"] = code
-    result["engine_key"] = engine_key
-    return result
+    resolved_glue = max(15.0, _to_float(resolved_glue, DEFAULT_GLUE_TAB_MM))
+
+    l, w, h, t = manufacturing_dims(length_mm, width_mm, height_mm, thickness_mm, dimension_type, template)
+    _validate_dims(l, w, h)
+
+    active_asset_payload = template.get("active_parametric_asset")
+    if active_asset_payload and active_asset_payload.get("id"):
+        from apps.simplequote.dieline_import import DielineImportError, render_parametric_dieline
+        from apps.simplequote.models import DielineTemplateAsset
+
+        asset = DielineTemplateAsset.objects.filter(
+            id=active_asset_payload["id"],
+            is_active=True,
+            mapping_status="mapped",
+        ).first()
+        if asset:
+            try:
+                rendered = render_parametric_dieline(
+                    asset,
+                    {"length": l, "width": w, "height": h, "thickness": t},
+                )
+            except DielineImportError as exc:
+                raise PaperBoxGeometryError(str(exc)) from exc
+            blank_width_mm = rendered["width"]
+            blank_height_mm = rendered["height"]
+            unfold_area_m2 = rendered.get("area_m2")
+            if unfold_area_m2 is None:
+                unfold_area_m2 = (blank_width_mm * MM_TO_M) * (blank_height_mm * MM_TO_M)
+            result = _build_result(code, l, w, h, t, resolved_glue, blank_width_mm, blank_height_mm)
+            result["unfold_area_m2"] = round(_to_float(unfold_area_m2), 6)
+            result["engine_key"] = template.get("engine_key") or template.get("algorithm_key")
+            return result
+
+    raise PaperBoxGeometryError("模板未配置参数化资产，无法计算展开尺寸")

@@ -20,29 +20,7 @@ FOLDING_SHIPPING_I18N = {
 
 
 def seed_folding_shipping_template(apps, schema_editor):
-    DielineTemplate = apps.get_model("simplequote", "DielineTemplate")
-    DielineTemplate.objects.update_or_create(
-        code="0210",
-        defaults={
-            "category_code": "0200",
-            "engine_key": "folding_shipping",
-            **FOLDING_SHIPPING_I18N,
-            "default_length_mm": Decimal("354"),
-            "default_width_mm": Decimal("354"),
-            "default_height_mm": Decimal("208"),
-            "default_thickness_mm": Decimal("3"),
-            "default_glue_tab_mm": Decimal("25"),
-            "allowances": {},
-            "priority": "P0",
-            "quote_enabled": True,
-            "preview_enabled": True,
-            "sort_order": 2,
-            "is_active": True,
-        },
-    )
-    DielineTemplate.objects.filter(code="0427").update(sort_order=3)
-    DielineTemplate.objects.filter(code="0713").update(sort_order=4)
-    DielineTemplate.objects.filter(code="0716").update(sort_order=5)
+    pass
 
 
 def unseed_folding_shipping_template(apps, schema_editor):

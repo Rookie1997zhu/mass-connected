@@ -51,9 +51,20 @@ export interface DielinePreview {
   segments: LineSegment[]
   viewBox: string
   previewMode?: 'detailed' | 'blank'
+  source?: 'engine' | 'parametric'
 }
 
 export type DimField = 'length' | 'width' | 'height'
+
+export type DimLineRole = 'extension' | 'dimension'
+
+export interface DimLine {
+  x1: number
+  y1: number
+  x2: number
+  y2: number
+  role: DimLineRole
+}
 
 export interface DimAnnotation {
   field: DimField
@@ -64,8 +75,11 @@ export interface DimAnnotation {
   labelHeight: number
   fontSize: number
   arrowSvg: string
+  dimLines: DimLine[]
   displayValue: number
   /** 标尺线中心（与 label 对齐） */
   lineX: number
   lineY: number
+  /** 标注几何外接框，用于扩展 viewBox */
+  extents: { minX: number; minY: number; maxX: number; maxY: number }
 }

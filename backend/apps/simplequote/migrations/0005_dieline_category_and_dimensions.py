@@ -99,28 +99,6 @@ def seed_categories_and_dimensions(apps, schema_editor):
         )
         category_by_code[item["code"]] = cat
 
-    for template in DielineTemplate.objects.all():
-        mfg_l = float(template.default_length_mm)
-        mfg_w = float(template.default_width_mm)
-        mfg_h = float(template.default_height_mm)
-        thickness = float(template.default_thickness_mm)
-        triple = _size_triple_from_manufacturing(mfg_l, mfg_w, mfg_h, thickness)
-
-        template.default_manufacturing_length_mm = Decimal(str(mfg_l))
-        template.default_manufacturing_width_mm = Decimal(str(mfg_w))
-        template.default_manufacturing_height_mm = Decimal(str(mfg_h))
-        template.default_internal_length_mm = Decimal(str(triple["internal"]["length_mm"]))
-        template.default_internal_width_mm = Decimal(str(triple["internal"]["width_mm"]))
-        template.default_internal_height_mm = Decimal(str(triple["internal"]["height_mm"]))
-        template.default_external_length_mm = Decimal(str(triple["external"]["length_mm"]))
-        template.default_external_width_mm = Decimal(str(triple["external"]["width_mm"]))
-        template.default_external_height_mm = Decimal(str(triple["external"]["height_mm"]))
-
-        cat = category_by_code.get(template.category_code)
-        if cat:
-            template.category_id = cat.id
-        template.save()
-
 
 def unseed_categories(apps, schema_editor):
     DielineCategory = apps.get_model("simplequote", "DielineCategory")

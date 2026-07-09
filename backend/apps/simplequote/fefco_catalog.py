@@ -147,7 +147,10 @@ def build_fefco_catalog(request=None, *, include_inactive=False):
     cat_qs = cat_qs.order_by("sort_order", "code")
     categories = [_serialize_db_category(item) for item in cat_qs]
 
-    tpl_qs = DielineTemplate.objects.all()
+    tpl_qs = DielineTemplate.objects.filter(
+        assets__is_active=True,
+        assets__mapping_status="mapped",
+    ).distinct()
     if not include_inactive:
         tpl_qs = tpl_qs.filter(is_active=True)
     tpl_qs = tpl_qs.order_by("sort_order", "code")
@@ -157,8 +160,14 @@ def build_fefco_catalog(request=None, *, include_inactive=False):
     for template in templates:
         by_category.setdefault(template["category_code"], []).append(template)
 
+    visible_categories = [
+        category
+        for category in categories
+        if by_category.get(category["code"])
+    ]
+
     return {
-        "categories": categories,
+        "categories": visible_categories,
         "templates": templates,
         "by_category": by_category,
     }

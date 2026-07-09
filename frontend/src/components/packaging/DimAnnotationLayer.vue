@@ -1,6 +1,5 @@
 <script setup>
 import { computed, nextTick, ref } from 'vue'
-import DOMPurify from 'dompurify'
 
 const props = defineProps({
   annotations: { type: Array, required: true },
@@ -10,20 +9,19 @@ const props = defineProps({
 
 const emit = defineEmits(['update:field'])
 
-const DIM_COLOR = '#2563eb'
+const DIM_COLOR = '#f59e0b'
 
 const editingField = ref(null)
 const draftValue = ref('')
 
-const arrowMarkup = computed(() => {
-  const defs = `<defs>
-    <marker id="dim-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="${DIM_COLOR}" />
-    </marker>
-  </defs>`
-  const arrows = props.annotations.map((ann) => ann.arrowSvg).join('')
-  return DOMPurify.sanitize(`${defs}${arrows}`)
-})
+const dimLineItems = computed(() =>
+  props.annotations.flatMap((ann) =>
+    (ann.dimLines || []).map((line, index) => ({
+      key: `${ann.field}-${line.role}-${index}`,
+      line,
+    })),
+  ),
+)
 
 const inputDecimals = computed(() => (props.unit === 'in' ? 4 : 1))
 
@@ -97,7 +95,35 @@ function onKeydown(field, event) {
     height="100%"
     preserveAspectRatio="xMidYMid meet"
   >
-    <g class="dim-arrows" v-html="arrowMarkup" />
+    <defs>
+      <marker
+        id="dim-arrow"
+        viewBox="0 0 10 10"
+        refX="5"
+        refY="5"
+        markerWidth="5"
+        markerHeight="5"
+        orient="auto-start-reverse"
+      >
+        <path d="M 0 0 L 10 5 L 0 10 z" :fill="DIM_COLOR" />
+      </marker>
+    </defs>
+    <g class="dim-arrows">
+      <line
+        v-for="item in dimLineItems"
+        :key="item.key"
+        :x1="item.line.x1"
+        :y1="item.line.y1"
+        :x2="item.line.x2"
+        :y2="item.line.y2"
+        :stroke="DIM_COLOR"
+        :stroke-width="item.line.role === 'dimension' ? 1.5 : 1"
+        vector-effect="non-scaling-stroke"
+        shape-rendering="geometricPrecision"
+        :marker-start="item.line.role === 'dimension' ? 'url(#dim-arrow)' : undefined"
+        :marker-end="item.line.role === 'dimension' ? 'url(#dim-arrow)' : undefined"
+      />
+    </g>
     <foreignObject
       v-for="ann in annotations"
       :key="ann.field"
@@ -166,17 +192,17 @@ function onKeydown(field, event) {
   font-size: inherit;
   font-weight: 600;
   font-family: inherit;
-  color: #2563eb;
+  color: #f59e0b;
   text-align: center;
   border: none;
   border-radius: 2px;
-  background: #f8fafc;
+  background: #fffbeb;
   cursor: text;
   outline: none;
   line-height: 1.2;
 
   &:hover {
-    box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.35);
+    box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.45);
   }
 }
 
@@ -186,20 +212,20 @@ function onKeydown(field, event) {
   font-size: inherit;
   font-weight: 600;
   font-family: inherit;
-  color: #2563eb;
+  color: #f59e0b;
   text-align: center;
-  border: 1px solid #2563eb;
+  border: 1px solid #f59e0b;
   border-radius: 2px;
   background: #fff;
   outline: none;
   line-height: 1.2;
-  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.2);
+  box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.25);
 }
 
 .dim-unit {
   font-size: 0.82em;
   font-weight: 600;
-  color: #2563eb;
+  color: #f59e0b;
   white-space: nowrap;
 }
 </style>

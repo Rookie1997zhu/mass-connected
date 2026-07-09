@@ -93,12 +93,40 @@ export interface ParsedDielineGeometry {
   entities?: ParsedDielineEntity[]
 }
 
+export type DielineDimensionField = 'length' | 'width' | 'height'
+export type DielineDimensionAxis = 'horizontal' | 'vertical'
+export type DielineDimensionSource = 'entity' | 'manual'
+
+export interface DielineDimensionAnnotation {
+  id: string
+  field: DielineDimensionField
+  axis?: DielineDimensionAxis
+  source?: DielineDimensionSource
+  entity_id?: string | null
+  x1: number
+  y1: number
+  x2: number
+  y2: number
+  label_x?: number
+  label_y?: number
+}
+
+export interface DielineMappingSchema {
+  schema_version?: number
+  mapping_mode?: string
+  base_dimensions?: Record<string, unknown>
+  dimension_refs?: Record<string, unknown>
+  dimension_annotations?: DielineDimensionAnnotation[]
+  entity_roles?: Record<string, unknown>
+  transform_rules?: Record<string, unknown>
+}
+
 export interface DielineTemplateAsset {
   id: number
   sourceFormat?: string
   sourceFileUrl?: string | null
   parsedGeometry: ParsedDielineGeometry
-  mappingSchema: Record<string, unknown>
+  mappingSchema: DielineMappingSchema
   baseDimensions: Record<string, unknown>
   version?: number
   mappingStatus?: string
@@ -176,7 +204,7 @@ function normalizeTemplateAsset(raw?: Record<string, unknown> | null): DielineTe
     sourceFormat: String(raw.source_format || ''),
     sourceFileUrl: (raw.source_file_url as string) || null,
     parsedGeometry: (raw.parsed_geometry as ParsedDielineGeometry) || {},
-    mappingSchema: (raw.mapping_schema as Record<string, unknown>) || {},
+    mappingSchema: (raw.mapping_schema as DielineMappingSchema) || {},
     baseDimensions: (raw.base_dimensions as Record<string, unknown>) || {},
     version: toNumber(raw.version),
     mappingStatus: String(raw.mapping_status || ''),
