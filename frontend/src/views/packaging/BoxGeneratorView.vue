@@ -1,6 +1,6 @@
 <script setup>
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import DOMPurify from 'dompurify'
 import PageShell from '../../components/PageShell.vue'
@@ -19,17 +19,28 @@ import {
   renderPreviewLinesSvg,
 } from '../../lib/packaging/boxEngine'
 import { exportDielineAi, exportDielinePdf } from '../../lib/packaging/dielineExport'
-import { categoriesWithTemplates, defaultDimsForTemplate, getBoxTemplate, getEngineKey, resetFefcoCatalog, setFefcoCatalogFromApi } from '../../lib/packaging/fefcoCatalog'
+import {
+  categoriesWithTemplates,
+  defaultDimsForTemplate,
+  getBoxTemplate,
+  getEngineKey,
+  resetFefcoCatalog,
+  setFefcoCatalogFromApi,
+} from '../../lib/packaging/fefcoCatalog'
 import { useLocaleCurrency } from '../../composables/useLocaleCurrency'
+
+const PREVIEW_ZOOM_MIN = 0.5
+const PREVIEW_ZOOM_MAX = 3
+const PREVIEW_ZOOM_STEP = 0.15
 
 const { t, locale } = useI18n()
 const { fromQuote } = useLocaleCurrency()
 const router = useRouter()
+const route = useRoute()
 
-const fefcoCategories = ref([])
 const catalogLoading = ref(false)
 const catalogError = ref('')
-const activeCategory = ref('')
+const catalogReady = ref(false)
 
 const productName = ref('')
 const unit = ref('mm')
@@ -48,40 +59,12 @@ const previewError = ref('')
 const result = ref(null)
 const submitting = ref(false)
 
-const formPinned = ref(false)
-const formHovered = ref(false)
-const isMobileLayout = ref(false)
-let mobileMq = null
-
-const formExpanded = computed(() => isMobileLayout.value || formPinned.value || formHovered.value)
-
-const onFormMouseEnter = () => {
-  if (!isMobileLayout.value) formHovered.value = true
-}
-
-const onFormMouseLeave = () => {
-  if (!formPinned.value) formHovered.value = false
-}
-
-onMounted(() => {
-  mobileMq = window.matchMedia('(max-width: 960px)')
-  const syncMobile = () => {
-    isMobileLayout.value = mobileMq.matches
-    if (isMobileLayout.value) formHovered.value = false
-  }
-  syncMobile()
-  mobileMq.addEventListener('change', syncMobile)
-  loadCatalog()
-})
-
-onUnmounted(() => {
-  mobileMq?.removeEventListener('change', syncMobile)
-})
-
-const activeTemplates = computed(() => {
-  const cat = fefcoCategories.value.find((c) => c.code === activeCategory.value)
-  return cat?.templates || []
-})
+const previewZoom = ref(1)
+const previewPanX = ref(0)
+const previewPanY = ref(0)
+const previewTool = ref('select')
+const isPanning = ref(false)
+const panStart = ref({ x: 0, y: 0, panX: 0, panY: 0 })
 
 const localeKey = computed(() => {
   const map = { 'zh-CN': 'zh', zh: 'zh', en: 'en', ko: 'ko', ja: 'ja' }
@@ -93,13 +76,6 @@ const templateLabel = (tpl, field = 'name') => {
   const i18n = field === 'name' ? tpl.nameI18n : tpl.descI18n
   const key = field === 'name' ? tpl.nameKey : tpl.descKey
   return i18n?.[localeKey.value] || i18n?.zh || i18n?.en || (key ? t(`packaging.${key}`) : tpl.code)
-}
-
-const categoryLabel = (cat, field = 'name') => {
-  if (!cat) return ''
-  const i18n = field === 'name' ? cat.nameI18n : cat.descI18n
-  const key = field === 'name' ? cat.nameKey : cat.descKey
-  return i18n?.[localeKey.value] || i18n?.zh || i18n?.en || cat.code || (key ? t(`packaging.${key}`) : '')
 }
 
 let suppressDimTypeWatch = false
@@ -144,11 +120,11 @@ const syncDimsForDimensionType = (newType, oldType) => {
     width.value = roundDimForUnit(target.width)
     height.value = roundDimForUnit(target.height)
   } catch {
-    // 尺寸未通过校验时保持用户输入，避免切换口径时清空表单
+    // 尺寸未通过校验时保持用户输入
   }
 }
 
-const selectedTemplate = computed(() => getBoxTemplate(boxCode.value))
+const selectedTemplate = computed(() => (boxCode.value ? getBoxTemplate(boxCode.value) : undefined))
 
 const canQuote = computed(() => selectedTemplate.value?.quoteEnabled ?? false)
 
@@ -173,7 +149,7 @@ const params = computed(() => ({
 const preview = computed(() => {
   previewError.value = ''
   if (!boxCode.value) {
-    previewError.value = t('packaging.selectBoxFirst')
+    previewError.value = t('packaging.noBoxSelected')
     return null
   }
   if (!hasBoxDims.value) {
@@ -216,11 +192,10 @@ const previewLinesSvg = computed(() => {
   return DOMPurify.sanitize(renderPreviewLinesSvg(preview.value, dimViewBox.value || preview.value.viewBox))
 })
 
-const onDimFieldUpdate = ({ field, value }) => {
-  if (field === 'length') length.value = value
-  else if (field === 'width') width.value = value
-  else if (field === 'height') height.value = value
-}
+const previewTransformStyle = computed(() => ({
+  transform: `translate(${previewPanX.value}px, ${previewPanY.value}px) scale(${previewZoom.value})`,
+  transformOrigin: 'center center',
+}))
 
 const canvasAspectStyle = computed(() => {
   if (!preview.value) return undefined
@@ -229,11 +204,10 @@ const canvasAspectStyle = computed(() => {
   return { aspectRatio: `${blankWidthMm} / ${blankHeightMm}` }
 })
 
-const fmt = (value, decimals = 0) => {
-  const n = Number(value)
-  if (Number.isNaN(n)) return '-'
-  return decimals ? n.toFixed(decimals) : Math.round(n).toLocaleString()
-}
+const viewportCursorClass = computed(() => {
+  if (previewTool.value !== 'pan') return ''
+  return isPanning.value ? 'is-panning' : 'is-pan-ready'
+})
 
 const displaySize = (size) => {
   const l = fromMm(size.length, unit.value)
@@ -243,9 +217,28 @@ const displaySize = (size) => {
   return `${l.toFixed(d)} × ${w.toFixed(d)} × ${h.toFixed(d)} ${unit.value}`
 }
 
-watch([length, width, height, thickness, unit, dimensionType, boxCode], () => {
-  error.value = ''
-})
+const resetPreviewView = () => {
+  previewZoom.value = 1
+  previewPanX.value = 0
+  previewPanY.value = 0
+  isPanning.value = false
+}
+
+const clampZoom = (value) => Math.min(PREVIEW_ZOOM_MAX, Math.max(PREVIEW_ZOOM_MIN, value))
+
+const zoomIn = () => {
+  previewZoom.value = clampZoom(Number((previewZoom.value + PREVIEW_ZOOM_STEP).toFixed(2)))
+}
+
+const zoomOut = () => {
+  previewZoom.value = clampZoom(Number((previewZoom.value - PREVIEW_ZOOM_STEP).toFixed(2)))
+}
+
+const onDimFieldUpdate = ({ field, value }) => {
+  if (field === 'length') length.value = value
+  else if (field === 'width') width.value = value
+  else if (field === 'height') height.value = value
+}
 
 const selectBox = (code) => {
   suppressDimTypeWatch = true
@@ -256,12 +249,61 @@ const selectBox = (code) => {
   }
   applyTemplateDefaults(tpl, dimensionType.value)
   suppressDimTypeWatch = false
+  resetPreviewView()
 }
+
+const initFromRoute = () => {
+  const code = String(route.query.code || '').trim()
+  if (!code) {
+    boxCode.value = ''
+    return
+  }
+  const tpl = getBoxTemplate(code)
+  if (!tpl) {
+    catalogError.value = t('packaging.boxNotFound')
+    boxCode.value = ''
+    return
+  }
+  selectBox(code)
+}
+
+const onViewportMouseDown = (event) => {
+  if (previewTool.value !== 'pan' || event.button !== 0) return
+  isPanning.value = true
+  panStart.value = {
+    x: event.clientX,
+    y: event.clientY,
+    panX: previewPanX.value,
+    panY: previewPanY.value,
+  }
+}
+
+const onViewportMouseMove = (event) => {
+  if (!isPanning.value) return
+  previewPanX.value = panStart.value.panX + (event.clientX - panStart.value.x)
+  previewPanY.value = panStart.value.panY + (event.clientY - panStart.value.y)
+}
+
+const endPan = () => {
+  isPanning.value = false
+}
+
+watch([length, width, height, thickness, unit, dimensionType, boxCode], () => {
+  error.value = ''
+})
 
 watch(dimensionType, (newType, oldType) => {
   if (suppressDimTypeWatch) return
   syncDimsForDimensionType(newType, oldType)
 })
+
+watch(
+  () => route.query.code,
+  () => {
+    if (!catalogReady.value) return
+    initFromRoute()
+  },
+)
 
 const loadCatalog = async () => {
   catalogLoading.value = true
@@ -269,23 +311,23 @@ const loadCatalog = async () => {
   try {
     const res = await fetchFefcoCatalog()
     setFefcoCatalogFromApi(res.data || {})
-    fefcoCategories.value = categoriesWithTemplates()
-    if (!fefcoCategories.value.length) {
+    const cats = categoriesWithTemplates()
+    if (!cats.length) {
       catalogError.value = t('packaging.catalogEmpty')
-      activeCategory.value = ''
       return
     }
-    if (!fefcoCategories.value.some((c) => c.code === activeCategory.value)) {
-      activeCategory.value = fefcoCategories.value[0]?.code || ''
-    }
+    catalogReady.value = true
+    initFromRoute()
   } catch {
     resetFefcoCatalog()
-    fefcoCategories.value = []
     catalogError.value = t('packaging.catalogLoadFailed')
-    activeCategory.value = ''
   } finally {
     catalogLoading.value = false
   }
+}
+
+const goToLibrary = () => {
+  router.push({ name: 'packaging-library' })
 }
 
 const onDownloadDielinePdf = () => {
@@ -305,7 +347,7 @@ const onDownloadDxf = () => {
 
 const onGenerate = async () => {
   if (!boxCode.value) {
-    error.value = t('packaging.selectBoxFirst')
+    error.value = t('packaging.noBoxSelected')
     return
   }
   if (!hasBoxDims.value) {
@@ -346,150 +388,111 @@ const onConvert = async () => {
     error.value = err.message || t('packaging.failed')
   }
 }
+
+onMounted(() => {
+  window.addEventListener('mouseup', endPan)
+  loadCatalog()
+})
+
+onUnmounted(() => {
+  window.removeEventListener('mouseup', endPan)
+})
 </script>
 
 <template>
-  <PageShell container-wide :title="t('packaging.title')" :subtitle="t('packaging.desc')">
-    <div class="pkg-layout" :class="{ 'is-form-expanded': formExpanded }">
-      <section
-        class="pkg-form card"
-        :class="{ 'is-expanded': formExpanded }"
-        @mouseenter="onFormMouseEnter"
-        @mouseleave="onFormMouseLeave"
-      >
-        <div class="pkg-form-rail">
-          <span class="pkg-rail-title">FEFCO</span>
-          <button
-            type="button"
-            class="pkg-rail-pin"
-            :class="{ pinned: formPinned }"
-            :title="t('packaging.sidebarPin')"
-            :aria-label="t('packaging.sidebarPin')"
-            @click="formPinned = !formPinned"
-          >
-            <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
-              <path
-                fill="currentColor"
-                d="M16 9V4h1c.55 0 1-.45 1-1s-.45-1-1-1H8c-.55 0-1 .45-1 1s.45 1 1 1h1v5c0 1.66-1.34 3-3 3v2h5.97v7l1.03-1 1.03 1v-7H19v-2c-1.66 0-3-1.34-3-3z"
-              />
-            </svg>
-          </button>
-          <span class="pkg-rail-hint">{{ t('packaging.sidebarExpand') }}</span>
-        </div>
+  <PageShell container-wide :title="t('packaging.title')" :subtitle="t('packaging.editorPageDesc')">
+    <p v-if="catalogLoading" class="pkg-lib-status">{{ t('packaging.catalogLoading') }}</p>
+    <p v-else-if="catalogError" class="page-message page-message--error">{{ catalogError }}</p>
 
-        <div v-show="formExpanded" class="pkg-form-body">
-        <div class="pkg-form-library">
-          <h2>{{ t('packaging.fefcoLibrary') }}</h2>
-          <p class="pkg-lib-desc">{{ t('packaging.fefcoLibraryDesc') }}</p>
+    <div v-else-if="!boxCode" class="pkg-no-box card">
+      <p>{{ t('packaging.noBoxSelected') }}</p>
+      <button type="button" class="btn btn-primary" @click="goToLibrary">{{ t('packaging.backToLibrary') }}</button>
+    </div>
 
-          <p v-if="catalogLoading" class="pkg-lib-status">{{ t('packaging.catalogLoading') }}</p>
-          <p v-else-if="catalogError" class="page-message page-message--error">{{ catalogError }}</p>
-
-          <div v-else class="pkg-cat-tabs">
-            <button
-              v-for="cat in fefcoCategories"
-              :key="cat.code"
-              type="button"
-              class="pkg-cat-tab"
-              :class="{ active: activeCategory === cat.code }"
-              @click="activeCategory = cat.code"
-            >
-              {{ categoryLabel(cat) }}
-            </button>
+    <div v-else class="pkg-layout">
+      <section class="pkg-form card">
+        <div class="pkg-form-head">
+          <div>
+            <h2>{{ t('packaging.editParams') }}</h2>
+            <p class="pkg-selected-box">
+              <span class="pkg-box-code">FEFCO {{ boxCode }}</span>
+              <span class="pkg-box-name">{{ templateLabel(selectedTemplate, 'name') }}</span>
+            </p>
           </div>
-
-          <div v-if="!catalogLoading && !catalogError" class="pkg-box-grid">
-            <button
-              v-for="tpl in activeTemplates"
-              :key="tpl.code"
-              type="button"
-              class="pkg-box-card"
-              :class="{ active: boxCode === tpl.code, disabled: !tpl.previewEnabled }"
-              :title="templateLabel(tpl, 'desc')"
-              @click="selectBox(tpl.code)"
-            >
-              <img v-if="tpl.thumbnailUrl" :src="tpl.thumbnailUrl" class="pkg-box-thumb" alt="" />
-              <span class="pkg-box-head">
-                <span class="pkg-box-code">FEFCO {{ tpl.code }}</span>
-                <span class="pkg-box-name">{{ templateLabel(tpl, 'name') }}</span>
-              </span>
-              <span class="pkg-box-desc">{{ templateLabel(tpl, 'desc') }}</span>
-            </button>
-          </div>
+          <button type="button" class="btn btn-secondary btn-sm" @click="goToLibrary">{{ t('packaging.changeBox') }}</button>
         </div>
 
         <div class="pkg-form-fields">
-        <label>{{ t('packaging.productName') }}
-          <input v-model="productName" type="text" />
-        </label>
+          <label>{{ t('packaging.productName') }}
+            <input v-model="productName" type="text" />
+          </label>
 
-        <div class="pkg-row">
-          <label>{{ t('packaging.unit') }}
-            <select v-model="unit">
-              <option value="mm">{{ t('packaging.unitMm') }}</option>
-              <option value="in">{{ t('packaging.unitIn') }}</option>
+          <div class="pkg-row">
+            <label>{{ t('packaging.unit') }}
+              <select v-model="unit">
+                <option value="mm">{{ t('packaging.unitMm') }}</option>
+                <option value="in">{{ t('packaging.unitIn') }}</option>
+              </select>
+            </label>
+            <label>{{ t('packaging.thickness') }}
+              <input v-model.number="thickness" type="number" min="0.1" step="0.1" :placeholder="t('packaging.dimPlaceholder')" />
+            </label>
+          </div>
+
+          <div class="pkg-dim-type">
+            <span class="pkg-dim-label">{{ t('packaging.dimensionType') }}</span>
+            <div class="pkg-dim-chips">
+              <button
+                type="button"
+                class="pkg-dim-chip"
+                :class="{ active: dimensionType === 'internal' }"
+                @click="dimensionType = 'internal'"
+              >
+                {{ t('packaging.dimInternal') }}
+              </button>
+              <button
+                type="button"
+                class="pkg-dim-chip"
+                :class="{ active: dimensionType === 'external' }"
+                @click="dimensionType = 'external'"
+              >
+                {{ t('packaging.dimExternal') }}
+              </button>
+              <button
+                type="button"
+                class="pkg-dim-chip"
+                :class="{ active: dimensionType === 'manufacturing' }"
+                @click="dimensionType = 'manufacturing'"
+              >
+                {{ t('packaging.dimManufacturing') }}
+              </button>
+            </div>
+          </div>
+
+          <div class="pkg-row">
+            <label>{{ t('packaging.length') }}<input v-model.number="length" type="number" min="1" step="0.1" :placeholder="t('packaging.dimPlaceholder')" /></label>
+            <label>{{ t('packaging.width') }}<input v-model.number="width" type="number" min="1" step="0.1" :placeholder="t('packaging.dimPlaceholder')" /></label>
+          </div>
+          <label>{{ t('packaging.height') }}<input v-model.number="height" type="number" min="1" step="0.1" :placeholder="t('packaging.dimPlaceholder')" /></label>
+
+          <label>{{ t('packaging.boardType') }}
+            <select v-model="boardType">
+              <option value="E">{{ t('packaging.boardE') }}</option>
+              <option value="B">{{ t('packaging.boardB') }}</option>
+              <option value="C">{{ t('packaging.boardC') }}</option>
+              <option value="白卡">{{ t('packaging.boardWhite') }}</option>
             </select>
           </label>
-          <label>{{ t('packaging.thickness') }}
-            <input v-model.number="thickness" type="number" min="0.1" step="0.1" :placeholder="t('packaging.dimPlaceholder')" />
-          </label>
-        </div>
 
-        <div class="pkg-dim-type">
-          <span class="pkg-dim-label">{{ t('packaging.dimensionType') }}</span>
-          <div class="pkg-dim-chips">
-            <button
-              type="button"
-              class="pkg-dim-chip"
-              :class="{ active: dimensionType === 'internal' }"
-              @click="dimensionType = 'internal'"
-            >
-              {{ t('packaging.dimInternal') }}
-            </button>
-            <button
-              type="button"
-              class="pkg-dim-chip"
-              :class="{ active: dimensionType === 'external' }"
-              @click="dimensionType = 'external'"
-            >
-              {{ t('packaging.dimExternal') }}
-            </button>
-            <button
-              type="button"
-              class="pkg-dim-chip"
-              :class="{ active: dimensionType === 'manufacturing' }"
-              @click="dimensionType = 'manufacturing'"
-            >
-              {{ t('packaging.dimManufacturing') }}
-            </button>
+          <div class="pkg-row">
+            <label>{{ t('packaging.quantity') }}<input v-model.number="quantity" type="number" min="1" :placeholder="t('packaging.dimPlaceholder')" /></label>
+            <label>{{ t('packaging.printColors') }}<input v-model.number="printColors" type="number" min="0" :placeholder="t('packaging.dimPlaceholder')" /></label>
           </div>
-        </div>
 
-        <div class="pkg-row">
-          <label>{{ t('packaging.length') }}<input v-model.number="length" type="number" min="1" step="0.1" :placeholder="t('packaging.dimPlaceholder')" /></label>
-          <label>{{ t('packaging.width') }}<input v-model.number="width" type="number" min="1" step="0.1" :placeholder="t('packaging.dimPlaceholder')" /></label>
-        </div>
-        <label>{{ t('packaging.height') }}<input v-model.number="height" type="number" min="1" step="0.1" :placeholder="t('packaging.dimPlaceholder')" /></label>
-
-        <label>{{ t('packaging.boardType') }}
-          <select v-model="boardType">
-            <option value="E">{{ t('packaging.boardE') }}</option>
-            <option value="B">{{ t('packaging.boardB') }}</option>
-            <option value="C">{{ t('packaging.boardC') }}</option>
-            <option value="白卡">{{ t('packaging.boardWhite') }}</option>
-          </select>
-        </label>
-
-        <div class="pkg-row">
-          <label>{{ t('packaging.quantity') }}<input v-model.number="quantity" type="number" min="1" :placeholder="t('packaging.dimPlaceholder')" /></label>
-          <label>{{ t('packaging.printColors') }}<input v-model.number="printColors" type="number" min="0" :placeholder="t('packaging.dimPlaceholder')" /></label>
-        </div>
-
-        <p v-if="error" class="page-message page-message--error">{{ error }}</p>
-        <button type="button" class="btn btn-primary" :disabled="submitting || !preview || !canQuote || !hasBoxDims" @click="onGenerate">
-          {{ t('packaging.generate') }}
-        </button>
-        </div>
+          <p v-if="error" class="page-message page-message--error">{{ error }}</p>
+          <button type="button" class="btn btn-primary" :disabled="submitting || !preview || !canQuote || !hasBoxDims" @click="onGenerate">
+            {{ t('packaging.generate') }}
+          </button>
         </div>
       </section>
 
@@ -504,22 +507,86 @@ const onConvert = async () => {
         </div>
 
         <p v-if="previewError" class="page-message page-message--error">{{ previewError }}</p>
-        <div v-else-if="preview" class="pkg-canvas-wrap">
-          <div class="pkg-canvas" :style="canvasAspectStyle" v-html="previewLinesSvg" />
-          <DimAnnotationLayer
-            v-if="dimAnnotations.length"
-            :annotations="dimAnnotations"
-            :view-box="dimViewBox || preview.viewBox"
-            :unit="unit"
-            @update:field="onDimFieldUpdate"
-          />
-          <p v-if="dimAnnotations.length" class="pkg-dim-hint">{{ t('packaging.dimEditHint') }}</p>
-          <div class="pkg-summary-overlay">
-            <p><strong>{{ t('packaging.manufacturing') }}:</strong> {{ displaySize(preview.geometry.manufacturing) }}</p>
-            <p><strong>{{ t('packaging.internal') }}:</strong> {{ displaySize(preview.geometry.internal) }}</p>
-            <p><strong>{{ t('packaging.external') }}:</strong> {{ displaySize(preview.geometry.external) }}</p>
+        <template v-else-if="preview">
+          <div
+            class="pkg-canvas-viewport"
+            :class="viewportCursorClass"
+            @mousedown="onViewportMouseDown"
+            @mousemove="onViewportMouseMove"
+            @mouseleave="endPan"
+          >
+            <div class="pkg-canvas-stage" :style="previewTransformStyle">
+              <div class="pkg-canvas" :style="canvasAspectStyle" v-html="previewLinesSvg" />
+              <DimAnnotationLayer
+                v-if="dimAnnotations.length"
+                class="pkg-dim-layer"
+                :class="{ 'is-pan-mode': previewTool === 'pan' }"
+                :annotations="dimAnnotations"
+                :view-box="dimViewBox || preview.viewBox"
+                :unit="unit"
+                @update:field="onDimFieldUpdate"
+              />
+            </div>
+            <p v-if="dimAnnotations.length" class="pkg-dim-hint">{{ t('packaging.dimEditHint') }}</p>
+            <div class="pkg-summary-overlay">
+              <p><strong>{{ t('packaging.manufacturing') }}:</strong> {{ displaySize(preview.geometry.manufacturing) }}</p>
+              <p><strong>{{ t('packaging.internal') }}:</strong> {{ displaySize(preview.geometry.internal) }}</p>
+              <p><strong>{{ t('packaging.external') }}:</strong> {{ displaySize(preview.geometry.external) }}</p>
+            </div>
           </div>
-        </div>
+
+          <div class="pkg-preview-toolbar" role="toolbar" :aria-label="t('packaging.previewToolbar')">
+            <button
+              type="button"
+              class="pkg-toolbar-btn"
+              :class="{ active: previewTool === 'select' }"
+              :title="t('packaging.previewToolSelect')"
+              :aria-label="t('packaging.previewToolSelect')"
+              @click="previewTool = 'select'"
+            >
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                <path fill="currentColor" d="M4 4l7 17 2.5-7.5L21 11z" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              class="pkg-toolbar-btn"
+              :class="{ active: previewTool === 'pan' }"
+              :title="t('packaging.previewToolPan')"
+              :aria-label="t('packaging.previewToolPan')"
+              @click="previewTool = 'pan'"
+            >
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                <path fill="currentColor" d="M13 6.5c0-1.1.9-2 2-2s2 .9 2 2-.9 2-2 2-2-.9-2-2zm-2 0c0-2.2 1.8-4 4-4s4 1.8 4 4c0 .7-.2 1.4-.5 2l4.8 4.8-1.4 1.4-4.8-4.8c-.6.3-1.3.5-2 .5-2.2 0-4-1.8-4-4zm-5 9.5c0-1.1.9-2 2-2s2 .9 2 2-.9 2-2 2-2-.9-2-2z" />
+              </svg>
+            </button>
+            <span class="pkg-toolbar-divider" aria-hidden="true" />
+            <button
+              type="button"
+              class="pkg-toolbar-btn"
+              :title="t('packaging.previewZoomIn')"
+              :aria-label="t('packaging.previewZoomIn')"
+              @click="zoomIn"
+            >
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                <path fill="currentColor" d="M19 13H5v-2h14v2z" />
+                <path fill="currentColor" d="M13 5v14h2V5h-2z" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              class="pkg-toolbar-btn"
+              :title="t('packaging.previewZoomOut')"
+              :aria-label="t('packaging.previewZoomOut')"
+              @click="zoomOut"
+            >
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                <path fill="currentColor" d="M19 13H5v-2h14v2z" />
+              </svg>
+            </button>
+          </div>
+        </template>
+
         <p v-if="preview?.previewMode === 'blank'" class="pkg-stp-hint">{{ t('packaging.previewBlankNote') }}</p>
         <p v-if="preview && preview.previewMode === 'detailed'" class="pkg-stp-hint">{{ t('packaging.structuralReferenceNote') }}</p>
 
@@ -564,14 +631,9 @@ const onConvert = async () => {
 <style scoped lang="scss">
 .pkg-layout {
   display: grid;
-  grid-template-columns: var(--pkg-rail-width, 52px) minmax(0, 1fr);
+  grid-template-columns: clamp(260px, 24vw, 320px) minmax(0, 1fr);
   gap: var(--space-lg);
   align-items: stretch;
-  transition: grid-template-columns 0.22s var(--ease-out, ease-out);
-
-  &.is-form-expanded {
-    --pkg-rail-width: clamp(220px, 22vw, 260px);
-  }
 }
 
 .card {
@@ -580,11 +642,22 @@ const onConvert = async () => {
   border-radius: var(--radius-md);
 }
 
+.pkg-no-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-md);
+}
+
+.pkg-lib-status {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
 .pkg-form {
   display: flex;
-  flex-direction: row;
-  gap: 0;
-  padding: 0;
+  flex-direction: column;
+  gap: var(--space-md);
   position: sticky;
   top: calc(var(--header-height) + 1rem);
   align-self: start;
@@ -592,15 +665,9 @@ const onConvert = async () => {
   overflow: hidden;
   min-width: 0;
 
-  &.is-expanded {
-    padding: var(--space-lg);
-    flex-direction: column;
-    gap: 0;
-  }
-
   h2 {
     margin: 0;
-    font-size: 0.95rem;
+    font-size: 1rem;
   }
 
   label {
@@ -625,177 +692,22 @@ const onConvert = async () => {
   }
 }
 
-.pkg-form-rail {
+.pkg-form-head {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 0.5rem;
-  width: 52px;
-  flex-shrink: 0;
-  padding: var(--space-md) 0.35rem;
-  border-right: 1px solid transparent;
-
-  .is-expanded & {
-    display: none;
-  }
-}
-
-.pkg-rail-title {
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  color: var(--color-primary, #2563eb);
-}
-
-.pkg-rail-pin {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.75rem;
-  height: 1.75rem;
-  padding: 0;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  background: var(--color-bg, #fff);
-  color: var(--color-text-muted);
-  cursor: pointer;
-  transition: color var(--duration-fast), border-color var(--duration-fast), background var(--duration-fast);
-
-  &:hover,
-  &.pinned {
-    color: var(--color-primary, #2563eb);
-    border-color: var(--color-primary, #2563eb);
-    background: rgba(37, 99, 235, 0.06);
-  }
-}
-
-.pkg-rail-hint {
-  writing-mode: vertical-rl;
-  font-size: 0.62rem;
-  color: var(--color-text-muted);
-  line-height: 1.2;
-  text-align: center;
-  max-height: 8rem;
-  overflow: hidden;
-}
-
-.pkg-form-body {
-  flex: 1;
-  min-width: 0;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  overflow: hidden;
-  overflow-x: hidden;
-}
-
-.pkg-form-library {
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
   gap: var(--space-sm);
   padding-bottom: var(--space-sm);
   border-bottom: 1px solid var(--color-border);
-  margin-bottom: var(--space-sm);
-  min-width: 0;
-  overflow-x: hidden;
 }
 
-.pkg-form-fields {
-  flex: 1;
-  min-height: 0;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding-right: 0;
-}
-
-.pkg-lib-desc {
-  font-size: 0.78rem;
-  color: var(--color-text-muted);
-  margin: 0;
-  line-height: 1.35;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.pkg-cat-tabs {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-  flex-shrink: 0;
-}
-
-.pkg-cat-tab {
-  width: 100%;
-  padding: 0.3rem 0.5rem;
-  font-size: 0.75rem;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  background: var(--color-bg, #fff);
-  cursor: pointer;
-  text-align: left;
-
-  &.active {
-    border-color: var(--color-primary, #2563eb);
-    color: var(--color-primary, #2563eb);
-    font-weight: 600;
-    background: rgba(37, 99, 235, 0.06);
-  }
-}
-
-.pkg-box-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.4rem;
-  flex-shrink: 0;
-}
-
-.pkg-box-card {
-  text-align: left;
-  padding: 0.5rem 0.6rem;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  background: #fff;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-
-  .pkg-box-thumb {
-    width: 100%;
-    height: 56px;
-    object-fit: contain;
-    border-radius: 4px;
-    background: #f8fafc;
-    margin-bottom: 0.15rem;
-  }
-
-  &.active {
-    border-color: var(--color-primary, #2563eb);
-    box-shadow: 0 0 0 1px var(--color-primary, #2563eb);
-    background: rgba(37, 99, 235, 0.04);
-  }
-
-  &.disabled {
-    opacity: 0.72;
-  }
-}
-
-.pkg-box-head {
+.pkg-selected-box {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0.4rem;
-  min-width: 0;
+  margin: 0.35rem 0 0;
+  font-size: 0.85rem;
 }
 
 .pkg-box-code {
@@ -809,21 +721,17 @@ const onConvert = async () => {
 }
 
 .pkg-box-name {
-  font-size: 0.8rem;
   font-weight: 600;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
-.pkg-box-desc {
-  font-size: 0.72rem;
-  color: var(--color-text-muted);
-  line-height: 1.3;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+.pkg-form-fields {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  overflow-y: auto;
+  padding-right: 0.15rem;
 }
 
 .pkg-dim-type {
@@ -846,7 +754,6 @@ const onConvert = async () => {
 
 .pkg-dim-chip {
   width: 100%;
-  flex: none;
   padding: 0.35rem 0.45rem;
   font-size: 0.72rem;
   line-height: 1.2;
@@ -856,7 +763,6 @@ const onConvert = async () => {
   color: var(--color-text);
   cursor: pointer;
   text-align: center;
-  transition: border-color var(--duration-fast), background var(--duration-fast);
 
   &.active {
     border-color: var(--color-primary, #2563eb);
@@ -867,15 +773,9 @@ const onConvert = async () => {
   }
 }
 
-.pkg-stp-hint {
-  font-size: 0.78rem;
-  color: var(--color-text-muted);
-  margin: 0;
-}
-
 .pkg-row {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: var(--space-sm);
 }
 
@@ -928,12 +828,61 @@ const onConvert = async () => {
   color: #b91c1c;
 }
 
-.pkg-canvas-wrap {
+.pkg-canvas-viewport {
   position: relative;
   flex: 1;
-  min-height: min(78vh, 860px);
+  min-height: min(68vh, 760px);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #f8fafc;
+  overflow: hidden;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  &.is-pan-ready {
+    cursor: grab;
+  }
+
+  &.is-panning {
+    cursor: grabbing;
+  }
+}
+
+.pkg-canvas-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: min(65vh, 720px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.05s ease-out;
+  will-change: transform;
+}
+
+.pkg-canvas {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  :deep(svg) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 560px;
+  }
+}
+
+.pkg-dim-layer {
+  position: absolute;
+  inset: 0;
+
+  &.is-pan-mode {
+    pointer-events: none;
+  }
 }
 
 .pkg-dim-hint {
@@ -945,26 +894,6 @@ const onConvert = async () => {
   font-size: 0.72rem;
   color: var(--color-text-muted);
   pointer-events: none;
-}
-
-.pkg-canvas {
-  flex: 1;
-  width: 100%;
-  min-height: min(75vh, 820px);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  overflow: hidden;
-  background: #f8fafc;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  :deep(svg) {
-    display: block;
-    width: 100%;
-    height: 100%;
-    min-height: 680px;
-  }
 }
 
 .pkg-summary-overlay {
@@ -984,6 +913,54 @@ const onConvert = async () => {
   p {
     margin: 0.15rem 0;
   }
+}
+
+.pkg-preview-toolbar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  align-self: center;
+  padding: 0.35rem 0.5rem;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+}
+
+.pkg-toolbar-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: none;
+  border-radius: 0.45rem;
+  background: transparent;
+  color: var(--color-text);
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(15, 23, 42, 0.06);
+  }
+
+  &.active {
+    background: rgba(15, 23, 42, 0.08);
+    color: var(--color-text-heading);
+  }
+}
+
+.pkg-toolbar-divider {
+  width: 1px;
+  height: 1.25rem;
+  margin: 0 0.15rem;
+  background: var(--color-border);
+}
+
+.pkg-stp-hint {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  margin: 0;
 }
 
 .pkg-meta-row {
@@ -1029,7 +1006,6 @@ const onConvert = async () => {
   margin-top: var(--space-sm);
 }
 
-.pkg-krw,
 .pkg-meta {
   font-size: 0.9rem;
   color: var(--color-text-muted);
@@ -1039,51 +1015,11 @@ const onConvert = async () => {
 @media (max-width: 960px) {
   .pkg-layout {
     grid-template-columns: 1fr;
-
-    &.is-form-expanded {
-      --pkg-rail-width: 100%;
-    }
   }
 
   .pkg-form {
     position: static;
     max-height: none;
-    overflow: visible;
-    padding: var(--space-xl);
-    flex-direction: column;
-
-    .pkg-form-rail {
-      display: none;
-    }
-  }
-
-  .pkg-form-library {
-    border-bottom: none;
-    margin-bottom: 0;
-    padding-bottom: 0;
-  }
-
-  .pkg-form-fields {
-    overflow-y: visible;
-    padding-right: 0;
-  }
-
-  .pkg-lib-desc {
-    white-space: normal;
-    display: block;
-  }
-
-  .pkg-cat-tabs {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-
-  .pkg-cat-tab {
-    width: auto;
-  }
-
-  .pkg-row {
-    grid-template-columns: 1fr 1fr;
   }
 
   .pkg-dim-chips {
@@ -1096,26 +1032,16 @@ const onConvert = async () => {
     width: auto;
   }
 
-  .pkg-box-desc {
-    display: block;
-    -webkit-line-clamp: unset;
-    overflow: visible;
-  }
-
   .pkg-preview {
     min-height: min(70vh, 720px);
   }
 
-  .pkg-canvas-wrap {
-    min-height: min(65vh, 640px);
+  .pkg-canvas-viewport {
+    min-height: min(60vh, 600px);
   }
 
-  .pkg-canvas {
-    min-height: min(62vh, 600px);
-
-    :deep(svg) {
-      min-height: 560px;
-    }
+  .pkg-canvas-stage {
+    min-height: min(58vh, 560px);
   }
 }
 </style>

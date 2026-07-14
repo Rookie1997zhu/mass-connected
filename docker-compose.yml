@@ -25,6 +25,11 @@ services:
   backend:
     build: ./backend
     env_file: .env
+    environment:
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379/0}
+      CELERY_BROKER_URL: ${CELERY_BROKER_URL:-redis://redis:6379/0}
+      CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND:-redis://redis:6379/0}
+      PRUSA_SLICER_PATH: ${PRUSA_SLICER_PATH:-/usr/local/bin/prusa-slicer}
     volumes:
       - ./backend:/app
       - media_data:/app/media
@@ -33,7 +38,31 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-    command: sh -c "python manage.py migrate && python manage.py create_default_admin && python manage.py seed_demo_data && python manage.py runserver 0.0.0.0:8000"
+    command: sh -c "python manage.py migrate && python manage.py create_default_admin && python manage.py seed_demo_data && python manage.py seed_quote_tables && python manage.py runserver 0.0.0.0:8000"
+
+  # PrusaSlicer 切片 Worker（AGPL）；与 backend 共享 media 卷
+  slicer-worker:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile.slicer-worker
+    env_file: .env
+    environment:
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379/0}
+      CELERY_BROKER_URL: ${CELERY_BROKER_URL:-redis://redis:6379/0}
+      CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND:-redis://redis:6379/0}
+      PRUSA_SLICER_PATH: /usr/local/bin/prusa-slicer
+      DB_HOST: mysql
+    volumes:
+      - ./backend:/app
+      - media_data:/app/media
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      backend:
+        condition: service_started
+    command: celery -A config worker -l info -c 1
 
   frontend:
     build: ./frontend

@@ -1,5 +1,12 @@
 from django.urls import path
 
+from apps.simplequote.print3d_views import (
+    AdminPrint3dConfigView,
+    AdminPrint3dPreviewView,
+    Print3dOptionsView,
+    Print3dSliceJobDetailView,
+    Print3dSliceJobListCreateView,
+)
 from apps.simplequote.views import (
     AdminDielineCategoryDetailView,
     AdminDielineCategoryView,
@@ -29,12 +36,20 @@ urlpatterns = [
     path("member/simple-quotes/preview", SimpleQuotePreviewView.as_view()),
     path("member/simple-quotes/parse-stp", StpParseView.as_view()),
     path("member/simple-quotes/parse-drawing", DrawingParseView.as_view()),
+    path("member/simple-quotes/print3d/options", Print3dOptionsView.as_view()),
+    path("member/simple-quotes/print3d/slice-jobs", Print3dSliceJobListCreateView.as_view()),
+    path(
+        "member/simple-quotes/print3d/slice-jobs/<int:pk>",
+        Print3dSliceJobDetailView.as_view(),
+    ),
     path("member/simple-quotes/<int:pk>", MemberSimpleQuoteDetailView.as_view()),
     path("member/simple-quotes/<int:pk>/convert", MemberSimpleQuoteConvertView.as_view()),
     path("admin/quote-params", AdminQuoteParamView.as_view()),
     path("admin/quote-params/<int:pk>", AdminQuoteParamDetailView.as_view()),
     path("admin/quote-tables", AdminQuoteTableView.as_view()),
     path("admin/quote-tables/<int:pk>", AdminQuoteTableDetailView.as_view()),
+    path("admin/print3d-config", AdminPrint3dConfigView.as_view()),
+    path("admin/print3d-config/preview", AdminPrint3dPreviewView.as_view()),
     path("admin/dieline-categories", AdminDielineCategoryView.as_view()),
     path("admin/dieline-categories/<int:pk>", AdminDielineCategoryDetailView.as_view()),
     path("admin/dieline-templates", AdminDielineTemplateView.as_view()),

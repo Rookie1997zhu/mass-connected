@@ -1,9 +1,10 @@
 <script setup>
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PageShell from '../../components/PageShell.vue'
 import InjectionQuoteSheet from '../../components/quote/InjectionQuoteSheet.vue'
+import Print3dQuoteSheet from '../../components/quote/Print3dQuoteSheet.vue'
 import { useLocaleCurrency } from '../../composables/useLocaleCurrency'
 import { convertSimpleQuote, createSimpleQuote, fetchSimpleQuote, shippingEstimate } from '../../api'
 
@@ -18,7 +19,6 @@ const error = ref('')
 const result = ref(null)
 const submitting = ref(false)
 
-const print3d = ref({ material: 'PLA', model_weight_g: 30, print_hours: 4, quantity: 10, post_process: 'none', rush: false })
 const generic = ref({ layers: 2, module_count: 3 })
 
 const pcbaPackages = ['0402', '0603', '0805', '1206', 'SOT-23', 'SOP-8', 'SOP-16', 'QFN-16', 'QFN-24', 'DIP-CONN-2-10', 'CAP-2PIN']
@@ -50,12 +50,106 @@ const pcbServiceOptions = [
   { no: 1, labelKey: 'pcbDev.s1' }, { no: 2, labelKey: 'pcbDev.s2' }, { no: 9, labelKey: 'pcbDev.s9' },
   { no: 10, labelKey: 'pcbDev.s10' }, { no: 11, labelKey: 'pcbDev.s11' }, { no: 12, labelKey: 'pcbDev.s12' },
 ]
+const pcbManufacturingMaterials = [
+  { value: 'fr4', labelKey: 'pcbDev.mfgFr4' },
+  { value: 'fpc', labelKey: 'pcbDev.mfgFpc' },
+  { value: 'aluminum', labelKey: 'pcbDev.mfgAluminum' },
+  { value: 'other', labelKey: 'pcbDev.mfgOther' },
+]
+const pcbProcessOptions = {
+  fr4: {
+    boardThickness: ['1.0', '1.2', '1.6', '2.0'],
+    solderColor: ['绿色', '红色', '黄色', '蓝色', '白色', '哑黑色'],
+    surfaceFinish: ['OSP', '有铅喷锡', '无铅喷锡', '沉金'],
+    copperThickness: ['1oz'],
+    solderMaskCoverage: ['过孔盖油', '过孔开窗', '过孔塞油', '过孔塞树脂+过孔电镀盖帽'],
+    panelDesignCount: ['1', '2'],
+    defaults: ['1.6', '绿色', '有铅喷锡', '1oz', '过孔盖油', '1'],
+  },
+  fpc: {
+    boardThickness: ['0.11', '0.12', '0.20'],
+    solderColor: ['页面默认'],
+    surfaceFinish: ['沉金'],
+    copperThickness: ['1oz'],
+    solderMaskCoverage: ['页面默认'],
+    panelDesignCount: ['1', '2'],
+    defaults: ['0.11', '页面默认', '沉金', '1oz', '页面默认', '1'],
+  },
+  aluminum: {
+    boardThickness: ['1.0', '1.2', '1.6'],
+    solderColor: ['绿色', '红色', '黄色', '蓝色', '白色', '哑黑色'],
+    surfaceFinish: ['无铅喷锡'],
+    copperThickness: ['1oz'],
+    solderMaskCoverage: ['页面默认'],
+    panelDesignCount: ['1', '2'],
+    defaults: ['1.6', '绿色', '无铅喷锡', '1oz', '页面默认', '1'],
+  },
+}
 const pcbDev = ref({
   base_item_no: 2,
   weight_keys: ['mass_production', 'pcb_fr4', 'qty_2', 'size_100'],
   service_nos: [],
   ad_consent: false,
   shipping_weight_kg: 1,
+  include_pcb_manufacturing: false,
+  mfg_material: 'fr4',
+  mfg_layers: 2,
+  mfg_width_mm: 100,
+  mfg_height_mm: 100,
+  mfg_quantity: 5,
+  mfg_board_thickness: '1.6',
+  mfg_solder_color: '绿色',
+  mfg_surface_finish: '有铅喷锡',
+  mfg_copper_thickness: '1oz',
+  mfg_solder_mask_coverage: '过孔盖油',
+  mfg_panel_design_count: '1',
+  mfg_smt_required: false,
+})
+const currentPcbProcessOptions = computed(() => {
+  const options = pcbProcessOptions[pcbDev.value.mfg_material] || {
+    boardThickness: [],
+    solderColor: [],
+    surfaceFinish: [],
+    copperThickness: [],
+    solderMaskCoverage: [],
+    panelDesignCount: [],
+    defaults: ['', '', '', '', '', ''],
+  }
+  let boardThickness = options.boardThickness
+  if (pcbDev.value.mfg_material === 'fpc' && Number(pcbDev.value.mfg_layers) === 1) {
+    boardThickness = ['0.11']
+  }
+  if (pcbDev.value.mfg_material === 'fr4' && Number(pcbDev.value.mfg_layers) === 4) {
+    boardThickness = boardThickness.filter((value) => value !== '2.0')
+  }
+  return { ...options, boardThickness }
+})
+
+watch(() => pcbDev.value.mfg_material, (material) => {
+  if (material === 'aluminum') {
+    pcbDev.value.mfg_layers = 1
+  } else if (material === 'fr4' && ![2, 4].includes(Number(pcbDev.value.mfg_layers))) {
+    pcbDev.value.mfg_layers = 2
+  } else if (material === 'fpc' && ![1, 2].includes(Number(pcbDev.value.mfg_layers))) {
+    pcbDev.value.mfg_layers = 2
+  }
+  const options = pcbProcessOptions[material]
+  if (options) {
+    [
+      pcbDev.value.mfg_board_thickness,
+      pcbDev.value.mfg_solder_color,
+      pcbDev.value.mfg_surface_finish,
+      pcbDev.value.mfg_copper_thickness,
+      pcbDev.value.mfg_solder_mask_coverage,
+      pcbDev.value.mfg_panel_design_count,
+    ] = options.defaults
+  }
+})
+watch(() => pcbDev.value.mfg_layers, () => {
+  const allowed = currentPcbProcessOptions.value.boardThickness
+  if (!allowed.includes(pcbDev.value.mfg_board_thickness)) {
+    pcbDev.value.mfg_board_thickness = allowed[0] || ''
+  }
 })
 
 const shippingMode = ref('air')
@@ -87,11 +181,7 @@ const onShippingEstimate = async () => {
   }
 }
 
-const print3dMaterials = ['PLA', 'ABS', 'PETG', 'Resin', 'Nylon', 'TPU']
-const postProcesses = ['none', 'sanding', 'paint']
-
 const buildInputs = () => {
-  if (quoteType.value === 'print3d') return { ...print3d.value }
   if (quoteType.value === 'pcba') {
     return {
       pcb_quantity: Number(pcba.value.pcb_quantity) || 1,
@@ -110,6 +200,19 @@ const buildInputs = () => {
       service_nos: [...pcbDev.value.service_nos],
       ad_consent: pcbDev.value.ad_consent,
       shipping_weight_kg: Number(pcbDev.value.shipping_weight_kg) || 1,
+      include_pcb_manufacturing: pcbDev.value.include_pcb_manufacturing,
+      mfg_material: pcbDev.value.mfg_material,
+      mfg_layers: Number(pcbDev.value.mfg_layers) || 0,
+      mfg_width_mm: Number(pcbDev.value.mfg_width_mm) || 0,
+      mfg_height_mm: Number(pcbDev.value.mfg_height_mm) || 0,
+      mfg_quantity: Number(pcbDev.value.mfg_quantity) || 0,
+      mfg_board_thickness: pcbDev.value.mfg_board_thickness,
+      mfg_solder_color: pcbDev.value.mfg_solder_color,
+      mfg_surface_finish: pcbDev.value.mfg_surface_finish,
+      mfg_copper_thickness: pcbDev.value.mfg_copper_thickness,
+      mfg_solder_mask_coverage: pcbDev.value.mfg_solder_mask_coverage,
+      mfg_panel_design_count: pcbDev.value.mfg_panel_design_count,
+      mfg_smt_required: pcbDev.value.mfg_smt_required,
     }
   }
   return { ...generic.value }
@@ -159,7 +262,7 @@ watch(() => route.query.id, (id) => { if (id) loadExisting(id); else result.valu
 </script>
 
 <template>
-  <PageShell :container-wide="quoteType === 'injection'">
+  <PageShell :container-wide="quoteType === 'injection' || quoteType === 'print3d'">
     <h1 class="page-title">{{ t('simpleQuote.title') }}</h1>
     <p class="page-lead">{{ t('simpleQuote.desc') }}</p>
 
@@ -182,23 +285,19 @@ watch(() => route.query.id, (id) => { if (id) loadExisting(id); else result.valu
       @convert="onConvert"
     />
 
+    <Print3dQuoteSheet
+      v-else-if="quoteType === 'print3d'"
+      v-model:product-name="productName"
+      :saved-result="result?.quote_type === 'print3d' ? result : null"
+      @generated="onInjectionGenerated"
+      @convert="onConvert"
+    />
+
     <div v-else class="sq-layout">
       <section class="sq-form card">
         <label>{{ t('simpleQuote.productName') }}<input v-model="productName" type="text" /></label>
 
-        <template v-if="quoteType === 'print3d'">
-          <label>{{ t('simpleQuote.material') }}
-            <select v-model="print3d.material"><option v-for="m in print3dMaterials" :key="m" :value="m">{{ m }}</option></select>
-          </label>
-          <label>{{ t('simpleQuote.weight') }}<input v-model.number="print3d.model_weight_g" type="number" min="0" /></label>
-          <label>{{ t('simpleQuote.printHours') }}<input v-model.number="print3d.print_hours" type="number" min="0" step="0.5" /></label>
-          <label>{{ t('simpleQuote.quantity') }}<input v-model.number="print3d.quantity" type="number" min="1" /></label>
-          <label>{{ t('simpleQuote.postProcess') }}
-            <select v-model="print3d.post_process"><option v-for="p in postProcesses" :key="p" :value="p">{{ p }}</option></select>
-          </label>
-        </template>
-
-        <template v-else-if="quoteType === 'pcba'">
+        <template v-if="quoteType === 'pcba'">
           <label>{{ t('simpleQuote.pcbQty') }}<input v-model.number="pcba.pcb_quantity" type="number" min="1" /></label>
           <label>{{ t('simpleQuote.arrayCount') }}<input v-model.number="pcba.array_count" type="number" min="1" /></label>
           <h3 class="sq-parts-title">{{ t('simpleQuote.components') }}</h3>
@@ -241,6 +340,69 @@ watch(() => route.query.id, (id) => { if (id) loadExisting(id); else result.valu
           <label class="checkbox"><input v-model="pcbDev.ad_consent" type="checkbox" /> {{ t('pcbDev.adConsent') }}</label>
           <label>{{ t('pcbDev.shippingWeight') }}<input v-model.number="pcbDev.shipping_weight_kg" type="number" min="0" step="0.1" /></label>
           <p class="sq-stp-hint">{{ t('pcbDev.shippingHint') }}</p>
+          <fieldset class="sq-fieldset">
+            <legend>{{ t('pcbDev.mfgTitle') }}</legend>
+            <label class="checkbox">
+              <input v-model="pcbDev.include_pcb_manufacturing" type="checkbox" /> {{ t('pcbDev.mfgInclude') }}
+            </label>
+            <template v-if="pcbDev.include_pcb_manufacturing">
+              <label>{{ t('pcbDev.mfgMaterial') }}
+                <select v-model="pcbDev.mfg_material">
+                  <option v-for="m in pcbManufacturingMaterials" :key="m.value" :value="m.value">{{ t(m.labelKey) }}</option>
+                </select>
+              </label>
+              <div class="sq-row">
+                <label>{{ t('pcbDev.mfgLayers') }}<input v-model.number="pcbDev.mfg_layers" type="number" min="1" /></label>
+                <label>{{ t('pcbDev.mfgQuantity') }}<input v-model.number="pcbDev.mfg_quantity" type="number" min="1" /></label>
+              </div>
+              <div class="sq-row">
+                <label>{{ t('pcbDev.mfgWidth') }}<input v-model.number="pcbDev.mfg_width_mm" type="number" min="1" /></label>
+                <label>{{ t('pcbDev.mfgHeight') }}<input v-model.number="pcbDev.mfg_height_mm" type="number" min="1" /></label>
+              </div>
+              <div class="sq-row">
+                <label>{{ t('pcbDev.mfgBoardThickness') }}
+                  <select v-model="pcbDev.mfg_board_thickness">
+                    <option v-for="value in currentPcbProcessOptions.boardThickness" :key="value" :value="value">{{ value }}mm</option>
+                  </select>
+                </label>
+                <label>{{ t('pcbDev.mfgCopperThickness') }}
+                  <select v-model="pcbDev.mfg_copper_thickness">
+                    <option v-for="value in currentPcbProcessOptions.copperThickness" :key="value" :value="value">{{ value }}</option>
+                  </select>
+                </label>
+              </div>
+              <div class="sq-row">
+                <label>{{ t('pcbDev.mfgSolderColor') }}
+                  <select v-model="pcbDev.mfg_solder_color">
+                    <option v-for="value in currentPcbProcessOptions.solderColor" :key="value" :value="value">{{ t(`pcbDev.process.${value}`) }}</option>
+                  </select>
+                </label>
+                <label>{{ t('pcbDev.mfgSurfaceFinish') }}
+                  <select v-model="pcbDev.mfg_surface_finish">
+                    <option v-for="value in currentPcbProcessOptions.surfaceFinish" :key="value" :value="value">{{ t(`pcbDev.process.${value}`) }}</option>
+                  </select>
+                </label>
+              </div>
+              <div class="sq-row">
+                <label>{{ t('pcbDev.mfgSolderMaskCoverage') }}
+                  <select v-model="pcbDev.mfg_solder_mask_coverage">
+                    <option v-for="value in currentPcbProcessOptions.solderMaskCoverage" :key="value" :value="value">{{ t(`pcbDev.process.${value}`) }}</option>
+                  </select>
+                </label>
+                <label>{{ t('pcbDev.mfgPanelDesignCount') }}
+                  <select v-model="pcbDev.mfg_panel_design_count">
+                    <option v-for="value in currentPcbProcessOptions.panelDesignCount" :key="value" :value="value">{{ value }}</option>
+                  </select>
+                </label>
+              </div>
+              <label class="checkbox sq-smt-label">
+                <input v-model="pcbDev.mfg_smt_required" type="checkbox" />
+                <span>{{ t('pcbDev.mfgSmtRequired') }}</span>
+                <span class="sq-stp-hint">{{ t('pcbDev.smtNotIncludedHint') }}</span>
+              </label>
+              <p class="sq-stp-hint">{{ t('pcbDev.mfgHint') }}</p>
+            </template>
+          </fieldset>
         </template>
         <template v-else-if="quoteType === 'software'">
           <label>Modules<input v-model.number="generic.module_count" type="number" min="0" /></label>
@@ -320,6 +482,67 @@ watch(() => route.query.id, (id) => { if (id) loadExisting(id); else result.valu
               <span>{{ item.label }}</span><span>{{ fromQuote(item.amount, result) }}</span>
             </li>
           </ul>
+          <div v-if="result.result?.pcb_manufacturing?.enabled" class="sq-manufacturing">
+            <strong>{{ t('pcbDev.mfgTitle') }}</strong>
+            <p v-if="!result.result.pcb_manufacturing.requires_manual_review">
+              {{ t('pcbDev.mfgAutoQuoted') }}:
+              CNY {{ fmt(result.result.pcb_manufacturing.customer_quote_cny, 2) }}
+              /
+              KRW {{ fmt(result.result.pcb_manufacturing.customer_quote_krw) }}
+            </p>
+            <p
+              v-if="!result.result.pcb_manufacturing.requires_manual_review"
+              class="sq-mfg-mode"
+              :class="{ 'is-estimated': result.result.pcb_manufacturing.is_estimated }"
+            >
+              {{ t('pcbDev.mfgPricingMode') }}:
+              {{ t(result.result.pcb_manufacturing.is_estimated ? 'pcbDev.mfgEstimated' : 'pcbDev.mfgExact') }}
+              <template v-if="result.result.pcb_manufacturing.is_estimated">
+                · {{ t('pcbDev.mfgConfidence') }}
+                {{ fmt((result.result.pcb_manufacturing.confidence || 0) * 100, 1) }}%
+              </template>
+            </p>
+            <p v-if="result.result.pcb_manufacturing.is_estimated" class="sq-stp-hint">
+              {{ t('pcbDev.mfgEstimateNote') }}
+            </p>
+            <p v-if="result.result.pcb_manufacturing.selected_process" class="sq-stp-hint">
+              {{ t('pcbDev.mfgProcess') }}:
+              {{ result.result.pcb_manufacturing.selected_process.board_thickness }}mm ·
+              {{ t(`pcbDev.process.${result.result.pcb_manufacturing.selected_process.solder_color}`) }} ·
+              {{ t(`pcbDev.process.${result.result.pcb_manufacturing.selected_process.surface_finish}`) }} ·
+              {{ result.result.pcb_manufacturing.selected_process.copper_thickness }}
+              <template v-if="result.result.pcb_manufacturing.selected_process.solder_mask_coverage">
+                · {{ t(`pcbDev.process.${result.result.pcb_manufacturing.selected_process.solder_mask_coverage}`) }}
+              </template>
+              <template v-if="result.result.pcb_manufacturing.selected_process.panel_design_count">
+                · {{ t('pcbDev.mfgPanelDesignCount') }} {{ result.result.pcb_manufacturing.selected_process.panel_design_count }}
+              </template>
+            </p>
+            <p v-if="result.result.pcb_manufacturing.smt_required" class="sq-stp-hint">
+              {{ t('pcbDev.mfgSmtRequired') }} · {{ t('pcbDev.smtNotIncludedHint') }}
+            </p>
+            <p v-if="result.result.pcb_manufacturing.risk_status" class="sq-stp-hint">
+              {{ t('pcbDev.mfgRiskStatus') }}: {{ result.result.pcb_manufacturing.risk_status }}
+            </p>
+            <p v-if="result.result.pcb_manufacturing.requires_manual_review">
+              {{ t('pcbDev.mfgManualReview') }}:
+              {{ (result.result.pcb_manufacturing.manual_review_reasons || []).join(' / ') }}
+            </p>
+            <p class="sq-stp-hint">
+              {{ t('pcbDev.mfgVersion') }}: {{ result.result.pcb_manufacturing.active_price_version || result.result.pcb_manufacturing.price_version || '-' }}
+              /
+              {{ t('pcbDev.mfgValidationStatus') }}: {{ result.result.pcb_manufacturing.validation_status || '-' }}
+              /
+              {{ t('pcbDev.mfgAcceptanceStatus') }}: {{ result.result.pcb_manufacturing.acceptance_status || t('pcbDev.mfgAcceptanceLegacy') }}
+            </p>
+            <p
+              v-if="result.result.pcb_manufacturing.acceptance_status && result.result.pcb_manufacturing.acceptance_status !== 'passed'"
+              class="sq-stp-hint"
+            >
+              {{ t('pcbDev.mfgAcceptanceFailedHint') }}
+              ({{ t('pcbDev.mfgFallbackVersion') }}: {{ result.result.pcb_manufacturing.fallback_version || 'jlc-cn-pcb-v6-20260712' }})
+            </p>
+          </div>
           <p class="sq-total">{{ t('simpleQuote.total') }}: <strong>{{ fromQuote(result.total_amount, result) }}</strong></p>
           <p class="sq-stp-hint">{{ t('pcbDev.vatExcluded') }}</p>
         </template>
@@ -352,6 +575,22 @@ watch(() => route.query.id, (id) => { if (id) loadExisting(id); else result.valu
   margin-bottom: var(--space-lg);
   select { padding: 0.625rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); }
 }
+
+.sq-mfg-mode {
+  display: inline-flex;
+  width: fit-content;
+  margin: 0.25rem 0;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--primary, #2563eb) 10%, transparent);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.sq-mfg-mode.is-estimated {
+  background: color-mix(in srgb, #d97706 12%, transparent);
+  color: #92400e;
+}
 .sq-layout { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2xl); align-items: start; }
 .sq-shipping { display: flex; flex-direction: column; gap: var(--space-md); grid-column: 1 / -1; label { display: flex; flex-direction: column; gap: 0.375rem; font-size: 0.875rem; } label.checkbox { flex-direction: row; align-items: center; gap: 0.5rem; } select, input { padding: 0.625rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); } }
 .sq-fieldset { border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: var(--space-md); display: flex; flex-direction: column; gap: 0.35rem; legend { font-size: 0.85rem; font-weight: 600; } }
@@ -366,8 +605,10 @@ watch(() => route.query.id, (id) => { if (id) loadExisting(id); else result.valu
 .sq-result { display: flex; flex-direction: column; gap: var(--space-sm); }
 .sq-no { font-size: 0.85rem; opacity: 0.6; margin: 0; }
 .sq-breakdown { list-style: none; padding: 0; margin: 0; li { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--color-border); font-size: 0.9rem; } }
+.sq-manufacturing { border: 1px dashed var(--color-border); border-radius: var(--radius-sm); padding: var(--space-md); font-size: 0.88rem; p { margin: 0.35rem 0 0; } }
 .sq-total { font-size: 1.1rem; margin-top: var(--space-sm); }
 .sq-krw { font-size: 0.9rem; color: var(--color-text-muted); margin: 0; }
+.sq-smt-label { gap: 0.5rem; align-items: center; flex-wrap: wrap; .sq-stp-hint { margin: 0; } }
 .sq-actions { display: flex; gap: var(--space-md); margin-top: var(--space-md); }
 @media (max-width: 768px) { .sq-layout { grid-template-columns: 1fr; } }
 </style>

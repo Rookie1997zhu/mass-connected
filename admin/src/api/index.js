@@ -138,6 +138,10 @@ export const fetchQuoteTables = (params) => http.get('/admin/quote-tables', { pa
 export const saveQuoteTable = (data) => http.post('/admin/quote-tables', data)
 export const updateQuoteTable = (id, data) => http.patch(`/admin/quote-tables/${id}`, data)
 
+export const fetchPrint3dConfig = () => http.get('/admin/print3d-config')
+export const savePrint3dConfig = (data) => http.put('/admin/print3d-config', data)
+export const previewPrint3dConfig = (data) => http.post('/admin/print3d-config/preview', data)
+
 export const fetchDielineTemplates = () => http.get('/admin/dieline-templates')
 export const fetchDielineCategories = () => http.get('/admin/dieline-categories')
 export const saveDielineCategory = (data) => http.post('/admin/dieline-categories', data)

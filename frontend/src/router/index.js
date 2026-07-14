@@ -45,6 +45,12 @@ const routes = [
         meta: { requiresAuth: true, requiresBuyer: true },
       },
       {
+        path: 'packaging',
+        name: 'packaging-library',
+        component: () => import('../views/packaging/PackagingLibraryView.vue'),
+        meta: { requiresAuth: true, requiresBuyer: true },
+      },
+      {
         path: 'packaging/box',
         name: 'packaging-box',
         component: () => import('../views/packaging/BoxGeneratorView.vue'),

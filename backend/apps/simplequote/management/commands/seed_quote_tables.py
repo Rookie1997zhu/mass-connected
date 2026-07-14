@@ -1,6 +1,14 @@
 from django.core.management.base import BaseCommand
 
 from apps.simplequote.models import QuoteParam, QuoteTable
+from apps.simplequote.print3d_config import (
+    DEFAULT_MATERIALS,
+    DEFAULT_POSTS,
+    DEFAULT_PRINTERS,
+    DEFAULT_QUALITIES,
+    PRINT3D_PARAM_DEFAULTS,
+    PRINT3D_PARAM_META,
+)
 from apps.simplequote.table_data import (
     PCBA_PARAM_DEFAULTS,
     PCBA_PARAM_META,
@@ -26,9 +34,24 @@ class Command(BaseCommand):
             if created:
                 table_count += 1
 
+        for table_key, rows in (
+            ("materials", DEFAULT_MATERIALS),
+            ("printers", DEFAULT_PRINTERS),
+            ("print_qualities", DEFAULT_QUALITIES),
+            ("post_processing", DEFAULT_POSTS),
+        ):
+            _, created = QuoteTable.objects.update_or_create(
+                quote_type="print3d",
+                table_key=table_key,
+                defaults={"rows": rows, "is_active": True},
+            )
+            if created:
+                table_count += 1
+
         param_count = self._seed_params("shipping", SHIPPING_PARAM_DEFAULTS, SHIPPING_PARAM_META)
         param_count += self._seed_params("pcba", PCBA_PARAM_DEFAULTS, PCBA_PARAM_META)
         param_count += self._seed_params("pcb", PCB_PARAM_DEFAULTS, PCB_PARAM_META)
+        param_count += self._seed_params("print3d", PRINT3D_PARAM_DEFAULTS, PRINT3D_PARAM_META)
 
         self.stdout.write(
             self.style.SUCCESS(

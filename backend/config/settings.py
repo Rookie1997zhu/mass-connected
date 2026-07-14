@@ -125,6 +125,20 @@ CACHES = {
     }
 }
 
+# Celery（print3d 切片 Worker）；与缓存共用 Redis，使用独立 DB 编号避免键冲突
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", REDIS_URL)
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_RESULT_BACKEND", REDIS_URL)
+CELERY_TASK_TRACK_STARTED = True
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_WORKER_PREFETCH_MULTIPLIER = 1
+CELERY_TASK_ACKS_LATE = True
+CELERY_TASK_ALWAYS_EAGER = os.environ.get("CELERY_TASK_ALWAYS_EAGER", "false").lower() == "true"
+PRUSA_SLICER_PATH = os.environ.get("PRUSA_SLICER_PATH", "prusa-slicer")
+PRINT3D_SLICE_JOB_TTL_HOURS = int(os.environ.get("PRINT3D_SLICE_JOB_TTL_HOURS", "24"))
+
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",

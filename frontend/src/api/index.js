@@ -69,6 +69,14 @@ export const createSimpleQuote = (data) => http.post('/member/simple-quotes', da
 export const fetchFefcoCatalog = () => http.get('/packaging/fefco-catalog')
 export const convertSimpleQuote = (id, data) => http.post(`/member/simple-quotes/${id}/convert`, data)
 export const previewSimpleQuote = (data) => http.post('/member/simple-quotes/preview', data)
+export const fetchPrint3dOptions = () => http.get('/member/simple-quotes/print3d/options')
+export const createPrint3dSliceJob = (formData) =>
+  http.post('/member/simple-quotes/print3d/slice-jobs', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+    timeout: 120000,
+  })
+export const fetchPrint3dSliceJob = (id) =>
+  http.get(`/member/simple-quotes/print3d/slice-jobs/${id}`)
 // 几何/OCR 解析为同步计算，耗时可达数十秒，需覆盖后端解析超时（STP 20s / OCR 25s）
 export const stpParse = (formData) =>
   http.post('/member/simple-quotes/parse-stp', formData, {

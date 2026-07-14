@@ -190,6 +190,62 @@ class DielineTemplateAsset(models.Model):
         return f"{self.template.code} asset v{self.version}"
 
 
+class Print3dSliceJob(models.Model):
+    """Temporary 3D print slice job: upload → PrusaSlicer → weight/time for quoting."""
+
+    STATUS_PENDING = "pending"
+    STATUS_CONVERTING = "converting"
+    STATUS_SLICING = "slicing"
+    STATUS_DONE = "done"
+    STATUS_FAILED = "failed"
+    STATUS_CHOICES = [
+        (STATUS_PENDING, "Pending"),
+        (STATUS_CONVERTING, "Converting STEP"),
+        (STATUS_SLICING, "Slicing"),
+        (STATUS_DONE, "Done"),
+        (STATUS_FAILED, "Failed"),
+    ]
+
+    buyer = models.ForeignKey(
+        "accounts.User", on_delete=models.CASCADE, related_name="print3d_slice_jobs"
+    )
+    source_file = models.FileField(
+        upload_to="print3d_slice/%Y/%m/%d/", null=True, blank=True
+    )
+    original_filename = models.CharField(max_length=255, blank=True)
+    file_ext = models.CharField(max_length=16, blank=True)
+    status = models.CharField(
+        max_length=20, choices=STATUS_CHOICES, default=STATUS_PENDING, db_index=True
+    )
+    inputs = models.JSONField(default=dict, blank=True)
+    config_snapshot = models.JSONField(default=dict, blank=True)
+    result = models.JSONField(default=dict, blank=True)
+    preview_mesh = models.JSONField(null=True, blank=True)
+    error_code = models.CharField(max_length=64, blank=True)
+    error_message = models.CharField(max_length=500, blank=True)
+    celery_task_id = models.CharField(max_length=64, blank=True)
+    expires_at = models.DateTimeField(null=True, blank=True, db_index=True)
+    source_cleared_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def mark_failed(self, code: str, message: str):
+        self.status = self.STATUS_FAILED
+        self.error_code = code[:64]
+        self.error_message = (message or "")[:500]
+        self.save(
+            update_fields=[
+                "status",
+                "error_code",
+                "error_message",
+                "updated_at",
+            ]
+        )
+
+
 class SimpleQuote(models.Model):
     TYPE_CHOICES = [
         ("injection", "Injection Mold"),

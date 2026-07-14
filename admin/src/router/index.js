@@ -15,6 +15,7 @@ const routes = [
       { path: 'suppliers', name: 'suppliers', component: () => import('../views/SuppliersView.vue') },
       { path: 'rfqs', name: 'rfqs', component: () => import('../views/RfqsView.vue') },
       { path: 'quote-params', name: 'quote-params', component: () => import('../views/QuoteParamsView.vue') },
+      { path: 'print3d-config', name: 'print3d-config', component: () => import('../views/Print3dConfigView.vue') },
       { path: 'quote-tables', name: 'quote-tables', component: () => import('../views/QuoteTablesView.vue') },
       { path: 'dieline-templates', name: 'dieline-templates', component: () => import('../views/DielineTemplatesView.vue') },
       { path: 'points', name: 'points', component: () => import('../views/PointsView.vue') },

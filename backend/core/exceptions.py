@@ -37,17 +37,18 @@ def custom_exception_handler(exc, context):
         if isinstance(exc, ValidationError):
             code = "COMMON_VALIDATION_ERROR"
         errors = getattr(exc, "errors", None)
-        if errors is None and isinstance(exc.detail, dict):
-            errors = exc.detail
-        elif errors is None and hasattr(exc, "detail"):
-            errors = {"detail": exc.detail}
+        detail = getattr(exc, "detail", None)
+        if errors is None and isinstance(detail, dict):
+            errors = detail
+        elif errors is None and detail is not None:
+            errors = {"detail": detail}
 
         if response.status_code >= 500:
             logger.exception("Unhandled API error", extra={"request_id": getattr(request, "request_id", "")})
 
         return error_response(
             code=code,
-            message=str(exc.detail) if hasattr(exc, "detail") else "请求失败",
+            message=str(detail) if detail is not None else "请求失败",
             errors=errors if isinstance(errors, dict) else {},
             status=response.status_code,
             request=request,

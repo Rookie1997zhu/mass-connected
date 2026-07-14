@@ -1,0 +1,43 @@
+# Print3d slicer worker: Django + OCP + PrusaSlicer (AGPL) under xvfb.
+# Build from repo root: docker compose build slicer-worker
+# See docs/print3d-slicer-licensing.md
+FROM python:3.12-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV PRUSA_SLICER_PATH=/usr/local/bin/prusa-slicer
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc default-libmysqlclient-dev pkg-config \
+    libgl1 libglib2.0-0 libx11-6 \
+    curl ca-certificates \
+    libgtk-3-0 \
+    libxcb1 libxcb-render0 libxcb-shm0 libxcomposite1 libxcursor1 \
+    libxdamage1 libxext6 libxfixes3 libxi6 libxinerama1 libxkbcommon0 \
+    libxrandr2 libxrender1 libxtst6 libsm6 libice6 \
+    xauth xvfb \
+    && rm -rf /var/lib/apt/lists/*
+
+ARG PRUSA_APPIMAGE_PATH=3D-Printing-Quote-Engine-master/3D-Printing-Quote-Engine-master/PrusaSlicer.AppImage
+COPY ${PRUSA_APPIMAGE_PATH} /tmp/PrusaSlicer.AppImage
+RUN chmod +x /tmp/PrusaSlicer.AppImage \
+    && cd /tmp \
+    && ./PrusaSlicer.AppImage --appimage-extract \
+    && ROOT=/tmp/squashfs-root \
+    && PRUSA_BIN=$(find "$ROOT" -type f \( -name 'prusa-slicer' -o -name 'PrusaSlicer' \) -executable 2>/dev/null | head -n1) \
+    && if [ -z "$PRUSA_BIN" ] && [ -x "$ROOT/AppRun" ]; then PRUSA_BIN="$ROOT/AppRun"; fi \
+    && if [ -z "$PRUSA_BIN" ]; then echo "PrusaSlicer binary not found" >&2; exit 1; fi \
+    && mv "$ROOT" /opt/prusa-slicer \
+    && REL="${PRUSA_BIN#/tmp/squashfs-root/}" \
+    && ln -sf "/opt/prusa-slicer/$REL" /usr/local/bin/prusa-slicer \
+    && rm -f /tmp/PrusaSlicer.AppImage
+
+COPY backend/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY backend/ .
+RUN mkdir -p /app/media
+
+CMD ["celery", "-A", "config", "worker", "-l", "info", "-c", "1"]

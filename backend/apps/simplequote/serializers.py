@@ -4,6 +4,7 @@ from apps.simplequote.models import (
     DielineCategory,
     DielineTemplate,
     DielineTemplateAsset,
+    Print3dSliceJob,
     QuoteParam,
     QuoteTable,
     SimpleQuote,
@@ -78,6 +79,45 @@ class SimpleQuoteCreateSerializer(serializers.Serializer):
     # currency 一般由服务端按报价类型决定（注塑=CNY），此处仅作前向兼容可选入参。
     currency = serializers.CharField(max_length=3, required=False, allow_blank=True)
     inputs = serializers.DictField(required=False, default=dict)
+
+
+class Print3dSliceJobSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Print3dSliceJob
+        fields = [
+            "id",
+            "status",
+            "original_filename",
+            "file_ext",
+            "inputs",
+            "result",
+            "preview_mesh",
+            "error_code",
+            "error_message",
+            "expires_at",
+            "created_at",
+            "updated_at",
+        ]
+        read_only_fields = fields
+
+
+class Print3dSliceJobCreateSerializer(serializers.Serializer):
+    material = serializers.CharField(max_length=64, default="PLA")
+    printer = serializers.CharField(max_length=64, default="prusa_mk3s")
+    quality = serializers.CharField(max_length=64, default="standard")
+    infill_density = serializers.IntegerField(required=False, min_value=5, max_value=100)
+    support = serializers.BooleanField(required=False, default=False)
+    quantity = serializers.IntegerField(required=False, min_value=1, default=1)
+    post_process = serializers.CharField(max_length=64, required=False, default="none")
+    rush = serializers.BooleanField(required=False, default=False)
+
+
+class AdminPrint3dConfigSerializer(serializers.Serializer):
+    params = serializers.DictField(required=False)
+    materials = serializers.ListField(child=serializers.DictField(), required=False)
+    printers = serializers.ListField(child=serializers.DictField(), required=False)
+    qualities = serializers.ListField(child=serializers.DictField(), required=False)
+    post_processing = serializers.ListField(child=serializers.DictField(), required=False)
 
 
 class QuoteParamSerializer(serializers.ModelSerializer):

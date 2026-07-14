@@ -602,14 +602,111 @@ def build_pcb_dev_quotation_pdf(*, quote_no, product_name, inputs, result, valid
     total_rows = [["개발비 합계 / Total (VAT 별도)", _fmt_amount(result.get("total"))]]
     story.append(_amount_table(total_rows, font, highlight_last=True))
 
+    manufacturing = result.get("pcb_manufacturing") or {}
+    if manufacturing.get("enabled"):
+        process_defaults = {
+            "fr4": {
+                "board_thickness": "1.6",
+                "solder_color": "绿色",
+                "surface_finish": "有铅喷锡",
+                "copper_thickness": "1oz",
+                "solder_mask_coverage": "过孔盖油",
+                "panel_design_count": "1",
+            },
+            "fpc": {
+                "board_thickness": "0.11",
+                "solder_color": "页面默认",
+                "surface_finish": "沉金",
+                "copper_thickness": "1oz",
+                "solder_mask_coverage": "页面默认",
+                "panel_design_count": "1",
+            },
+            "aluminum": {
+                "board_thickness": "1.6",
+                "solder_color": "绿色",
+                "surface_finish": "无铅喷锡",
+                "copper_thickness": "1oz",
+                "solder_mask_coverage": "过孔盖油",
+                "panel_design_count": "1",
+            },
+        }
+        selected_process = {
+            **process_defaults.get(manufacturing.get("material_key"), {}),
+            **(manufacturing.get("selected_process") or {}),
+        }
+        process_adjustments = manufacturing.get("process_adjustments") or []
+        process_adjustment_text = "; ".join(
+            f"{item.get('field', '-')}: {item.get('value', '-')} ({float(item.get('amount_cny') or 0):+.2f} CNY)"
+            for item in process_adjustments
+            if abs(float(item.get("amount_cny") or 0)) > 0.005
+        ) or "Standard / None"
+        story.append(Spacer(1, 8))
+        story.append(Paragraph("2. PCB 샘플 제작비 / PCB 样板制造费", styles["Heading3"]))
+        mfg_rows = [
+            ["항목 / Item", "값 / Value"],
+            ["Material", manufacturing.get("material_label") or manufacturing.get("material_key", "-")],
+            ["Layers", str(manufacturing.get("layers", "-"))],
+            [
+                "Size / Qty",
+                f"{manufacturing.get('width_mm', '-')} x {manufacturing.get('height_mm', '-')} mm / {manufacturing.get('quantity', '-')}",
+            ],
+            ["Finished thickness", f"{selected_process.get('board_thickness', '-')} mm"],
+            ["Solder mask", selected_process.get("solder_color", "-")],
+            ["Surface finish", selected_process.get("surface_finish", "-")],
+            ["Copper weight", selected_process.get("copper_thickness", "-")],
+            ["阻焊覆盖 / Solder mask coverage", selected_process.get("solder_mask_coverage", "-")],
+            ["拼板款数 / Panel designs", selected_process.get("panel_design_count", "-")],
+            [
+                "SMT需求 / SMT required",
+                "是 / Yes（贴片费另计，不含于制造费）" if manufacturing.get("smt_required") else "否 / No",
+            ],
+            ["JLC estimate (CNY)", _fmt_amount(manufacturing.get("jlc_estimate_cny"), 2)],
+            ["Customer quote (CNY)", _fmt_amount(manufacturing.get("customer_quote_cny"), 2)],
+            ["Converted (KRW)", _fmt_amount(manufacturing.get("customer_quote_krw"))],
+            [
+                "Pricing mode",
+                "Verified estimate" if manufacturing.get("is_estimated") else "Exact lookup",
+            ],
+            ["Base pricing mode", manufacturing.get("base_pricing_mode") or manufacturing.get("pricing_mode") or "-"],
+            ["工艺调整 / Process adjustment", process_adjustment_text],
+            ["Process validation", manufacturing.get("process_validation_status") or "-"],
+            [
+                "风险状态 / Risk status",
+                manufacturing.get("risk_status") or ("-" if not manufacturing.get("risk_zone") else "manual_review"),
+            ],
+            [
+                "Confidence",
+                f"{float(manufacturing.get('confidence') or 0) * 100:.1f}%"
+                if manufacturing.get("is_estimated")
+                else "100%",
+            ],
+            ["Price version", manufacturing.get("active_price_version") or manufacturing.get("price_version") or "-"],
+            ["Acceptance status", manufacturing.get("acceptance_status") or "legacy"],
+            ["Fallback version", manufacturing.get("fallback_version") or "-"],
+            ["Estimator version", manufacturing.get("estimator_version") or "-"],
+            ["Process model version", manufacturing.get("process_model_version") or "-"],
+        ]
+        story.append(_amount_table(mfg_rows, font))
+
     notes = [
         "VAT 미포함 / 不含增值税",
         "≤300만원 개발비 100% 선불 / 300万韩元以下开发费100%预付",
         "광고 동의 시 개발비 10% 할인 적용 가능",
         "배송비는 PCB 개발 견적용 간소 규칙 적용",
+        "PCB样板制造费基于 JLC 公开采样价 + 10% margin，不含运费/税费/Gerber 审核附加费。",
     ]
     if result.get("ad_consent"):
         notes.append("광고 동의: 예 / 广告同意: 是")
+    if manufacturing.get("acceptance_status") and manufacturing.get("acceptance_status") != "passed":
+        notes.append(
+            "独立验收未通过：非精确命中规格的估算/工艺自动报价已受限"
+            f"（fallback={manufacturing.get('fallback_version') or 'jlc-cn-pcb-v6-20260712'}）。"
+        )
+    if manufacturing.get("requires_manual_review"):
+        reasons = "；".join(manufacturing.get("manual_review_reasons") or ["需人工确认"])
+        notes.append(f"PCB样板制造费待人工确认：{reasons}")
+    elif manufacturing.get("is_estimated"):
+        notes.append("PCB样板制造费为通过 JLC live holdout 门禁的估算价，实际下单价格可能发生变化。")
     for note in notes:
         story.append(Paragraph(f"• {note}", styles["Normal"]))
 

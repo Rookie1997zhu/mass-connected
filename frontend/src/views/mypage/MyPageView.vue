@@ -88,7 +88,13 @@ const quoteTypeLabel = (quoteType) => {
   const key = quoteType === 'print3d' ? 'print3d' : quoteType
   return t(`simpleQuote.${key}`)
 }
-const quoteDetailLink = (quote) => (quote.quote_type === 'paper_box' ? '/packaging/box' : `/simple-quote?id=${quote.id}`)
+const quoteDetailLink = (quote) => {
+  if (quote.quote_type === 'paper_box') {
+    const code = quote.inputs?.box_code
+    return code ? `/packaging/box?code=${encodeURIComponent(code)}` : '/packaging'
+  }
+  return `/simple-quote?id=${quote.id}`
+}
 
 const loadTab = async (tab) => {
   loading.value = true
@@ -275,7 +281,7 @@ const onLogout = () => {
       <!-- Simple quotes -->
       <div v-else-if="activeTab === 'simple-quotes'">
         <RouterLink to="/simple-quote" class="btn btn-primary btn-sm mb">＋ {{ t('simpleQuote.title') }}</RouterLink>
-        <RouterLink to="/packaging/box" class="btn btn-secondary btn-sm mb">＋ {{ t('packaging.title') }}</RouterLink>
+        <RouterLink to="/packaging" class="btn btn-secondary btn-sm mb">＋ {{ t('packaging.title') }}</RouterLink>
         <p v-if="!simpleQuotes.length" class="page-empty">{{ t('mypage.empty') }}</p>
         <table v-else class="data-table">
           <thead><tr><th>No.</th><th>{{ t('simpleQuote.type') }}</th><th>{{ t('mypage.amount') }}</th><th>{{ t('mypage.status') }}</th><th></th></tr></thead>
