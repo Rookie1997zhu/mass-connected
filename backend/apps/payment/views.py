@@ -1,15 +1,13 @@
 from django.shortcuts import get_object_or_404
-from django.utils import timezone
-from rest_framework import status
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.views import APIView
 
-from apps.notification.services import notify, notify_staff
+from apps.notification.services import notify_staff
 from apps.payment.models import Payment
 from apps.payment.serializers import AdminPaymentSerializer, PaymentSerializer
-from apps.project.services import create_project_from_production_order
+from apps.payment.services import PaymentConfirmError, confirm_payment
 from core.pagination import StandardPagination
-from core.permissions import IsAdminRole, IsBuyerRole
+from core.permissions import IsAdminRole, IsBuyerRole, IsSupplierRole
 from core.responses import error_response, success_response
 
 
@@ -18,7 +16,13 @@ class MemberPaymentListView(APIView):
     pagination_class = StandardPagination
 
     def get(self, request):
-        qs = Payment.objects.filter(buyer=request.user).order_by("-created_at")
+        qs = Payment.objects.filter(buyer=request.user).select_related(
+            "contract",
+            "contract__rfq",
+            "contract__quote",
+            "contract__production_order",
+            "contract__production_order__quote",
+        ).order_by("-created_at")
         paginator = self.pagination_class()
         page = paginator.paginate_queryset(qs, request)
         return paginator.get_paginated_response(
@@ -89,36 +93,51 @@ class AdminPaymentConfirmView(APIView):
     permission_classes = [IsAdminRole]
 
     def post(self, request, pk):
-        payment = get_object_or_404(Payment, pk=pk)
-        if payment.status == "confirmed":
-            return error_response("PAYMENT_ALREADY_CONFIRMED", "该付款已确认", request=request)
-        payment.status = "confirmed"
-        payment.confirmed_by = request.user
-        payment.confirmed_at = timezone.now()
-        payment.save(update_fields=["status", "confirmed_by", "confirmed_at", "updated_at"])
+        try:
+            payment, project, already = confirm_payment(pk, actor=request.user, require_proof=False)
+        except PaymentConfirmError as e:
+            status_code = 404 if e.code == "PAYMENT_NOT_FOUND" else 400
+            return error_response(e.code, e.message, status=status_code, request=request)
 
-        contract = payment.contract
-        project = None
-        if contract:
-            if contract.status != "signed":
-                contract.status = "signed"
-                contract.signed_at = timezone.now()
-                contract.save(update_fields=["status", "signed_at", "updated_at"])
-            if contract.production_order_id:
-                project = create_project_from_production_order(contract.production_order)
-        notify(payment.buyer, "payment", "付款已确认", f"付款单 {payment.payment_no} 已确认，项目将进入生产阶段。", send_email=True)
-        if contract and contract.supplier_id:
-            notify(
-                contract.supplier,
-                "payment",
-                "客户付款已确认",
-                f"付款单 {payment.payment_no} 已确认，合同 {contract.contract_no} 进入履约阶段。",
-                related_type="payment",
-                related_id=payment.id,
-                send_email=True,
-            )
         data = AdminPaymentSerializer(payment, context={"request": request}).data
         if project:
             data["project_id"] = project.id
             data["project_no"] = project.project_no
-        return success_response(data, message="付款已确认", request=request)
+        message = "付款已确认" if not already else "付款此前已确认"
+        return success_response(data, message=message, request=request)
+
+
+class SupplierPaymentConfirmView(APIView):
+    """关联卖家确认收款：须已上传凭证且状态为 pending_confirm。"""
+
+    permission_classes = [IsSupplierRole]
+
+    def post(self, request, pk):
+        payment = get_object_or_404(
+            Payment.objects.select_related("contract"),
+            pk=pk,
+            contract__supplier=request.user,
+        )
+        try:
+            payment, project, already = confirm_payment(
+                payment.id, actor=request.user, require_proof=True
+            )
+        except PaymentConfirmError as e:
+            return error_response(e.code, e.message, status=400, request=request)
+
+        from apps.rfq.serializers import SupplierPaymentSummarySerializer
+
+        data = SupplierPaymentSummarySerializer(
+            payment,
+            context={
+                "request": request,
+                "production_order": getattr(payment.contract, "production_order", None)
+                if payment.contract_id
+                else None,
+            },
+        ).data
+        if project:
+            data["project_id"] = project.id
+            data["project_no"] = project.project_no
+        message = "付款已确认，项目已启动" if not already else "付款此前已确认"
+        return success_response(data, message=message, request=request)

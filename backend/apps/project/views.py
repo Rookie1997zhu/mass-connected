@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework import status
 from rest_framework.parsers import FormParser, MultiPartParser
+from rest_framework.permissions import BasePermission
 from rest_framework.views import APIView
 
 from apps.notification.services import notify
@@ -30,12 +31,24 @@ from core.permissions import IsAdminRole, IsBuyerRole, IsSupplierRole
 from core.responses import error_response, success_response
 
 
+class IsAuthenticatedPlatformUser(BasePermission):
+    message = "需要登录"
+
+    def has_permission(self, request, view):
+        user = request.user
+        if not user or not user.is_authenticated or not user.is_active:
+            return False
+        return user.role in {"super_admin", "operator", "sales", "member", "factory"}
+
+
 class MemberProjectListView(APIView):
     permission_classes = [IsBuyerRole]
     pagination_class = StandardPagination
 
     def get(self, request):
-        qs = Project.objects.filter(buyer=request.user).select_related("supplier").order_by("-created_at")
+        qs = Project.objects.filter(buyer=request.user).select_related(
+            "supplier", "rfq", "production_order", "production_order__quote"
+        ).order_by("-created_at")
         paginator = self.pagination_class()
         page = paginator.paginate_queryset(qs, request)
         return paginator.get_paginated_response(ProjectListSerializer(page, many=True).data)
@@ -46,12 +59,18 @@ class MemberProjectDetailView(APIView):
 
     def get(self, request, pk):
         project = get_object_or_404(
-            Project.objects.prefetch_related("stages", "updates", "todos", "issues", "files"),
+            Project.objects.select_related(
+                "rfq", "production_order", "production_order__quote", "supplier"
+            ).prefetch_related(
+                "stages", "updates", "todos", "issues", "files__stage", "files__uploader"
+            ),
             pk=pk,
             buyer=request.user,
         )
         return success_response(
-            ProjectDetailSerializer(project, context={"customer_only": True}).data,
+            ProjectDetailSerializer(
+                project, context={"customer_only": True, "request": request}
+            ).data,
             request=request,
         )
 
@@ -72,7 +91,9 @@ class SupplierProjectListView(APIView):
     pagination_class = StandardPagination
 
     def get(self, request):
-        qs = Project.objects.filter(supplier=request.user).order_by("-created_at")
+        qs = Project.objects.filter(supplier=request.user).select_related(
+            "rfq", "production_order", "production_order__quote"
+        ).order_by("-created_at")
         paginator = self.pagination_class()
         page = paginator.paginate_queryset(qs, request)
         return paginator.get_paginated_response(ProjectListSerializer(page, many=True).data)
@@ -83,11 +104,18 @@ class SupplierProjectDetailView(APIView):
 
     def get(self, request, pk):
         project = get_object_or_404(
-            Project.objects.prefetch_related("stages", "updates", "todos", "issues", "files"),
+            Project.objects.select_related(
+                "rfq", "production_order", "production_order__quote", "supplier"
+            ).prefetch_related(
+                "stages", "updates", "todos", "issues", "files__stage", "files__uploader"
+            ),
             pk=pk,
             supplier=request.user,
         )
-        return success_response(ProjectDetailSerializer(project).data, request=request)
+        return success_response(
+            ProjectDetailSerializer(project, context={"request": request}).data,
+            request=request,
+        )
 
 
 class SupplierProjectUpdateCreateView(APIView):
@@ -126,17 +154,52 @@ class SupplierProjectStageUpdateView(APIView):
     permission_classes = [IsSupplierRole]
 
     def patch(self, request, pk, stage_id):
+        from apps.project.services import advance_next_stage
+
         project = get_object_or_404(Project, pk=pk, supplier=request.user)
         stage = get_object_or_404(ProjectStage, pk=stage_id, project=project)
         new_status = request.data.get("status")
         if new_status not in {"pending", "in_progress", "completed"}:
             return error_response("PROJECT_STAGE_STATUS_INVALID", "无效的阶段状态", request=request)
+
+        stages = list(project.stages.order_by("sort_order", "id"))
+        if new_status == "in_progress":
+            # 仅允许把当前可推进阶段设为进行中
+            current = next((s for s in stages if s.status == "in_progress"), None)
+            if current and current.id != stage.id:
+                return error_response(
+                    "PROJECT_STAGE_ORDER_INVALID",
+                    "请先完成当前进行中的阶段",
+                    request=request,
+                )
+            prev_incomplete = [
+                s for s in stages if s.sort_order < stage.sort_order and s.status != "completed"
+            ]
+            if prev_incomplete:
+                return error_response(
+                    "PROJECT_STAGE_ORDER_INVALID",
+                    "请按顺序推进制作流程",
+                    request=request,
+                )
+        if new_status == "completed":
+            prev_incomplete = [
+                s for s in stages if s.sort_order < stage.sort_order and s.status != "completed"
+            ]
+            if prev_incomplete:
+                return error_response(
+                    "PROJECT_STAGE_ORDER_INVALID",
+                    "请按顺序完成制作流程",
+                    request=request,
+                )
+
         stage.status = new_status
         if new_status == "in_progress" and not stage.started_at:
             stage.started_at = timezone.now()
         if new_status == "completed" and not stage.completed_at:
             stage.completed_at = timezone.now()
         stage.save(update_fields=["status", "started_at", "completed_at"])
+        if new_status == "completed":
+            advance_next_stage(project, stage)
         recalc_progress(project)
         return success_response(ProjectStageSerializer(stage).data, request=request)
 
@@ -183,10 +246,15 @@ class AdminProjectDetailView(APIView):
 
     def get(self, request, pk):
         project = get_object_or_404(
-            Project.objects.prefetch_related("stages", "updates", "todos", "issues"),
+            Project.objects.prefetch_related(
+                "stages", "updates", "todos", "issues", "files__stage", "files__uploader"
+            ),
             pk=pk,
         )
-        return success_response(ProjectDetailSerializer(project).data, request=request)
+        return success_response(
+            ProjectDetailSerializer(project, context={"request": request}).data,
+            request=request,
+        )
 
     def patch(self, request, pk):
         project = get_object_or_404(Project, pk=pk)
@@ -304,15 +372,69 @@ def _create_project_file(request, project, default_visibility="all"):
     code, msg = validate_upload_file(file_obj)
     if code:
         return None, error_response(code, msg, request=request)
+
+    allowed_categories = {c[0] for c in ProjectFile.CATEGORY_CHOICES}
+    file_category = request.data.get("file_category", "other")
+    if file_category not in allowed_categories:
+        return None, error_response(
+            "PROJECT_FILE_CATEGORY_INVALID",
+            "无效的文件分类",
+            errors={"file_category": list(allowed_categories)},
+            request=request,
+        )
+
+    stage = None
+    stage_id = request.data.get("stage") or request.data.get("stage_id")
+    if stage_id:
+        stage = ProjectStage.objects.filter(pk=stage_id, project=project).first()
+        if not stage:
+            return None, error_response(
+                "PROJECT_STAGE_NOT_FOUND",
+                "阶段不存在或不属于该项目",
+                request=request,
+            )
+
+    visibility = request.data.get("visibility", default_visibility)
+    if visibility not in {"all", "internal"}:
+        visibility = default_visibility
+
     pf = ProjectFile.objects.create(
         project=project,
+        stage=stage,
         uploader=request.user,
         file=file_obj,
         file_name=file_obj.name,
-        file_category=request.data.get("file_category", "other"),
-        visibility=request.data.get("visibility", default_visibility),
+        file_category=file_category,
+        visibility=visibility,
     )
     return pf, None
+
+
+def _user_can_access_project_file(user, project, pf):
+    role = getattr(user, "role", "")
+    if role == "admin":
+        return True
+    if project.buyer_id == user.id:
+        return pf.visibility == "all"
+    if project.supplier_id == user.id:
+        return True
+    return False
+
+
+def _download_project_file(request, project, file_id):
+    from django.http import FileResponse
+
+    pf = get_object_or_404(ProjectFile, pk=file_id, project=project)
+    if not _user_can_access_project_file(request.user, project, pf):
+        return error_response(
+            "PROJECT_FILE_FORBIDDEN",
+            "无权访问该文件",
+            status=status.HTTP_403_FORBIDDEN,
+            request=request,
+        )
+    if not pf.file:
+        return error_response("PROJECT_FILE_MISSING", "文件不存在", request=request)
+    return FileResponse(pf.file.open("rb"), as_attachment=False, filename=pf.file_name)
 
 
 class MemberProjectFileListView(APIView):
@@ -320,11 +442,19 @@ class MemberProjectFileListView(APIView):
 
     def get(self, request, pk):
         project = get_object_or_404(Project, pk=pk, buyer=request.user)
-        files = project.files.filter(visibility="all").select_related("uploader")
+        files = project.files.filter(visibility="all").select_related("uploader", "stage")
         return success_response(
             {"items": ProjectFileSerializer(files, many=True, context={"request": request}).data},
             request=request,
         )
+
+
+class MemberProjectFileDownloadView(APIView):
+    permission_classes = [IsBuyerRole]
+
+    def get(self, request, pk, file_id):
+        project = get_object_or_404(Project, pk=pk, buyer=request.user)
+        return _download_project_file(request, project, file_id)
 
 
 class SupplierProjectFileListCreateView(APIView):
@@ -333,7 +463,7 @@ class SupplierProjectFileListCreateView(APIView):
 
     def get(self, request, pk):
         project = get_object_or_404(Project, pk=pk, supplier=request.user)
-        files = project.files.select_related("uploader")
+        files = project.files.select_related("uploader", "stage")
         return success_response(
             {"items": ProjectFileSerializer(files, many=True, context={"request": request}).data},
             request=request,
@@ -341,7 +471,7 @@ class SupplierProjectFileListCreateView(APIView):
 
     def post(self, request, pk):
         project = get_object_or_404(Project, pk=pk, supplier=request.user)
-        pf, err = _create_project_file(request, project)
+        pf, err = _create_project_file(request, project, default_visibility="all")
         if err:
             return err
         return success_response(
@@ -349,6 +479,14 @@ class SupplierProjectFileListCreateView(APIView):
             status=status.HTTP_201_CREATED,
             request=request,
         )
+
+
+class SupplierProjectFileDownloadView(APIView):
+    permission_classes = [IsSupplierRole]
+
+    def get(self, request, pk, file_id):
+        project = get_object_or_404(Project, pk=pk, supplier=request.user)
+        return _download_project_file(request, project, file_id)
 
 
 class AdminProjectFileListCreateView(APIView):
@@ -357,7 +495,7 @@ class AdminProjectFileListCreateView(APIView):
 
     def get(self, request, pk):
         project = get_object_or_404(Project, pk=pk)
-        files = project.files.select_related("uploader")
+        files = project.files.select_related("uploader", "stage")
         return success_response(
             {"items": ProjectFileSerializer(files, many=True, context={"request": request}).data},
             request=request,
@@ -373,6 +511,14 @@ class AdminProjectFileListCreateView(APIView):
             status=status.HTTP_201_CREATED,
             request=request,
         )
+
+
+class AdminProjectFileDownloadView(APIView):
+    permission_classes = [IsAdminRole]
+
+    def get(self, request, pk, file_id):
+        project = get_object_or_404(Project, pk=pk)
+        return _download_project_file(request, project, file_id)
 
 
 class AdminProjectFileDeleteView(APIView):
@@ -384,3 +530,22 @@ class AdminProjectFileDeleteView(APIView):
         pf.file.delete(save=False)
         pf.delete()
         return success_response({}, message="文件已删除", request=request)
+
+
+class DefectReportTemplateDownloadView(APIView):
+    """下载默认不良报告模板（xlsx），后续可替换正式模板。"""
+
+    permission_classes = [IsAuthenticatedPlatformUser]
+
+    def get(self, request):
+        from django.http import HttpResponse
+
+        from apps.project.defect_template import build_defect_report_template_bytes
+
+        content = build_defect_report_template_bytes()
+        response = HttpResponse(
+            content,
+            content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        )
+        response["Content-Disposition"] = 'attachment; filename="defect_report_template.xlsx"'
+        return response

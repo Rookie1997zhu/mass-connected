@@ -1,0 +1,362 @@
+[
+  {
+    "id": "JLC-CN-MAT-FPC-MATRIX-001",
+    "materialKey": "fpc",
+    "layers": 2,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 5
+  },
+  {
+    "id": "JLC-CN-MAT-FPC-MATRIX-002",
+    "materialKey": "fpc",
+    "layers": 2,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 10
+  },
+  {
+    "id": "JLC-CN-MAT-FPC-MATRIX-003",
+    "materialKey": "fpc",
+    "layers": 2,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 20
+  },
+  {
+    "id": "JLC-CN-MAT-FPC-MATRIX-004",
+    "materialKey": "fpc",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5
+  },
+  {
+    "id": "JLC-CN-MAT-FPC-MATRIX-005",
+    "materialKey": "fpc",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 10
+  },
+  {
+    "id": "JLC-CN-MAT-FPC-MATRIX-006",
+    "materialKey": "fpc",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 20
+  },
+  {
+    "id": "JLC-CN-MAT-FPC-MATRIX-007",
+    "materialKey": "fpc",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 5
+  },
+  {
+    "id": "JLC-CN-MAT-FPC-MATRIX-008",
+    "materialKey": "fpc",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 10
+  },
+  {
+    "id": "JLC-CN-MAT-FPC-MATRIX-009",
+    "materialKey": "fpc",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 20
+  },
+  {
+    "id": "JLC-CN-MAT-ALU-MATRIX-001",
+    "materialKey": "aluminum",
+    "layers": 1,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 5
+  },
+  {
+    "id": "JLC-CN-MAT-ALU-MATRIX-002",
+    "materialKey": "aluminum",
+    "layers": 1,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 10
+  },
+  {
+    "id": "JLC-CN-MAT-ALU-MATRIX-003",
+    "materialKey": "aluminum",
+    "layers": 1,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 20
+  },
+  {
+    "id": "JLC-CN-MAT-ALU-MATRIX-004",
+    "materialKey": "aluminum",
+    "layers": 1,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5
+  },
+  {
+    "id": "JLC-CN-MAT-ALU-MATRIX-005",
+    "materialKey": "aluminum",
+    "layers": 1,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 10
+  },
+  {
+    "id": "JLC-CN-MAT-ALU-MATRIX-006",
+    "materialKey": "aluminum",
+    "layers": 1,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 20
+  },
+  {
+    "id": "JLC-CN-MAT-ALU-MATRIX-007",
+    "materialKey": "aluminum",
+    "layers": 1,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 5
+  },
+  {
+    "id": "JLC-CN-MAT-ALU-MATRIX-008",
+    "materialKey": "aluminum",
+    "layers": 1,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 10
+  },
+  {
+    "id": "JLC-CN-MAT-ALU-MATRIX-009",
+    "materialKey": "aluminum",
+    "layers": 1,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 20
+  },
+  {
+    "id": "JLC-CN-MAT-COPPER-MATRIX-001",
+    "materialKey": "copper",
+    "layers": 1,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 5
+  },
+  {
+    "id": "JLC-CN-MAT-COPPER-MATRIX-002",
+    "materialKey": "copper",
+    "layers": 1,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 10
+  },
+  {
+    "id": "JLC-CN-MAT-COPPER-MATRIX-003",
+    "materialKey": "copper",
+    "layers": 1,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 20
+  },
+  {
+    "id": "JLC-CN-MAT-COPPER-MATRIX-004",
+    "materialKey": "copper",
+    "layers": 1,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5
+  },
+  {
+    "id": "JLC-CN-MAT-COPPER-MATRIX-005",
+    "materialKey": "copper",
+    "layers": 1,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 10
+  },
+  {
+    "id": "JLC-CN-MAT-COPPER-MATRIX-006",
+    "materialKey": "copper",
+    "layers": 1,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 20
+  },
+  {
+    "id": "JLC-CN-MAT-COPPER-MATRIX-007",
+    "materialKey": "copper",
+    "layers": 1,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 5
+  },
+  {
+    "id": "JLC-CN-MAT-COPPER-MATRIX-008",
+    "materialKey": "copper",
+    "layers": 1,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 10
+  },
+  {
+    "id": "JLC-CN-MAT-COPPER-MATRIX-009",
+    "materialKey": "copper",
+    "layers": 1,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 20
+  },
+  {
+    "id": "JLC-CN-MAT-ROGERS-MATRIX-001",
+    "materialKey": "rogers",
+    "layers": 2,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 5
+  },
+  {
+    "id": "JLC-CN-MAT-ROGERS-MATRIX-002",
+    "materialKey": "rogers",
+    "layers": 2,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 10
+  },
+  {
+    "id": "JLC-CN-MAT-ROGERS-MATRIX-003",
+    "materialKey": "rogers",
+    "layers": 2,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 20
+  },
+  {
+    "id": "JLC-CN-MAT-ROGERS-MATRIX-004",
+    "materialKey": "rogers",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5
+  },
+  {
+    "id": "JLC-CN-MAT-ROGERS-MATRIX-005",
+    "materialKey": "rogers",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 10
+  },
+  {
+    "id": "JLC-CN-MAT-ROGERS-MATRIX-006",
+    "materialKey": "rogers",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 20
+  },
+  {
+    "id": "JLC-CN-MAT-ROGERS-MATRIX-007",
+    "materialKey": "rogers",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 5
+  },
+  {
+    "id": "JLC-CN-MAT-ROGERS-MATRIX-008",
+    "materialKey": "rogers",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 10
+  },
+  {
+    "id": "JLC-CN-MAT-ROGERS-MATRIX-009",
+    "materialKey": "rogers",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 20
+  },
+  {
+    "id": "JLC-CN-MAT-TEFLON-MATRIX-001",
+    "materialKey": "teflon",
+    "layers": 2,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 5
+  },
+  {
+    "id": "JLC-CN-MAT-TEFLON-MATRIX-002",
+    "materialKey": "teflon",
+    "layers": 2,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 10
+  },
+  {
+    "id": "JLC-CN-MAT-TEFLON-MATRIX-003",
+    "materialKey": "teflon",
+    "layers": 2,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 20
+  },
+  {
+    "id": "JLC-CN-MAT-TEFLON-MATRIX-004",
+    "materialKey": "teflon",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5
+  },
+  {
+    "id": "JLC-CN-MAT-TEFLON-MATRIX-005",
+    "materialKey": "teflon",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 10
+  },
+  {
+    "id": "JLC-CN-MAT-TEFLON-MATRIX-006",
+    "materialKey": "teflon",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 20
+  },
+  {
+    "id": "JLC-CN-MAT-TEFLON-MATRIX-007",
+    "materialKey": "teflon",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 5
+  },
+  {
+    "id": "JLC-CN-MAT-TEFLON-MATRIX-008",
+    "materialKey": "teflon",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 10
+  },
+  {
+    "id": "JLC-CN-MAT-TEFLON-MATRIX-009",
+    "materialKey": "teflon",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 20
+  }
+]

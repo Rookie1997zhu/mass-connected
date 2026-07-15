@@ -1,0 +1,212 @@
+{
+  "sourceFingerprint": "fnvish_6d9edbea",
+  "diagnosticOnly": true,
+  "materials": {
+    "fr4": {
+      "stable": 43,
+      "autoQuoted": 28,
+      "coverage": 0.6512,
+      "hitRate20": 1.0,
+      "mape": 0.0393,
+      "maxRelativeError": 0.1481,
+      "manualReviewReasonCounts": {
+        "规格超出 JLC 已确认支持范围或局部覆盖不足，需人工复核": 15
+      },
+      "highErrorIds": [],
+      "segments": {
+        "L2|large|low": {
+          "total": 5,
+          "autoQuoted": 3,
+          "maxRelativeError": 0.008807662666519842
+        },
+        "L2|large|medium": {
+          "total": 2,
+          "autoQuoted": 1,
+          "maxRelativeError": 0.06542260650669007
+        },
+        "L2|medium|high": {
+          "total": 4,
+          "autoQuoted": 3,
+          "maxRelativeError": 0.03450620431752506
+        },
+        "L2|medium|low": {
+          "total": 4,
+          "autoQuoted": 4,
+          "maxRelativeError": 0.04979004199160175
+        },
+        "L2|medium|medium": {
+          "total": 7,
+          "autoQuoted": 6,
+          "maxRelativeError": 0.05068720597730828
+        },
+        "L4|large|high": {
+          "total": 3,
+          "autoQuoted": 1,
+          "maxRelativeError": 0.028390644346732448
+        },
+        "L4|large|low": {
+          "total": 6,
+          "autoQuoted": 2,
+          "maxRelativeError": 0.08243704092339994
+        },
+        "L4|large|medium": {
+          "total": 1,
+          "autoQuoted": 0,
+          "maxRelativeError": null
+        },
+        "L4|medium|high": {
+          "total": 5,
+          "autoQuoted": 3,
+          "maxRelativeError": 0.007752754545263039
+        },
+        "L4|medium|low": {
+          "total": 3,
+          "autoQuoted": 2,
+          "maxRelativeError": 0.10442654501389982
+        },
+        "L4|medium|medium": {
+          "total": 3,
+          "autoQuoted": 3,
+          "maxRelativeError": 0.14808443464005994
+        }
+      }
+    },
+    "fpc": {
+      "stable": 42,
+      "autoQuoted": 24,
+      "coverage": 0.5714,
+      "hitRate20": 0.875,
+      "mape": 0.1105,
+      "maxRelativeError": 0.2388,
+      "manualReviewReasonCounts": {
+        "规格超出 JLC 已确认支持范围或局部覆盖不足，需人工复核": 18
+      },
+      "highErrorIds": [
+        "JLC-CN-PCB-V9-ACC-FPC-017",
+        "JLC-CN-PCB-V9-ACC-FPC-028",
+        "JLC-CN-PCB-V9-ACC-FPC-029"
+      ],
+      "segments": {
+        "L1|large|high": {
+          "total": 1,
+          "autoQuoted": 0,
+          "maxRelativeError": null
+        },
+        "L1|large|low": {
+          "total": 5,
+          "autoQuoted": 3,
+          "maxRelativeError": 0.057979017117614606
+        },
+        "L1|large|medium": {
+          "total": 2,
+          "autoQuoted": 0,
+          "maxRelativeError": null
+        },
+        "L1|medium|high": {
+          "total": 3,
+          "autoQuoted": 3,
+          "maxRelativeError": 0.20331799329583541
+        },
+        "L1|medium|low": {
+          "total": 3,
+          "autoQuoted": 3,
+          "maxRelativeError": 0.13656875615359368
+        },
+        "L1|medium|medium": {
+          "total": 6,
+          "autoQuoted": 4,
+          "maxRelativeError": 0.2020698030519035
+        },
+        "L1|small|low": {
+          "total": 1,
+          "autoQuoted": 0,
+          "maxRelativeError": null
+        },
+        "L2|large|high": {
+          "total": 4,
+          "autoQuoted": 1,
+          "maxRelativeError": 0.125588597794141
+        },
+        "L2|large|low": {
+          "total": 5,
+          "autoQuoted": 2,
+          "maxRelativeError": 0.04733727810650887
+        },
+        "L2|large|medium": {
+          "total": 1,
+          "autoQuoted": 0,
+          "maxRelativeError": null
+        },
+        "L2|medium|high": {
+          "total": 4,
+          "autoQuoted": 3,
+          "maxRelativeError": 0.2387789668180769
+        },
+        "L2|medium|low": {
+          "total": 3,
+          "autoQuoted": 2,
+          "maxRelativeError": 0.11478457146650729
+        },
+        "L2|medium|medium": {
+          "total": 3,
+          "autoQuoted": 3,
+          "maxRelativeError": 0.18409223341380165
+        },
+        "L2|small|low": {
+          "total": 1,
+          "autoQuoted": 0,
+          "maxRelativeError": null
+        }
+      }
+    },
+    "aluminum": {
+      "stable": 48,
+      "autoQuoted": 28,
+      "coverage": 0.5833,
+      "hitRate20": 1.0,
+      "mape": 0.019,
+      "maxRelativeError": 0.055,
+      "manualReviewReasonCounts": {
+        "规格超出 JLC 已确认支持范围或局部覆盖不足，需人工复核": 20
+      },
+      "highErrorIds": [],
+      "segments": {
+        "L1|large|high": {
+          "total": 6,
+          "autoQuoted": 2,
+          "maxRelativeError": 0.054960558779580865
+        },
+        "L1|large|low": {
+          "total": 10,
+          "autoQuoted": 4,
+          "maxRelativeError": 0.03451839603141797
+        },
+        "L1|large|medium": {
+          "total": 5,
+          "autoQuoted": 0,
+          "maxRelativeError": null
+        },
+        "L1|medium|high": {
+          "total": 7,
+          "autoQuoted": 5,
+          "maxRelativeError": 0.027402558336078835
+        },
+        "L1|medium|low": {
+          "total": 9,
+          "autoQuoted": 8,
+          "maxRelativeError": 0.045644504748982344
+        },
+        "L1|medium|medium": {
+          "total": 10,
+          "autoQuoted": 9,
+          "maxRelativeError": 0.04724954967437996
+        },
+        "L1|small|low": {
+          "total": 1,
+          "autoQuoted": 0,
+          "maxRelativeError": null
+        }
+      }
+    }
+  }
+}

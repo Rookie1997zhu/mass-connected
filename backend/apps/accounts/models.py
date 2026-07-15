@@ -74,6 +74,13 @@ class FactoryProfile(models.Model):
     intro = models.TextField(blank=True)
     contact_phone = models.CharField(max_length=32, blank=True)
     payment_terms = models.CharField(max_length=200, blank=True)
+    established_year = models.PositiveIntegerField(null=True, blank=True)
+    employee_scale = models.CharField(max_length=64, blank=True)
+    factory_area_sqm = models.PositiveIntegerField(null=True, blank=True)
+    main_products = models.TextField(blank=True)
+    monthly_capacity = models.CharField(max_length=200, blank=True)
+    quality_certifications = models.TextField(blank=True)
+    equipment_summary = models.TextField(blank=True)
     admin_note = models.TextField(blank=True)
     score = models.PositiveSmallIntegerField(default=0)
     is_public = models.BooleanField(default=True)
@@ -105,10 +112,20 @@ class SupplierTag(models.Model):
 
 
 class SupplierAttachment(models.Model):
+    CATEGORY_CHOICES = [
+        ("qualification", "Qualification"),
+        ("company_profile", "Company Profile"),
+        ("certification", "Certification"),
+        ("equipment", "Equipment"),
+        ("case", "Case"),
+        ("other", "Other"),
+    ]
+
     profile = models.ForeignKey(FactoryProfile, on_delete=models.CASCADE, related_name="attachments")
     file = models.FileField(upload_to="supplier/attachments/%Y/%m/")
     file_name = models.CharField(max_length=255)
-    category = models.CharField(max_length=32, blank=True, default="qualification")
+    category = models.CharField(max_length=32, blank=True, default="qualification", choices=CATEGORY_CHOICES)
+    is_public = models.BooleanField(default=False)
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

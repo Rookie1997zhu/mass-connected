@@ -1,0 +1,227 @@
+{
+  "generatedAt": "2026-07-15T13:53:01.741Z",
+  "status": "passed",
+  "fit": {
+    "accepted": 317,
+    "historicalAccepted": 142,
+    "v10FpcHistoricalAccepted": 61,
+    "newFr4Accepted": 69,
+    "newFr4TuningHoldout": 23,
+    "newFpcAccepted": 45,
+    "rejected": [
+      {
+        "baseSampleId": "JLC-CN-PCB-V9-FIT-FR4-001",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V9-FIT-FR4-002",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V10-FIT-FPC-049",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V10-FIT-FPC-050",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V10-FIT-FPC-051",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V11-FIT-FR4-001",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V11-FIT-FR4-024",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V11-FIT-FR4-045",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V11-FIT-FR4-061",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V11-FIT-FPC-001",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V11-FIT-FPC-002",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V11-FIT-FPC-003",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V11-FIT-FPC-013",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V11-FIT-FPC-014",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V11-FIT-FPC-015",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V11-FIT-FPC-019",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V11-FIT-FPC-020",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V11-FIT-FPC-021",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V11-FIT-FPC-028",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V11-FIT-FPC-029",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V11-FIT-FPC-030",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V11-FIT-FPC-049",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V11-FIT-FPC-050",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V11-FIT-FPC-051",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V11-FIT-FPC-061",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V11-FIT-FPC-062",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V11-FIT-FPC-063",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V11-FIT-FPC-064",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      }
+    ]
+  },
+  "fpcTuning": {
+    "n": 17,
+    "coverage": 1,
+    "hitRate20": 1,
+    "mape": 0.0098,
+    "maxRelativeError": 0.0439,
+    "pass": true
+  },
+  "fr4Tuning": {
+    "n": 23,
+    "coverage": 1,
+    "hitRate20": 1,
+    "mape": 0.0058,
+    "maxRelativeError": 0.0345,
+    "pass": true
+  },
+  "regressionByMaterial": {
+    "fr4": {
+      "n": 5,
+      "coverage": 1,
+      "hitRate20": 0.8,
+      "mape": 0.1716,
+      "maxRelativeError": 0.4068,
+      "pass": false,
+      "noRegressionPass": true
+    },
+    "fpc": {
+      "n": 6,
+      "coverage": 1,
+      "hitRate20": 0.6667,
+      "mape": 0.1385,
+      "maxRelativeError": 0.3853,
+      "pass": false,
+      "noRegressionPass": true
+    },
+    "aluminum": {
+      "n": 3,
+      "coverage": 1,
+      "hitRate20": 1,
+      "mape": 0.0398,
+      "maxRelativeError": 0.0797,
+      "pass": true,
+      "noRegressionPass": true
+    }
+  }
+}

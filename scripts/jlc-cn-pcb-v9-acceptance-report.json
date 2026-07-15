@@ -1,0 +1,83 @@
+{
+  "generatedAt": "2026-07-14T04:16:17.828886+00:00",
+  "priceVersion": "jlc-cn-pcb-v9-candidate",
+  "status": "failed",
+  "pass": false,
+  "fingerprint": {
+    "frozenAt": "2026-07-14T00:27:57.282Z",
+    "count": 144,
+    "hash": "fnvish_6d9edbea",
+    "sampleKeysHead": [
+      "aluminum|1|101|124|50|1.6|绿色|无铅喷锡|1oz|页面默认|1",
+      "aluminum|1|103|74|20|1.6|绿色|无铅喷锡|1oz|页面默认|1",
+      "aluminum|1|105|149|75|1.6|绿色|无铅喷锡|1oz|页面默认|1",
+      "aluminum|1|107|99|30|1.6|绿色|无铅喷锡|1oz|页面默认|1",
+      "aluminum|1|107|99|50|1.6|绿色|无铅喷锡|1oz|页面默认|1"
+    ],
+    "oneShot": true,
+    "consumed": false
+  },
+  "modelFingerprint": {
+    "frozenAt": "2026-07-14T02:10:47.619Z",
+    "hash": "sha256_a2607f6bf9ec6a6c3b10bd7163e79e49d43fd0ed6e7382b1d592d24b24465b7a",
+    "candidatePath": "scripts/jlc-cn-pcb-v9-candidate-price-list.json",
+    "acceptanceFingerprint": "fnvish_6d9edbea",
+    "note": "Do not rebuild or retune after final acceptance sampling starts."
+  },
+  "fingerprintConsumed": true,
+  "gates": {
+    "independenceOk": true,
+    "fingerprintOk": true,
+    "modelFingerprintOk": true,
+    "modelRunnable": true,
+    "freshPerMaterialAtLeast40": true,
+    "overallHit10AtLeast90": false,
+    "overallHit20AtLeast95": true,
+    "overallMapeAtMost8": true,
+    "overallMaxErrAtMost20": false,
+    "materialsHit20Ok": false,
+    "materialsMaxErrOk": false
+  },
+  "materialCounts": {
+    "aluminum": 48,
+    "fpc": 42,
+    "fr4": 43
+  },
+  "targets": 432,
+  "sampleRows": 399,
+  "freshUnique": 133,
+  "rejectedRepeatGroups": [],
+  "autoQuoted": 80,
+  "manualReview": 53,
+  "overall": {
+    "n": 80,
+    "hitRate10": 0.8,
+    "hitRate20": 0.9625,
+    "mape": 0.0536,
+    "maxRelativeError": 0.2388
+  },
+  "byMaterial": {
+    "fr4": {
+      "n": 28,
+      "hitRate10": 0.8929,
+      "hitRate20": 1.0,
+      "mape": 0.0393,
+      "maxRelativeError": 0.1481
+    },
+    "fpc": {
+      "n": 24,
+      "hitRate10": 0.4583,
+      "hitRate20": 0.875,
+      "mape": 0.1105,
+      "maxRelativeError": 0.2388
+    },
+    "aluminum": {
+      "n": 28,
+      "hitRate10": 1.0,
+      "hitRate20": 1.0,
+      "mape": 0.019,
+      "maxRelativeError": 0.055
+    }
+  },
+  "fallbackVersionIfFailed": "jlc-cn-pcb-v6-20260712"
+}

@@ -31,14 +31,12 @@ const error = ref('')
 const previewMesh = ref(null)
 const options = ref({
   materials: [],
-  printers: [],
   qualities: [],
   post_processing: [],
   infill: { min: 5, max: 100, default: 20 },
 })
 const form = ref({
   material: 'PLA',
-  printer: 'prusa_mk3s',
   quality: 'standard',
   infill_density: 20,
   support: false,
@@ -81,7 +79,6 @@ const loadOptions = async () => {
     options.value = res.data || options.value
     form.value.infill_density = options.value.infill?.default ?? 20
     if (options.value.materials?.[0]) form.value.material = options.value.materials[0].key
-    if (options.value.printers?.[0]) form.value.printer = options.value.printers[0].key
     if (options.value.qualities?.[0]) form.value.quality = options.value.qualities[0].key
     if (options.value.post_processing?.[0]) {
       form.value.post_process = options.value.post_processing[0].key
@@ -178,7 +175,6 @@ const onFileSelected = async (event) => {
     const fd = new FormData()
     fd.append('file', file)
     fd.append('material', form.value.material)
-    fd.append('printer', form.value.printer)
     fd.append('quality', form.value.quality)
     fd.append('infill_density', String(form.value.infill_density))
     fd.append('support', form.value.support ? 'true' : 'false')
@@ -207,7 +203,6 @@ const onGenerate = async () => {
       inputs: {
         slice_job_id: job.value.id,
         material: form.value.material,
-        printer: form.value.printer,
         quality: form.value.quality,
         infill_density: form.value.infill_density,
         support: form.value.support,
@@ -275,11 +270,6 @@ onUnmounted(stopPoll)
       <label>{{ t('simpleQuote.material') }}
         <select v-model="form.material">
           <option v-for="m in options.materials" :key="m.key" :value="m.key">{{ m.name || m.key }}</option>
-        </select>
-      </label>
-      <label>{{ t('simpleQuote.printer') }}
-        <select v-model="form.printer">
-          <option v-for="p in options.printers" :key="p.key" :value="p.key">{{ p.name || p.key }}</option>
         </select>
       </label>
       <label>{{ t('simpleQuote.quality') }}
@@ -357,16 +347,73 @@ onUnmounted(stopPoll)
 <style scoped lang="scss">
 .p3d-sheet {
   display: grid;
-  grid-template-columns: minmax(280px, 1fr) minmax(280px, 1fr) minmax(240px, 0.9fr);
+  /* 默认两列：预览 | 参数，保证「打印机」等字段首屏可见 */
+  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.95fr);
   gap: 1rem;
   align-items: start;
 }
-@media (max-width: 960px) {
-  .p3d-sheet { grid-template-columns: 1fr; }
+.p3d-result {
+  grid-column: 1 / -1;
 }
-.p3d-left, .p3d-form, .p3d-result { padding: 1rem; display: flex; flex-direction: column; gap: 0.75rem; }
-label { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.9rem; }
-label.check { flex-direction: row; align-items: center; gap: 0.5rem; }
+@media (min-width: 1100px) {
+  .p3d-sheet {
+    grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.95fr) minmax(240px, 0.85fr);
+  }
+  .p3d-result {
+    grid-column: auto;
+  }
+}
+@media (max-width: 720px) {
+  .p3d-sheet {
+    grid-template-columns: 1fr;
+  }
+  .p3d-result {
+    grid-column: auto;
+  }
+}
+.p3d-left,
+.p3d-form,
+.p3d-result {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+}
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-text-heading, #111);
+}
+label.check {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 400;
+}
+.p3d-form input[type='text'],
+.p3d-form input[type='number'],
+.p3d-form select {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 2.5rem;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.9375rem;
+  font-family: inherit;
+  border: 1px solid var(--color-border-strong, #c5c9d0);
+  border-radius: var(--radius-md, 8px);
+  background: var(--color-bg, #fff);
+  color: var(--color-text-heading, #111);
+}
+.p3d-form input:focus,
+.p3d-form select:focus {
+  outline: none;
+  border-color: var(--color-steel, #3d5a80);
+  box-shadow: 0 0 0 3px var(--color-steel-muted, rgba(61, 90, 128, 0.15));
+}
 .hint { color: var(--color-text-muted, #666); font-size: 0.85rem; margin: 0; }
 .error, .err { color: #c0392b; }
 .metrics { padding: 0.75rem; background: #f6f7f9; border-radius: 6px; }

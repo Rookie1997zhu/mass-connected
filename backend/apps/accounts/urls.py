@@ -10,6 +10,7 @@ from apps.accounts.views import (
     AdminSupplierListCreateView,
     AdminSupplierDetailView,
     AdminSupplierAttachmentView,
+    AdminSupplierAttachmentDownloadView,
     AdminSupplierTagView,
     AdminUserListCreateView,
     FactoryProfileView,
@@ -20,6 +21,8 @@ from apps.accounts.views import (
     MemberProfileView,
     MemberRegisterView,
     PublicPartnerListView,
+    SupplierProfileAttachmentDownloadView,
+    SupplierProfileAttachmentView,
 )
 
 urlpatterns = [
@@ -32,6 +35,11 @@ urlpatterns = [
     path("member/profile", MemberProfileView.as_view()),
     path("member/dashboard", MemberDashboardView.as_view()),
     path("factory/profile", FactoryProfileView.as_view()),
+    path("supplier/profile/attachments", SupplierProfileAttachmentView.as_view()),
+    path(
+        "supplier/profile/attachments/<int:file_id>/download",
+        SupplierProfileAttachmentDownloadView.as_view(),
+    ),
     path("admin/auth/login", AdminLoginView.as_view()),
     path("admin/auth/refresh", TokenRefreshView.as_view()),
     path("admin/auth/logout", LogoutView.as_view()),
@@ -42,6 +50,10 @@ urlpatterns = [
     path("admin/suppliers/<int:pk>", AdminSupplierDetailView.as_view()),
     path("admin/suppliers/<int:pk>/tags", AdminSupplierTagView.as_view()),
     path("admin/suppliers/<int:pk>/attachments", AdminSupplierAttachmentView.as_view()),
+    path(
+        "admin/suppliers/<int:pk>/attachments/<int:file_id>/download",
+        AdminSupplierAttachmentDownloadView.as_view(),
+    ),
     path("admin/members", AdminMemberListView.as_view()),
     path("admin/stats", AdminStatsView.as_view()),
 ]

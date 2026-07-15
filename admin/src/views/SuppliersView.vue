@@ -80,14 +80,20 @@ const onRemoveTag = async (tag) => {
   editForm.value = res.data
 }
 
+const attachPublic = ref(true)
+const attachCategory = ref('company_profile')
+
 const onUploadAttachment = async (e) => {
   const file = e.target.files?.[0]
   if (!file) return
   const fd = new FormData()
   fd.append('file', file)
+  fd.append('category', attachCategory.value)
+  fd.append('is_public', attachPublic.value ? 'true' : 'false')
   await addSupplierAttachment(editForm.value.id, fd)
   const res = await fetchSupplier(editForm.value.id)
   editForm.value = res.data
+  e.target.value = ''
 }
 </script>
 
@@ -133,6 +139,13 @@ const onUploadAttachment = async (e) => {
         <el-form-item :label="t('suppliers.country')"><el-input v-model="editForm.country" /></el-form-item>
         <el-form-item :label="t('suppliers.city')"><el-input v-model="editForm.city" /></el-form-item>
         <el-form-item :label="t('suppliers.paymentTerms')"><el-input v-model="editForm.payment_terms" /></el-form-item>
+        <el-form-item :label="t('suppliers.establishedYear')"><el-input-number v-model="editForm.established_year" :min="1900" :max="2100" /></el-form-item>
+        <el-form-item :label="t('suppliers.employeeScale')"><el-input v-model="editForm.employee_scale" /></el-form-item>
+        <el-form-item :label="t('suppliers.factoryArea')"><el-input-number v-model="editForm.factory_area_sqm" :min="0" /></el-form-item>
+        <el-form-item :label="t('suppliers.mainProducts')"><el-input v-model="editForm.main_products" type="textarea" rows="2" /></el-form-item>
+        <el-form-item :label="t('suppliers.monthlyCapacity')"><el-input v-model="editForm.monthly_capacity" /></el-form-item>
+        <el-form-item :label="t('suppliers.certifications')"><el-input v-model="editForm.quality_certifications" type="textarea" rows="2" /></el-form-item>
+        <el-form-item :label="t('suppliers.equipment')"><el-input v-model="editForm.equipment_summary" type="textarea" rows="2" /></el-form-item>
         <el-form-item :label="t('common.status')">
           <el-select v-model="editForm.status" style="width: 100%">
             <el-option value="approved" label="approved" />
@@ -153,10 +166,21 @@ const onUploadAttachment = async (e) => {
           </div>
         </el-form-item>
         <el-form-item :label="t('suppliers.attachments')">
-          <input type="file" @change="onUploadAttachment" />
+          <div class="att-upload">
+            <el-select v-model="attachCategory" style="width: 160px">
+              <el-option value="company_profile" :label="t('suppliers.catCompanyProfile')" />
+              <el-option value="certification" :label="t('suppliers.catCertification')" />
+              <el-option value="equipment" :label="t('suppliers.catEquipment')" />
+              <el-option value="case" :label="t('suppliers.catCase')" />
+              <el-option value="qualification" :label="t('suppliers.catQualification')" />
+            </el-select>
+            <el-switch v-model="attachPublic" :active-text="t('suppliers.public')" />
+            <input type="file" @change="onUploadAttachment" />
+          </div>
           <ul class="att-list">
             <li v-for="a in editForm.attachments || []" :key="a.id">
               <a :href="a.file_url" target="_blank" rel="noopener">{{ a.file_name }}</a>
+              <span class="att-meta">{{ a.category }} · {{ a.is_public ? t('suppliers.public') : t('suppliers.private') }}</span>
             </li>
           </ul>
         </el-form-item>
@@ -173,4 +197,6 @@ const onUploadAttachment = async (e) => {
 .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
 .tag-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
 .att-list { margin: 0.5rem 0 0; padding-left: 1rem; }
+.att-upload { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+.att-meta { margin-left: 0.5rem; opacity: 0.65; font-size: 0.85rem; }
 </style>

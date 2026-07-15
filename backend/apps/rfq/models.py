@@ -153,6 +153,8 @@ class Quote(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="sent")
     is_customer_visible = models.BooleanField(default=False)
     plan_label = models.CharField(max_length=8, blank=True)
+    revision_version = models.PositiveIntegerField(default=1)
+    revised_at = models.DateTimeField(null=True, blank=True)
     created_by = models.ForeignKey(
         "accounts.User", null=True, blank=True, on_delete=models.SET_NULL, related_name="created_quotes"
     )
@@ -161,6 +163,26 @@ class Quote(models.Model):
 
     class Meta:
         ordering = ["-created_at"]
+
+
+class QuoteAttachment(models.Model):
+    """供应商为某份报价上传的报价资料附件。"""
+
+    quote = models.ForeignKey(Quote, on_delete=models.CASCADE, related_name="attachments")
+    file = models.FileField(upload_to="quote/%Y/%m/")
+    file_name = models.CharField(max_length=255)
+    file_type = models.CharField(max_length=32, blank=True)
+    size = models.PositiveIntegerField(default=0)
+    uploader = models.ForeignKey(
+        "accounts.User", null=True, blank=True, on_delete=models.SET_NULL, related_name="quote_attachments"
+    )
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-uploaded_at", "id"]
+
+    def __str__(self):
+        return self.file_name
 
 
 def generate_production_order_no():
@@ -186,12 +208,26 @@ class ProductionOrder(models.Model):
         "accounts.User", on_delete=models.PROTECT, related_name="supplier_production_orders"
     )
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending_confirm")
+    # price_amount 兼容旧字段，语义等同客户价（加价后）
     price_amount = models.PositiveIntegerField()
+    supplier_amount = models.PositiveIntegerField(null=True, blank=True)
+    customer_amount = models.PositiveIntegerField(null=True, blank=True)
+    markup_percent_snapshot = models.PositiveIntegerField(null=True, blank=True)
     currency = models.CharField(max_length=3, default="KRW")
     lead_time_days = models.PositiveIntegerField(default=0)
     confirmed_at = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def display_customer_amount(self):
+        if self.customer_amount is not None:
+            return self.customer_amount
+        return self.price_amount
+
+    def display_supplier_amount(self):
+        if self.supplier_amount is not None:
+            return self.supplier_amount
+        return self.price_amount
 
     class Meta:
         ordering = ["-created_at"]

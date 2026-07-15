@@ -1,0 +1,120 @@
+{
+  "generatedAt": "2026-07-13T04:34:43.037091+00:00",
+  "priceVersion": "jlc-cn-pcb-v7-20260713",
+  "status": "failed",
+  "pass": false,
+  "gates": {
+    "independenceOk": true,
+    "freshPerMaterialAtLeast40": false,
+    "overallHit10AtLeast90": false,
+    "overallHit20AtLeast95": true,
+    "overallMapeAtMost8": true,
+    "overallMaxErrAtMost20": false
+  },
+  "independenceProof": {
+    "generatedAt": "2026-07-13T02:09:04.939Z",
+    "acceptancePath": "scripts/jlc-cn-pcb-v7-acceptance-targets.json",
+    "ok": true,
+    "checks": [
+      {
+        "ok": true,
+        "left": "fit_process",
+        "right": "process_holdout",
+        "overlapCount": 0,
+        "overlap": []
+      },
+      {
+        "ok": true,
+        "left": "fit_geometry",
+        "right": "final_acceptance",
+        "overlapCount": 0,
+        "overlap": []
+      },
+      {
+        "ok": true,
+        "left": "process_holdout",
+        "right": "final_acceptance",
+        "overlapCount": 0,
+        "overlap": []
+      }
+    ],
+    "counts": {
+      "fit": 1584,
+      "holdout": 144,
+      "acceptance": 120
+    }
+  },
+  "targets": 120,
+  "sampleRows": 48,
+  "freshUnique": 48,
+  "materialCounts": {
+    "aluminum": 11,
+    "fpc": 6,
+    "fr4": 31
+  },
+  "autoQuoted": 48,
+  "manualReview": 0,
+  "overall": {
+    "n": 48,
+    "hitRate10": 0.75,
+    "hitRate20": 0.9583,
+    "mape": 0.0758,
+    "maxRelativeError": 0.548,
+    "p50": 0.0741
+  },
+  "pureEstimate": {
+    "n": 48,
+    "hitRate10": 0.75,
+    "hitRate20": 0.9583,
+    "mape": 0.0758,
+    "maxRelativeError": 0.548,
+    "p50": 0.0741
+  },
+  "processAdjusted": {
+    "n": 0,
+    "hitRate10": null,
+    "hitRate20": null,
+    "mape": null,
+    "maxRelativeError": null,
+    "p50": null
+  },
+  "byMaterial": {
+    "aluminum": {
+      "n": 11,
+      "hitRate10": 0.5455,
+      "hitRate20": 0.9091,
+      "mape": 0.0938,
+      "maxRelativeError": 0.2527,
+      "p50": 0.0942
+    },
+    "fpc": {
+      "n": 6,
+      "hitRate10": 1.0,
+      "hitRate20": 1.0,
+      "mape": 0.042,
+      "maxRelativeError": 0.0841,
+      "p50": 0.037
+    },
+    "fr4": {
+      "n": 31,
+      "hitRate10": 0.7742,
+      "hitRate20": 0.9677,
+      "mape": 0.076,
+      "maxRelativeError": 0.548,
+      "p50": 0.0601
+    }
+  },
+  "processEnabledMaterials": [
+    "aluminum"
+  ],
+  "processEnabledZones": [
+    "fr4_boardThickness_1.0",
+    "fr4_surfaceFinish_OSP",
+    "fr4_panelDesignCount_2",
+    "fr4_solderColor_白色",
+    "fr4_surfaceFinish_无铅喷锡",
+    "fpc_boardThickness_0.20"
+  ],
+  "fallbackVersionIfFailed": "jlc-cn-pcb-v6-20260712",
+  "note": null
+}

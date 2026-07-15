@@ -7,3 +7,5 @@ backend/media/*
 !backend/media/.gitkeep
 backend/staticfiles/
 .DS_Store
+.jlc-playwright-profile*/
+3D-Printing-Quote-Engine-master/

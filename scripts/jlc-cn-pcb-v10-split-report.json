@@ -1,0 +1,3702 @@
+{
+  "generatedAt": "2026-07-14T07:42:41.689Z",
+  "ok": true,
+  "checks": [
+    {
+      "ok": true,
+      "left": "fit",
+      "right": "tuning",
+      "overlapCount": 0,
+      "overlap": []
+    },
+    {
+      "ok": true,
+      "left": "fit",
+      "right": "process",
+      "overlapCount": 0,
+      "overlap": []
+    },
+    {
+      "ok": true,
+      "left": "fit",
+      "right": "final",
+      "overlapCount": 0,
+      "overlap": []
+    },
+    {
+      "ok": true,
+      "left": "tuning",
+      "right": "final",
+      "overlapCount": 0,
+      "overlap": []
+    },
+    {
+      "ok": true,
+      "left": "process",
+      "right": "final",
+      "overlapCount": 0,
+      "overlap": []
+    },
+    {
+      "ok": true,
+      "left": "diagnostic",
+      "right": "final",
+      "overlapCount": 0,
+      "overlap": []
+    },
+    {
+      "ok": true,
+      "left": "fit_neighbor",
+      "right": "final_neighbor",
+      "overlapCount": 0,
+      "overlap": []
+    },
+    {
+      "ok": true,
+      "left": "tuning_neighbor",
+      "right": "final_neighbor",
+      "overlapCount": 0,
+      "overlap": []
+    },
+    {
+      "ok": true,
+      "left": "process_neighbor",
+      "right": "final_neighbor",
+      "overlapCount": 0,
+      "overlap": []
+    },
+    {
+      "ok": true,
+      "left": "diagnostic_neighbor",
+      "right": "final_neighbor",
+      "overlapCount": 0,
+      "overlap": []
+    }
+  ],
+  "supportEnvelope": {
+    "ok": true,
+    "minNeighbors": 2,
+    "maxDistance": 0.75,
+    "failed": [],
+    "rows": [
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-001",
+        "materialKey": "fr4",
+        "layers": 2,
+        "neighborCount": 5,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-013",
+            "distance": 0.26385107527605234
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-003",
+            "distance": 0.26528288982867604
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-001",
+            "distance": 0.5514285994187963
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-005",
+            "distance": 0.7396911989859436
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-002",
+        "materialKey": "fr4",
+        "layers": 4,
+        "neighborCount": 9,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-014",
+            "distance": 0.33936384320690927
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-004",
+            "distance": 0.38563529188325973
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-012",
+            "distance": 0.39836587730483897
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-022",
+            "distance": 0.5466671548271593
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-003",
+        "materialKey": "fr4",
+        "layers": 2,
+        "neighborCount": 10,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-015",
+            "distance": 0.4063735470094063
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-023",
+            "distance": 0.42695299355339417
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-025",
+            "distance": 0.4488997714359313
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-005",
+            "distance": 0.47199422326666757
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-004",
+        "materialKey": "fr4",
+        "layers": 4,
+        "neighborCount": 12,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-024",
+            "distance": 0.2892328489818762
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-034",
+            "distance": 0.3482249709046317
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-044",
+            "distance": 0.37999065410775346
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-036",
+            "distance": 0.4844467929099346
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-005",
+        "materialKey": "fr4",
+        "layers": 2,
+        "neighborCount": 11,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-017",
+            "distance": 0.263596582825003
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-027",
+            "distance": 0.2636126799791633
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-037",
+            "distance": 0.27941280523099427
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-007",
+            "distance": 0.2929433541955502
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-006",
+        "materialKey": "fr4",
+        "layers": 4,
+        "neighborCount": 14,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-028",
+            "distance": 0.2955738052335094
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-018",
+            "distance": 0.3217628567981687
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-038",
+            "distance": 0.34588177498713857
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-008",
+            "distance": 0.44170995106229805
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-007",
+        "materialKey": "fr4",
+        "layers": 2,
+        "neighborCount": 8,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-007",
+            "distance": 0.19413477735029464
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-037",
+            "distance": 0.2063521311603026
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-017",
+            "distance": 0.2562662735950792
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-027",
+            "distance": 0.26353717587111647
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-008",
+        "materialKey": "fr4",
+        "layers": 4,
+        "neighborCount": 11,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-008",
+            "distance": 0.3734980877493528
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-010",
+            "distance": 0.44858597678567735
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-038",
+            "distance": 0.45741125794661885
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-018",
+            "distance": 0.481510991329948
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-009",
+        "materialKey": "fr4",
+        "layers": 2,
+        "neighborCount": 8,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-009",
+            "distance": 0.4136715339292127
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-019",
+            "distance": 0.5528128228307397
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-039",
+            "distance": 0.569209783062701
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-029",
+            "distance": 0.6013329117069826
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-010",
+        "materialKey": "fr4",
+        "layers": 4,
+        "neighborCount": 4,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-012",
+            "distance": 0.48014837731975046
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-022",
+            "distance": 0.5681974670383373
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-032",
+            "distance": 0.627466099172039
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-042",
+            "distance": 0.6431063033632579
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-011",
+        "materialKey": "fr4",
+        "layers": 2,
+        "neighborCount": 7,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-023",
+            "distance": 0.27545496987847257
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-033",
+            "distance": 0.3192569740886124
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-043",
+            "distance": 0.34029692017321356
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-031",
+            "distance": 0.4512969926197163
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-012",
+        "materialKey": "fr4",
+        "layers": 4,
+        "neighborCount": 7,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-044",
+            "distance": 0.1873750809640084
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-034",
+            "distance": 0.19009271962541313
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-024",
+            "distance": 0.23518551459614542
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-042",
+            "distance": 0.3058033995138817
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-013",
+        "materialKey": "fr4",
+        "layers": 2,
+        "neighborCount": 5,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-013",
+            "distance": 0.26341776791089866
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-005",
+            "distance": 0.26430338928822744
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-025",
+            "distance": 0.267902430167181
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-003",
+            "distance": 0.2761700537721433
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-014",
+        "materialKey": "fr4",
+        "layers": 4,
+        "neighborCount": 6,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-026",
+            "distance": 0.33327836725103616
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-014",
+            "distance": 0.3338150963567027
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-016",
+            "distance": 0.33526885360027664
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-006",
+            "distance": 0.33711067354058044
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-015",
+        "materialKey": "fr4",
+        "layers": 2,
+        "neighborCount": 14,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-027",
+            "distance": 0.3321148160809451
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-017",
+            "distance": 0.3385885292475821
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-037",
+            "distance": 0.3997226983866591
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-007",
+            "distance": 0.42673368756368363
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-016",
+        "materialKey": "fr4",
+        "layers": 4,
+        "neighborCount": 8,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-008",
+            "distance": 0.23590377968976162
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-006",
+            "distance": 0.26457450016928985
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-026",
+            "distance": 0.2711592139679837
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-016",
+            "distance": 0.27585909971570816
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-017",
+        "materialKey": "fr4",
+        "layers": 2,
+        "neighborCount": 8,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-017",
+            "distance": 0.187053050513005
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-027",
+            "distance": 0.18708159784220443
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-037",
+            "distance": 0.20870737766447295
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-007",
+            "distance": 0.22648556267423264
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-018",
+        "materialKey": "fr4",
+        "layers": 4,
+        "neighborCount": 9,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-030",
+            "distance": 0.2596265580370235
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-040",
+            "distance": 0.267681524343218
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-020",
+            "distance": 0.3095363309404779
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-010",
+            "distance": 0.4496748877199839
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-019",
+        "materialKey": "fr4",
+        "layers": 2,
+        "neighborCount": 8,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-009",
+            "distance": 0.20983589439873743
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-019",
+            "distance": 0.3093521435610976
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-039",
+            "distance": 0.32337784829390864
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-029",
+            "distance": 0.3515837010052548
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-020",
+        "materialKey": "fr4",
+        "layers": 4,
+        "neighborCount": 2,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-002",
+            "distance": 0.5504876309945796
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-012",
+            "distance": 0.7273492085565965
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-022",
+            "distance": 0.8759717618397455
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-014",
+            "distance": 0.9011574713338357
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-021",
+        "materialKey": "fr4",
+        "layers": 2,
+        "neighborCount": 10,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-013",
+            "distance": 0.4383608308185091
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-003",
+            "distance": 0.45262934808252886
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-011",
+            "distance": 0.5556270007874498
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-021",
+            "distance": 0.6708293603480543
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-022",
+        "materialKey": "fr4",
+        "layers": 4,
+        "neighborCount": 10,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-012",
+            "distance": 0.3429702381400045
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-014",
+            "distance": 0.4078417141280605
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-004",
+            "distance": 0.45656457448880905
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-022",
+            "distance": 0.47876276317110483
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-023",
+        "materialKey": "fr4",
+        "layers": 2,
+        "neighborCount": 5,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-043",
+            "distance": 0.19665051555941698
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-033",
+            "distance": 0.21017778878319557
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-035",
+            "distance": 0.2662169907846759
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-023",
+            "distance": 0.27092302000859786
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-024",
+        "materialKey": "fr4",
+        "layers": 4,
+        "neighborCount": 8,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-034",
+            "distance": 0.2636444345551399
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-044",
+            "distance": 0.26885029117473636
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-024",
+            "distance": 0.28241570902936025
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-036",
+            "distance": 0.35736138064262657
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-025",
+        "materialKey": "fr4",
+        "layers": 2,
+        "neighborCount": 13,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-027",
+            "distance": 0.38086034969787613
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-017",
+            "distance": 0.3884872175779923
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-037",
+            "distance": 0.45702984078354286
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-007",
+            "distance": 0.4861201802013044
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-026",
+        "materialKey": "fr4",
+        "layers": 4,
+        "neighborCount": 11,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-036",
+            "distance": 0.314851591365672
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-046",
+            "distance": 0.3539963268156475
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-048",
+            "distance": 0.4069968208834403
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-028",
+            "distance": 0.5000157494200358
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-027",
+        "materialKey": "fr4",
+        "layers": 2,
+        "neighborCount": 9,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-029",
+            "distance": 0.278077442452625
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-039",
+            "distance": 0.29067222416184557
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-019",
+            "distance": 0.2984245890792432
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-027",
+            "distance": 0.363608752545187
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-028",
+        "materialKey": "fr4",
+        "layers": 4,
+        "neighborCount": 7,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-008",
+            "distance": 0.4746473572990611
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-038",
+            "distance": 0.5687074768165099
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-010",
+            "distance": 0.5694328369074857
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-018",
+            "distance": 0.5946723439285004
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-029",
+        "materialKey": "fr4",
+        "layers": 2,
+        "neighborCount": 8,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-019",
+            "distance": 0.18726324014087034
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-039",
+            "distance": 0.1889962421141676
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-029",
+            "distance": 0.19679825412955268
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-009",
+            "distance": 0.23430425356220755
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-030",
+        "materialKey": "fr4",
+        "layers": 4,
+        "neighborCount": 4,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-022",
+            "distance": 0.4583638764886686
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-012",
+            "distance": 0.46064331620087035
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-032",
+            "distance": 0.48327053766347655
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-042",
+            "distance": 0.49173175173090233
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-031",
+        "materialKey": "fr4",
+        "layers": 2,
+        "neighborCount": 9,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-043",
+            "distance": 0.26369206695617886
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-033",
+            "distance": 0.26714665764673895
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-023",
+            "distance": 0.300210489797801
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-041",
+            "distance": 0.48932221708587936
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-032",
+        "materialKey": "fr4",
+        "layers": 4,
+        "neighborCount": 9,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-012",
+            "distance": 0.2652182443091301
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-022",
+            "distance": 0.3369230359810918
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-024",
+            "distance": 0.3837091331630453
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-032",
+            "distance": 0.39963407612544727
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-033",
+        "materialKey": "fr4",
+        "layers": 2,
+        "neighborCount": 8,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-015",
+            "distance": 0.33685659093466014
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-025",
+            "distance": 0.37293609457011256
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-005",
+            "distance": 0.3933715809065887
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-023",
+            "distance": 0.5182654519119096
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-034",
+        "materialKey": "fr4",
+        "layers": 4,
+        "neighborCount": 6,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-016",
+            "distance": 0.3330779807764169
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-026",
+            "distance": 0.3349415273787604
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-006",
+            "distance": 0.3569548236265549
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-014",
+            "distance": 0.38280439742306893
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-035",
+        "materialKey": "fr4",
+        "layers": 2,
+        "neighborCount": 8,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-035",
+            "distance": 0.4145464408029976
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-045",
+            "distance": 0.45011835514938736
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-047",
+            "distance": 0.5106959394666948
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-027",
+            "distance": 0.5171488089494113
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-036",
+        "materialKey": "fr4",
+        "layers": 4,
+        "neighborCount": 12,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-028",
+            "distance": 0.18742226498622952
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-018",
+            "distance": 0.18808894120840366
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-038",
+            "distance": 0.19340853068905445
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-008",
+            "distance": 0.24519422582300343
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-037",
+        "materialKey": "fr4",
+        "layers": 2,
+        "neighborCount": 9,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-029",
+            "distance": 0.3370227289985902
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-039",
+            "distance": 0.3591326224253775
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-019",
+            "distance": 0.37116638796996426
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-027",
+            "distance": 0.47183722408587875
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-038",
+        "materialKey": "fr4",
+        "layers": 4,
+        "neighborCount": 10,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-030",
+            "distance": 0.31294595614564286
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-040",
+            "distance": 0.3221824314373096
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-020",
+            "distance": 0.3684703986736544
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-048",
+            "distance": 0.45722543039872027
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-039",
+        "materialKey": "fr4",
+        "layers": 2,
+        "neighborCount": 6,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-009",
+            "distance": 0.5122355255205314
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-019",
+            "distance": 0.6553589988723403
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-039",
+            "distance": 0.6720460784712985
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-029",
+            "distance": 0.7046720028481881
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-040",
+        "materialKey": "fr4",
+        "layers": 4,
+        "neighborCount": 4,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-012",
+            "distance": 0.5179974673555472
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-022",
+            "distance": 0.6268387450666744
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-032",
+            "distance": 0.6928307640347193
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-042",
+            "distance": 0.7098331447064469
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-041",
+        "materialKey": "fr4",
+        "layers": 2,
+        "neighborCount": 12,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-013",
+            "distance": 0.5067365015743017
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-011",
+            "distance": 0.5117282214863469
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-003",
+            "distance": 0.5219350201123301
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-023",
+            "distance": 0.6081019784493628
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-042",
+        "materialKey": "fr4",
+        "layers": 4,
+        "neighborCount": 7,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-024",
+            "distance": 0.20471391177422912
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-022",
+            "distance": 0.26685417470512374
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-034",
+            "distance": 0.26784457546272755
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-032",
+            "distance": 0.2680076948220518
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-043",
+        "materialKey": "fr4",
+        "layers": 2,
+        "neighborCount": 5,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-033",
+            "distance": 0.1869967632487975
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-043",
+            "distance": 0.19005226075502712
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-023",
+            "distance": 0.21262817188253894
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-035",
+            "distance": 0.2949404538489188
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-044",
+        "materialKey": "fr4",
+        "layers": 4,
+        "neighborCount": 12,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-024",
+            "distance": 0.41438258400189887
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-016",
+            "distance": 0.45852197791565913
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-026",
+            "distance": 0.47090290129205303
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-034",
+            "distance": 0.5028260020759688
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-045",
+        "materialKey": "fr4",
+        "layers": 2,
+        "neighborCount": 7,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-035",
+            "distance": 0.37526084645614904
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-045",
+            "distance": 0.4042354794593747
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-047",
+            "distance": 0.4494691048114421
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-027",
+            "distance": 0.5814570213722267
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-046",
+        "materialKey": "fr4",
+        "layers": 4,
+        "neighborCount": 8,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-006",
+            "distance": 0.27059254559680623
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-008",
+            "distance": 0.29516532144159174
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-026",
+            "distance": 0.3024283195178674
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-016",
+            "distance": 0.3114916885569836
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-047",
+        "materialKey": "fr4",
+        "layers": 2,
+        "neighborCount": 9,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-029",
+            "distance": 0.30673708893875257
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-039",
+            "distance": 0.3253881818549585
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-019",
+            "distance": 0.3358836343106321
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-027",
+            "distance": 0.4235850950594163
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FR4-048",
+        "materialKey": "fr4",
+        "layers": 4,
+        "neighborCount": 9,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-030",
+            "distance": 0.22006732100868023
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-040",
+            "distance": 0.2263015666957446
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-020",
+            "distance": 0.26135443495911337
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FR4-010",
+            "distance": 0.39230519769371897
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-001",
+        "materialKey": "fpc",
+        "layers": 1,
+        "neighborCount": 17,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-043",
+            "distance": 0.26761970561760173
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-023",
+            "distance": 0.28379559965150286
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-023",
+            "distance": 0.34332219942620995
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-033",
+            "distance": 0.41464230580839895
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-002",
+        "materialKey": "fpc",
+        "layers": 2,
+        "neighborCount": 17,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-024",
+            "distance": 0.18826025065847135
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-034",
+            "distance": 0.20609307185749487
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-024",
+            "distance": 0.20609312741123487
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-044",
+            "distance": 0.22934563540316047
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-003",
+        "materialKey": "fpc",
+        "layers": 1,
+        "neighborCount": 12,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-003",
+            "distance": 0.18700188859040265
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-013",
+            "distance": 0.18800598567196888
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-033",
+            "distance": 0.18807999146140097
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-005",
+            "distance": 0.2795441030899539
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-004",
+        "materialKey": "fpc",
+        "layers": 2,
+        "neighborCount": 23,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-024",
+            "distance": 0.263674509928647
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-044",
+            "distance": 0.2693962305039446
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-024",
+            "distance": 0.27344087692134705
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-034",
+            "distance": 0.31990235022434854
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-005",
+        "materialKey": "fpc",
+        "layers": 1,
+        "neighborCount": 21,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-027",
+            "distance": 0.26771083983650534
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-017",
+            "distance": 0.2697463694586241
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-037",
+            "distance": 0.3010207141745508
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-027",
+            "distance": 0.30146628500358397
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-006",
+        "materialKey": "fpc",
+        "layers": 2,
+        "neighborCount": 26,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-058",
+            "distance": 0.18795164431926858
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-028",
+            "distance": 0.20049137125722868
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-028",
+            "distance": 0.2079659602836349
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-018",
+            "distance": 0.21458609838075896
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-007",
+        "materialKey": "fpc",
+        "layers": 1,
+        "neighborCount": 17,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-007",
+            "distance": 0.1870053713564817
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-057",
+            "distance": 0.18807137866338075
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-007",
+            "distance": 0.19248964679076605
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-027",
+            "distance": 0.20332525655669587
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-008",
+        "materialKey": "fpc",
+        "layers": 2,
+        "neighborCount": 19,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-020",
+            "distance": 0.19573297731658543
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-010",
+            "distance": 0.2141855257600471
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-040",
+            "distance": 0.21846754817121466
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-030",
+            "distance": 0.2245903317983141
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-009",
+        "materialKey": "fpc",
+        "layers": 1,
+        "neighborCount": 10,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-059",
+            "distance": 0.20651426675927667
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-039",
+            "distance": 0.26030523902608693
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-029",
+            "distance": 0.305846569117618
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-029",
+            "distance": 0.3396037389386916
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-010",
+        "materialKey": "fpc",
+        "layers": 2,
+        "neighborCount": 8,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-032",
+            "distance": 0.4701827306506951
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-062",
+            "distance": 0.47455743726621247
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-052",
+            "distance": 0.5227279091573933
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-042",
+            "distance": 0.5243218839798678
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-011",
+        "materialKey": "fpc",
+        "layers": 1,
+        "neighborCount": 10,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-003",
+            "distance": 0.27666305558657645
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-013",
+            "distance": 0.28255062250551966
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-033",
+            "distance": 0.28280426922157537
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-003",
+            "distance": 0.32396699319802436
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-012",
+        "materialKey": "fpc",
+        "layers": 2,
+        "neighborCount": 19,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-014",
+            "distance": 0.1929539355388584
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-042",
+            "distance": 0.2798236389081889
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-034",
+            "distance": 0.2960927829476313
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-012",
+            "distance": 0.3166689739458229
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-013",
+        "materialKey": "fpc",
+        "layers": 1,
+        "neighborCount": 18,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-043",
+            "distance": 0.18703166872585178
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-023",
+            "distance": 0.24321964163608167
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-015",
+            "distance": 0.2735590483985176
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-035",
+            "distance": 0.2946530303334213
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-014",
+        "materialKey": "fpc",
+        "layers": 2,
+        "neighborCount": 18,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-044",
+            "distance": 0.2643802469739306
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-034",
+            "distance": 0.2647576326671679
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-024",
+            "distance": 0.29551957648190835
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-054",
+            "distance": 0.31065943260193485
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-015",
+        "materialKey": "fpc",
+        "layers": 1,
+        "neighborCount": 23,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-027",
+            "distance": 0.2907446304540885
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-017",
+            "distance": 0.29531885025442806
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-015",
+            "distance": 0.33210712330398706
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-035",
+            "distance": 0.3383945655809527
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-016",
+        "materialKey": "fpc",
+        "layers": 2,
+        "neighborCount": 27,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-038",
+            "distance": 0.21719521806059142
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-036",
+            "distance": 0.32904125027045894
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-058",
+            "distance": 0.33818395919803584
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-016",
+            "distance": 0.3474825100354718
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-017",
+        "materialKey": "fpc",
+        "layers": 1,
+        "neighborCount": 9,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-047",
+            "distance": 0.20739141823094434
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-047",
+            "distance": 0.23898520790678812
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-039",
+            "distance": 0.26751140359445713
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-037",
+            "distance": 0.3638491539248517
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-018",
+        "materialKey": "fpc",
+        "layers": 2,
+        "neighborCount": 18,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-018",
+            "distance": 0.2934657404127142
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-020",
+            "distance": 0.36821897576253326
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-010",
+            "distance": 0.4038269661121331
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-008",
+            "distance": 0.4250167008328458
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-019",
+        "materialKey": "fpc",
+        "layers": 1,
+        "neighborCount": 15,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-049",
+            "distance": 0.19626207129008624
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-019",
+            "distance": 0.20313679628091616
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-009",
+            "distance": 0.29388619001081534
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-019",
+            "distance": 0.42168054848708203
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-020",
+        "materialKey": "fpc",
+        "layers": 2,
+        "neighborCount": 9,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-012",
+            "distance": 0.453211506196346
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-022",
+            "distance": 0.4538639706286046
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-042",
+            "distance": 0.5016087133822668
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-022",
+            "distance": 0.5055404899654392
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-021",
+        "materialKey": "fpc",
+        "layers": 1,
+        "neighborCount": 18,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-023",
+            "distance": 0.2642476725117461
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-033",
+            "distance": 0.2756970230726503
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-043",
+            "distance": 0.28795807325290146
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-023",
+            "distance": 0.29562484259552807
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-022",
+        "materialKey": "fpc",
+        "layers": 2,
+        "neighborCount": 15,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-054",
+            "distance": 0.1994062126999463
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-044",
+            "distance": 0.20121566650748765
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-034",
+            "distance": 0.2224270389320154
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-032",
+            "distance": 0.2846859903551543
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-023",
+        "materialKey": "fpc",
+        "layers": 1,
+        "neighborCount": 17,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-023",
+            "distance": 0.18988690000808336
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-023",
+            "distance": 0.20407755630744212
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-033",
+            "distance": 0.26081724600287665
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-043",
+            "distance": 0.26287839902864246
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-024",
+        "materialKey": "fpc",
+        "layers": 2,
+        "neighborCount": 17,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-014",
+            "distance": 0.2649361294951255
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-034",
+            "distance": 0.30572369569489904
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-016",
+            "distance": 0.34163693891615704
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-026",
+            "distance": 0.34623097909482603
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-025",
+        "materialKey": "fpc",
+        "layers": 1,
+        "neighborCount": 24,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-037",
+            "distance": 0.2867731957729049
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-015",
+            "distance": 0.3837897257875446
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-027",
+            "distance": 0.40567533783909365
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-017",
+            "distance": 0.41369178951919977
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-026",
+        "materialKey": "fpc",
+        "layers": 2,
+        "neighborCount": 18,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-006",
+            "distance": 0.2656741671842262
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-006",
+            "distance": 0.26854972437004665
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-026",
+            "distance": 0.2740398441915313
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-008",
+            "distance": 0.27477265334352174
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-027",
+        "materialKey": "fpc",
+        "layers": 1,
+        "neighborCount": 18,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-027",
+            "distance": 0.22099627903139452
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-017",
+            "distance": 0.2267502732918077
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-019",
+            "distance": 0.26904105622702157
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-039",
+            "distance": 0.27306813994544277
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-028",
+        "materialKey": "fpc",
+        "layers": 2,
+        "neighborCount": 21,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-030",
+            "distance": 0.19028401135202444
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-030",
+            "distance": 0.2240164885997915
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-040",
+            "distance": 0.23050729846406057
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-060",
+            "distance": 0.256535820638348
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-029",
+        "materialKey": "fpc",
+        "layers": 1,
+        "neighborCount": 10,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-039",
+            "distance": 0.18966942743088386
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-059",
+            "distance": 0.3539135255814116
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-029",
+            "distance": 0.49179605138122245
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-029",
+            "distance": 0.5303781527559489
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-030",
+        "materialKey": "fpc",
+        "layers": 2,
+        "neighborCount": 3,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-002",
+            "distance": 0.45532390101017467
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-002",
+            "distance": 0.5532441250046185
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-012",
+            "distance": 0.6176316678335695
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-042",
+            "distance": 0.8186441378407275
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-031",
+        "materialKey": "fpc",
+        "layers": 1,
+        "neighborCount": 18,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-013",
+            "distance": 0.28840917629475765
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-033",
+            "distance": 0.36542000363329
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-013",
+            "distance": 0.3659062842678814
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-003",
+            "distance": 0.3783991355429055
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-032",
+        "materialKey": "fpc",
+        "layers": 2,
+        "neighborCount": 19,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-014",
+            "distance": 0.22310682607265017
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-012",
+            "distance": 0.2824026230154847
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-022",
+            "distance": 0.2844992071244467
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-042",
+            "distance": 0.3126177378091551
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-033",
+        "materialKey": "fpc",
+        "layers": 1,
+        "neighborCount": 15,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-023",
+            "distance": 0.1888569246383891
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-023",
+            "distance": 0.20679131247320107
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-033",
+            "distance": 0.22579009544372974
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-043",
+            "distance": 0.24717223233186272
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-034",
+        "materialKey": "fpc",
+        "layers": 2,
+        "neighborCount": 21,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-014",
+            "distance": 0.26828871756977085
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-034",
+            "distance": 0.35123376810175516
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-016",
+            "distance": 0.36756347320471144
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-026",
+            "distance": 0.37549564006503044
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-035",
+        "materialKey": "fpc",
+        "layers": 1,
+        "neighborCount": 22,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-037",
+            "distance": 0.2660248288200638
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-045",
+            "distance": 0.3738179287941909
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-015",
+            "distance": 0.42753779924293955
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-035",
+            "distance": 0.4528149491509904
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-036",
+        "materialKey": "fpc",
+        "layers": 2,
+        "neighborCount": 19,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-038",
+            "distance": 0.21789823853796308
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-046",
+            "distance": 0.2646143011002103
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-036",
+            "distance": 0.2749922917142744
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-046",
+            "distance": 0.2996434003631867
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-037",
+        "materialKey": "fpc",
+        "layers": 1,
+        "neighborCount": 17,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-027",
+            "distance": 0.18705984985456775
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-017",
+            "distance": 0.18763125441687373
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-037",
+            "distance": 0.21369085909814553
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-027",
+            "distance": 0.21413763986353518
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-038",
+        "materialKey": "fpc",
+        "layers": 2,
+        "neighborCount": 21,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-020",
+            "distance": 0.2825674972888345
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-008",
+            "distance": 0.3485371117463202
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-018",
+            "distance": 0.35273700647534006
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-008",
+            "distance": 0.36008976262661935
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-039",
+        "materialKey": "fpc",
+        "layers": 1,
+        "neighborCount": 17,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-009",
+            "distance": 0.19911801364454076
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-019",
+            "distance": 0.2045090624830543
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-039",
+            "distance": 0.21214815342595147
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-029",
+            "distance": 0.23010893575737965
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-040",
+        "materialKey": "fpc",
+        "layers": 2,
+        "neighborCount": 9,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-022",
+            "distance": 0.4509194720474884
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-032",
+            "distance": 0.4562872580141021
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-042",
+            "distance": 0.46031771813446204
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-052",
+            "distance": 0.4609693896282262
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-041",
+        "materialKey": "fpc",
+        "layers": 1,
+        "neighborCount": 17,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-053",
+            "distance": 0.2640234040144508
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-043",
+            "distance": 0.2809736095838343
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-033",
+            "distance": 0.29498001482147873
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-023",
+            "distance": 0.3514965990476842
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-042",
+        "materialKey": "fpc",
+        "layers": 2,
+        "neighborCount": 19,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-044",
+            "distance": 0.20578431097861535
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-024",
+            "distance": 0.23956218480485428
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-022",
+            "distance": 0.2769493377652521
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-022",
+            "distance": 0.2783106076245835
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-043",
+        "materialKey": "fpc",
+        "layers": 1,
+        "neighborCount": 14,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-033",
+            "distance": 0.2399954984116694
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-013",
+            "distance": 0.24043584828656966
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-003",
+            "distance": 0.25193819046899857
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-005",
+            "distance": 0.2690890112954429
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-044",
+        "materialKey": "fpc",
+        "layers": 2,
+        "neighborCount": 23,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-044",
+            "distance": 0.3057985626800309
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-016",
+            "distance": 0.3321847319051192
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-036",
+            "distance": 0.33261138254226813
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-024",
+            "distance": 0.3426187425450645
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-045",
+        "materialKey": "fpc",
+        "layers": 1,
+        "neighborCount": 24,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-037",
+            "distance": 0.3227936237057567
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-015",
+            "distance": 0.35276523757671807
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-027",
+            "distance": 0.35315538810250147
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-017",
+            "distance": 0.36021021311215634
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-046",
+        "materialKey": "fpc",
+        "layers": 2,
+        "neighborCount": 27,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-038",
+            "distance": 0.2540267761862595
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-058",
+            "distance": 0.2889845835555277
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-036",
+            "distance": 0.29636532509786095
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-016",
+            "distance": 0.31094582926330133
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-047",
+        "materialKey": "fpc",
+        "layers": 1,
+        "neighborCount": 19,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-037",
+            "distance": 0.19272612849104245
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-059",
+            "distance": 0.26723187493214207
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-029",
+            "distance": 0.2856584099635546
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-FPC-029",
+            "distance": 0.3040671057880463
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-FPC-048",
+        "materialKey": "fpc",
+        "layers": 2,
+        "neighborCount": 19,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-060",
+            "distance": 0.19209182199726618
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-040",
+            "distance": 0.231726018718892
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-038",
+            "distance": 0.2811760764046164
+          },
+          {
+            "id": "JLC-CN-PCB-V10-FIT-FPC-030",
+            "distance": 0.3160715298060773
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-001",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 15,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-042",
+            "distance": 0.4036243344636717
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-043",
+            "distance": 0.4119509562561081
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-032",
+            "distance": 0.42581224943903395
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-033",
+            "distance": 0.4394948511423611
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-002",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 21,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-023",
+            "distance": 0.19237189264745613
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-012",
+            "distance": 0.2687080718883899
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-033",
+            "distance": 0.2924553512044386
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-022",
+            "distance": 0.2929184125169441
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-003",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 21,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-015",
+            "distance": 0.3758890138572945
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-014",
+            "distance": 0.40154767052336016
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-025",
+            "distance": 0.4161701646645067
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-005",
+            "distance": 0.4383354349378426
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-004",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 13,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-035",
+            "distance": 0.04959517560420745
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-045",
+            "distance": 0.10530578261821329
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-034",
+            "distance": 0.26397562216157744
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-044",
+            "distance": 0.26539240550106313
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-005",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 20,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-036",
+            "distance": 0.2740499236617233
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-046",
+            "distance": 0.3381287803462457
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-035",
+            "distance": 0.3947134403954037
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-045",
+            "distance": 0.42741370824827524
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-006",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 19,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-047",
+            "distance": 0.25856974861926074
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-036",
+            "distance": 0.29384935629615866
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-046",
+            "distance": 0.32727349840448977
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-048",
+            "distance": 0.3699345320122591
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-007",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 19,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-047",
+            "distance": 0.3261353158400239
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-048",
+            "distance": 0.3278281629246751
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-036",
+            "distance": 0.4713783226186951
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-029",
+            "distance": 0.4723947756989337
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-008",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 19,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-009",
+            "distance": 0.10309550902697412
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-010",
+            "distance": 0.2541277681899299
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-019",
+            "distance": 0.25432647875089776
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-008",
+            "distance": 0.26514166555605806
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-009",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 15,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-009",
+            "distance": 0.4567818203982741
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-010",
+            "distance": 0.48574593936896715
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-008",
+            "distance": 0.5660362709288971
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-019",
+            "distance": 0.5979735603121882
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-010",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 8,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-011",
+            "distance": 0.14481935239837396
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-021",
+            "distance": 0.31666960932503324
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-031",
+            "distance": 0.39613378067928
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-041",
+            "distance": 0.4030542235238539
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-011",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 15,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-042",
+            "distance": 0.29065570325240564
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-032",
+            "distance": 0.31284361822776785
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-043",
+            "distance": 0.3330628126027917
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-033",
+            "distance": 0.35560446316976185
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-012",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 22,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-023",
+            "distance": 0.23738927839781396
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-012",
+            "distance": 0.2636552848894827
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-022",
+            "distance": 0.31517806047582336
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-033",
+            "distance": 0.3374727369547965
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-013",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 20,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-024",
+            "distance": 0.2897895547913456
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-023",
+            "distance": 0.2957753849844244
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-033",
+            "distance": 0.3786436519785167
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-034",
+            "distance": 0.3982412630188448
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-014",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 14,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-035",
+            "distance": 0.13603452284264117
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-045",
+            "distance": 0.1917451298566469
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-024",
+            "distance": 0.2661307005297102
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-034",
+            "distance": 0.2730778346546525
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-015",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 26,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-036",
+            "distance": 0.40370195748978355
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-027",
+            "distance": 0.43818799825963767
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-017",
+            "distance": 0.44659796526664713
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-016",
+            "distance": 0.4659016604117183
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-016",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 18,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-007",
+            "distance": 0.2231435513142097
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-037",
+            "distance": 0.2582348711254799
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-006",
+            "distance": 0.29663410863587525
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-026",
+            "distance": 0.3453300884848868
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-017",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 19,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-008",
+            "distance": 0.13434805253107854
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-007",
+            "distance": 0.19471923977200012
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-037",
+            "distance": 0.20726378243966592
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-038",
+            "distance": 0.24354734449607057
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-018",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 19,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-009",
+            "distance": 0.26694617397260273
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-008",
+            "distance": 0.32656760035343646
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-010",
+            "distance": 0.38447568729578396
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-038",
+            "distance": 0.4008571730318735
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-019",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 10,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-030",
+            "distance": 0.42511918010436056
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-040",
+            "distance": 0.43654787592798333
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-020",
+            "distance": 0.49167994662269954
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-048",
+            "distance": 0.49271499601732427
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-020",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 7,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-041",
+            "distance": 0.44632020552878826
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-031",
+            "distance": 0.4532406483733621
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-021",
+            "distance": 0.532704819727609
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-042",
+            "distance": 0.5711387191738349
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-021",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 15,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-013",
+            "distance": 0.4026281131943013
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-003",
+            "distance": 0.4161701646645067
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-012",
+            "distance": 0.4316883032072668
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-002",
+            "distance": 0.455614891793636
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-022",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 16,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-023",
+            "distance": 0.09228843409047352
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-033",
+            "distance": 0.19237189264745613
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-043",
+            "distance": 0.22746321245872614
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-024",
+            "distance": 0.2415551997454793
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-023",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 14,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-024",
+            "distance": 0.051456253729555396
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-034",
+            "distance": 0.15990796195705456
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-023",
+            "distance": 0.18721797678285493
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-044",
+            "distance": 0.20604911795490968
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-024",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 22,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-035",
+            "distance": 0.27217788591581565
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-024",
+            "distance": 0.28159903538877934
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-045",
+            "distance": 0.3278884929298214
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-034",
+            "distance": 0.335520388837065
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-025",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 18,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-036",
+            "distance": 0.19237189264745613
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-046",
+            "distance": 0.2564507493319784
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-035",
+            "distance": 0.3572193778792605
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-045",
+            "distance": 0.38129882838422746
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-026",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 15,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-007",
+            "distance": 0.4269441397852886
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-006",
+            "distance": 0.4301326641185857
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-037",
+            "distance": 0.4620354595965587
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-026",
+            "distance": 0.5017381030147725
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-027",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 13,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-048",
+            "distance": 0.18703854667209344
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-047",
+            "distance": 0.22571440418081698
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-036",
+            "distance": 0.4505510554703156
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-046",
+            "distance": 0.4547746298615573
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-028",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 13,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-008",
+            "distance": 0.5171157177950013
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-009",
+            "distance": 0.5190223909701692
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-007",
+            "distance": 0.5797609541636932
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-037",
+            "distance": 0.602463131245801
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-029",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 16,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-009",
+            "distance": 0.39988714525606095
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-010",
+            "distance": 0.42246594978818897
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-008",
+            "distance": 0.5301285324459086
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-019",
+            "distance": 0.5382310730070062
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-030",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 9,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-011",
+            "distance": 0.24891933961335133
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-021",
+            "distance": 0.4207695965400106
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-031",
+            "distance": 0.5002337678942574
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-041",
+            "distance": 0.5071542107388314
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-031",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 15,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-042",
+            "distance": 0.3482255550738835
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-032",
+            "distance": 0.37041347004924563
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-043",
+            "distance": 0.3710696327538736
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-033",
+            "distance": 0.3965561418046336
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-032",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 12,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-043",
+            "distance": 0.2192740053028924
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-044",
+            "distance": 0.23313486675493947
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-033",
+            "distance": 0.25436532511416243
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-034",
+            "distance": 0.26330487732106594
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-033",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 11,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-004",
+            "distance": 0.1431008436406733
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-003",
+            "distance": 0.18869950518858936
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-013",
+            "distance": 0.1918775840913358
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-014",
+            "distance": 0.1971680649109491
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-034",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 11,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-005",
+            "distance": 0.32533449221075694
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-004",
+            "distance": 0.3432905123657974
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-025",
+            "distance": 0.35350536917745334
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-014",
+            "distance": 0.38020836869306307
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-035",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 16,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-006",
+            "distance": 0.21860839614881852
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-026",
+            "distance": 0.3056197731384482
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-016",
+            "distance": 0.3233193502378491
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-005",
+            "distance": 0.3541903311988584
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-036",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 15,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-007",
+            "distance": 0.37694706918693116
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-006",
+            "distance": 0.3918195134622455
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-037",
+            "distance": 0.41203838899820133
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-026",
+            "distance": 0.4599444732665884
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-037",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 13,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-048",
+            "distance": 0.16694345091607277
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-047",
+            "distance": 0.21510510286463938
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-036",
+            "distance": 0.45109713328236506
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-046",
+            "distance": 0.4524787205094238
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-038",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 15,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-048",
+            "distance": 0.36806127612686584
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-030",
+            "distance": 0.4124605957642782
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-040",
+            "distance": 0.42267906188158544
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-029",
+            "distance": 0.46294754352152684
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-039",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 16,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-009",
+            "distance": 0.3166586810886441
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-010",
+            "distance": 0.3245436657559391
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-019",
+            "distance": 0.447702932059277
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-039",
+            "distance": 0.46356194370064446
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-040",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 5,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-001",
+            "distance": 0.29550850870124495
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-002",
+            "distance": 0.4722006291444426
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-011",
+            "distance": 0.6853207443104814
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-003",
+            "distance": 0.7141408747912997
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-041",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 18,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-012",
+            "distance": 0.1367538661343317
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-022",
+            "distance": 0.31697237273150763
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-032",
+            "distance": 0.40748638027233935
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-042",
+            "distance": 0.4296742952477017
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-042",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 9,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-003",
+            "distance": 0.1934547297862881
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-013",
+            "distance": 0.21115430688568904
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-002",
+            "distance": 0.2702788039348721
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-004",
+            "distance": 0.3630915290874142
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-043",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 17,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-024",
+            "distance": 0.17908222704898683
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-023",
+            "distance": 0.22135653614637227
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-034",
+            "distance": 0.287533935276486
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-033",
+            "distance": 0.28762251027962066
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-044",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 11,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-045",
+            "distance": 0.018884597613170576
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-035",
+            "distance": 0.07459520462717628
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-044",
+            "distance": 0.27947708949341943
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-034",
+            "distance": 0.29802352116073383
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-045",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 14,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-036",
+            "distance": 0.11686434013931098
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-046",
+            "distance": 0.1809431968238333
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-035",
+            "distance": 0.33676586299395
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-045",
+            "distance": 0.3504015067091709
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-046",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 12,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-047",
+            "distance": 0.11798779799807123
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-048",
+            "distance": 0.258590232548104
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-036",
+            "distance": 0.26376658902730205
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-046",
+            "distance": 0.26891755375351156
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-047",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 12,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-007",
+            "distance": 0.4497584129232881
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-037",
+            "distance": 0.4818939128371863
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-008",
+            "distance": 0.48908563712958475
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-006",
+            "distance": 0.5538011548962063
+          }
+        ],
+        "ok": true
+      },
+      {
+        "id": "JLC-CN-PCB-V10-ACC-ALUMINUM-048",
+        "materialKey": "aluminum",
+        "layers": 1,
+        "neighborCount": 18,
+        "nearest": [
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-009",
+            "distance": 0.37551010934796664
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-008",
+            "distance": 0.4003786630492698
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-010",
+            "distance": 0.4822337730068444
+          },
+          {
+            "id": "JLC-CN-PCB-V9-FIT-ALUMINUM-038",
+            "distance": 0.4879071214354942
+          }
+        ],
+        "ok": true
+      }
+    ]
+  },
+  "fingerprint": {
+    "count": 144,
+    "hash": "fnvish_4e2e1389",
+    "sampleKeysHead": [
+      "aluminum|1|102|95|5|1.6|绿色|无铅喷锡|1oz|页面默认|1",
+      "aluminum|1|104|131|50|1.6|绿色|无铅喷锡|1oz|页面默认|1",
+      "aluminum|1|114|110|15|1.6|绿色|无铅喷锡|1oz|页面默认|1",
+      "aluminum|1|117|125|30|1.6|绿色|无铅喷锡|1oz|页面默认|1",
+      "aluminum|1|118|130|20|1.6|绿色|无铅喷锡|1oz|页面默认|1"
+    ]
+  },
+  "counts": {
+    "fit": 208,
+    "tuningHoldout": 30,
+    "processHoldout": 18,
+    "finalAcceptance": 144,
+    "diagnostic": 1045
+  }
+}

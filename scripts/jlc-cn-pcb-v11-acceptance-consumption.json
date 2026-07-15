@@ -1,0 +1,8 @@
+{
+  "fingerprint": "fnvish_a82311bc",
+  "consumed": true,
+  "consumedAt": "2026-07-15T17:07:33.514964+00:00",
+  "decision": "failed",
+  "published": false,
+  "report": "scripts/jlc-cn-pcb-v11-acceptance-report.json"
+}

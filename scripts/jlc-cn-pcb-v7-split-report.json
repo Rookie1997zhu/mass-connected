@@ -1,0 +1,38 @@
+{
+  "generatedAt": "2026-07-13T02:09:04.640Z",
+  "processSamplingVersion": "v7",
+  "checks": [
+    {
+      "ok": true,
+      "left": "fit_process",
+      "right": "process_holdout",
+      "overlapCount": 0,
+      "overlap": []
+    },
+    {
+      "ok": true,
+      "left": "fit_geometry",
+      "right": "final_acceptance",
+      "overlapCount": 0,
+      "overlap": []
+    },
+    {
+      "ok": true,
+      "left": "process_holdout",
+      "right": "final_acceptance",
+      "overlapCount": 0,
+      "overlap": []
+    }
+  ],
+  "counts": {
+    "goldenUnique": 222,
+    "processGoldenUnique": 195,
+    "processHoldoutUnique": 36,
+    "finalAcceptanceUnique": 120,
+    "finalAcceptanceByMaterial": {
+      "fr4": 40,
+      "fpc": 40,
+      "aluminum": 40
+    }
+  }
+}

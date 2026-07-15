@@ -1,0 +1,12 @@
+{
+  "frozenAt": "2026-07-15T13:53:25.644Z",
+  "hash": "sha256_3e86f282c7c3ef593b23d7ac82f7f3cacb267c1b717dc2f4fa8610b8a081a08c",
+  "candidatePath": "scripts/jlc-cn-pcb-v11-candidate-price-list.json",
+  "acceptanceFingerprint": "fnvish_a82311bc",
+  "runtimePreflight": {
+    "ok": true,
+    "targetCount": 144,
+    "failedCount": 0
+  },
+  "note": "Do not rebuild or retune after final acceptance sampling starts."
+}

@@ -3,6 +3,27 @@ import uuid
 from django.db import models
 
 
+class ContractTemplate(models.Model):
+    """版本化合同模板；新合同签发时绑定模板版本并固化渲染内容。"""
+
+    version = models.CharField(max_length=32, unique=True)
+    title = models.CharField(max_length=200, default="生产合同")
+    body = models.TextField(
+        help_text="支持占位符：{{contract_no}} {{rfq_no}} {{order_no}} {{buyer_name}} "
+        "{{supplier_name}} {{amount}} {{currency}} {{lead_time_days}} {{payment_terms}} {{date}}"
+    )
+    is_active = models.BooleanField(default=True)
+    effective_date = models.DateField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-effective_date", "-created_at"]
+
+    def __str__(self):
+        return self.version
+
+
 class Contract(models.Model):
     STATUS_CHOICES = [
         ("draft", "Draft"),
@@ -21,6 +42,15 @@ class Contract(models.Model):
     production_order = models.OneToOneField(
         "rfq.ProductionOrder", null=True, blank=True, on_delete=models.SET_NULL, related_name="contract"
     )
+    template = models.ForeignKey(
+        ContractTemplate,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="contracts",
+    )
+    template_version = models.CharField(max_length=32, blank=True)
+    rendered_body = models.TextField(blank=True)
     buyer = models.ForeignKey(
         "accounts.User", on_delete=models.PROTECT, related_name="buyer_contracts"
     )

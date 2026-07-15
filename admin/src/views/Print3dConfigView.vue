@@ -91,6 +91,14 @@ const runPreview = async () => {
 
 const paramEntries = () => Object.keys(form.params || {})
 
+// 默认打印机单选：开启某台时清除其他行的默认标记
+const setDefaultPrinter = (row, value) => {
+  if (!value) return
+  form.printers.forEach((p) => {
+    if (p !== row) p.is_default = false
+  })
+}
+
 onMounted(load)
 </script>
 
@@ -152,6 +160,11 @@ onMounted(load)
         </el-table-column>
         <el-table-column :label="t('print3dAdmin.markup')" width="120">
           <template #default="{ row }"><el-input-number v-model="row.markup_multiplier" size="small" :step="0.05" :controls="false" /></template>
+        </el-table-column>
+        <el-table-column :label="t('print3dAdmin.defaultPrinter')" width="90">
+          <template #default="{ row }">
+            <el-switch v-model="row.is_default" @change="(val) => setDefaultPrinter(row, val)" />
+          </template>
         </el-table-column>
         <el-table-column :label="t('print3dAdmin.enabled')" width="80">
           <template #default="{ row }"><el-switch v-model="row.enabled" /></template>

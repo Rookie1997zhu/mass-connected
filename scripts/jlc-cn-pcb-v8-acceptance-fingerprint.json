@@ -1,0 +1,14 @@
+{
+  "frozenAt": "2026-07-13T06:55:44.310Z",
+  "count": 120,
+  "hash": "fnvish_4cd79a17",
+  "sampleKeysHead": [
+    "aluminum|1|100|155|10|1.6|绿色|无铅喷锡|1oz|页面默认|1",
+    "aluminum|1|101|163|100|1.6|绿色|无铅喷锡|1oz|页面默认|1",
+    "aluminum|1|102|153|20|1.6|绿色|无铅喷锡|1oz|页面默认|1",
+    "aluminum|1|103|151|200|1.6|绿色|无铅喷锡|1oz|页面默认|1",
+    "aluminum|1|104|150|20|1.6|绿色|无铅喷锡|1oz|页面默认|1"
+  ],
+  "oneShot": true,
+  "note": "Do not retune model against this set after scoring; generate a new fingerprint for next version."
+}

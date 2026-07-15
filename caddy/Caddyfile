@@ -7,10 +7,17 @@
 		}
 	}
 
-	handle /media/* {
-		root * /media
-		file_server
-	}
+# 媒体：默认仍由静态服务；项目履约文件请走鉴权下载接口 /api/*/projects/*/files/*/download
+# 保留 /media 以兼容简单报价 PDF 等非敏感公开资源
+handle /media/project/* {
+	respond "Use authenticated download API" 403
+}
+
+# handle_path 去掉 /media 前缀，避免解析成 /media/media/...
+handle_path /media/* {
+	root * /media
+	file_server
+}
 
 	handle /admin* {
 		reverse_proxy admin:5174

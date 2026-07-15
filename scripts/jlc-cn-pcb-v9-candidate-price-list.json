@@ -1,0 +1,4111 @@
+{
+  "source": "JLC CN v9 fresh independent fit sampling",
+  "generatedAt": "2026-07-14T02:09:34.847Z",
+  "validationStatus": "passed",
+  "enabledMaterials": [
+    "fr4",
+    "fpc",
+    "aluminum"
+  ],
+  "estimatorEnabledMaterials": [
+    "fr4",
+    "fpc",
+    "aluminum"
+  ],
+  "estimator": {
+    "version": "jlc-cn-pcb-v9-material-estimator",
+    "validationStatus": "passed",
+    "neighbors": 6,
+    "materials": {
+      "fr4": {
+        "modelType": "fr4_segmented",
+        "layers": [
+          2,
+          4
+        ],
+        "minWidthMm": 60,
+        "maxWidthMm": 170,
+        "minHeightMm": 70,
+        "maxHeightMm": 145,
+        "minQuantity": 5,
+        "maxQuantity": 200,
+        "floorPriceCny": 20,
+        "formula": "floor_area_quantity",
+        "useSegments": false,
+        "guards": {
+          "maxNeighborDistance": 0.6,
+          "minLocalNeighbors": 2,
+          "areaWeight": 1,
+          "quantityWeight": 0.8,
+          "areaExponent": 0.8,
+          "quantityExponent": 0.8
+        },
+        "segments": [
+          "2|large|low",
+          "2|large|medium",
+          "2|medium|high",
+          "2|medium|low",
+          "2|medium|medium",
+          "2|small|low",
+          "4|large|high",
+          "4|large|low",
+          "4|large|medium",
+          "4|medium|high",
+          "4|medium|low",
+          "4|medium|medium"
+        ],
+        "neighbors": 6,
+        "tuningMetrics": {
+          "n": 9,
+          "coverage": 0.9,
+          "hitRate20": 1,
+          "mape": 0.0249,
+          "maxRelativeError": 0.0507,
+          "pass": true
+        }
+      },
+      "fpc": {
+        "modelType": "fpc_local",
+        "layers": [
+          1,
+          2
+        ],
+        "minWidthMm": 60,
+        "maxWidthMm": 170,
+        "minHeightMm": 70,
+        "maxHeightMm": 145,
+        "minQuantity": 5,
+        "maxQuantity": 200,
+        "floorPriceCny": null,
+        "formula": "local_log",
+        "useSegments": false,
+        "guards": {
+          "maxNeighborDistance": 0.4,
+          "minLocalNeighbors": 2,
+          "areaWeight": 1,
+          "quantityWeight": 0.7
+        },
+        "segments": [
+          "1|large|low",
+          "1|large|medium",
+          "1|medium|high",
+          "1|medium|low",
+          "1|medium|medium",
+          "1|small|low",
+          "2|large|high",
+          "2|large|low",
+          "2|large|medium",
+          "2|medium|high",
+          "2|medium|low",
+          "2|medium|medium",
+          "2|small|low"
+        ],
+        "neighbors": 6,
+        "tuningMetrics": {
+          "n": 10,
+          "coverage": 0.9091,
+          "hitRate20": 1,
+          "mape": 0.0707,
+          "maxRelativeError": 0.1364,
+          "pass": true
+        }
+      },
+      "aluminum": {
+        "modelType": "aluminum_floor_area_quantity",
+        "layers": [
+          1
+        ],
+        "minWidthMm": 60,
+        "maxWidthMm": 170,
+        "minHeightMm": 70,
+        "maxHeightMm": 145,
+        "minQuantity": 5,
+        "maxQuantity": 200,
+        "floorPriceCny": 186.01,
+        "formula": "local_log",
+        "useSegments": false,
+        "guards": {
+          "maxNeighborDistance": 0.65,
+          "minLocalNeighbors": 3,
+          "areaWeight": 1.15,
+          "quantityWeight": 0.95,
+          "areaExponent": 0.92,
+          "quantityExponent": 0.72
+        },
+        "segments": [
+          "1|large|high",
+          "1|large|low",
+          "1|large|medium",
+          "1|medium|high",
+          "1|medium|low",
+          "1|medium|medium",
+          "1|small|low"
+        ],
+        "tuningMetrics": {
+          "n": 12,
+          "coverage": 1,
+          "hitRate20": 1,
+          "mape": 0.0255,
+          "maxRelativeError": 0.0504,
+          "pass": true
+        }
+      }
+    },
+    "enabledMaterials": [
+      "fr4",
+      "fpc",
+      "aluminum"
+    ]
+  },
+  "estimatorGuardsByMaterial": {
+    "fr4": {
+      "maxNeighborDistance": 0.6,
+      "minLocalNeighbors": 2,
+      "areaWeight": 1,
+      "quantityWeight": 0.8,
+      "areaExponent": 0.8,
+      "quantityExponent": 0.8
+    },
+    "fpc": {
+      "maxNeighborDistance": 0.4,
+      "minLocalNeighbors": 2,
+      "areaWeight": 1,
+      "quantityWeight": 0.7
+    },
+    "aluminum": {
+      "maxNeighborDistance": 0.65,
+      "minLocalNeighbors": 3,
+      "areaWeight": 1.15,
+      "quantityWeight": 0.95,
+      "areaExponent": 0.92,
+      "quantityExponent": 0.72
+    }
+  },
+  "estimatorGuards": {
+    "maxNeighborDistance": 0.65,
+    "minLocalNeighbors": 2
+  },
+  "processEnabledMaterials": [],
+  "processEnabledZones": [],
+  "processModel": {
+    "version": "jlc-cn-pcb-v9-process-model",
+    "validationStatus": "pending_holdout",
+    "materials": {},
+    "enabledZones": []
+  },
+  "riskZones": [],
+  "rows": [
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 60,
+      "heightMm": 70,
+      "quantity": 5,
+      "jlcPriceCny": 160.92,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 70,
+      "heightMm": 70,
+      "quantity": 10,
+      "jlcPriceCny": 175.48,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 80,
+      "heightMm": 70,
+      "quantity": 15,
+      "jlcPriceCny": 193.68,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 90,
+      "heightMm": 70,
+      "quantity": 20,
+      "jlcPriceCny": 215.52,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 100,
+      "heightMm": 70,
+      "quantity": 30,
+      "jlcPriceCny": 259.2,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 110,
+      "heightMm": 70,
+      "quantity": 50,
+      "jlcPriceCny": 331.69,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 120,
+      "heightMm": 70,
+      "quantity": 75,
+      "jlcPriceCny": 423.18,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 130,
+      "heightMm": 70,
+      "quantity": 100,
+      "jlcPriceCny": 527.62,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 140,
+      "heightMm": 70,
+      "quantity": 150,
+      "jlcPriceCny": 735.66,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 150,
+      "heightMm": 70,
+      "quantity": 200,
+      "jlcPriceCny": 969.6,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 160,
+      "heightMm": 70,
+      "quantity": 5,
+      "jlcPriceCny": 179.12,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 170,
+      "heightMm": 70,
+      "quantity": 10,
+      "jlcPriceCny": 211.88,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 60,
+      "heightMm": 95,
+      "quantity": 15,
+      "jlcPriceCny": 194.47,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 70,
+      "heightMm": 95,
+      "quantity": 20,
+      "jlcPriceCny": 219.16,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 80,
+      "heightMm": 95,
+      "quantity": 30,
+      "jlcPriceCny": 268.56,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 90,
+      "heightMm": 95,
+      "quantity": 50,
+      "jlcPriceCny": 348.44,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 100,
+      "heightMm": 95,
+      "quantity": 75,
+      "jlcPriceCny": 455.03,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 110,
+      "heightMm": 95,
+      "quantity": 100,
+      "jlcPriceCny": 579.19,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 120,
+      "heightMm": 95,
+      "quantity": 150,
+      "jlcPriceCny": 826.38,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 130,
+      "heightMm": 95,
+      "quantity": 200,
+      "jlcPriceCny": 1108.72,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 140,
+      "heightMm": 95,
+      "quantity": 5,
+      "jlcPriceCny": 184.59,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 150,
+      "heightMm": 95,
+      "quantity": 10,
+      "jlcPriceCny": 224.11,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 160,
+      "heightMm": 95,
+      "quantity": 15,
+      "jlcPriceCny": 268.56,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 170,
+      "heightMm": 95,
+      "quantity": 20,
+      "jlcPriceCny": 317.96,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 60,
+      "heightMm": 120,
+      "quantity": 30,
+      "jlcPriceCny": 262.32,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 70,
+      "heightMm": 120,
+      "quantity": 50,
+      "jlcPriceCny": 345.48,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 80,
+      "heightMm": 120,
+      "quantity": 75,
+      "jlcPriceCny": 457.92,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 90,
+      "heightMm": 120,
+      "quantity": 100,
+      "jlcPriceCny": 592.56,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 100,
+      "heightMm": 120,
+      "quantity": 150,
+      "jlcPriceCny": 860.4,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 110,
+      "heightMm": 120,
+      "quantity": 200,
+      "jlcPriceCny": 1172.64,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 120,
+      "heightMm": 120,
+      "quantity": 5,
+      "jlcPriceCny": 187.44,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 130,
+      "heightMm": 120,
+      "quantity": 10,
+      "jlcPriceCny": 231.12,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 140,
+      "heightMm": 120,
+      "quantity": 15,
+      "jlcPriceCny": 281.04,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 150,
+      "heightMm": 120,
+      "quantity": 20,
+      "jlcPriceCny": 337.2,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 160,
+      "heightMm": 120,
+      "quantity": 30,
+      "jlcPriceCny": 449.52,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 170,
+      "heightMm": 120,
+      "quantity": 50,
+      "jlcPriceCny": 581.88,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 60,
+      "heightMm": 145,
+      "quantity": 75,
+      "jlcPriceCny": 431.87,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 70,
+      "heightMm": 145,
+      "quantity": 100,
+      "jlcPriceCny": 567.73,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 80,
+      "heightMm": 145,
+      "quantity": 150,
+      "jlcPriceCny": 837.72,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 90,
+      "heightMm": 145,
+      "quantity": 200,
+      "jlcPriceCny": 1161.36,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 100,
+      "heightMm": 145,
+      "quantity": 5,
+      "jlcPriceCny": 187.71,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 110,
+      "heightMm": 145,
+      "quantity": 10,
+      "jlcPriceCny": 232.95,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 120,
+      "heightMm": 145,
+      "quantity": 15,
+      "jlcPriceCny": 285.72,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 130,
+      "heightMm": 145,
+      "quantity": 20,
+      "jlcPriceCny": 346.04,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 140,
+      "heightMm": 145,
+      "quantity": 30,
+      "jlcPriceCny": 466.68,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 150,
+      "heightMm": 145,
+      "quantity": 50,
+      "jlcPriceCny": 608.48,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 160,
+      "heightMm": 145,
+      "quantity": 75,
+      "jlcPriceCny": 851.64,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 170,
+      "heightMm": 145,
+      "quantity": 100,
+      "jlcPriceCny": 1121.63,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 60,
+      "heightMm": 70,
+      "quantity": 5,
+      "jlcPriceCny": 167.22,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 70,
+      "heightMm": 70,
+      "quantity": 10,
+      "jlcPriceCny": 200.18,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 80,
+      "heightMm": 70,
+      "quantity": 15,
+      "jlcPriceCny": 200.18,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 90,
+      "heightMm": 70,
+      "quantity": 20,
+      "jlcPriceCny": 263.32,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 100,
+      "heightMm": 70,
+      "quantity": 30,
+      "jlcPriceCny": 322.2,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 110,
+      "heightMm": 70,
+      "quantity": 50,
+      "jlcPriceCny": 562.56,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 120,
+      "heightMm": 70,
+      "quantity": 75,
+      "jlcPriceCny": 700.68,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 130,
+      "heightMm": 70,
+      "quantity": 100,
+      "jlcPriceCny": 890.58,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 140,
+      "heightMm": 70,
+      "quantity": 150,
+      "jlcPriceCny": 1223.16,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 150,
+      "heightMm": 70,
+      "quantity": 200,
+      "jlcPriceCny": 1630.9,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 160,
+      "heightMm": 70,
+      "quantity": 5,
+      "jlcPriceCny": 195.92,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 170,
+      "heightMm": 70,
+      "quantity": 10,
+      "jlcPriceCny": 257.58,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 60,
+      "heightMm": 95,
+      "quantity": 15,
+      "jlcPriceCny": 220.11,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 70,
+      "heightMm": 95,
+      "quantity": 20,
+      "jlcPriceCny": 269.06,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 80,
+      "heightMm": 95,
+      "quantity": 30,
+      "jlcPriceCny": 336.96,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 90,
+      "heightMm": 95,
+      "quantity": 50,
+      "jlcPriceCny": 590.45,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 100,
+      "heightMm": 95,
+      "quantity": 75,
+      "jlcPriceCny": 753.16,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 110,
+      "heightMm": 95,
+      "quantity": 100,
+      "jlcPriceCny": 976.71,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 120,
+      "heightMm": 95,
+      "quantity": 150,
+      "jlcPriceCny": 1373.88,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 130,
+      "heightMm": 95,
+      "quantity": 200,
+      "jlcPriceCny": 1863.63,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 140,
+      "heightMm": 95,
+      "quantity": 5,
+      "jlcPriceCny": 204.53,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 150,
+      "heightMm": 95,
+      "quantity": 10,
+      "jlcPriceCny": 276.85,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 160,
+      "heightMm": 95,
+      "quantity": 15,
+      "jlcPriceCny": 336.96,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 170,
+      "heightMm": 95,
+      "quantity": 20,
+      "jlcPriceCny": 424.86,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 60,
+      "heightMm": 120,
+      "quantity": 30,
+      "jlcPriceCny": 327.12,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 70,
+      "heightMm": 120,
+      "quantity": 50,
+      "jlcPriceCny": 585.52,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 80,
+      "heightMm": 120,
+      "quantity": 75,
+      "jlcPriceCny": 757.92,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 90,
+      "heightMm": 120,
+      "quantity": 100,
+      "jlcPriceCny": 999.04,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 100,
+      "heightMm": 120,
+      "quantity": 150,
+      "jlcPriceCny": 1430.4,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 110,
+      "heightMm": 120,
+      "quantity": 200,
+      "jlcPriceCny": 1970.56,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 120,
+      "heightMm": 120,
+      "quantity": 5,
+      "jlcPriceCny": 209.04,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 130,
+      "heightMm": 120,
+      "quantity": 10,
+      "jlcPriceCny": 287.92,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 140,
+      "heightMm": 120,
+      "quantity": 15,
+      "jlcPriceCny": 356.64,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 150,
+      "heightMm": 120,
+      "quantity": 20,
+      "jlcPriceCny": 455.2,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 160,
+      "heightMm": 120,
+      "quantity": 30,
+      "jlcPriceCny": 622.32,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 170,
+      "heightMm": 120,
+      "quantity": 50,
+      "jlcPriceCny": 979.12,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 60,
+      "heightMm": 145,
+      "quantity": 75,
+      "jlcPriceCny": 715,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 70,
+      "heightMm": 145,
+      "quantity": 100,
+      "jlcPriceCny": 957.57,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 80,
+      "heightMm": 145,
+      "quantity": 150,
+      "jlcPriceCny": 1392.72,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 90,
+      "heightMm": 145,
+      "quantity": 200,
+      "jlcPriceCny": 1951.69,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 100,
+      "heightMm": 145,
+      "quantity": 5,
+      "jlcPriceCny": 209.45,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 110,
+      "heightMm": 145,
+      "quantity": 10,
+      "jlcPriceCny": 290.79,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 120,
+      "heightMm": 145,
+      "quantity": 15,
+      "jlcPriceCny": 364.02,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 130,
+      "heightMm": 145,
+      "quantity": 20,
+      "jlcPriceCny": 469.14,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 140,
+      "heightMm": 145,
+      "quantity": 30,
+      "jlcPriceCny": 649.38,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 150,
+      "heightMm": 145,
+      "quantity": 50,
+      "jlcPriceCny": 1023.41,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 160,
+      "heightMm": 145,
+      "quantity": 75,
+      "jlcPriceCny": 1406.64,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 170,
+      "heightMm": 145,
+      "quantity": 100,
+      "jlcPriceCny": 1882.67,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 80,
+      "heightMm": 70,
+      "quantity": 15,
+      "jlcPriceCny": 75.36,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 90,
+      "heightMm": 70,
+      "quantity": 20,
+      "jlcPriceCny": 248.2,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 100,
+      "heightMm": 70,
+      "quantity": 30,
+      "jlcPriceCny": 143.4,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 110,
+      "heightMm": 70,
+      "quantity": 50,
+      "jlcPriceCny": 429.5,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 120,
+      "heightMm": 70,
+      "quantity": 75,
+      "jlcPriceCny": 339.72,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 130,
+      "heightMm": 70,
+      "quantity": 100,
+      "jlcPriceCny": 691.44,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 140,
+      "heightMm": 70,
+      "quantity": 150,
+      "jlcPriceCny": 695.04,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 160,
+      "heightMm": 70,
+      "quantity": 5,
+      "jlcPriceCny": 60.24,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 170,
+      "heightMm": 70,
+      "quantity": 10,
+      "jlcPriceCny": 243.3,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 60,
+      "heightMm": 95,
+      "quantity": 15,
+      "jlcPriceCny": 76.17,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 70,
+      "heightMm": 95,
+      "quantity": 20,
+      "jlcPriceCny": 253.1,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 80,
+      "heightMm": 95,
+      "quantity": 30,
+      "jlcPriceCny": 153.12,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 100,
+      "heightMm": 95,
+      "quantity": 75,
+      "jlcPriceCny": 376.35,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 110,
+      "heightMm": 95,
+      "quantity": 100,
+      "jlcPriceCny": 770.28,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 120,
+      "heightMm": 95,
+      "quantity": 150,
+      "jlcPriceCny": 798.72,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 130,
+      "heightMm": 95,
+      "quantity": 200,
+      "jlcPriceCny": 1572.84,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 140,
+      "heightMm": 95,
+      "quantity": 5,
+      "jlcPriceCny": 65.91,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 160,
+      "heightMm": 95,
+      "quantity": 15,
+      "jlcPriceCny": 153.12,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 170,
+      "heightMm": 95,
+      "quantity": 20,
+      "jlcPriceCny": 386.1,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 60,
+      "heightMm": 120,
+      "quantity": 30,
+      "jlcPriceCny": 146.64,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 70,
+      "heightMm": 120,
+      "quantity": 50,
+      "jlcPriceCny": 454,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 80,
+      "heightMm": 120,
+      "quantity": 75,
+      "jlcPriceCny": 379.68,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 90,
+      "heightMm": 120,
+      "quantity": 100,
+      "jlcPriceCny": 790.72,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 100,
+      "heightMm": 120,
+      "quantity": 150,
+      "jlcPriceCny": 837.6,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 110,
+      "heightMm": 120,
+      "quantity": 200,
+      "jlcPriceCny": 1670.08,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 120,
+      "heightMm": 120,
+      "quantity": 5,
+      "jlcPriceCny": 68.88,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 130,
+      "heightMm": 120,
+      "quantity": 10,
+      "jlcPriceCny": 269.2,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 140,
+      "heightMm": 120,
+      "quantity": 15,
+      "jlcPriceCny": 166.08,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 150,
+      "heightMm": 120,
+      "quantity": 20,
+      "jlcPriceCny": 412,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 160,
+      "heightMm": 120,
+      "quantity": 30,
+      "jlcPriceCny": 341.04,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 170,
+      "heightMm": 120,
+      "quantity": 50,
+      "jlcPriceCny": 874,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 60,
+      "heightMm": 145,
+      "quantity": 75,
+      "jlcPriceCny": 349.71,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 70,
+      "heightMm": 145,
+      "quantity": 100,
+      "jlcPriceCny": 752.76,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 80,
+      "heightMm": 145,
+      "quantity": 150,
+      "jlcPriceCny": 811.68,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 90,
+      "heightMm": 145,
+      "quantity": 200,
+      "jlcPriceCny": 1652.92,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 100,
+      "heightMm": 145,
+      "quantity": 5,
+      "jlcPriceCny": 69.15,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 110,
+      "heightMm": 145,
+      "quantity": 10,
+      "jlcPriceCny": 271.65,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 120,
+      "heightMm": 145,
+      "quantity": 15,
+      "jlcPriceCny": 170.94,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 130,
+      "heightMm": 145,
+      "quantity": 20,
+      "jlcPriceCny": 423.9,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 140,
+      "heightMm": 145,
+      "quantity": 30,
+      "jlcPriceCny": 358.86,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 160,
+      "heightMm": 145,
+      "quantity": 75,
+      "jlcPriceCny": 832.56,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 170,
+      "heightMm": 145,
+      "quantity": 100,
+      "jlcPriceCny": 1599.56,
+      "enabled": true,
+      "pricingMode": "exact_lookup"
+    }
+  ],
+  "fit": {
+    "accepted": 138,
+    "rejected": [
+      {
+        "baseSampleId": "JLC-CN-PCB-V9-FIT-FR4-001",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V9-FIT-FR4-002",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V9-FIT-FR4-010",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V9-FIT-FR4-016",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V9-FIT-FR4-022",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V9-FIT-FR4-046",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      }
+    ]
+  },
+  "tuning": {
+    "accepted": 33,
+    "rejected": [
+      {
+        "baseSampleId": "JLC-CN-PCB-V9-TUNE-FPC-009",
+        "rows": 3,
+        "validRows": 3,
+        "cv": 0.10815704694871991
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V9-TUNE-FR4-004",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V9-TUNE-FR4-010",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      }
+    ],
+    "byMaterial": {
+      "fr4": {
+        "n": 9,
+        "coverage": 0.9,
+        "hitRate20": 1,
+        "mape": 0.0249,
+        "maxRelativeError": 0.0507,
+        "pass": true
+      },
+      "fpc": {
+        "n": 10,
+        "coverage": 0.9091,
+        "hitRate20": 1,
+        "mape": 0.0707,
+        "maxRelativeError": 0.1364,
+        "pass": true
+      },
+      "aluminum": {
+        "n": 12,
+        "coverage": 1,
+        "hitRate20": 1,
+        "mape": 0.0255,
+        "maxRelativeError": 0.0504,
+        "pass": true
+      }
+    },
+    "rows": [
+      {
+        "id": "JLC-CN-PCB-V9-TUNE-ALUMINUM-001",
+        "materialKey": "aluminum",
+        "actual": 207.14,
+        "estimate": {
+          "jlcPriceCny": 212.92,
+          "averageDistance": 0.3164,
+          "localCoverage": 6,
+          "extrapolation": false,
+          "basis": [
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 90,
+              "heightMm": 70,
+              "quantity": 20,
+              "jlcPriceCny": 215.52,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 70,
+              "heightMm": 95,
+              "quantity": 20,
+              "jlcPriceCny": 219.16,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 80,
+              "heightMm": 70,
+              "quantity": 15,
+              "jlcPriceCny": 193.68,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 60,
+              "heightMm": 95,
+              "quantity": 15,
+              "jlcPriceCny": 194.47,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 100,
+              "heightMm": 70,
+              "quantity": 30,
+              "jlcPriceCny": 259.2,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 60,
+              "heightMm": 120,
+              "quantity": 30,
+              "jlcPriceCny": 262.32,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            }
+          ]
+        },
+        "relativeError": 0.027903833156319405
+      },
+      {
+        "id": "JLC-CN-PCB-V9-TUNE-ALUMINUM-002",
+        "materialKey": "aluminum",
+        "actual": 261.29,
+        "estimate": {
+          "jlcPriceCny": 261.08,
+          "averageDistance": 0.2338,
+          "localCoverage": 6,
+          "extrapolation": false,
+          "basis": [
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 60,
+              "heightMm": 120,
+              "quantity": 30,
+              "jlcPriceCny": 262.32,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 100,
+              "heightMm": 70,
+              "quantity": 30,
+              "jlcPriceCny": 259.2,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 80,
+              "heightMm": 95,
+              "quantity": 30,
+              "jlcPriceCny": 268.56,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 70,
+              "heightMm": 95,
+              "quantity": 20,
+              "jlcPriceCny": 219.16,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 90,
+              "heightMm": 70,
+              "quantity": 20,
+              "jlcPriceCny": 215.52,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 110,
+              "heightMm": 70,
+              "quantity": 50,
+              "jlcPriceCny": 331.69,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            }
+          ]
+        },
+        "relativeError": 0.0008037046959318625
+      },
+      {
+        "id": "JLC-CN-PCB-V9-TUNE-ALUMINUM-003",
+        "materialKey": "aluminum",
+        "actual": 352.85,
+        "estimate": {
+          "jlcPriceCny": 361.36,
+          "averageDistance": 0.2333,
+          "localCoverage": 6,
+          "extrapolation": false,
+          "basis": [
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 90,
+              "heightMm": 95,
+              "quantity": 50,
+              "jlcPriceCny": 348.44,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 70,
+              "heightMm": 120,
+              "quantity": 50,
+              "jlcPriceCny": 345.48,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 110,
+              "heightMm": 70,
+              "quantity": 50,
+              "jlcPriceCny": 331.69,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 60,
+              "heightMm": 145,
+              "quantity": 75,
+              "jlcPriceCny": 431.87,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 120,
+              "heightMm": 70,
+              "quantity": 75,
+              "jlcPriceCny": 423.18,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 100,
+              "heightMm": 95,
+              "quantity": 75,
+              "jlcPriceCny": 455.03,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            }
+          ]
+        },
+        "relativeError": 0.024117897123423524
+      },
+      {
+        "id": "JLC-CN-PCB-V9-TUNE-ALUMINUM-004",
+        "materialKey": "aluminum",
+        "actual": 481.49,
+        "estimate": {
+          "jlcPriceCny": 478.91,
+          "averageDistance": 0.2002,
+          "localCoverage": 6,
+          "extrapolation": false,
+          "basis": [
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 80,
+              "heightMm": 120,
+              "quantity": 75,
+              "jlcPriceCny": 457.92,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 100,
+              "heightMm": 95,
+              "quantity": 75,
+              "jlcPriceCny": 455.03,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 60,
+              "heightMm": 145,
+              "quantity": 75,
+              "jlcPriceCny": 431.87,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 120,
+              "heightMm": 70,
+              "quantity": 75,
+              "jlcPriceCny": 423.18,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 110,
+              "heightMm": 95,
+              "quantity": 100,
+              "jlcPriceCny": 579.19,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 70,
+              "heightMm": 145,
+              "quantity": 100,
+              "jlcPriceCny": 567.73,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            }
+          ]
+        },
+        "relativeError": 0.005358366736588473
+      },
+      {
+        "id": "JLC-CN-PCB-V9-TUNE-ALUMINUM-005",
+        "materialKey": "aluminum",
+        "actual": 640.46,
+        "estimate": {
+          "jlcPriceCny": 633.77,
+          "averageDistance": 0.2625,
+          "localCoverage": 6,
+          "extrapolation": false,
+          "basis": [
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 90,
+              "heightMm": 120,
+              "quantity": 100,
+              "jlcPriceCny": 592.56,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 110,
+              "heightMm": 95,
+              "quantity": 100,
+              "jlcPriceCny": 579.19,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 70,
+              "heightMm": 145,
+              "quantity": 100,
+              "jlcPriceCny": 567.73,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 130,
+              "heightMm": 70,
+              "quantity": 100,
+              "jlcPriceCny": 527.62,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 80,
+              "heightMm": 120,
+              "quantity": 75,
+              "jlcPriceCny": 457.92,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 100,
+              "heightMm": 120,
+              "quantity": 150,
+              "jlcPriceCny": 860.4,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            }
+          ]
+        },
+        "relativeError": 0.010445617212628508
+      },
+      {
+        "id": "JLC-CN-PCB-V9-TUNE-ALUMINUM-006",
+        "materialKey": "aluminum",
+        "actual": 956.44,
+        "estimate": {
+          "jlcPriceCny": 979.2,
+          "averageDistance": 0.2345,
+          "localCoverage": 6,
+          "extrapolation": false,
+          "basis": [
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 100,
+              "heightMm": 120,
+              "quantity": 150,
+              "jlcPriceCny": 860.4,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 80,
+              "heightMm": 145,
+              "quantity": 150,
+              "jlcPriceCny": 837.72,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 120,
+              "heightMm": 95,
+              "quantity": 150,
+              "jlcPriceCny": 826.38,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 110,
+              "heightMm": 120,
+              "quantity": 200,
+              "jlcPriceCny": 1172.64,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 90,
+              "heightMm": 145,
+              "quantity": 200,
+              "jlcPriceCny": 1161.36,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 130,
+              "heightMm": 95,
+              "quantity": 200,
+              "jlcPriceCny": 1108.72,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            }
+          ]
+        },
+        "relativeError": 0.023796578980385584
+      },
+      {
+        "id": "JLC-CN-PCB-V9-TUNE-ALUMINUM-007",
+        "materialKey": "aluminum",
+        "actual": 819.87,
+        "estimate": {
+          "jlcPriceCny": 789.75,
+          "averageDistance": 0.3919,
+          "localCoverage": 6,
+          "extrapolation": false,
+          "basis": [
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 150,
+              "heightMm": 70,
+              "quantity": 200,
+              "jlcPriceCny": 969.6,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 140,
+              "heightMm": 70,
+              "quantity": 150,
+              "jlcPriceCny": 735.66,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 130,
+              "heightMm": 95,
+              "quantity": 200,
+              "jlcPriceCny": 1108.72,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 120,
+              "heightMm": 95,
+              "quantity": 150,
+              "jlcPriceCny": 826.38,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 80,
+              "heightMm": 145,
+              "quantity": 150,
+              "jlcPriceCny": 837.72,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 100,
+              "heightMm": 120,
+              "quantity": 150,
+              "jlcPriceCny": 860.4,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            }
+          ]
+        },
+        "relativeError": 0.03673753155988145
+      },
+      {
+        "id": "JLC-CN-PCB-V9-TUNE-ALUMINUM-008",
+        "materialKey": "aluminum",
+        "actual": 178.73,
+        "estimate": {
+          "jlcPriceCny": 186.58,
+          "averageDistance": 0.2115,
+          "localCoverage": 4,
+          "extrapolation": false,
+          "basis": [
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 160,
+              "heightMm": 70,
+              "quantity": 5,
+              "jlcPriceCny": 179.12,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 140,
+              "heightMm": 95,
+              "quantity": 5,
+              "jlcPriceCny": 184.59,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 120,
+              "heightMm": 120,
+              "quantity": 5,
+              "jlcPriceCny": 187.44,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 100,
+              "heightMm": 145,
+              "quantity": 5,
+              "jlcPriceCny": 187.71,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            }
+          ]
+        },
+        "relativeError": 0.0439209981536397
+      },
+      {
+        "id": "JLC-CN-PCB-V9-TUNE-ALUMINUM-009",
+        "materialKey": "aluminum",
+        "actual": 220.67,
+        "estimate": {
+          "jlcPriceCny": 226.13,
+          "averageDistance": 0.2354,
+          "localCoverage": 6,
+          "extrapolation": false,
+          "basis": [
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 150,
+              "heightMm": 95,
+              "quantity": 10,
+              "jlcPriceCny": 224.11,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 170,
+              "heightMm": 70,
+              "quantity": 10,
+              "jlcPriceCny": 211.88,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 130,
+              "heightMm": 120,
+              "quantity": 10,
+              "jlcPriceCny": 231.12,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 110,
+              "heightMm": 145,
+              "quantity": 10,
+              "jlcPriceCny": 232.95,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 160,
+              "heightMm": 95,
+              "quantity": 15,
+              "jlcPriceCny": 268.56,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 140,
+              "heightMm": 120,
+              "quantity": 15,
+              "jlcPriceCny": 281.04,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            }
+          ]
+        },
+        "relativeError": 0.024742828658177406
+      },
+      {
+        "id": "JLC-CN-PCB-V9-TUNE-ALUMINUM-010",
+        "materialKey": "aluminum",
+        "actual": 275.81,
+        "estimate": {
+          "jlcPriceCny": 286.07,
+          "averageDistance": 0.1839,
+          "localCoverage": 6,
+          "extrapolation": false,
+          "basis": [
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 140,
+              "heightMm": 120,
+              "quantity": 15,
+              "jlcPriceCny": 281.04,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 160,
+              "heightMm": 95,
+              "quantity": 15,
+              "jlcPriceCny": 268.56,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 120,
+              "heightMm": 145,
+              "quantity": 15,
+              "jlcPriceCny": 285.72,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 170,
+              "heightMm": 95,
+              "quantity": 20,
+              "jlcPriceCny": 317.96,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 150,
+              "heightMm": 120,
+              "quantity": 20,
+              "jlcPriceCny": 337.2,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 130,
+              "heightMm": 145,
+              "quantity": 20,
+              "jlcPriceCny": 346.04,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            }
+          ]
+        },
+        "relativeError": 0.03719952140966604
+      },
+      {
+        "id": "JLC-CN-PCB-V9-TUNE-ALUMINUM-011",
+        "materialKey": "aluminum",
+        "actual": 344.16,
+        "estimate": {
+          "jlcPriceCny": 326.83,
+          "averageDistance": 0.1942,
+          "localCoverage": 6,
+          "extrapolation": false,
+          "basis": [
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 130,
+              "heightMm": 145,
+              "quantity": 20,
+              "jlcPriceCny": 346.04,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 150,
+              "heightMm": 120,
+              "quantity": 20,
+              "jlcPriceCny": 337.2,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 170,
+              "heightMm": 95,
+              "quantity": 20,
+              "jlcPriceCny": 317.96,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 120,
+              "heightMm": 145,
+              "quantity": 15,
+              "jlcPriceCny": 285.72,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 140,
+              "heightMm": 120,
+              "quantity": 15,
+              "jlcPriceCny": 281.04,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 160,
+              "heightMm": 95,
+              "quantity": 15,
+              "jlcPriceCny": 268.56,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            }
+          ]
+        },
+        "relativeError": 0.050354486285448745
+      },
+      {
+        "id": "JLC-CN-PCB-V9-TUNE-ALUMINUM-012",
+        "materialKey": "aluminum",
+        "actual": 480.86,
+        "estimate": {
+          "jlcPriceCny": 470.9,
+          "averageDistance": 0.3293,
+          "localCoverage": 6,
+          "extrapolation": false,
+          "basis": [
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 140,
+              "heightMm": 145,
+              "quantity": 30,
+              "jlcPriceCny": 466.68,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 160,
+              "heightMm": 120,
+              "quantity": 30,
+              "jlcPriceCny": 449.52,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 130,
+              "heightMm": 145,
+              "quantity": 20,
+              "jlcPriceCny": 346.04,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 150,
+              "heightMm": 120,
+              "quantity": 20,
+              "jlcPriceCny": 337.2,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 150,
+              "heightMm": 145,
+              "quantity": 50,
+              "jlcPriceCny": 608.48,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "aluminum",
+              "materialLabel": "铝基板",
+              "layers": 1,
+              "widthMm": 170,
+              "heightMm": 120,
+              "quantity": 50,
+              "jlcPriceCny": 581.88,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            }
+          ]
+        },
+        "relativeError": 0.020712889406480132
+      },
+      {
+        "id": "JLC-CN-PCB-V9-TUNE-FPC-001",
+        "materialKey": "fpc",
+        "actual": 240.1,
+        "estimate": {
+          "jlcPriceCny": 232.44,
+          "averageDistance": 0.293,
+          "localCoverage": 4,
+          "extrapolation": false,
+          "basis": [
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 1,
+              "widthMm": 80,
+              "heightMm": 70,
+              "quantity": 15,
+              "jlcPriceCny": 200.18,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 1,
+              "widthMm": 60,
+              "heightMm": 95,
+              "quantity": 15,
+              "jlcPriceCny": 220.11,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 1,
+              "widthMm": 100,
+              "heightMm": 70,
+              "quantity": 30,
+              "jlcPriceCny": 322.2,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 1,
+              "widthMm": 60,
+              "heightMm": 120,
+              "quantity": 30,
+              "jlcPriceCny": 327.12,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            }
+          ]
+        },
+        "relativeError": 0.03190337359433568
+      },
+      {
+        "id": "JLC-CN-PCB-V9-TUNE-FPC-002",
+        "materialKey": "fpc",
+        "actual": 335.49,
+        "estimate": {
+          "jlcPriceCny": 359.52,
+          "averageDistance": 0.3403,
+          "localCoverage": 4,
+          "extrapolation": false,
+          "basis": [
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 2,
+              "widthMm": 70,
+              "heightMm": 95,
+              "quantity": 20,
+              "jlcPriceCny": 269.06,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 2,
+              "widthMm": 90,
+              "heightMm": 70,
+              "quantity": 20,
+              "jlcPriceCny": 263.32,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 2,
+              "widthMm": 110,
+              "heightMm": 70,
+              "quantity": 50,
+              "jlcPriceCny": 562.56,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 2,
+              "widthMm": 70,
+              "heightMm": 120,
+              "quantity": 50,
+              "jlcPriceCny": 585.52,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            }
+          ]
+        },
+        "relativeError": 0.07162657605293742
+      },
+      {
+        "id": "JLC-CN-PCB-V9-TUNE-FPC-003",
+        "materialKey": "fpc",
+        "actual": 582.53,
+        "estimate": {
+          "jlcPriceCny": 661.98,
+          "averageDistance": 0.3098,
+          "localCoverage": 5,
+          "extrapolation": false,
+          "basis": [
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 1,
+              "widthMm": 60,
+              "heightMm": 145,
+              "quantity": 75,
+              "jlcPriceCny": 715,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 1,
+              "widthMm": 120,
+              "heightMm": 70,
+              "quantity": 75,
+              "jlcPriceCny": 700.68,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 1,
+              "widthMm": 100,
+              "heightMm": 95,
+              "quantity": 75,
+              "jlcPriceCny": 753.16,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 1,
+              "widthMm": 80,
+              "heightMm": 120,
+              "quantity": 75,
+              "jlcPriceCny": 757.92,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 1,
+              "widthMm": 80,
+              "heightMm": 95,
+              "quantity": 30,
+              "jlcPriceCny": 336.96,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            }
+          ]
+        },
+        "relativeError": 0.13638782551971582
+      },
+      {
+        "id": "JLC-CN-PCB-V9-TUNE-FPC-004",
+        "materialKey": "fpc",
+        "actual": 813.01,
+        "estimate": {
+          "jlcPriceCny": 886.53,
+          "averageDistance": 0.2588,
+          "localCoverage": 6,
+          "extrapolation": false,
+          "basis": [
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 2,
+              "widthMm": 110,
+              "heightMm": 95,
+              "quantity": 100,
+              "jlcPriceCny": 976.71,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 2,
+              "widthMm": 70,
+              "heightMm": 145,
+              "quantity": 100,
+              "jlcPriceCny": 957.57,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 2,
+              "widthMm": 90,
+              "heightMm": 120,
+              "quantity": 100,
+              "jlcPriceCny": 999.04,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 2,
+              "widthMm": 130,
+              "heightMm": 70,
+              "quantity": 100,
+              "jlcPriceCny": 890.58,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 2,
+              "widthMm": 90,
+              "heightMm": 95,
+              "quantity": 50,
+              "jlcPriceCny": 590.45,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 2,
+              "widthMm": 70,
+              "heightMm": 120,
+              "quantity": 50,
+              "jlcPriceCny": 585.52,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            }
+          ]
+        },
+        "relativeError": 0.09042939201239834
+      },
+      {
+        "id": "JLC-CN-PCB-V9-TUNE-FPC-005",
+        "materialKey": "fpc",
+        "actual": 1061.81,
+        "estimate": {
+          "jlcPriceCny": 1128.33,
+          "averageDistance": 0.3044,
+          "localCoverage": 6,
+          "extrapolation": false,
+          "basis": [
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 1,
+              "widthMm": 100,
+              "heightMm": 120,
+              "quantity": 150,
+              "jlcPriceCny": 1430.4,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 1,
+              "widthMm": 80,
+              "heightMm": 145,
+              "quantity": 150,
+              "jlcPriceCny": 1392.72,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 1,
+              "widthMm": 120,
+              "heightMm": 95,
+              "quantity": 150,
+              "jlcPriceCny": 1373.88,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 1,
+              "widthMm": 80,
+              "heightMm": 120,
+              "quantity": 75,
+              "jlcPriceCny": 757.92,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 1,
+              "widthMm": 100,
+              "heightMm": 95,
+              "quantity": 75,
+              "jlcPriceCny": 753.16,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 1,
+              "widthMm": 140,
+              "heightMm": 70,
+              "quantity": 150,
+              "jlcPriceCny": 1223.16,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            }
+          ]
+        },
+        "relativeError": 0.06264774300486903
+      },
+      {
+        "id": "JLC-CN-PCB-V9-TUNE-FPC-006",
+        "materialKey": "fpc",
+        "actual": 1608.2,
+        "estimate": {
+          "jlcPriceCny": 1701.47,
+          "averageDistance": 0.2889,
+          "localCoverage": 6,
+          "extrapolation": false,
+          "basis": [
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 2,
+              "widthMm": 110,
+              "heightMm": 120,
+              "quantity": 200,
+              "jlcPriceCny": 1970.56,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 2,
+              "widthMm": 90,
+              "heightMm": 145,
+              "quantity": 200,
+              "jlcPriceCny": 1951.69,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 2,
+              "widthMm": 130,
+              "heightMm": 95,
+              "quantity": 200,
+              "jlcPriceCny": 1863.63,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 2,
+              "widthMm": 150,
+              "heightMm": 70,
+              "quantity": 200,
+              "jlcPriceCny": 1630.9,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 2,
+              "widthMm": 90,
+              "heightMm": 120,
+              "quantity": 100,
+              "jlcPriceCny": 999.04,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 2,
+              "widthMm": 110,
+              "heightMm": 95,
+              "quantity": 100,
+              "jlcPriceCny": 976.71,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            }
+          ]
+        },
+        "relativeError": 0.057996517846039035
+      },
+      {
+        "id": "JLC-CN-PCB-V9-TUNE-FPC-007",
+        "materialKey": "fpc",
+        "actual": 1365.33,
+        "estimate": {
+          "jlcPriceCny": 1320.42,
+          "averageDistance": 0.3423,
+          "localCoverage": 4,
+          "extrapolation": false,
+          "basis": [
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 1,
+              "widthMm": 140,
+              "heightMm": 70,
+              "quantity": 150,
+              "jlcPriceCny": 1223.16,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 1,
+              "widthMm": 120,
+              "heightMm": 95,
+              "quantity": 150,
+              "jlcPriceCny": 1373.88,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 1,
+              "widthMm": 80,
+              "heightMm": 145,
+              "quantity": 150,
+              "jlcPriceCny": 1392.72,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 1,
+              "widthMm": 100,
+              "heightMm": 120,
+              "quantity": 150,
+              "jlcPriceCny": 1430.4,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            }
+          ]
+        },
+        "relativeError": 0.03289314671178386
+      },
+      {
+        "id": "JLC-CN-PCB-V9-TUNE-FPC-008",
+        "materialKey": "fpc",
+        "actual": 205.3,
+        "estimate": null,
+        "relativeError": null
+      },
+      {
+        "id": "JLC-CN-PCB-V9-TUNE-FPC-010",
+        "materialKey": "fpc",
+        "actual": 358.38,
+        "estimate": {
+          "jlcPriceCny": 376.24,
+          "averageDistance": 0.2608,
+          "localCoverage": 6,
+          "extrapolation": false,
+          "basis": [
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 2,
+              "widthMm": 170,
+              "heightMm": 95,
+              "quantity": 20,
+              "jlcPriceCny": 424.86,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 2,
+              "widthMm": 150,
+              "heightMm": 120,
+              "quantity": 20,
+              "jlcPriceCny": 455.2,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 2,
+              "widthMm": 130,
+              "heightMm": 145,
+              "quantity": 20,
+              "jlcPriceCny": 469.14,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 2,
+              "widthMm": 110,
+              "heightMm": 145,
+              "quantity": 10,
+              "jlcPriceCny": 290.79,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 2,
+              "widthMm": 130,
+              "heightMm": 120,
+              "quantity": 10,
+              "jlcPriceCny": 287.92,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 2,
+              "widthMm": 150,
+              "heightMm": 95,
+              "quantity": 10,
+              "jlcPriceCny": 276.85,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            }
+          ]
+        },
+        "relativeError": 0.049835370277359264
+      },
+      {
+        "id": "JLC-CN-PCB-V9-TUNE-FPC-011",
+        "materialKey": "fpc",
+        "actual": 456.17,
+        "estimate": {
+          "jlcPriceCny": 426.15,
+          "averageDistance": 0.2619,
+          "localCoverage": 5,
+          "extrapolation": false,
+          "basis": [
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 1,
+              "widthMm": 120,
+              "heightMm": 145,
+              "quantity": 15,
+              "jlcPriceCny": 364.02,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 1,
+              "widthMm": 140,
+              "heightMm": 120,
+              "quantity": 15,
+              "jlcPriceCny": 356.64,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 1,
+              "widthMm": 160,
+              "heightMm": 120,
+              "quantity": 30,
+              "jlcPriceCny": 622.32,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 1,
+              "widthMm": 160,
+              "heightMm": 95,
+              "quantity": 15,
+              "jlcPriceCny": 336.96,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 1,
+              "widthMm": 140,
+              "heightMm": 145,
+              "quantity": 30,
+              "jlcPriceCny": 649.38,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            }
+          ]
+        },
+        "relativeError": 0.06580879935111918
+      },
+      {
+        "id": "JLC-CN-PCB-V9-TUNE-FPC-012",
+        "materialKey": "fpc",
+        "actual": 681.74,
+        "estimate": {
+          "jlcPriceCny": 608.36,
+          "averageDistance": 0.3494,
+          "localCoverage": 5,
+          "extrapolation": false,
+          "basis": [
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 2,
+              "widthMm": 130,
+              "heightMm": 145,
+              "quantity": 20,
+              "jlcPriceCny": 469.14,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 2,
+              "widthMm": 150,
+              "heightMm": 120,
+              "quantity": 20,
+              "jlcPriceCny": 455.2,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 2,
+              "widthMm": 150,
+              "heightMm": 145,
+              "quantity": 50,
+              "jlcPriceCny": 1023.41,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 2,
+              "widthMm": 170,
+              "heightMm": 120,
+              "quantity": 50,
+              "jlcPriceCny": 979.12,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fpc",
+              "materialLabel": "FPC软板",
+              "layers": 2,
+              "widthMm": 170,
+              "heightMm": 95,
+              "quantity": 20,
+              "jlcPriceCny": 424.86,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            }
+          ]
+        },
+        "relativeError": 0.10763634230058379
+      },
+      {
+        "id": "JLC-CN-PCB-V9-TUNE-FR4-001",
+        "materialKey": "fr4",
+        "actual": 89.34,
+        "estimate": {
+          "jlcPriceCny": 93.5,
+          "averageDistance": 0.35,
+          "localCoverage": 5,
+          "extrapolation": false,
+          "basis": [
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 2,
+              "widthMm": 80,
+              "heightMm": 70,
+              "quantity": 15,
+              "jlcPriceCny": 75.36,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 2,
+              "widthMm": 60,
+              "heightMm": 95,
+              "quantity": 15,
+              "jlcPriceCny": 76.17,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 2,
+              "widthMm": 100,
+              "heightMm": 70,
+              "quantity": 30,
+              "jlcPriceCny": 143.4,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 2,
+              "widthMm": 60,
+              "heightMm": 120,
+              "quantity": 30,
+              "jlcPriceCny": 146.64,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 2,
+              "widthMm": 80,
+              "heightMm": 95,
+              "quantity": 30,
+              "jlcPriceCny": 153.12,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            }
+          ]
+        },
+        "relativeError": 0.04656368927691959
+      },
+      {
+        "id": "JLC-CN-PCB-V9-TUNE-FR4-002",
+        "materialKey": "fr4",
+        "actual": 309.81,
+        "estimate": {
+          "jlcPriceCny": 318.53,
+          "averageDistance": 0.3838,
+          "localCoverage": 4,
+          "extrapolation": false,
+          "basis": [
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 4,
+              "widthMm": 70,
+              "heightMm": 95,
+              "quantity": 20,
+              "jlcPriceCny": 253.1,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 4,
+              "widthMm": 90,
+              "heightMm": 70,
+              "quantity": 20,
+              "jlcPriceCny": 248.2,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 4,
+              "widthMm": 110,
+              "heightMm": 70,
+              "quantity": 50,
+              "jlcPriceCny": 429.5,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 4,
+              "widthMm": 70,
+              "heightMm": 120,
+              "quantity": 50,
+              "jlcPriceCny": 454,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            }
+          ]
+        },
+        "relativeError": 0.02814628320583574
+      },
+      {
+        "id": "JLC-CN-PCB-V9-TUNE-FR4-003",
+        "materialKey": "fr4",
+        "actual": 260.04,
+        "estimate": {
+          "jlcPriceCny": 259.67,
+          "averageDistance": 0.3683,
+          "localCoverage": 6,
+          "extrapolation": false,
+          "basis": [
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 2,
+              "widthMm": 60,
+              "heightMm": 145,
+              "quantity": 75,
+              "jlcPriceCny": 349.71,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 2,
+              "widthMm": 120,
+              "heightMm": 70,
+              "quantity": 75,
+              "jlcPriceCny": 339.72,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 2,
+              "widthMm": 100,
+              "heightMm": 95,
+              "quantity": 75,
+              "jlcPriceCny": 376.35,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 2,
+              "widthMm": 80,
+              "heightMm": 120,
+              "quantity": 75,
+              "jlcPriceCny": 379.68,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 2,
+              "widthMm": 80,
+              "heightMm": 95,
+              "quantity": 30,
+              "jlcPriceCny": 153.12,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 2,
+              "widthMm": 60,
+              "heightMm": 120,
+              "quantity": 30,
+              "jlcPriceCny": 146.64,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            }
+          ]
+        },
+        "relativeError": 0.0014228580218428107
+      },
+      {
+        "id": "JLC-CN-PCB-V9-TUNE-FR4-005",
+        "materialKey": "fr4",
+        "actual": 587.97,
+        "estimate": {
+          "jlcPriceCny": 602.32,
+          "averageDistance": 0.3366,
+          "localCoverage": 6,
+          "extrapolation": false,
+          "basis": [
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 2,
+              "widthMm": 80,
+              "heightMm": 120,
+              "quantity": 75,
+              "jlcPriceCny": 379.68,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 2,
+              "widthMm": 100,
+              "heightMm": 120,
+              "quantity": 150,
+              "jlcPriceCny": 837.6,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 2,
+              "widthMm": 80,
+              "heightMm": 145,
+              "quantity": 150,
+              "jlcPriceCny": 811.68,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 2,
+              "widthMm": 120,
+              "heightMm": 95,
+              "quantity": 150,
+              "jlcPriceCny": 798.72,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 2,
+              "widthMm": 100,
+              "heightMm": 95,
+              "quantity": 75,
+              "jlcPriceCny": 376.35,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 2,
+              "widthMm": 140,
+              "heightMm": 70,
+              "quantity": 150,
+              "jlcPriceCny": 695.04,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            }
+          ]
+        },
+        "relativeError": 0.02440600710920629
+      },
+      {
+        "id": "JLC-CN-PCB-V9-TUNE-FR4-006",
+        "materialKey": "fr4",
+        "actual": 1343.17,
+        "estimate": {
+          "jlcPriceCny": 1334.44,
+          "averageDistance": 0.331,
+          "localCoverage": 6,
+          "extrapolation": false,
+          "basis": [
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 4,
+              "widthMm": 110,
+              "heightMm": 120,
+              "quantity": 200,
+              "jlcPriceCny": 1670.08,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 4,
+              "widthMm": 90,
+              "heightMm": 145,
+              "quantity": 200,
+              "jlcPriceCny": 1652.92,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 4,
+              "widthMm": 130,
+              "heightMm": 95,
+              "quantity": 200,
+              "jlcPriceCny": 1572.84,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 4,
+              "widthMm": 90,
+              "heightMm": 120,
+              "quantity": 100,
+              "jlcPriceCny": 790.72,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 4,
+              "widthMm": 110,
+              "heightMm": 95,
+              "quantity": 100,
+              "jlcPriceCny": 770.28,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 4,
+              "widthMm": 70,
+              "heightMm": 145,
+              "quantity": 100,
+              "jlcPriceCny": 752.76,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            }
+          ]
+        },
+        "relativeError": 0.006499549573025021
+      },
+      {
+        "id": "JLC-CN-PCB-V9-TUNE-FR4-007",
+        "materialKey": "fr4",
+        "actual": 790.08,
+        "estimate": {
+          "jlcPriceCny": 796.74,
+          "averageDistance": 0.3605,
+          "localCoverage": 4,
+          "extrapolation": false,
+          "basis": [
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 2,
+              "widthMm": 140,
+              "heightMm": 70,
+              "quantity": 150,
+              "jlcPriceCny": 695.04,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 2,
+              "widthMm": 120,
+              "heightMm": 95,
+              "quantity": 150,
+              "jlcPriceCny": 798.72,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 2,
+              "widthMm": 80,
+              "heightMm": 145,
+              "quantity": 150,
+              "jlcPriceCny": 811.68,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 2,
+              "widthMm": 100,
+              "heightMm": 120,
+              "quantity": 150,
+              "jlcPriceCny": 837.6,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            }
+          ]
+        },
+        "relativeError": 0.008429526123936775
+      },
+      {
+        "id": "JLC-CN-PCB-V9-TUNE-FR4-008",
+        "materialKey": "fr4",
+        "actual": 198.67,
+        "estimate": null,
+        "relativeError": null
+      },
+      {
+        "id": "JLC-CN-PCB-V9-TUNE-FR4-009",
+        "materialKey": "fr4",
+        "actual": 103.38,
+        "estimate": {
+          "jlcPriceCny": 104.66,
+          "averageDistance": 0.4682,
+          "localCoverage": 6,
+          "extrapolation": false,
+          "basis": [
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 2,
+              "widthMm": 160,
+              "heightMm": 95,
+              "quantity": 15,
+              "jlcPriceCny": 153.12,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 2,
+              "widthMm": 140,
+              "heightMm": 120,
+              "quantity": 15,
+              "jlcPriceCny": 166.08,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 2,
+              "widthMm": 120,
+              "heightMm": 145,
+              "quantity": 15,
+              "jlcPriceCny": 170.94,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 2,
+              "widthMm": 140,
+              "heightMm": 95,
+              "quantity": 5,
+              "jlcPriceCny": 65.91,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 2,
+              "widthMm": 120,
+              "heightMm": 120,
+              "quantity": 5,
+              "jlcPriceCny": 68.88,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 2,
+              "widthMm": 100,
+              "heightMm": 145,
+              "quantity": 5,
+              "jlcPriceCny": 69.15,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            }
+          ]
+        },
+        "relativeError": 0.012381505126716978
+      },
+      {
+        "id": "JLC-CN-PCB-V9-TUNE-FR4-011",
+        "materialKey": "fr4",
+        "actual": 231.63,
+        "estimate": {
+          "jlcPriceCny": 221.01,
+          "averageDistance": 0.2926,
+          "localCoverage": 5,
+          "extrapolation": false,
+          "basis": [
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 2,
+              "widthMm": 120,
+              "heightMm": 145,
+              "quantity": 15,
+              "jlcPriceCny": 170.94,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 2,
+              "widthMm": 140,
+              "heightMm": 120,
+              "quantity": 15,
+              "jlcPriceCny": 166.08,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 2,
+              "widthMm": 160,
+              "heightMm": 95,
+              "quantity": 15,
+              "jlcPriceCny": 153.12,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 2,
+              "widthMm": 160,
+              "heightMm": 120,
+              "quantity": 30,
+              "jlcPriceCny": 341.04,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 2,
+              "widthMm": 140,
+              "heightMm": 145,
+              "quantity": 30,
+              "jlcPriceCny": 358.86,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            }
+          ]
+        },
+        "relativeError": 0.04584898329231967
+      },
+      {
+        "id": "JLC-CN-PCB-V9-TUNE-FR4-012",
+        "materialKey": "fr4",
+        "actual": 605.39,
+        "estimate": {
+          "jlcPriceCny": 636.08,
+          "averageDistance": 0.3857,
+          "localCoverage": 4,
+          "extrapolation": false,
+          "basis": [
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 4,
+              "widthMm": 130,
+              "heightMm": 145,
+              "quantity": 20,
+              "jlcPriceCny": 423.9,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 4,
+              "widthMm": 150,
+              "heightMm": 120,
+              "quantity": 20,
+              "jlcPriceCny": 412,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 4,
+              "widthMm": 170,
+              "heightMm": 120,
+              "quantity": 50,
+              "jlcPriceCny": 874,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            },
+            {
+              "materialKey": "fr4",
+              "materialLabel": "FR-4",
+              "layers": 4,
+              "widthMm": 170,
+              "heightMm": 95,
+              "quantity": 20,
+              "jlcPriceCny": 386.1,
+              "enabled": true,
+              "pricingMode": "exact_lookup"
+            }
+          ]
+        },
+        "relativeError": 0.050694593567782845
+      }
+    ]
+  },
+  "processHoldout": {
+    "accepted": 4,
+    "rejected": [
+      {
+        "baseSampleId": "JLC-CN-PCB-V9-PROC-FPC-001",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V9-PROC-FR4-002",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      }
+    ]
+  }
+}

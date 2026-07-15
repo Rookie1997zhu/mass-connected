@@ -1,0 +1,118 @@
+{
+  "fr4": {
+    "defaults": {
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "有铅喷锡",
+      "copperThickness": "1oz",
+      "solderMaskCoverage": "过孔盖油",
+      "panelDesignCount": "1"
+    },
+    "options": {
+      "boardThickness": [
+        "1.0",
+        "1.2",
+        "1.6",
+        "2.0"
+      ],
+      "solderColor": [
+        "绿色",
+        "红色",
+        "黄色",
+        "蓝色",
+        "白色",
+        "哑黑色"
+      ],
+      "surfaceFinish": [
+        "OSP",
+        "有铅喷锡",
+        "无铅喷锡",
+        "沉金"
+      ],
+      "copperThickness": [
+        "1oz"
+      ],
+      "solderMaskCoverage": [
+        "过孔盖油",
+        "过孔开窗",
+        "过孔塞油",
+        "过孔塞树脂+过孔电镀盖帽"
+      ],
+      "panelDesignCount": [
+        "1",
+        "2"
+      ]
+    }
+  },
+  "fpc": {
+    "defaults": {
+      "boardThickness": "0.11",
+      "solderColor": "页面默认",
+      "surfaceFinish": "沉金",
+      "copperThickness": "1oz",
+      "solderMaskCoverage": "页面默认",
+      "panelDesignCount": "1"
+    },
+    "options": {
+      "boardThickness": [
+        "0.11",
+        "0.12",
+        "0.20"
+      ],
+      "solderColor": [
+        "页面默认"
+      ],
+      "surfaceFinish": [
+        "沉金"
+      ],
+      "copperThickness": [
+        "1oz"
+      ],
+      "solderMaskCoverage": [
+        "页面默认"
+      ],
+      "panelDesignCount": [
+        "1",
+        "2"
+      ]
+    }
+  },
+  "aluminum": {
+    "defaults": {
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "无铅喷锡",
+      "copperThickness": "1oz",
+      "solderMaskCoverage": "页面默认",
+      "panelDesignCount": "1"
+    },
+    "options": {
+      "boardThickness": [
+        "1.0",
+        "1.2",
+        "1.6"
+      ],
+      "solderColor": [
+        "绿色",
+        "红色",
+        "黄色",
+        "蓝色",
+        "白色",
+        "哑黑色"
+      ],
+      "surfaceFinish": [
+        "无铅喷锡"
+      ],
+      "copperThickness": [
+        "1oz"
+      ],
+      "solderMaskCoverage": [
+        "页面默认"
+      ],
+      "panelDesignCount": [
+        "1",
+        "2"
+      ]
+    }
+  }
+}

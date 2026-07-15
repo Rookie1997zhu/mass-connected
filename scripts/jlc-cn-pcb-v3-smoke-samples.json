@@ -1,0 +1,214 @@
+[
+  {
+    "id": "JLC-CN-PCB-V3-SMOKE-FPC-1L",
+    "materialKey": "fpc",
+    "materialLabel": "FPC软板",
+    "layers": 1,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 5,
+    "samplingVersion": "v3",
+    "sampleTime": "2026-07-11T04:50:32.104Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 5,
+    "widthCm": 5,
+    "fixedOptions": "FPC软板, 页面默认 FPC 工艺, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 160.25,
+    "domPriceCny": 160.25,
+    "apiPriceCny": 160.25,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "5",
+    "selectedLengthCm": "5",
+    "selectedWidthCm": "5",
+    "selectedMaterialLabel": "FPC软板",
+    "selectedLayers": 1,
+    "unitPriceCny": 32.05,
+    "areaPriceEstimateCnyPerM2": 12820,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥50.00\n\n板费\n\n￥9.00\n\n喷镀费\n\n￥101.25\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥160.25\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返3金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 160.25,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 0,
+      "projectmoney": 50,
+      "stencilmoney": 9,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 9,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 50,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V3-SMOKE-FPC-2L",
+    "materialKey": "fpc",
+    "materialLabel": "FPC软板",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 20,
+    "samplingVersion": "v3",
+    "sampleTime": "2026-07-11T04:50:32.104Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 15,
+    "fixedOptions": "FPC软板, 页面默认 FPC 工艺, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 406,
+    "domPriceCny": 406,
+    "apiPriceCny": 406,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "20",
+    "selectedLengthCm": "10",
+    "selectedWidthCm": "15",
+    "selectedMaterialLabel": "FPC软板",
+    "selectedLayers": 2,
+    "unitPriceCny": 20.3,
+    "areaPriceEstimateCnyPerM2": 1353.33,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥50.00\n\n板费\n\n￥216.00\n\n喷镀费\n\n￥130.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥406\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返8金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 406,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 50,
+      "stencilmoney": 216,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 50,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 216,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V3-SMOKE-ALU-1L-A",
+    "materialKey": "aluminum",
+    "materialLabel": "铝基板",
+    "layers": 1,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 5,
+    "samplingVersion": "v3",
+    "sampleTime": "2026-07-11T04:50:32.104Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 5,
+    "widthCm": 5,
+    "fixedOptions": "铝基板, 页面默认铝基板工艺, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 20,
+    "domPriceCny": 20,
+    "apiPriceCny": 20,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "5",
+    "selectedLengthCm": "5",
+    "selectedWidthCm": "5",
+    "selectedMaterialLabel": "铝基板",
+    "selectedLayers": 1,
+    "unitPriceCny": 4,
+    "areaPriceEstimateCnyPerM2": 1600,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥20.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥20\n检查订单\n提交订单\n我已知悉\n《免责声明》\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 20,
+      "specialProduceMoney": 20,
+      "guaranteeMoney": 0,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 6.13,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V3-SMOKE-ALU-1L-B",
+    "materialKey": "aluminum",
+    "materialLabel": "铝基板",
+    "layers": 1,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 20,
+    "samplingVersion": "v3",
+    "sampleTime": "2026-07-11T04:50:32.104Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 15,
+    "fixedOptions": "铝基板, 页面默认铝基板工艺, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 167,
+    "domPriceCny": 167,
+    "apiPriceCny": 167,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "20",
+    "selectedLengthCm": "10",
+    "selectedWidthCm": "15",
+    "selectedMaterialLabel": "铝基板",
+    "selectedLayers": 1,
+    "unitPriceCny": 8.35,
+    "areaPriceEstimateCnyPerM2": 556.67,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥20.00\n\n板费\n\n￥147.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥167\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返3金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 167,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 0,
+      "projectmoney": 20,
+      "stencilmoney": 147,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 147,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  }
+]

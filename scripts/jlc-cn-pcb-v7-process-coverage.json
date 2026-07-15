@@ -1,0 +1,87 @@
+{
+  "generatedAt": "2026-07-13T02:20:41.261Z",
+  "samplingVersion": "v7",
+  "fit": {
+    "label": "process_fit",
+    "uniqueTargets": 186,
+    "filledUnique": 94,
+    "pendingUnique": 92,
+    "bootstrappedUnique": 94,
+    "fillRate": 0.5054,
+    "byMaterial": {
+      "fr4": {
+        "filled": 55,
+        "pending": 49,
+        "unique": 104
+      },
+      "fpc": {
+        "filled": 9,
+        "pending": 16,
+        "unique": 25
+      },
+      "aluminum": {
+        "filled": 30,
+        "pending": 27,
+        "unique": 57
+      }
+    },
+    "byBand": {
+      "small": {
+        "filled": 26,
+        "pending": 4
+      },
+      "mid": {
+        "filled": 39,
+        "pending": 58
+      },
+      "large": {
+        "filled": 29,
+        "pending": 30
+      }
+    },
+    "note": "pending_live_sample rows remain; do not invent prices from acceptance or assemble historical unrelated specs"
+  },
+  "holdout": {
+    "label": "process_holdout",
+    "uniqueTargets": 36,
+    "filledUnique": 12,
+    "pendingUnique": 24,
+    "bootstrappedUnique": 12,
+    "fillRate": 0.3333,
+    "byMaterial": {
+      "fr4": {
+        "filled": 5,
+        "pending": 7,
+        "unique": 12
+      },
+      "fpc": {
+        "filled": 3,
+        "pending": 9,
+        "unique": 12
+      },
+      "aluminum": {
+        "filled": 4,
+        "pending": 8,
+        "unique": 12
+      }
+    },
+    "byBand": {
+      "small": {
+        "filled": 2,
+        "pending": 1
+      },
+      "mid": {
+        "filled": 8,
+        "pending": 14
+      },
+      "large": {
+        "filled": 2,
+        "pending": 9
+      }
+    },
+    "note": "pending_live_sample rows remain; do not invent prices from acceptance or assemble historical unrelated specs"
+  },
+  "liveResampleCommand": "node scripts/jlc-cn-browser-sample.mjs pcb-process-v7 scripts/jlc-cn-pcb-process-v7-samples.json",
+  "holdoutResampleCommand": "node scripts/jlc-cn-browser-sample.mjs pcb-process-holdout-v7 scripts/jlc-cn-pcb-process-holdout-v7-samples.json",
+  "acceptanceCommand": "node scripts/jlc-cn-browser-sample.mjs pcb-acceptance-v7 scripts/jlc-cn-pcb-v7-acceptance-samples.json"
+}

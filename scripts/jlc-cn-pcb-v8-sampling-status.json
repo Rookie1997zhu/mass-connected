@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2026-07-13T06:10:00.000Z",
+  "status": "pending_live_sample",
+  "reason": "JLC SPA automation unstable in headless Chrome (browser launches then hangs/exits). Targets and resume commands are ready; do not fill with bootstrap or v7 diagnostic prices.",
+  "targets": {
+    "boundaryFit": "scripts/jlc-cn-pcb-v8-boundary-fit-targets.json",
+    "tuningHoldout": "scripts/jlc-cn-pcb-v8-tuning-holdout-targets.json",
+    "acceptance": "scripts/jlc-cn-pcb-v8-acceptance-targets.json"
+  },
+  "commands": {
+    "boundary": "node scripts/jlc-cn-browser-sample.mjs pcb-boundary-v8 scripts/jlc-cn-pcb-v8-boundary-fit-samples.json",
+    "tuning": "node scripts/jlc-cn-browser-sample.mjs pcb-tuning-v8 scripts/jlc-cn-pcb-v8-tuning-holdout-samples.json",
+    "acceptance": "node scripts/jlc-cn-browser-sample.mjs pcb-acceptance-v8 scripts/jlc-cn-pcb-v8-acceptance-samples.json",
+    "score": "python scripts/jlc-cn-pcb-v8-acceptance-score.py",
+    "assertSplit": "node scripts/jlc-cn-pcb-v8-assert-split.mjs"
+  },
+  "publishGate": "node scripts/jlc-cn-pcb-sync-table-data.mjs refuses unless acceptance_status=passed; fallback remains jlc-cn-pcb-v6-20260712"
+}

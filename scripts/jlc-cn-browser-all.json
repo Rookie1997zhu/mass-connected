@@ -1,0 +1,2292 @@
+[
+  {
+    "id": "JLC-CN-SMOKE-001",
+    "layers": 2,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 5,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 5,
+    "widthCm": 5,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 30,
+    "unitPriceCny": 6,
+    "areaPriceEstimateCnyPerM2": 2400,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥20.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥30\n检查订单\n提交订单\n我已知悉\n《免责声明》\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 30,
+      "specialProduceMoney": 20,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 6.75,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-SMOKE-002",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 10,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 30,
+    "unitPriceCny": 6,
+    "areaPriceEstimateCnyPerM2": 600,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥20.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥30\n检查订单\n提交订单\n我已知悉\n《免责声明》\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 30,
+      "specialProduceMoney": 20,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 27,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-SMOKE-003",
+    "layers": 4,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 5,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 5,
+    "widthCm": 5,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 40,
+    "unitPriceCny": 8,
+    "areaPriceEstimateCnyPerM2": 3200,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥30.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥40\n检查订单\n提交订单\n我已知悉\n《免责声明》\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 40,
+      "specialProduceMoney": 30,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 8.75,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 150,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-BASE-001",
+    "layers": 2,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 5,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 5,
+    "widthCm": 5,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 30,
+    "unitPriceCny": 6,
+    "areaPriceEstimateCnyPerM2": 2400,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥20.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥30\n检查订单\n提交订单\n我已知悉\n《免责声明》\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 30,
+      "specialProduceMoney": 20,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 6.75,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-BASE-002",
+    "layers": 2,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 10,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 5,
+    "widthCm": 5,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 30,
+    "unitPriceCny": 3,
+    "areaPriceEstimateCnyPerM2": 1200,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥20.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥30\n检查订单\n提交订单\n我已知悉\n《免责声明》\n交流群\n小程序\n联系客服\n更多\n提示\n\n过孔直径要求最大0.5mm；如果过孔超过0.5mm，默认不做树脂塞孔，依GERBER制作，不接受投诉。\n\n工艺介绍：过孔塞铜浆是在孔壁镀铜之后，用高导热铜浆填平过孔，再在表面镀铜，该工艺PCB表面无凹痕，具有良好的导电性，常应用于盘中孔以及需要散热的产品上，导热系数为8w/m.k。",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 30,
+      "specialProduceMoney": 20,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 6.75,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-BASE-003",
+    "layers": 2,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 20,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 5,
+    "widthCm": 5,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 30,
+    "unitPriceCny": 1.5,
+    "areaPriceEstimateCnyPerM2": 600,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥20.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥30\n检查订单\n提交订单\n我已知悉\n《免责声明》\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 30,
+      "specialProduceMoney": 20,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 6.75,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-BASE-004",
+    "layers": 2,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 50,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 5,
+    "widthCm": 5,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 30,
+    "unitPriceCny": 0.6,
+    "areaPriceEstimateCnyPerM2": 240,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥20.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥30\n检查订单\n提交订单\n我已知悉\n《免责声明》\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": null
+  },
+  {
+    "id": "JLC-CN-BASE-005",
+    "layers": 2,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 100,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 5,
+    "widthCm": 5,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 30,
+    "unitPriceCny": 0.3,
+    "areaPriceEstimateCnyPerM2": 120,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥20.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥30\n检查订单\n提交订单\n我已知悉\n《免责声明》\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 30,
+      "specialProduceMoney": 20,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 6.75,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-BASE-006",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 10,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 30,
+    "unitPriceCny": 6,
+    "areaPriceEstimateCnyPerM2": 600,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥20.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥30\n检查订单\n提交订单\n我已知悉\n《免责声明》\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 30,
+      "specialProduceMoney": 20,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 27,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-BASE-007",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 10,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 10,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 30,
+    "unitPriceCny": 3,
+    "areaPriceEstimateCnyPerM2": 300,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费；原样本误点层数按钮(10层)，按同组 qty5/qty20 修正为 ¥30",
+    "priceText": "特价\n\n￥1000.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥1010\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返20金豆\n交流群\n小程序\n联系客服\n更多\n提示\n10层板为高多层板，为了更好的品质，请选择沉金\n沉金工艺：环保、焊盘平整、容易焊接。",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 1010,
+      "specialProduceMoney": 1000,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 67.5,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 1000,
+          "originalCostItemMoney": null
+        }
+      ]
+    },
+    "corrected": true
+  },
+  {
+    "id": "JLC-CN-BASE-008",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 20,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 10,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 30,
+    "unitPriceCny": 1.5,
+    "areaPriceEstimateCnyPerM2": 150,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥20.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥30\n检查订单\n提交订单\n我已知悉\n《免责声明》\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 30,
+      "specialProduceMoney": 20,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 27,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-BASE-009",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 50,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 10,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 30,
+    "unitPriceCny": 0.6,
+    "areaPriceEstimateCnyPerM2": 60,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥20.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥30\n检查订单\n提交订单\n我已知悉\n《免责声明》\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 30,
+      "specialProduceMoney": 20,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 27,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-BASE-010",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 100,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 10,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 30,
+    "unitPriceCny": 0.3,
+    "areaPriceEstimateCnyPerM2": 30,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥20.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥30\n检查订单\n提交订单\n我已知悉\n《免责声明》\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 30,
+      "specialProduceMoney": 20,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 27,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-BASE-011",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 5,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 15,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 70.5,
+    "unitPriceCny": 14.1,
+    "areaPriceEstimateCnyPerM2": 940,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥20.00\n\n板费\n\n￥40.50\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥70.5\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返1金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 70.5,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 20,
+      "stencilmoney": 40.5,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 40.5,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-BASE-012",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 10,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 15,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 70.5,
+    "unitPriceCny": 7.05,
+    "areaPriceEstimateCnyPerM2": 470,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费；原样本误点层数按钮，按同组 qty5/qty20 修正为 ¥70.5",
+    "priceText": "工程费\n\n￥1000.00\n\n板费\n\n￥101.25\n\n喷镀费\n\n￥110.50\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥1221.75\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返24金豆\n交流群\n小程序\n联系客服\n更多\n提示\n10层板为高多层板，为了更好的品质，请选择沉金\n沉金工艺：环保、焊盘平整、容易焊接。",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 1221.75,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 1000,
+      "stencilmoney": 101.25,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 101.25,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 1000,
+          "originalCostItemMoney": null
+        }
+      ]
+    },
+    "corrected": true
+  },
+  {
+    "id": "JLC-CN-BASE-013",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 20,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 15,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 70.5,
+    "unitPriceCny": 3.525,
+    "areaPriceEstimateCnyPerM2": 235,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥20.00\n\n板费\n\n￥40.50\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥70.5\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返1金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 70.5,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 20,
+      "stencilmoney": 40.5,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 40.5,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-BASE-014",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 50,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 15,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 70.5,
+    "unitPriceCny": 1.41,
+    "areaPriceEstimateCnyPerM2": 94,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥20.00\n\n板费\n\n￥40.50\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥70.5\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返1金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 70.5,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 20,
+      "stencilmoney": 40.5,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 40.5,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-BASE-015",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 100,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 15,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 70.5,
+    "unitPriceCny": 0.705,
+    "areaPriceEstimateCnyPerM2": 47,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥20.00\n\n板费\n\n￥40.50\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥70.5\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返1金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 70.5,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 20,
+      "stencilmoney": 40.5,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 40.5,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-BASE-016",
+    "layers": 2,
+    "widthMm": 150,
+    "heightMm": 150,
+    "quantity": 5,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 15,
+    "widthCm": 15,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 90.75,
+    "unitPriceCny": 18.15,
+    "areaPriceEstimateCnyPerM2": 806.67,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥20.00\n\n板费\n\n￥60.75\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥90.75\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返1金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": null
+  },
+  {
+    "id": "JLC-CN-BASE-017",
+    "layers": 2,
+    "widthMm": 150,
+    "heightMm": 150,
+    "quantity": 10,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 15,
+    "widthCm": 15,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 90.75,
+    "unitPriceCny": 9.075,
+    "areaPriceEstimateCnyPerM2": 403.33,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费；原样本误点层数按钮，按同组 qty5/qty20 修正为 ¥90.75",
+    "priceText": "工程费\n\n￥1000.00\n\n板费\n\n￥151.88\n\n喷镀费\n\n￥115.75\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥1277.63\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返25金豆\n交流群\n小程序\n联系客服\n更多\n提示\n10层板为高多层板，为了更好的品质，请选择沉金\n沉金工艺：环保、焊盘平整、容易焊接。",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 1277.63,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 1000,
+      "stencilmoney": 151.88,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 1000,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 151.88,
+          "originalCostItemMoney": null
+        }
+      ]
+    },
+    "corrected": true
+  },
+  {
+    "id": "JLC-CN-BASE-018",
+    "layers": 2,
+    "widthMm": 150,
+    "heightMm": 150,
+    "quantity": 20,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 15,
+    "widthCm": 15,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 90.75,
+    "unitPriceCny": 4.5375,
+    "areaPriceEstimateCnyPerM2": 201.67,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥20.00\n\n板费\n\n￥60.75\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥90.75\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返1金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 90.75,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 20,
+      "stencilmoney": 60.75,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 60.75,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-BASE-019",
+    "layers": 2,
+    "widthMm": 150,
+    "heightMm": 150,
+    "quantity": 50,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 15,
+    "widthCm": 15,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 90.75,
+    "unitPriceCny": 1.815,
+    "areaPriceEstimateCnyPerM2": 80.67,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥20.00\n\n板费\n\n￥60.75\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥90.75\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返1金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 90.75,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 20,
+      "stencilmoney": 60.75,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 60.75,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-BASE-020",
+    "layers": 2,
+    "widthMm": 150,
+    "heightMm": 150,
+    "quantity": 100,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 15,
+    "widthCm": 15,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 90.75,
+    "unitPriceCny": 0.9075,
+    "areaPriceEstimateCnyPerM2": 40.33,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥20.00\n\n板费\n\n￥60.75\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥90.75\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返1金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 90.75,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 20,
+      "stencilmoney": 60.75,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 60.75,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-BASE-021",
+    "layers": 4,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 5,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 5,
+    "widthCm": 5,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 40,
+    "unitPriceCny": 8,
+    "areaPriceEstimateCnyPerM2": 3200,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥30.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥40\n检查订单\n提交订单\n我已知悉\n《免责声明》\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 40,
+      "specialProduceMoney": 30,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 150,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 8.75,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-BASE-022",
+    "layers": 4,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 10,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 5,
+    "widthCm": 5,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 40,
+    "unitPriceCny": 4,
+    "areaPriceEstimateCnyPerM2": 1600,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费；原样本误点层数按钮，按同组 qty5/qty20 修正为 ¥40",
+    "priceText": "特价\n\n￥1000.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥1010\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返20金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 1010,
+      "specialProduceMoney": 1000,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 1000,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 16.88,
+          "originalCostItemMoney": null
+        }
+      ]
+    },
+    "corrected": true
+  },
+  {
+    "id": "JLC-CN-BASE-023",
+    "layers": 4,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 20,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 5,
+    "widthCm": 5,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 40,
+    "unitPriceCny": 2,
+    "areaPriceEstimateCnyPerM2": 800,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥30.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥40\n检查订单\n提交订单\n我已知悉\n《免责声明》\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 40,
+      "specialProduceMoney": 30,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 8.75,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 150,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-BASE-024",
+    "layers": 4,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 50,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 5,
+    "widthCm": 5,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 40,
+    "unitPriceCny": 0.8,
+    "areaPriceEstimateCnyPerM2": 320,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥30.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥40\n检查订单\n提交订单\n我已知悉\n《免责声明》\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 40,
+      "specialProduceMoney": 30,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 8.75,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 150,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-BASE-025",
+    "layers": 4,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 100,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 5,
+    "widthCm": 5,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 40,
+    "unitPriceCny": 0.4,
+    "areaPriceEstimateCnyPerM2": 160,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥30.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥40\n检查订单\n提交订单\n我已知悉\n《免责声明》\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 40,
+      "specialProduceMoney": 30,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 8.75,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 150,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-BASE-026",
+    "layers": 4,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 10,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 60,
+    "unitPriceCny": 12,
+    "areaPriceEstimateCnyPerM2": 1200,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥50.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥60\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返1金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 60,
+      "specialProduceMoney": 50,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 35,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 150,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-BASE-027",
+    "layers": 4,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 10,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 10,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 60,
+    "unitPriceCny": 6,
+    "areaPriceEstimateCnyPerM2": 600,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费；原样本误点层数按钮，按同组 qty5/qty20 修正为 ¥60",
+    "priceText": "特价\n\n￥1000.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥1010\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返20金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 1010,
+      "specialProduceMoney": 1000,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 67.5,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 1000,
+          "originalCostItemMoney": null
+        }
+      ]
+    },
+    "corrected": true
+  },
+  {
+    "id": "JLC-CN-BASE-028",
+    "layers": 4,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 20,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 10,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 60,
+    "unitPriceCny": 3,
+    "areaPriceEstimateCnyPerM2": 300,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥50.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥60\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返1金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 60,
+      "specialProduceMoney": 50,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 35,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 150,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-BASE-029",
+    "layers": 4,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 50,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 10,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 60,
+    "unitPriceCny": 1.2,
+    "areaPriceEstimateCnyPerM2": 120,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥50.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥60\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返1金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 60,
+      "specialProduceMoney": 50,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 35,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 150,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-BASE-030",
+    "layers": 4,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 100,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 10,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 60,
+    "unitPriceCny": 0.6,
+    "areaPriceEstimateCnyPerM2": 60,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥50.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥60\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返1金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 60,
+      "specialProduceMoney": 50,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 150,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 35,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-BASE-031",
+    "layers": 4,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 5,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 15,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 212.5,
+    "unitPriceCny": 42.5,
+    "areaPriceEstimateCnyPerM2": 2833.33,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥150.00\n\n板费\n\n￥52.50\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥212.5\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返4金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 212.5,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 150,
+      "stencilmoney": 52.5,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 52.5,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 150,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-BASE-032",
+    "layers": 4,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 10,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 15,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 212.5,
+    "unitPriceCny": 21.25,
+    "areaPriceEstimateCnyPerM2": 1416.67,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费；原样本误点层数按钮，按同组 qty5/qty20 修正为 ¥212.5",
+    "priceText": "工程费\n\n￥1000.00\n\n板费\n\n￥101.25\n\n喷镀费\n\n￥110.50\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥1221.75\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返24金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 1221.75,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 1000,
+      "stencilmoney": 101.25,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 101.25,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 1000,
+          "originalCostItemMoney": null
+        }
+      ]
+    },
+    "corrected": true
+  },
+  {
+    "id": "JLC-CN-BASE-033",
+    "layers": 4,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 20,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 15,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 212.5,
+    "unitPriceCny": 10.625,
+    "areaPriceEstimateCnyPerM2": 708.33,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥150.00\n\n板费\n\n￥52.50\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥212.5\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返4金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 212.5,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 150,
+      "stencilmoney": 52.5,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 150,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 52.5,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-BASE-034",
+    "layers": 4,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 50,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 15,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 212.5,
+    "unitPriceCny": 4.25,
+    "areaPriceEstimateCnyPerM2": 283.33,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥150.00\n\n板费\n\n￥52.50\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥212.5\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返4金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 212.5,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 150,
+      "stencilmoney": 52.5,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 150,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 52.5,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-BASE-035",
+    "layers": 4,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 100,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 15,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 212.5,
+    "unitPriceCny": 2.125,
+    "areaPriceEstimateCnyPerM2": 141.67,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥150.00\n\n板费\n\n￥52.50\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥212.5\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返4金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 212.5,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 150,
+      "stencilmoney": 52.5,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 150,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 52.5,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-BASE-036",
+    "layers": 4,
+    "widthMm": 150,
+    "heightMm": 150,
+    "quantity": 5,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 15,
+    "widthCm": 15,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 238.75,
+    "unitPriceCny": 47.75,
+    "areaPriceEstimateCnyPerM2": 2122.22,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥150.00\n\n板费\n\n￥78.75\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥238.75\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返4金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 238.75,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 150,
+      "stencilmoney": 78.75,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 78.75,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 150,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-BASE-037",
+    "layers": 4,
+    "widthMm": 150,
+    "heightMm": 150,
+    "quantity": 10,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 15,
+    "widthCm": 15,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 238.75,
+    "unitPriceCny": 23.875,
+    "areaPriceEstimateCnyPerM2": 1061.11,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥150.00\n\n板费\n\n￥78.75\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥238.75\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返4金豆\n交流群\n小程序\n联系客服\n更多\n提示\n10层板为高多层板，为了更好的品质，请选择沉金\n沉金工艺：环保、焊盘平整、容易焊接。",
+    "priceBreakdown": null
+  },
+  {
+    "id": "JLC-CN-BASE-038",
+    "layers": 4,
+    "widthMm": 150,
+    "heightMm": 150,
+    "quantity": 20,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 15,
+    "widthCm": 15,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 238.75,
+    "unitPriceCny": 11.9375,
+    "areaPriceEstimateCnyPerM2": 530.56,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费；原样本误点层数/数量，按同组 qty5/qty50 修正为 ¥238.75",
+    "priceText": "工程费\n\n￥150.00\n\n板费\n\n￥78.75\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥238.75\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返4金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 1277.63,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 1000,
+      "stencilmoney": 151.88,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 151.88,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 1000,
+          "originalCostItemMoney": null
+        }
+      ]
+    },
+    "corrected": true
+  },
+  {
+    "id": "JLC-CN-BASE-039",
+    "layers": 4,
+    "widthMm": 150,
+    "heightMm": 150,
+    "quantity": 50,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 15,
+    "widthCm": 15,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 238.75,
+    "unitPriceCny": 4.775,
+    "areaPriceEstimateCnyPerM2": 212.22,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥150.00\n\n板费\n\n￥78.75\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥238.75\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返4金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 238.75,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 150,
+      "stencilmoney": 78.75,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 150,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 78.75,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-BASE-040",
+    "layers": 4,
+    "widthMm": 150,
+    "heightMm": 150,
+    "quantity": 100,
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 15,
+    "widthCm": 15,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 238.75,
+    "unitPriceCny": 2.3875,
+    "areaPriceEstimateCnyPerM2": 106.11,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥150.00\n\n板费\n\n￥78.75\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥238.75\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返4金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 238.75,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 150,
+      "stencilmoney": 78.75,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 78.75,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 150,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5,
+    "id": "JLC-CN-DELTA-COLOR-GREEN",
+    "solderColor": "绿色",
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 10,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 30,
+    "unitPriceCny": 6,
+    "areaPriceEstimateCnyPerM2": 600,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥20.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥30\n检查订单\n提交订单\n我已知悉\n《免责声明》\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 30,
+      "specialProduceMoney": 20,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 27,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5,
+    "id": "JLC-CN-DELTA-COLOR-RED",
+    "solderColor": "红色",
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 10,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 30,
+    "unitPriceCny": 6,
+    "areaPriceEstimateCnyPerM2": 600,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥20.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥30\n检查订单\n提交订单\n我已知悉\n《免责声明》\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 30,
+      "specialProduceMoney": 20,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 27,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5,
+    "id": "JLC-CN-DELTA-COLOR-BLUE",
+    "solderColor": "蓝色",
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 10,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 30,
+    "unitPriceCny": 6,
+    "areaPriceEstimateCnyPerM2": 600,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥20.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥30\n检查订单\n提交订单\n我已知悉\n《免责声明》\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 30,
+      "specialProduceMoney": 20,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 27,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5,
+    "id": "JLC-CN-DELTA-COLOR-BLACK",
+    "solderColor": "哑黑色",
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 10,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 30,
+    "unitPriceCny": 6,
+    "areaPriceEstimateCnyPerM2": 600,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥20.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥30\n检查订单\n提交订单\n我已知悉\n《免责声明》\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 30,
+      "specialProduceMoney": 20,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 27,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5,
+    "id": "JLC-CN-DELTA-COLOR-WHITE",
+    "solderColor": "白色",
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 10,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 30,
+    "unitPriceCny": 6,
+    "areaPriceEstimateCnyPerM2": 600,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥20.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥30\n检查订单\n提交订单\n我已知悉\n《免责声明》\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 30,
+      "specialProduceMoney": 20,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 27,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5,
+    "id": "JLC-CN-DELTA-FINISH-HASL",
+    "surfaceFinish": "有铅喷锡",
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 10,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 30,
+    "unitPriceCny": 6,
+    "areaPriceEstimateCnyPerM2": 600,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥20.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥30\n检查订单\n提交订单\n我已知悉\n《免责声明》\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 30,
+      "specialProduceMoney": 20,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 27,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5,
+    "id": "JLC-CN-DELTA-FINISH-LF-HASL",
+    "surfaceFinish": "无铅喷锡",
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 10,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 30,
+    "unitPriceCny": 6,
+    "areaPriceEstimateCnyPerM2": 600,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥20.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥30\n检查订单\n提交订单\n我已知悉\n《免责声明》\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 30,
+      "specialProduceMoney": 20,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 27,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5,
+    "id": "JLC-CN-DELTA-FINISH-ENIG",
+    "surfaceFinish": "沉金",
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 10,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 30,
+    "unitPriceCny": 6,
+    "areaPriceEstimateCnyPerM2": 600,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥20.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥30\n检查订单\n提交订单\n我已知悉\n《免责声明》\n交流群\n小程序\n联系客服\n更多\n提示\n1、沉金正常受镀面积≤30%，按常规收费：\n2、当超过30%受镀面积则收取大面积沉金费，具体收费规则如下：\n1）1U\"金厚沉金工艺：每超出 1% 的面积，每平方米加收 5.6 元\n计算示例：假设客户A的订单为1U＂金厚，沉金面积为60%（板子两面沉金的焊盘面积/板子两面面积），超出比例为30%（60%-30%），则加收30x5.6=168元/平方米\n2）2U\"金厚沉金工艺：每超出 1% 的面积，每平方米加收11.2元\n计算示例：假设客户A的订单为2U\"金厚，沉金面积为60%（板子两面沉金的焊盘面积/板子两面面积），超出比例为30%（60%-30%），则加收30x11.2=336元/平方米\n3）6 层及以上PCB：超面积部分统一按上述规则加收。",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 30,
+      "specialProduceMoney": 20,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 27,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5,
+    "id": "JLC-CN-DELTA-THICK-0.8",
+    "boardThickness": "0.8",
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 10,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 30,
+    "unitPriceCny": 6,
+    "areaPriceEstimateCnyPerM2": 600,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥20.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥30\n检查订单\n提交订单\n我已知悉\n《免责声明》\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 30,
+      "specialProduceMoney": 20,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 27,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5,
+    "id": "JLC-CN-DELTA-THICK-1.0",
+    "boardThickness": "1.0",
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 10,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 30,
+    "unitPriceCny": 6,
+    "areaPriceEstimateCnyPerM2": 600,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥20.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥30\n检查订单\n提交订单\n我已知悉\n《免责声明》\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 30,
+      "specialProduceMoney": 20,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 27,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5,
+    "id": "JLC-CN-DELTA-THICK-1.6",
+    "boardThickness": "1.6",
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 10,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 30,
+    "unitPriceCny": 6,
+    "areaPriceEstimateCnyPerM2": 600,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥20.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥30\n检查订单\n提交订单\n我已知悉\n《免责声明》\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 30,
+      "specialProduceMoney": 20,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 27,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5,
+    "id": "JLC-CN-DELTA-THICK-2.0",
+    "boardThickness": "2.0",
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 10,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 30,
+    "unitPriceCny": 6,
+    "areaPriceEstimateCnyPerM2": 600,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥20.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥30\n检查订单\n提交订单\n我已知悉\n《免责声明》\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 30,
+      "specialProduceMoney": 20,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 27,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "layers": 6,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 5,
+    "id": "JLC-CN-DELTA-LAYER-6",
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 5,
+    "widthCm": 5,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 210,
+    "unitPriceCny": 42,
+    "areaPriceEstimateCnyPerM2": 16800,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥200.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥210\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返4金豆\n交流群\n小程序\n联系客服\n更多\n提示\n6层板为高多层板，为了更好的品质，请选择沉金\n沉金工艺：环保、焊盘平整、容易焊接。",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 210,
+      "specialProduceMoney": 200,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 9.38,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 200,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "layers": 8,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 5,
+    "id": "JLC-CN-DELTA-LAYER-8",
+    "sampleTime": "2026-07-09T16:57:02.700Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 5,
+    "widthCm": 5,
+    "fixedOptions": "FR-4, 工业/消费类, 不需要确认生产稿, 绿色, 白色字符, 有铅喷锡, 1.6mm, 默认测试项",
+    "displayedPriceCny": 610,
+    "unitPriceCny": 122,
+    "areaPriceEstimateCnyPerM2": 48800,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥600.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥610\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返12金豆\n交流群\n小程序\n联系客服\n更多\n提示\n8层板为高多层板，为了更好的品质，请选择沉金\n沉金工艺：环保、焊盘平整、容易焊接。",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 610,
+      "specialProduceMoney": 600,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 11.88,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 600,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  }
+]

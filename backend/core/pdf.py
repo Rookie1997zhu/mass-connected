@@ -595,11 +595,32 @@ def build_pcb_dev_quotation_pdf(*, quote_no, product_name, inputs, result, valid
     story.append(Paragraph("1. 비용明細 / 费用明细", styles["Heading3"]))
     line_rows = [["항목 / Item", "금액(KRW)"]]
     for item in result.get("breakdown") or []:
-        line_rows.append([str(item.get("label", "-")), _fmt_amount(item.get("amount"))])
+        amount_min = item.get("amount_min")
+        amount_max = item.get("amount_max")
+        if (
+            amount_min is not None
+            and amount_max is not None
+            and amount_min != amount_max
+        ):
+            amount_text = f"{_fmt_amount(amount_min)} ~ {_fmt_amount(amount_max)}"
+        else:
+            amount_text = _fmt_amount(item.get("amount"))
+        line_rows.append([str(item.get("label", "-")), amount_text])
     story.append(_amount_table(line_rows, font))
 
     story.append(Spacer(1, 8))
-    total_rows = [["개발비 합계 / Total (VAT 별도)", _fmt_amount(result.get("total"))]]
+    total_min = result.get("total_min")
+    total_max = result.get("total_max")
+    if total_min is not None and total_max is not None and total_min != total_max:
+        total_rows = [
+            [
+                "개발비 합계 구간 / Total range (VAT 별도)",
+                f"{_fmt_amount(total_min)} ~ {_fmt_amount(total_max)}",
+            ],
+            ["개발비 합계(中位) / Total mid (VAT 별도)", _fmt_amount(result.get("total"))],
+        ]
+    else:
+        total_rows = [["개발비 합계 / Total (VAT 별도)", _fmt_amount(result.get("total"))]]
     story.append(_amount_table(total_rows, font, highlight_last=True))
 
     manufacturing = result.get("pcb_manufacturing") or {}
@@ -640,6 +661,23 @@ def build_pcb_dev_quotation_pdf(*, quote_no, product_name, inputs, result, valid
             for item in process_adjustments
             if abs(float(item.get("amount_cny") or 0)) > 0.005
         ) or "Standard / None"
+        if manufacturing.get("pricing_display_mode") == "range":
+            jlc_text = (
+                f"{_fmt_amount(manufacturing.get('jlc_estimate_cny_min'), 2)}"
+                f" ~ {_fmt_amount(manufacturing.get('jlc_estimate_cny_max'), 2)}"
+            )
+            customer_cny_text = (
+                f"{_fmt_amount(manufacturing.get('customer_quote_cny_min'), 2)}"
+                f" ~ {_fmt_amount(manufacturing.get('customer_quote_cny_max'), 2)}"
+            )
+            customer_krw_text = (
+                f"{_fmt_amount(manufacturing.get('customer_quote_krw_min'))}"
+                f" ~ {_fmt_amount(manufacturing.get('customer_quote_krw_max'))}"
+            )
+        else:
+            jlc_text = _fmt_amount(manufacturing.get("jlc_estimate_cny"), 2)
+            customer_cny_text = _fmt_amount(manufacturing.get("customer_quote_cny"), 2)
+            customer_krw_text = _fmt_amount(manufacturing.get("customer_quote_krw"))
         story.append(Spacer(1, 8))
         story.append(Paragraph("2. PCB 샘플 제작비 / PCB 样板制造费", styles["Heading3"]))
         mfg_rows = [
@@ -660,12 +698,16 @@ def build_pcb_dev_quotation_pdf(*, quote_no, product_name, inputs, result, valid
                 "SMT需求 / SMT required",
                 "是 / Yes（贴片费另计，不含于制造费）" if manufacturing.get("smt_required") else "否 / No",
             ],
-            ["JLC estimate (CNY)", _fmt_amount(manufacturing.get("jlc_estimate_cny"), 2)],
-            ["Customer quote (CNY)", _fmt_amount(manufacturing.get("customer_quote_cny"), 2)],
-            ["Converted (KRW)", _fmt_amount(manufacturing.get("customer_quote_krw"))],
+            ["JLC estimate (CNY)", jlc_text],
+            ["Customer quote (CNY)", customer_cny_text],
+            ["Converted (KRW)", customer_krw_text],
             [
                 "Pricing mode",
                 "Verified estimate" if manufacturing.get("is_estimated") else "Exact lookup",
+            ],
+            [
+                "Display mode",
+                manufacturing.get("pricing_display_mode") or "legacy",
             ],
             ["Base pricing mode", manufacturing.get("base_pricing_mode") or manufacturing.get("pricing_mode") or "-"],
             ["工艺调整 / Process adjustment", process_adjustment_text],
@@ -695,6 +737,10 @@ def build_pcb_dev_quotation_pdf(*, quote_no, product_name, inputs, result, valid
         "배송비는 PCB 개발 견적용 간소 규칙 적용",
         "PCB样板制造费基于 JLC 公开采样价 + 10% margin，不含运费/税费/Gerber 审核附加费。",
     ]
+    if manufacturing.get("pricing_display_mode") == "range":
+        notes.append(
+            "PCB样板制造费与总价展示为 ±10% 参考区间（相对中位价），实际下单价格可能落在区间外。"
+        )
     if result.get("ad_consent"):
         notes.append("광고 동의: 예 / 广告同意: 是")
     if manufacturing.get("acceptance_status") and manufacturing.get("acceptance_status") != "passed":

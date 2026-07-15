@@ -1,0 +1,85 @@
+{
+  "fr4": {
+    "defaults": {
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "有铅喷锡",
+      "copperThickness": "1oz"
+    },
+    "options": {
+      "boardThickness": [
+        "1.0",
+        "1.2",
+        "1.6",
+        "2.0"
+      ],
+      "solderColor": [
+        "绿色",
+        "红色",
+        "蓝色",
+        "白色",
+        "哑黑色"
+      ],
+      "surfaceFinish": [
+        "有铅喷锡",
+        "无铅喷锡",
+        "沉金"
+      ],
+      "copperThickness": [
+        "1oz"
+      ]
+    }
+  },
+  "fpc": {
+    "defaults": {
+      "boardThickness": "0.11",
+      "solderColor": "页面默认",
+      "surfaceFinish": "沉金",
+      "copperThickness": "1oz"
+    },
+    "options": {
+      "boardThickness": [
+        "0.11",
+        "0.12",
+        "0.20"
+      ],
+      "solderColor": [
+        "页面默认"
+      ],
+      "surfaceFinish": [
+        "沉金"
+      ],
+      "copperThickness": [
+        "1oz"
+      ]
+    }
+  },
+  "aluminum": {
+    "defaults": {
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "无铅喷锡",
+      "copperThickness": "1oz"
+    },
+    "options": {
+      "boardThickness": [
+        "1.0",
+        "1.2",
+        "1.6"
+      ],
+      "solderColor": [
+        "绿色",
+        "红色",
+        "蓝色",
+        "白色",
+        "哑黑色"
+      ],
+      "surfaceFinish": [
+        "无铅喷锡"
+      ],
+      "copperThickness": [
+        "1oz"
+      ]
+    }
+  }
+}

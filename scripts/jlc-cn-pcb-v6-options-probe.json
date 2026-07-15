@@ -1,0 +1,755 @@
+{
+  "probedAt": "2026-07-12T02:54:39.153Z",
+  "rows": [
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "pageHasOz": false,
+      "pageHasCopperLabel": false,
+      "sections": {
+        "拼板款数": {
+          "buttons": [],
+          "spin": {
+            "value": "1",
+            "min": "1",
+            "max": "Infinity"
+          }
+        },
+        "成品板厚": {
+          "buttons": [
+            {
+              "text": "0.4",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "0.6",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "0.8",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "1.0",
+              "disabled": false,
+              "selected": false
+            },
+            {
+              "text": "1.2",
+              "disabled": false,
+              "selected": false
+            },
+            {
+              "text": "1.6",
+              "disabled": false,
+              "selected": true
+            },
+            {
+              "text": "2.0",
+              "disabled": true,
+              "selected": false
+            }
+          ],
+          "spin": null
+        },
+        "阻焊颜色": {
+          "buttons": [
+            {
+              "text": "绿色",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "红色",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "黄色",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "蓝色",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "白色",
+              "disabled": false,
+              "selected": true
+            },
+            {
+              "text": "哑黑色",
+              "disabled": false,
+              "selected": false
+            },
+            {
+              "text": "嘉立创紫",
+              "disabled": true,
+              "selected": false
+            }
+          ],
+          "spin": null
+        },
+        "焊盘喷镀": {
+          "buttons": [
+            {
+              "text": "OSP 免费",
+              "disabled": false,
+              "selected": true
+            },
+            {
+              "text": "有铅喷锡",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "无铅喷锡",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "沉金",
+              "disabled": true,
+              "selected": false
+            }
+          ],
+          "spin": null
+        },
+        "是否SMT贴片": {
+          "buttons": [
+            {
+              "text": "不需要",
+              "disabled": false,
+              "selected": false
+            },
+            {
+              "text": "需要",
+              "disabled": false,
+              "selected": false
+            }
+          ],
+          "spin": null
+        }
+      },
+      "allVisibleButtons": [
+        "绿色",
+        "红色",
+        "黄色",
+        "蓝色",
+        "白色",
+        "哑黑色",
+        "黑色",
+        "OSP 免费",
+        "有铅喷锡",
+        "无铅喷锡",
+        "沉金"
+      ]
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "pageHasOz": false,
+      "pageHasCopperLabel": false,
+      "sections": {
+        "拼板款数": {
+          "buttons": [],
+          "spin": {
+            "value": "1",
+            "min": "1",
+            "max": "Infinity"
+          }
+        },
+        "成品板厚": {
+          "buttons": [
+            {
+              "text": "0.4",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "0.6",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "0.8",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "1.0",
+              "disabled": false,
+              "selected": false
+            },
+            {
+              "text": "1.2",
+              "disabled": false,
+              "selected": false
+            },
+            {
+              "text": "1.6",
+              "disabled": false,
+              "selected": true
+            },
+            {
+              "text": "2.0",
+              "disabled": true,
+              "selected": false
+            }
+          ],
+          "spin": null
+        },
+        "阻焊颜色": {
+          "buttons": [
+            {
+              "text": "绿色",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "红色",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "黄色",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "蓝色",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "白色",
+              "disabled": false,
+              "selected": true
+            },
+            {
+              "text": "哑黑色",
+              "disabled": false,
+              "selected": false
+            },
+            {
+              "text": "嘉立创紫",
+              "disabled": true,
+              "selected": false
+            }
+          ],
+          "spin": null
+        },
+        "焊盘喷镀": {
+          "buttons": [
+            {
+              "text": "OSP 免费",
+              "disabled": false,
+              "selected": true
+            },
+            {
+              "text": "有铅喷锡",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "无铅喷锡",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "沉金",
+              "disabled": true,
+              "selected": false
+            }
+          ],
+          "spin": null
+        },
+        "是否SMT贴片": {
+          "buttons": [
+            {
+              "text": "不需要",
+              "disabled": false,
+              "selected": false
+            },
+            {
+              "text": "需要",
+              "disabled": false,
+              "selected": false
+            }
+          ],
+          "spin": null
+        }
+      },
+      "allVisibleButtons": [
+        "绿色",
+        "红色",
+        "黄色",
+        "蓝色",
+        "白色",
+        "哑黑色",
+        "黑色",
+        "OSP 免费",
+        "有铅喷锡",
+        "无铅喷锡",
+        "沉金"
+      ]
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "pageHasOz": false,
+      "pageHasCopperLabel": false,
+      "sections": {
+        "拼板款数": {
+          "buttons": [],
+          "spin": {
+            "value": "1",
+            "min": "1",
+            "max": "Infinity"
+          }
+        },
+        "成品板厚": {
+          "buttons": [
+            {
+              "text": "0.4",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "0.6",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "0.8",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "1.0",
+              "disabled": false,
+              "selected": false
+            },
+            {
+              "text": "1.2",
+              "disabled": false,
+              "selected": false
+            },
+            {
+              "text": "1.6",
+              "disabled": false,
+              "selected": true
+            },
+            {
+              "text": "2.0",
+              "disabled": true,
+              "selected": false
+            }
+          ],
+          "spin": null
+        },
+        "阻焊颜色": {
+          "buttons": [
+            {
+              "text": "绿色",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "红色",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "黄色",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "蓝色",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "白色",
+              "disabled": false,
+              "selected": true
+            },
+            {
+              "text": "哑黑色",
+              "disabled": false,
+              "selected": false
+            },
+            {
+              "text": "嘉立创紫",
+              "disabled": true,
+              "selected": false
+            }
+          ],
+          "spin": null
+        },
+        "焊盘喷镀": {
+          "buttons": [
+            {
+              "text": "OSP 免费",
+              "disabled": false,
+              "selected": true
+            },
+            {
+              "text": "有铅喷锡",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "无铅喷锡",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "沉金",
+              "disabled": true,
+              "selected": false
+            }
+          ],
+          "spin": null
+        },
+        "是否SMT贴片": {
+          "buttons": [
+            {
+              "text": "不需要",
+              "disabled": false,
+              "selected": false
+            },
+            {
+              "text": "需要",
+              "disabled": false,
+              "selected": false
+            }
+          ],
+          "spin": null
+        }
+      },
+      "allVisibleButtons": [
+        "绿色",
+        "红色",
+        "黄色",
+        "蓝色",
+        "白色",
+        "哑黑色",
+        "黑色",
+        "OSP 免费",
+        "有铅喷锡",
+        "无铅喷锡",
+        "沉金"
+      ]
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "pageHasOz": false,
+      "pageHasCopperLabel": false,
+      "sections": {
+        "拼板款数": {
+          "buttons": [],
+          "spin": {
+            "value": "1",
+            "min": "1",
+            "max": "Infinity"
+          }
+        },
+        "成品板厚": {
+          "buttons": [
+            {
+              "text": "0.4",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "0.6",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "0.8",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "1.0",
+              "disabled": false,
+              "selected": false
+            },
+            {
+              "text": "1.2",
+              "disabled": false,
+              "selected": false
+            },
+            {
+              "text": "1.6",
+              "disabled": false,
+              "selected": true
+            },
+            {
+              "text": "2.0",
+              "disabled": true,
+              "selected": false
+            }
+          ],
+          "spin": null
+        },
+        "阻焊颜色": {
+          "buttons": [
+            {
+              "text": "绿色",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "红色",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "黄色",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "蓝色",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "白色",
+              "disabled": false,
+              "selected": true
+            },
+            {
+              "text": "哑黑色",
+              "disabled": false,
+              "selected": false
+            },
+            {
+              "text": "嘉立创紫",
+              "disabled": true,
+              "selected": false
+            }
+          ],
+          "spin": null
+        },
+        "焊盘喷镀": {
+          "buttons": [
+            {
+              "text": "OSP 免费",
+              "disabled": false,
+              "selected": true
+            },
+            {
+              "text": "有铅喷锡",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "无铅喷锡",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "沉金",
+              "disabled": true,
+              "selected": false
+            }
+          ],
+          "spin": null
+        },
+        "是否SMT贴片": {
+          "buttons": [
+            {
+              "text": "不需要",
+              "disabled": false,
+              "selected": false
+            },
+            {
+              "text": "需要",
+              "disabled": false,
+              "selected": false
+            }
+          ],
+          "spin": null
+        }
+      },
+      "allVisibleButtons": [
+        "绿色",
+        "红色",
+        "黄色",
+        "蓝色",
+        "白色",
+        "哑黑色",
+        "黑色",
+        "OSP 免费",
+        "有铅喷锡",
+        "无铅喷锡",
+        "沉金"
+      ]
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "pageHasOz": false,
+      "pageHasCopperLabel": false,
+      "sections": {
+        "拼板款数": {
+          "buttons": [],
+          "spin": {
+            "value": "1",
+            "min": "1",
+            "max": "Infinity"
+          }
+        },
+        "成品板厚": {
+          "buttons": [
+            {
+              "text": "0.4",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "0.6",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "0.8",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "1.0",
+              "disabled": false,
+              "selected": false
+            },
+            {
+              "text": "1.2",
+              "disabled": false,
+              "selected": false
+            },
+            {
+              "text": "1.6",
+              "disabled": false,
+              "selected": true
+            },
+            {
+              "text": "2.0",
+              "disabled": true,
+              "selected": false
+            }
+          ],
+          "spin": null
+        },
+        "阻焊颜色": {
+          "buttons": [
+            {
+              "text": "绿色",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "红色",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "黄色",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "蓝色",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "白色",
+              "disabled": false,
+              "selected": true
+            },
+            {
+              "text": "哑黑色",
+              "disabled": false,
+              "selected": false
+            },
+            {
+              "text": "嘉立创紫",
+              "disabled": true,
+              "selected": false
+            }
+          ],
+          "spin": null
+        },
+        "焊盘喷镀": {
+          "buttons": [
+            {
+              "text": "OSP 免费",
+              "disabled": false,
+              "selected": true
+            },
+            {
+              "text": "有铅喷锡",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "无铅喷锡",
+              "disabled": true,
+              "selected": false
+            },
+            {
+              "text": "沉金",
+              "disabled": true,
+              "selected": false
+            }
+          ],
+          "spin": null
+        },
+        "是否SMT贴片": {
+          "buttons": [
+            {
+              "text": "不需要",
+              "disabled": false,
+              "selected": false
+            },
+            {
+              "text": "需要",
+              "disabled": false,
+              "selected": false
+            }
+          ],
+          "spin": null
+        }
+      },
+      "allVisibleButtons": [
+        "绿色",
+        "红色",
+        "黄色",
+        "蓝色",
+        "白色",
+        "哑黑色",
+        "黑色",
+        "OSP 免费",
+        "有铅喷锡",
+        "无铅喷锡",
+        "沉金"
+      ]
+    }
+  ]
+}

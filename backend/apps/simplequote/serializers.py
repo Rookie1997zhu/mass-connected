@@ -102,8 +102,9 @@ class Print3dSliceJobSerializer(serializers.ModelSerializer):
 
 
 class Print3dSliceJobCreateSerializer(serializers.Serializer):
+    """会员创建切片任务；打印机由服务端按管理端默认配置决定，不接收该字段。"""
+
     material = serializers.CharField(max_length=64, default="PLA")
-    printer = serializers.CharField(max_length=64, default="prusa_mk3s")
     quality = serializers.CharField(max_length=64, default="standard")
     infill_density = serializers.IntegerField(required=False, min_value=5, max_value=100)
     support = serializers.BooleanField(required=False, default=False)

@@ -1,0 +1,33 @@
+{
+  "generatedAt": "2026-07-13T02:09:04.939Z",
+  "acceptancePath": "scripts/jlc-cn-pcb-v7-acceptance-targets.json",
+  "ok": true,
+  "checks": [
+    {
+      "ok": true,
+      "left": "fit_process",
+      "right": "process_holdout",
+      "overlapCount": 0,
+      "overlap": []
+    },
+    {
+      "ok": true,
+      "left": "fit_geometry",
+      "right": "final_acceptance",
+      "overlapCount": 0,
+      "overlap": []
+    },
+    {
+      "ok": true,
+      "left": "process_holdout",
+      "right": "final_acceptance",
+      "overlapCount": 0,
+      "overlap": []
+    }
+  ],
+  "counts": {
+    "fit": 1584,
+    "holdout": 144,
+    "acceptance": 120
+  }
+}

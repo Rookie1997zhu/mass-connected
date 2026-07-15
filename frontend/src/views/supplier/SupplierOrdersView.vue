@@ -96,6 +96,13 @@ const onReject = async (id) => {
           <td>{{ formatMoney({ amount: o.price_amount, currency: o.currency }) }}</td>
           <td>{{ o.status }}</td>
           <td class="actions">
+            <RouterLink
+              v-if="o.quote_request_id"
+              class="link"
+              :to="`/supplier/quote-requests/${o.quote_request_id}`"
+            >
+              {{ t('fulfillment.viewDeal') }}
+            </RouterLink>
             <template v-if="o.status === 'pending_confirm'">
               <button type="button" class="btn btn-sm btn-primary" @click="onConfirm(o.id)">
                 {{ t('productionOrder.confirm') }}
@@ -114,5 +121,6 @@ const onReject = async (id) => {
 <style scoped lang="scss">
 .filters { margin-bottom: var(--space-lg); select { padding: 0.5rem; border-radius: var(--radius-sm); border: 1px solid var(--color-border); } }
 .order-table { width: 100%; border-collapse: collapse; th, td { text-align: left; padding: var(--space-sm); border-bottom: 1px solid var(--color-border); font-size: 0.9375rem; } }
-.actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.actions { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+.link { color: var(--color-steel); font-size: 0.875rem; text-decoration: none; font-weight: 600; }
 </style>

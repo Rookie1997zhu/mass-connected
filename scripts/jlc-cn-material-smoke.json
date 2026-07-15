@@ -1,0 +1,685 @@
+[
+  {
+    "id": "JLC-CN-MAT-FPC-SMOKE-001",
+    "materialKey": "fpc",
+    "layers": 2,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 5,
+    "materialLabel": "FPC软板",
+    "sampleTime": "2026-07-10T02:30:39.567Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 5,
+    "widthCm": 5,
+    "fixedOptions": "FPC软板, 页面默认工艺, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 170.25,
+    "unitPriceCny": 34.05,
+    "areaPriceEstimateCnyPerM2": 13620,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥50.00\n\n板费\n\n￥9.00\n\n喷镀费\n\n￥101.25\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥170.25\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返3金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 170.25,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 50,
+      "stencilmoney": 9,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 9,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 50,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-MAT-FPC-SMOKE-002",
+    "materialKey": "fpc",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5,
+    "materialLabel": "FPC软板",
+    "sampleTime": "2026-07-10T02:30:39.567Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 10,
+    "fixedOptions": "FPC软板, 页面默认工艺, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 201,
+    "unitPriceCny": 40.2,
+    "areaPriceEstimateCnyPerM2": 4020,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥50.00\n\n板费\n\n￥36.00\n\n喷镀费\n\n￥105.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥201\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返4金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 170.25,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 50,
+      "stencilmoney": 9,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 9,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 50,
+          "originalCostItemMoney": null
+        }
+      ]
+    },
+    "correctedFromPriceText": true
+  },
+  {
+    "id": "JLC-CN-MAT-FPC-SMOKE-003",
+    "materialKey": "fpc",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 5,
+    "materialLabel": "FPC软板",
+    "sampleTime": "2026-07-10T02:30:39.567Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 15,
+    "fixedOptions": "FPC软板, 页面默认工艺, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 221.5,
+    "unitPriceCny": 44.3,
+    "areaPriceEstimateCnyPerM2": 2953.33,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥50.00\n\n板费\n\n￥54.00\n\n喷镀费\n\n￥107.50\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥221.5\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返4金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 201,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 50,
+      "stencilmoney": 36,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 50,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 36,
+          "originalCostItemMoney": null
+        }
+      ]
+    },
+    "correctedFromPriceText": true
+  },
+  {
+    "id": "JLC-CN-MAT-ALU-SMOKE-001",
+    "materialKey": "aluminum",
+    "layers": 1,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 5,
+    "materialLabel": "铝基板",
+    "sampleTime": "2026-07-10T02:30:39.567Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 5,
+    "widthCm": 5,
+    "fixedOptions": "铝基板, 页面默认工艺, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 20,
+    "unitPriceCny": 4,
+    "areaPriceEstimateCnyPerM2": 1600,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥20.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥20\n检查订单\n提交订单\n我已知悉\n《免责声明》\n交流群\n小程序\n联系客服\n更多\n提示\n1板层，0.8板厚不支持有铅喷锡工艺，无铅喷锡可替代有铅喷锡，请选择无铅喷锡",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 56.75,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 0,
+      "projectmoney": 20,
+      "stencilmoney": 36.75,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 36.75,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        }
+      ]
+    },
+    "correctedFromPriceText": true
+  },
+  {
+    "id": "JLC-CN-MAT-ALU-SMOKE-002",
+    "materialKey": "aluminum",
+    "layers": 1,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5,
+    "materialLabel": "铝基板",
+    "sampleTime": "2026-07-10T02:30:39.567Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 10,
+    "fixedOptions": "铝基板, 页面默认工艺, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 20,
+    "unitPriceCny": 4,
+    "areaPriceEstimateCnyPerM2": 400,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥20.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥20\n检查订单\n提交订单\n我已知悉\n《免责声明》\n交流群\n小程序\n联系客服\n更多\n提示\n1板层，0.8板厚不支持有铅喷锡工艺，无铅喷锡可替代有铅喷锡，请选择无铅喷锡",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 20,
+      "specialProduceMoney": 20,
+      "guaranteeMoney": 0,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 24.5,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-MAT-ALU-SMOKE-003",
+    "materialKey": "aluminum",
+    "layers": 1,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 5,
+    "materialLabel": "铝基板",
+    "sampleTime": "2026-07-10T02:30:39.567Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 15,
+    "fixedOptions": "铝基板, 页面默认工艺, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 56.75,
+    "unitPriceCny": 11.35,
+    "areaPriceEstimateCnyPerM2": 756.67,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥20.00\n\n板费\n\n￥36.75\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥56.75\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返1金豆\n交流群\n小程序\n联系客服\n更多\n提示\n1板层，0.8板厚不支持有铅喷锡工艺，无铅喷锡可替代有铅喷锡，请选择无铅喷锡",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 56.75,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 0,
+      "projectmoney": 20,
+      "stencilmoney": 36.75,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 36.75,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-MAT-COPPER-SMOKE-001",
+    "materialKey": "copper",
+    "layers": 1,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 5,
+    "materialLabel": "铜基板",
+    "sampleTime": "2026-07-10T02:30:39.567Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 5,
+    "widthCm": 5,
+    "fixedOptions": "铜基板, 页面默认工艺, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 600,
+    "unitPriceCny": 120,
+    "areaPriceEstimateCnyPerM2": 48000,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥600.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥600\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返12金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 766.5,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 0,
+      "projectmoney": 600,
+      "stencilmoney": 166.5,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 166.5,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 600,
+          "originalCostItemMoney": null
+        }
+      ]
+    },
+    "correctedFromPriceText": true
+  },
+  {
+    "id": "JLC-CN-MAT-COPPER-SMOKE-002",
+    "materialKey": "copper",
+    "layers": 1,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5,
+    "materialLabel": "铜基板",
+    "sampleTime": "2026-07-10T02:30:39.567Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 10,
+    "fixedOptions": "铜基板, 页面默认工艺, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 600,
+    "unitPriceCny": 120,
+    "areaPriceEstimateCnyPerM2": 12000,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "特价\n\n￥600.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥600\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返12金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 600,
+      "specialProduceMoney": 600,
+      "guaranteeMoney": 0,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 600,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 27.75,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-MAT-COPPER-SMOKE-003",
+    "materialKey": "copper",
+    "layers": 1,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 5,
+    "materialLabel": "铜基板",
+    "sampleTime": "2026-07-10T02:30:39.567Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 15,
+    "fixedOptions": "铜基板, 页面默认工艺, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 766.5,
+    "unitPriceCny": 153.3,
+    "areaPriceEstimateCnyPerM2": 10220,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥600.00\n\n板费\n\n￥166.50\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥766.5\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返15金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 600,
+      "specialProduceMoney": 600,
+      "guaranteeMoney": 0,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 111,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 600,
+          "originalCostItemMoney": null
+        }
+      ]
+    },
+    "correctedFromPriceText": true
+  },
+  {
+    "id": "JLC-CN-MAT-ROGERS-SMOKE-001",
+    "materialKey": "rogers",
+    "layers": 2,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 5,
+    "materialLabel": "罗杰斯高频板",
+    "sampleTime": "2026-07-10T02:30:39.567Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 5,
+    "widthCm": 5,
+    "fixedOptions": "罗杰斯高频板, 页面默认工艺, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 552.94,
+    "unitPriceCny": 110.588,
+    "areaPriceEstimateCnyPerM2": 44235.2,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "过孔沉铜方式\n\n￥20.19\n\n工程费\n\n￥500.00\n\n板费\n\n￥22.75\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥552.94\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返11金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 667.63,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 500,
+      "stencilmoney": 136.5,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 136.5,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 500,
+          "originalCostItemMoney": null
+        }
+      ]
+    },
+    "correctedFromPriceText": true
+  },
+  {
+    "id": "JLC-CN-MAT-ROGERS-SMOKE-002",
+    "materialKey": "rogers",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5,
+    "materialLabel": "罗杰斯高频板",
+    "sampleTime": "2026-07-10T02:30:39.567Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 10,
+    "fixedOptions": "罗杰斯高频板, 页面默认工艺, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 621.75,
+    "unitPriceCny": 124.35,
+    "areaPriceEstimateCnyPerM2": 12435,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "过孔沉铜方式\n\n￥20.75\n\n工程费\n\n￥500.00\n\n板费\n\n￥91.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥621.75\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返12金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 552.94,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 500,
+      "stencilmoney": 22.75,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 500,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 22.75,
+          "originalCostItemMoney": null
+        }
+      ]
+    },
+    "correctedFromPriceText": true
+  },
+  {
+    "id": "JLC-CN-MAT-ROGERS-SMOKE-003",
+    "materialKey": "rogers",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 5,
+    "materialLabel": "罗杰斯高频板",
+    "sampleTime": "2026-07-10T02:30:39.567Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 15,
+    "fixedOptions": "罗杰斯高频板, 页面默认工艺, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 667.63,
+    "unitPriceCny": 133.526,
+    "areaPriceEstimateCnyPerM2": 8901.73,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "过孔沉铜方式\n\n￥21.13\n\n工程费\n\n￥500.00\n\n板费\n\n￥136.50\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥667.63\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返13金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 621.75,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 500,
+      "stencilmoney": 91,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 91,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 500,
+          "originalCostItemMoney": null
+        }
+      ]
+    },
+    "correctedFromPriceText": true
+  },
+  {
+    "id": "JLC-CN-MAT-TEFLON-SMOKE-001",
+    "materialKey": "teflon",
+    "layers": 2,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 5,
+    "materialLabel": "铁氟龙高频板",
+    "sampleTime": "2026-07-10T02:30:39.567Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 5,
+    "widthCm": 5,
+    "fixedOptions": "铁氟龙高频板, 页面默认工艺, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 230.19,
+    "unitPriceCny": 46.038,
+    "areaPriceEstimateCnyPerM2": 18415.2,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "过孔沉铜方式\n\n￥20.19\n\n特价\n\n￥200.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥230.19\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返4金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 292.63,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 200,
+      "stencilmoney": 61.5,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 200,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 61.5,
+          "originalCostItemMoney": null
+        }
+      ]
+    },
+    "correctedFromPriceText": true
+  },
+  {
+    "id": "JLC-CN-MAT-TEFLON-SMOKE-002",
+    "materialKey": "teflon",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5,
+    "materialLabel": "铁氟龙高频板",
+    "sampleTime": "2026-07-10T02:30:39.567Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 10,
+    "fixedOptions": "铁氟龙高频板, 页面默认工艺, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 230.75,
+    "unitPriceCny": 46.15,
+    "areaPriceEstimateCnyPerM2": 4615,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "过孔沉铜方式\n\n￥20.75\n\n特价\n\n￥200.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥230.75\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返4金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 230.19,
+      "specialProduceMoney": 200,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 10.25,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 200,
+          "originalCostItemMoney": null
+        }
+      ]
+    },
+    "correctedFromPriceText": true
+  },
+  {
+    "id": "JLC-CN-MAT-TEFLON-SMOKE-003",
+    "materialKey": "teflon",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 5,
+    "materialLabel": "铁氟龙高频板",
+    "sampleTime": "2026-07-10T02:30:39.567Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 15,
+    "fixedOptions": "铁氟龙高频板, 页面默认工艺, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 292.63,
+    "unitPriceCny": 58.526,
+    "areaPriceEstimateCnyPerM2": 3901.73,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "过孔沉铜方式\n\n￥21.13\n\n工程费\n\n￥200.00\n\n板费\n\n￥61.50\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥292.63\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返5金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 230.75,
+      "specialProduceMoney": 200,
+      "guaranteeMoney": 10,
+      "projectmoney": 0,
+      "stencilmoney": 0,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 200,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 41,
+          "originalCostItemMoney": null
+        }
+      ]
+    },
+    "correctedFromPriceText": true
+  },
+  {
+    "id": "JLC-CN-MAT-HDI-SMOKE-001",
+    "materialKey": "hdi",
+    "layers": 4,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 5,
+    "error": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByPlaceholder('数量')\n"
+  },
+  {
+    "id": "JLC-CN-MAT-HDI-SMOKE-002",
+    "materialKey": "hdi",
+    "layers": 4,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5,
+    "error": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByPlaceholder('数量')\n"
+  },
+  {
+    "id": "JLC-CN-MAT-HDI-SMOKE-003",
+    "materialKey": "hdi",
+    "layers": 4,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 5,
+    "error": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByPlaceholder('数量')\n"
+  }
+]

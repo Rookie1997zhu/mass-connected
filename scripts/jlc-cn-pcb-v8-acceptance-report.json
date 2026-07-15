@@ -1,0 +1,468 @@
+{
+  "generatedAt": "2026-07-14T00:26:22.786106+00:00",
+  "priceVersion": "jlc-cn-pcb-v6-20260712",
+  "status": "failed",
+  "pass": false,
+  "gates": {
+    "independenceOk": true,
+    "fingerprintOk": true,
+    "freshPerMaterialAtLeast40": false,
+    "overallHit10AtLeast90": false,
+    "overallHit20AtLeast95": false,
+    "overallMapeAtMost8": false,
+    "overallMaxErrAtMost20": false,
+    "materialsHit20Ok": false,
+    "materialsMaxErrOk": false
+  },
+  "materialGates": {
+    "fr4": {
+      "hit20AtLeast95": false,
+      "maxErrAtMost20": false,
+      "metrics": {
+        "n": 39,
+        "hitRate10": 0.7692,
+        "hitRate20": 0.8974,
+        "mape": 0.6531,
+        "maxRelativeError": 21.6142,
+        "p50": 0.0668
+      }
+    },
+    "fpc": {
+      "hit20AtLeast95": true,
+      "maxErrAtMost20": true,
+      "metrics": {
+        "n": 40,
+        "hitRate10": 0.9,
+        "hitRate20": 1.0,
+        "mape": 0.0582,
+        "maxRelativeError": 0.1473,
+        "p50": 0.0604
+      }
+    },
+    "aluminum": {
+      "hit20AtLeast95": false,
+      "maxErrAtMost20": false,
+      "metrics": {
+        "n": 0,
+        "hitRate10": null,
+        "hitRate20": null,
+        "mape": null,
+        "maxRelativeError": null,
+        "p50": null
+      }
+    }
+  },
+  "runtimeConfigAudit": {
+    "ok": true,
+    "runtimeEstimatorEnabledMaterials": [
+      "fpc",
+      "fr4"
+    ],
+    "validatedEstimatorEnabledMaterials": [
+      "fpc",
+      "fr4"
+    ],
+    "unexpectedRuntimeMaterials": [],
+    "missingRuntimeMaterials": []
+  },
+  "independenceProof": {
+    "generatedAt": "2026-07-13T11:14:58.047Z",
+    "acceptancePath": "scripts/jlc-cn-pcb-v8-acceptance-targets.json",
+    "ok": true,
+    "neighborOk": true,
+    "checks": [
+      {
+        "ok": true,
+        "left": "fit",
+        "right": "tuning_holdout",
+        "overlapCount": 0,
+        "overlap": []
+      },
+      {
+        "ok": true,
+        "left": "fit",
+        "right": "process_holdout",
+        "overlapCount": 0,
+        "overlap": []
+      },
+      {
+        "ok": true,
+        "left": "fit",
+        "right": "final_acceptance",
+        "overlapCount": 0,
+        "overlap": []
+      },
+      {
+        "ok": true,
+        "left": "tuning_holdout",
+        "right": "final_acceptance",
+        "overlapCount": 0,
+        "overlap": []
+      },
+      {
+        "ok": true,
+        "left": "process_holdout",
+        "right": "final_acceptance",
+        "overlapCount": 0,
+        "overlap": []
+      },
+      {
+        "ok": true,
+        "left": "diagnostic_v7",
+        "right": "final_acceptance",
+        "overlapCount": 0,
+        "overlap": []
+      },
+      {
+        "ok": true,
+        "left": "fit_neighbor",
+        "right": "final_acceptance_neighbor",
+        "overlapCount": 0,
+        "overlap": []
+      },
+      {
+        "ok": true,
+        "left": "tuning_holdout_neighbor",
+        "right": "final_acceptance_neighbor",
+        "overlapCount": 0,
+        "overlap": []
+      },
+      {
+        "ok": true,
+        "left": "process_holdout_neighbor",
+        "right": "final_acceptance_neighbor",
+        "overlapCount": 0,
+        "overlap": []
+      },
+      {
+        "ok": true,
+        "left": "diagnostic_v7_neighbor",
+        "right": "final_acceptance_neighbor",
+        "overlapCount": 0,
+        "overlap": []
+      }
+    ],
+    "fingerprintCheck": {
+      "ok": true,
+      "current": {
+        "count": 120,
+        "hash": "fnvish_4cd79a17",
+        "sampleKeysHead": [
+          "aluminum|1|100|155|10|1.6|绿色|无铅喷锡|1oz|页面默认|1",
+          "aluminum|1|101|163|100|1.6|绿色|无铅喷锡|1oz|页面默认|1",
+          "aluminum|1|102|153|20|1.6|绿色|无铅喷锡|1oz|页面默认|1",
+          "aluminum|1|103|151|200|1.6|绿色|无铅喷锡|1oz|页面默认|1",
+          "aluminum|1|104|150|20|1.6|绿色|无铅喷锡|1oz|页面默认|1"
+        ]
+      },
+      "frozen": {
+        "frozenAt": "2026-07-13T06:55:44.310Z",
+        "count": 120,
+        "hash": "fnvish_4cd79a17",
+        "sampleKeysHead": [
+          "aluminum|1|100|155|10|1.6|绿色|无铅喷锡|1oz|页面默认|1",
+          "aluminum|1|101|163|100|1.6|绿色|无铅喷锡|1oz|页面默认|1",
+          "aluminum|1|102|153|20|1.6|绿色|无铅喷锡|1oz|页面默认|1",
+          "aluminum|1|103|151|200|1.6|绿色|无铅喷锡|1oz|页面默认|1",
+          "aluminum|1|104|150|20|1.6|绿色|无铅喷锡|1oz|页面默认|1"
+        ],
+        "oneShot": true,
+        "note": "Do not retune model against this set after scoring; generate a new fingerprint for next version."
+      }
+    },
+    "counts": {
+      "fit": 1269,
+      "tuningHoldout": 27,
+      "processHoldout": 288,
+      "finalAcceptance": 360,
+      "diagnostic": 336
+    }
+  },
+  "fingerprint": {
+    "frozenAt": "2026-07-13T06:55:44.310Z",
+    "count": 120,
+    "hash": "fnvish_4cd79a17",
+    "sampleKeysHead": [
+      "aluminum|1|100|155|10|1.6|绿色|无铅喷锡|1oz|页面默认|1",
+      "aluminum|1|101|163|100|1.6|绿色|无铅喷锡|1oz|页面默认|1",
+      "aluminum|1|102|153|20|1.6|绿色|无铅喷锡|1oz|页面默认|1",
+      "aluminum|1|103|151|200|1.6|绿色|无铅喷锡|1oz|页面默认|1",
+      "aluminum|1|104|150|20|1.6|绿色|无铅喷锡|1oz|页面默认|1"
+    ],
+    "oneShot": true,
+    "note": "Do not retune model against this set after scoring; generate a new fingerprint for next version."
+  },
+  "targets": 360,
+  "sampleRows": 359,
+  "freshRows": 357,
+  "freshUnique": 119,
+  "rejectedRepeatGroups": [
+    {
+      "baseSampleId": "JLC-CN-PCB-V8-ACC-FR4-025",
+      "rows": 2,
+      "freshRows": 0,
+      "cv": null,
+      "selectedOk": true
+    }
+  ],
+  "materialCounts": {
+    "aluminum": 40,
+    "fpc": 40,
+    "fr4": 39
+  },
+  "autoQuoted": 79,
+  "manualReview": 40,
+  "overall": {
+    "n": 79,
+    "hitRate10": 0.8354,
+    "hitRate20": 0.9494,
+    "mape": 0.3519,
+    "maxRelativeError": 21.6142,
+    "p50": 0.0628
+  },
+  "pureEstimate": {
+    "n": 79,
+    "hitRate10": 0.8354,
+    "hitRate20": 0.9494,
+    "mape": 0.3519,
+    "maxRelativeError": 21.6142,
+    "p50": 0.0628
+  },
+  "processAdjusted": {
+    "n": 0,
+    "hitRate10": null,
+    "hitRate20": null,
+    "mape": null,
+    "maxRelativeError": null,
+    "p50": null
+  },
+  "byMaterial": {
+    "fpc": {
+      "n": 40,
+      "hitRate10": 0.9,
+      "hitRate20": 1.0,
+      "mape": 0.0582,
+      "maxRelativeError": 0.1473,
+      "p50": 0.0604
+    },
+    "fr4": {
+      "n": 39,
+      "hitRate10": 0.7692,
+      "hitRate20": 0.8974,
+      "mape": 0.6531,
+      "maxRelativeError": 21.6142,
+      "p50": 0.0668
+    }
+  },
+  "quarantineCount": 2,
+  "quarantine": [
+    {
+      "id": "JLC-CN-PCB-V8-ACC-FR4-017-R1",
+      "baseSampleId": "JLC-CN-PCB-V8-ACC-FR4-017",
+      "materialKey": "fr4",
+      "layers": 2,
+      "widthMm": 90,
+      "heightMm": 143,
+      "quantity": 20,
+      "repeatCv": 0.0,
+      "requiresManualReview": false,
+      "manualReviewReasons": [],
+      "pricingMode": "verified_estimate",
+      "actualCny": 893.98,
+      "predictedCny": 173.0,
+      "relativeError": 0.8064833665182667,
+      "estimateActualRatio": 0.19351663348173337,
+      "anomalyClass": "estimate_actual_ratio_outlier",
+      "processAdjusted": false,
+      "confidence": 0.8088,
+      "averageDistance": 0.2363,
+      "localCoverage": 4,
+      "extrapolation": false,
+      "estimatorBasis": [
+        {
+          "materialKey": null,
+          "layers": 2,
+          "widthMm": 100,
+          "heightMm": 150,
+          "quantity": 20,
+          "jlcPriceCny": 192.0
+        },
+        {
+          "materialKey": null,
+          "layers": 2,
+          "widthMm": 120,
+          "heightMm": 120,
+          "quantity": 20,
+          "jlcPriceCny": 185.52
+        },
+        {
+          "materialKey": null,
+          "layers": 2,
+          "widthMm": 80,
+          "heightMm": 120,
+          "quantity": 20,
+          "jlcPriceCny": 133.68
+        },
+        {
+          "materialKey": null,
+          "layers": 2,
+          "widthMm": 100,
+          "heightMm": 100,
+          "quantity": 20,
+          "jlcPriceCny": 138.0
+        }
+      ],
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": "1.6mm",
+          "present": true,
+          "selected": true,
+          "implicitDefault": false
+        },
+        "solderColor": {
+          "requested": "绿色",
+          "present": true,
+          "selected": true,
+          "implicitDefault": false
+        },
+        "surfaceFinish": {
+          "requested": "有铅喷锡",
+          "present": true,
+          "selected": true,
+          "implicitDefault": false
+        },
+        "copperThickness": {
+          "requested": "1oz",
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderMaskCoverage": {
+          "requested": "过孔盖油",
+          "present": true,
+          "selected": true,
+          "implicitDefault": false
+        },
+        "panelDesignCount": {
+          "requested": "1",
+          "present": true,
+          "selected": true,
+          "implicitDefault": false,
+          "actual": "1"
+        }
+      },
+      "pageFingerprint": {
+        "title": "嘉立创-PCB在线下单",
+        "fr4Visible": true,
+        "priceSectionVisible": true,
+        "href": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+        "capturedAt": "2026-07-13T07:43:18.337Z"
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-V8-ACC-FR4-020-R1",
+      "baseSampleId": "JLC-CN-PCB-V8-ACC-FR4-020",
+      "materialKey": "fr4",
+      "layers": 4,
+      "widthMm": 130,
+      "heightMm": 160,
+      "quantity": 200,
+      "repeatCv": 0.0,
+      "requiresManualReview": false,
+      "manualReviewReasons": [],
+      "pricingMode": "verified_estimate",
+      "actualCny": 113.7,
+      "predictedCny": 2571.24,
+      "relativeError": 21.614248021108178,
+      "estimateActualRatio": 22.614248021108178,
+      "anomalyClass": "estimate_actual_ratio_outlier",
+      "processAdjusted": false,
+      "confidence": 0.7307,
+      "averageDistance": 0.3685,
+      "localCoverage": 4,
+      "extrapolation": false,
+      "estimatorBasis": [
+        {
+          "materialKey": null,
+          "layers": 4,
+          "widthMm": 150,
+          "heightMm": 150,
+          "quantity": 200,
+          "jlcPriceCny": 2734.0
+        },
+        {
+          "materialKey": null,
+          "layers": 4,
+          "widthMm": 100,
+          "heightMm": 150,
+          "quantity": 200,
+          "jlcPriceCny": 1876.0
+        },
+        {
+          "materialKey": null,
+          "layers": 4,
+          "widthMm": 120,
+          "heightMm": 120,
+          "quantity": 200,
+          "jlcPriceCny": 1807.36
+        },
+        {
+          "materialKey": null,
+          "layers": 4,
+          "widthMm": 200,
+          "heightMm": 200,
+          "quantity": 200,
+          "jlcPriceCny": 4736.0
+        }
+      ],
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": "1.6mm",
+          "present": true,
+          "selected": true,
+          "implicitDefault": false
+        },
+        "solderColor": {
+          "requested": "绿色",
+          "present": true,
+          "selected": true,
+          "implicitDefault": false
+        },
+        "surfaceFinish": {
+          "requested": "有铅喷锡",
+          "present": true,
+          "selected": true,
+          "implicitDefault": false
+        },
+        "copperThickness": {
+          "requested": "1oz",
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderMaskCoverage": {
+          "requested": "过孔盖油",
+          "present": true,
+          "selected": false,
+          "implicitDefault": false
+        },
+        "panelDesignCount": {
+          "requested": "1",
+          "present": true,
+          "selected": true,
+          "implicitDefault": false,
+          "actual": "1"
+        }
+      },
+      "pageFingerprint": {
+        "title": "嘉立创-PCB在线下单",
+        "fr4Visible": true,
+        "priceSectionVisible": true,
+        "href": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+        "capturedAt": "2026-07-13T07:44:40.523Z"
+      }
+    }
+  ],
+  "fallbackVersionIfFailed": "jlc-cn-pcb-v6-20260712",
+  "note": null
+}

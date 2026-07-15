@@ -1,0 +1,102 @@
+{
+  "generatedAt": "2026-07-14T07:42:42.069Z",
+  "status": "passed",
+  "fit": {
+    "accepted": 199,
+    "historicalAccepted": 138,
+    "newFpcAccepted": 61,
+    "rejected": [
+      {
+        "baseSampleId": "JLC-CN-PCB-V9-FIT-FR4-001",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V9-FIT-FR4-002",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V9-FIT-FR4-010",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V9-FIT-FR4-016",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V9-FIT-FR4-022",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V9-FIT-FR4-046",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V10-FIT-FPC-049",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V10-FIT-FPC-050",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V10-FIT-FPC-051",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      }
+    ]
+  },
+  "fpcTuning": {
+    "n": 30,
+    "coverage": 1,
+    "hitRate20": 1,
+    "mape": 0.0164,
+    "maxRelativeError": 0.1346,
+    "pass": true
+  },
+  "regressionByMaterial": {
+    "fr4": {
+      "n": 2,
+      "coverage": 0.6667,
+      "hitRate20": 1,
+      "mape": 0.0563,
+      "maxRelativeError": 0.0779,
+      "pass": false,
+      "noRegressionPass": true
+    },
+    "fpc": {
+      "n": 3,
+      "coverage": 0.75,
+      "hitRate20": 1,
+      "mape": 0.0703,
+      "maxRelativeError": 0.1736,
+      "pass": false,
+      "noRegressionPass": true
+    },
+    "aluminum": {
+      "n": 3,
+      "coverage": 0.5,
+      "hitRate20": 1,
+      "mape": 0.0155,
+      "maxRelativeError": 0.0273,
+      "pass": false,
+      "noRegressionPass": true
+    }
+  }
+}

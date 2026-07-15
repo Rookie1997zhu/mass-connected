@@ -1,0 +1,68 @@
+[
+  {
+    "id": "SMOKE-001",
+    "layers": 2,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 5,
+    "priceUsd": null,
+    "rawKeys": [
+      "success",
+      "code",
+      "message",
+      "errorCode",
+      "data"
+    ],
+    "raw": {
+      "success": false,
+      "code": 400,
+      "message": "Parameter exception.",
+      "errorCode": "",
+      "data": null
+    }
+  },
+  {
+    "id": "SMOKE-002",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5,
+    "priceUsd": null,
+    "rawKeys": [
+      "success",
+      "code",
+      "message",
+      "errorCode",
+      "data"
+    ],
+    "raw": {
+      "success": false,
+      "code": 400,
+      "message": "Parameter exception.",
+      "errorCode": "",
+      "data": null
+    }
+  },
+  {
+    "id": "SMOKE-003",
+    "layers": 4,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 5,
+    "priceUsd": null,
+    "rawKeys": [
+      "success",
+      "code",
+      "message",
+      "errorCode",
+      "data"
+    ],
+    "raw": {
+      "success": false,
+      "code": 400,
+      "message": "Parameter exception.",
+      "errorCode": "",
+      "data": null
+    }
+  }
+]

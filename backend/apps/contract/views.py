@@ -24,7 +24,9 @@ class MemberContractListView(APIView):
     pagination_class = StandardPagination
 
     def get(self, request):
-        qs = Contract.objects.filter(buyer=request.user).order_by("-created_at")
+        qs = Contract.objects.filter(buyer=request.user).select_related(
+            "rfq", "quote", "production_order", "production_order__quote", "supplier"
+        ).order_by("-created_at")
         paginator = self.pagination_class()
         page = paginator.paginate_queryset(qs, request)
         return paginator.get_paginated_response(
@@ -66,7 +68,9 @@ class SupplierContractListView(APIView):
     pagination_class = StandardPagination
 
     def get(self, request):
-        qs = Contract.objects.filter(supplier=request.user).order_by("-created_at")
+        qs = Contract.objects.filter(supplier=request.user).select_related(
+            "rfq", "quote", "production_order", "production_order__quote", "supplier"
+        ).order_by("-created_at")
         paginator = self.pagination_class()
         page = paginator.paginate_queryset(qs, request)
         return paginator.get_paginated_response(

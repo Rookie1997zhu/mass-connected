@@ -1471,5 +1471,201 @@ class PcbManufacturingQuoteV10Tests(unittest.TestCase):
         self.assertTrue(result["requires_manual_review"])
 
 
+def _tables_v11_fr4():
+    tables = copy.deepcopy(_tables())
+    rows = []
+    for layers, layer_base in ((2, 100), (4, 180)):
+        for quantity, quantity_base in ((5, 10), (10, 18), (20, 30), (50, 55), (100, 85)):
+            for width_mm, height_mm, area_add in ((70, 70, 12), (90, 90, 28), (110, 110, 55)):
+                rows.append(
+                    {
+                        "material_key": "fr4",
+                        "material_label": "FR-4",
+                        "layers": layers,
+                        "width_mm": width_mm,
+                        "height_mm": height_mm,
+                        "quantity": quantity,
+                        "jlc_price_cny": layer_base + quantity_base + area_add,
+                        "enabled": True,
+                    }
+                )
+    tables["manufacturing_price_list"] = rows
+    meta = tables["manufacturing_price_meta"][0]
+    meta["acceptance_status"] = "passed"
+    meta["quote_range_rate"] = 0.10
+    meta["risk_zones"] = []
+    meta["estimator_enabled_materials"] = ["fr4"]
+    band = {
+        "floorPriceCny": 90,
+        "areaExponent": 0.85,
+        "quantityExponent": 0.65,
+        "maxNeighborDistance": 0.8,
+        "minLocalNeighbors": 2,
+        "neighbors": 6,
+        "maxPredictionMultiplier": 2.5,
+        "minPredictionMultiplier": 0.5,
+        "maxLocalResidualRatio": 0.5,
+    }
+    meta["estimator"] = {
+        "version": "jlc-cn-pcb-v11-material-estimator-test",
+        "validationStatus": "passed",
+        "neighbors": 6,
+        "materials": {
+            "fr4": {
+                "modelType": "fr4_layered_floor_area_quantity",
+                "layers": [2, 4],
+                "minWidthMm": 70,
+                "maxWidthMm": 110,
+                "minHeightMm": 70,
+                "maxHeightMm": 110,
+                "minQuantity": 5,
+                "maxQuantity": 100,
+                "guards": {
+                    "maxNeighborDistance": 0.8,
+                    "minLocalNeighbors": 2,
+                    "areaWeight": 1,
+                    "quantityWeight": 0.7,
+                },
+                "layerQuantityBands": {
+                    str(layers): {
+                        quantity_band: {
+                            **band,
+                            "floorPriceCny": band["floorPriceCny"] + (80 if layers == 4 else 0),
+                        }
+                        for quantity_band in ("low", "medium", "high")
+                    }
+                    for layers in (2, 4)
+                },
+            }
+        },
+    }
+    return tables
+
+
+class PcbManufacturingQuoteV11Tests(unittest.TestCase):
+    def test_auto_quote_exposes_plus_minus_10_percent_range(self):
+        row = _manufacturing_row("fr4", 2, 100, 100, 20)
+        result = calc_pcb(
+            {
+                **_base_inputs(),
+                "include_pcb_manufacturing": True,
+                "mfg_material": "fr4",
+                "mfg_layers": 2,
+                "mfg_width_mm": 100,
+                "mfg_height_mm": 100,
+                "mfg_quantity": 20,
+            },
+            _params(),
+            _tables(),
+        )
+        mfg = result["pcb_manufacturing"]
+        mid_cny = round(row["jlc_price_cny"] * 1.1, 2)
+        mid_krw = round(mid_cny * 232.4)
+        self.assertEqual(mfg["pricing_display_mode"], "range")
+        self.assertEqual(mfg["quote_range_rate"], 0.10)
+        self.assertEqual(mfg["customer_quote_cny"], mid_cny)
+        self.assertEqual(mfg["customer_quote_cny_min"], round(mid_cny * 0.9, 2))
+        self.assertEqual(mfg["customer_quote_cny_max"], round(mid_cny * 1.1, 2))
+        self.assertEqual(mfg["customer_quote_krw_min"], round(mid_krw * 0.9))
+        self.assertEqual(mfg["customer_quote_krw_max"], round(mid_krw * 1.1))
+        self.assertEqual(result["pcb_manufacturing_fee"], mid_krw)
+        self.assertEqual(result["pcb_manufacturing_fee_min"], round(mid_krw * 0.9))
+        self.assertEqual(result["pcb_manufacturing_fee_max"], round(mid_krw * 1.1))
+        fixed = result["total"] - mid_krw
+        self.assertEqual(result["total_min"], fixed + result["pcb_manufacturing_fee_min"])
+        self.assertEqual(result["total_max"], fixed + result["pcb_manufacturing_fee_max"])
+        self.assertLessEqual(result["total_min"], result["total"])
+        self.assertLessEqual(result["total"], result["total_max"])
+
+    def test_manual_review_has_no_price_range(self):
+        tables = _tables()
+        tables["manufacturing_price_meta"][0]["acceptance_status"] = "failed"
+        result = calc_pcb(
+            {
+                **_base_inputs(),
+                "include_pcb_manufacturing": True,
+                "mfg_material": "fr4",
+                "mfg_layers": 2,
+                "mfg_width_mm": 90,
+                "mfg_height_mm": 90,
+                "mfg_quantity": 10,
+            },
+            _params(),
+            tables,
+        )
+        mfg = result["pcb_manufacturing"]
+        self.assertTrue(mfg["requires_manual_review"])
+        self.assertEqual(mfg["pricing_display_mode"], "manual")
+        self.assertIsNone(mfg["customer_quote_cny_min"])
+        self.assertEqual(result["pcb_manufacturing_fee"], 0)
+        self.assertEqual(result["total_min"], result["total"])
+        self.assertEqual(result["total_max"], result["total"])
+
+    def test_fr4_layered_floor_area_quantity_estimator(self):
+        two_layer = calc_pcb(
+            {
+                **_base_inputs(),
+                "include_pcb_manufacturing": True,
+                "mfg_material": "fr4",
+                "mfg_layers": 2,
+                "mfg_width_mm": 85,
+                "mfg_height_mm": 85,
+                "mfg_quantity": 25,
+            },
+            _params(),
+            _tables_v11_fr4(),
+        )["pcb_manufacturing"]
+        four_layer = calc_pcb(
+            {
+                **_base_inputs(),
+                "include_pcb_manufacturing": True,
+                "mfg_material": "fr4",
+                "mfg_layers": 4,
+                "mfg_width_mm": 85,
+                "mfg_height_mm": 85,
+                "mfg_quantity": 25,
+            },
+            _params(),
+            _tables_v11_fr4(),
+        )["pcb_manufacturing"]
+        self.assertFalse(two_layer["requires_manual_review"])
+        self.assertTrue(two_layer["is_estimated"])
+        self.assertEqual(two_layer["estimator_model_type"], "fr4_layered_floor_area_quantity")
+        self.assertEqual(two_layer["pricing_display_mode"], "range")
+        self.assertGreater(four_layer["jlc_estimate_cny"], two_layer["jlc_estimate_cny"])
+
+    def test_honesty_risk_zone_forces_manual_review(self):
+        tables = _tables_v11_fr4()
+        tables["manufacturing_price_meta"][0]["risk_zones"] = [
+            {
+                "id": "v11_honesty_fr4_L2_medium_medium_test",
+                "material_key": "fr4",
+                "layers": [2],
+                "min_area_mm2": 6000,
+                "max_area_mm2": 16000,
+                "min_quantity": 20,
+                "max_quantity": 75,
+                "action": "manual_review",
+                "reason": "v11_quote_range_honesty_guard",
+            }
+        ]
+        result = calc_pcb(
+            {
+                **_base_inputs(),
+                "include_pcb_manufacturing": True,
+                "mfg_material": "fr4",
+                "mfg_layers": 2,
+                "mfg_width_mm": 85,
+                "mfg_height_mm": 85,
+                "mfg_quantity": 25,
+            },
+            _params(),
+            tables,
+        )
+        self.assertTrue(result["pcb_manufacturing"]["requires_manual_review"])
+        self.assertEqual(result["pcb_manufacturing"]["pricing_display_mode"], "manual")
+        self.assertEqual(result["pcb_manufacturing_fee"], 0)
+
+
 if __name__ == "__main__":
     unittest.main()

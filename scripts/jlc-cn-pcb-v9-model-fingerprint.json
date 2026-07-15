@@ -1,0 +1,7 @@
+{
+  "frozenAt": "2026-07-14T02:10:47.619Z",
+  "hash": "sha256_a2607f6bf9ec6a6c3b10bd7163e79e49d43fd0ed6e7382b1d592d24b24465b7a",
+  "candidatePath": "scripts/jlc-cn-pcb-v9-candidate-price-list.json",
+  "acceptanceFingerprint": "fnvish_6d9edbea",
+  "note": "Do not rebuild or retune after final acceptance sampling starts."
+}

@@ -1,0 +1,231 @@
+{
+  "sourceFingerprint": "fnvish_4e2e1389",
+  "diagnosticOnly": true,
+  "materials": {
+    "fr4": {
+      "stable": 44,
+      "autoQuoted": 44,
+      "coverage": 1.0,
+      "hitRate20": 0.5909,
+      "mape": 0.2089,
+      "maxRelativeError": 0.8813,
+      "manualReviewReasonCounts": {},
+      "highErrorIds": [
+        "JLC-CN-PCB-V10-ACC-FR4-006",
+        "JLC-CN-PCB-V10-ACC-FR4-007",
+        "JLC-CN-PCB-V10-ACC-FR4-010",
+        "JLC-CN-PCB-V10-ACC-FR4-013",
+        "JLC-CN-PCB-V10-ACC-FR4-014",
+        "JLC-CN-PCB-V10-ACC-FR4-017",
+        "JLC-CN-PCB-V10-ACC-FR4-023",
+        "JLC-CN-PCB-V10-ACC-FR4-024",
+        "JLC-CN-PCB-V10-ACC-FR4-027",
+        "JLC-CN-PCB-V10-ACC-FR4-028",
+        "JLC-CN-PCB-V10-ACC-FR4-029",
+        "JLC-CN-PCB-V10-ACC-FR4-030",
+        "JLC-CN-PCB-V10-ACC-FR4-031",
+        "JLC-CN-PCB-V10-ACC-FR4-034",
+        "JLC-CN-PCB-V10-ACC-FR4-035",
+        "JLC-CN-PCB-V10-ACC-FR4-036",
+        "JLC-CN-PCB-V10-ACC-FR4-039",
+        "JLC-CN-PCB-V10-ACC-FR4-043"
+      ],
+      "segments": {
+        "L2|large|low": {
+          "total": 3,
+          "autoQuoted": 3,
+          "maxRelativeError": 0.3505650396729983
+        },
+        "L2|large|medium": {
+          "total": 1,
+          "autoQuoted": 1,
+          "maxRelativeError": 0.06511671422556947
+        },
+        "L2|medium|high": {
+          "total": 9,
+          "autoQuoted": 9,
+          "maxRelativeError": 0.8813352231073749
+        },
+        "L2|medium|low": {
+          "total": 5,
+          "autoQuoted": 5,
+          "maxRelativeError": 0.4707520891364903
+        },
+        "L2|medium|medium": {
+          "total": 4,
+          "autoQuoted": 4,
+          "maxRelativeError": 0.24956417791502722
+        },
+        "L4|large|high": {
+          "total": 1,
+          "autoQuoted": 1,
+          "maxRelativeError": 0.016127643346578274
+        },
+        "L4|large|low": {
+          "total": 1,
+          "autoQuoted": 1,
+          "maxRelativeError": 0.15035014202548017
+        },
+        "L4|large|medium": {
+          "total": 2,
+          "autoQuoted": 2,
+          "maxRelativeError": 0.6324853375172774
+        },
+        "L4|medium|high": {
+          "total": 4,
+          "autoQuoted": 4,
+          "maxRelativeError": 0.2879633522274251
+        },
+        "L4|medium|low": {
+          "total": 6,
+          "autoQuoted": 6,
+          "maxRelativeError": 0.32322818517001217
+        },
+        "L4|medium|medium": {
+          "total": 8,
+          "autoQuoted": 8,
+          "maxRelativeError": 0.41925885144257874
+        }
+      }
+    },
+    "fpc": {
+      "stable": 44,
+      "autoQuoted": 44,
+      "coverage": 1.0,
+      "hitRate20": 0.9091,
+      "mape": 0.0608,
+      "maxRelativeError": 0.3546,
+      "manualReviewReasonCounts": {},
+      "highErrorIds": [
+        "JLC-CN-PCB-V10-ACC-FPC-007",
+        "JLC-CN-PCB-V10-ACC-FPC-024",
+        "JLC-CN-PCB-V10-ACC-FPC-034",
+        "JLC-CN-PCB-V10-ACC-FPC-044"
+      ],
+      "segments": {
+        "L1|large|high": {
+          "total": 2,
+          "autoQuoted": 2,
+          "maxRelativeError": 0.06384434822096716
+        },
+        "L1|large|low": {
+          "total": 1,
+          "autoQuoted": 1,
+          "maxRelativeError": 0.001431918771153523
+        },
+        "L1|medium|high": {
+          "total": 5,
+          "autoQuoted": 5,
+          "maxRelativeError": 0.21227963676457823
+        },
+        "L1|medium|low": {
+          "total": 7,
+          "autoQuoted": 7,
+          "maxRelativeError": 0.014458977407847762
+        },
+        "L1|medium|medium": {
+          "total": 5,
+          "autoQuoted": 5,
+          "maxRelativeError": 0.10206503335600477
+        },
+        "L1|small|low": {
+          "total": 2,
+          "autoQuoted": 2,
+          "maxRelativeError": 0.019033432638199246
+        },
+        "L2|large|high": {
+          "total": 1,
+          "autoQuoted": 1,
+          "maxRelativeError": 0.06825899058496691
+        },
+        "L2|large|low": {
+          "total": 3,
+          "autoQuoted": 3,
+          "maxRelativeError": 0.033359129974339125
+        },
+        "L2|large|medium": {
+          "total": 2,
+          "autoQuoted": 2,
+          "maxRelativeError": 0.11934149677587436
+        },
+        "L2|medium|high": {
+          "total": 2,
+          "autoQuoted": 2,
+          "maxRelativeError": 0.024807350649067535
+        },
+        "L2|medium|low": {
+          "total": 5,
+          "autoQuoted": 5,
+          "maxRelativeError": 0.04354354354354345
+        },
+        "L2|medium|medium": {
+          "total": 8,
+          "autoQuoted": 8,
+          "maxRelativeError": 0.3546075525196546
+        },
+        "L2|small|low": {
+          "total": 1,
+          "autoQuoted": 1,
+          "maxRelativeError": 0.04116100889212004
+        }
+      }
+    },
+    "aluminum": {
+      "stable": 45,
+      "autoQuoted": 45,
+      "coverage": 1.0,
+      "hitRate20": 1.0,
+      "mape": 0.0316,
+      "maxRelativeError": 0.1296,
+      "manualReviewReasonCounts": {},
+      "highErrorIds": [],
+      "segments": {
+        "L1|large|high": {
+          "total": 5,
+          "autoQuoted": 5,
+          "maxRelativeError": 0.06930191756304056
+        },
+        "L1|large|low": {
+          "total": 5,
+          "autoQuoted": 5,
+          "maxRelativeError": 0.0973625005983438
+        },
+        "L1|large|medium": {
+          "total": 7,
+          "autoQuoted": 7,
+          "maxRelativeError": 0.06600101540023702
+        },
+        "L1|medium|high": {
+          "total": 5,
+          "autoQuoted": 5,
+          "maxRelativeError": 0.02860957806658347
+        },
+        "L1|medium|low": {
+          "total": 11,
+          "autoQuoted": 11,
+          "maxRelativeError": 0.08228141285466131
+        },
+        "L1|medium|medium": {
+          "total": 4,
+          "autoQuoted": 4,
+          "maxRelativeError": 0.030316136340232665
+        },
+        "L1|small|high": {
+          "total": 2,
+          "autoQuoted": 2,
+          "maxRelativeError": 0.010708108658052794
+        },
+        "L1|small|low": {
+          "total": 3,
+          "autoQuoted": 3,
+          "maxRelativeError": 0.129584649016274
+        },
+        "L1|small|medium": {
+          "total": 3,
+          "autoQuoted": 3,
+          "maxRelativeError": 0.020732410611303338
+        }
+      }
+    }
+  }
+}

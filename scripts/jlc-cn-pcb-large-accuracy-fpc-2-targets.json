@@ -1,0 +1,262 @@
+[
+  {
+    "id": "JLC-CN-PCB-LARGE-FPC-2-001",
+    "materialKey": "fpc",
+    "materialLabel": "FPC软板",
+    "layers": 2,
+    "widthMm": 55,
+    "heightMm": 65,
+    "quantity": 15,
+    "boardThickness": "0.11",
+    "solderColor": "页面默认",
+    "surfaceFinish": "沉金",
+    "copperThickness": "1oz",
+    "processChangedFields": [],
+    "sampleRole": "large_estimator_base",
+    "samplingVersion": "v5-large-accuracy"
+  },
+  {
+    "id": "JLC-CN-PCB-LARGE-FPC-2-002",
+    "materialKey": "fpc",
+    "materialLabel": "FPC软板",
+    "layers": 2,
+    "widthMm": 65,
+    "heightMm": 95,
+    "quantity": 30,
+    "boardThickness": "0.12",
+    "solderColor": "页面默认",
+    "surfaceFinish": "沉金",
+    "copperThickness": "1oz",
+    "processChangedFields": [
+      "boardThickness"
+    ],
+    "sampleRole": "large_estimator_process",
+    "samplingVersion": "v5-large-accuracy"
+  },
+  {
+    "id": "JLC-CN-PCB-LARGE-FPC-2-003",
+    "materialKey": "fpc",
+    "materialLabel": "FPC软板",
+    "layers": 2,
+    "widthMm": 75,
+    "heightMm": 115,
+    "quantity": 15,
+    "boardThickness": "0.20",
+    "solderColor": "页面默认",
+    "surfaceFinish": "沉金",
+    "copperThickness": "1oz",
+    "processChangedFields": [
+      "boardThickness"
+    ],
+    "sampleRole": "large_estimator_process",
+    "samplingVersion": "v5-large-accuracy"
+  },
+  {
+    "id": "JLC-CN-PCB-LARGE-FPC-2-004",
+    "materialKey": "fpc",
+    "materialLabel": "FPC软板",
+    "layers": 2,
+    "widthMm": 90,
+    "heightMm": 130,
+    "quantity": 150,
+    "boardThickness": "0.11",
+    "solderColor": "页面默认",
+    "surfaceFinish": "沉金",
+    "copperThickness": "1oz",
+    "processChangedFields": [],
+    "sampleRole": "large_estimator_base",
+    "samplingVersion": "v5-large-accuracy"
+  },
+  {
+    "id": "JLC-CN-PCB-LARGE-FPC-2-005",
+    "materialKey": "fpc",
+    "materialLabel": "FPC软板",
+    "layers": 2,
+    "widthMm": 105,
+    "heightMm": 135,
+    "quantity": 30,
+    "boardThickness": "0.12",
+    "solderColor": "页面默认",
+    "surfaceFinish": "沉金",
+    "copperThickness": "1oz",
+    "processChangedFields": [
+      "boardThickness"
+    ],
+    "sampleRole": "large_estimator_process",
+    "samplingVersion": "v5-large-accuracy"
+  },
+  {
+    "id": "JLC-CN-PCB-LARGE-FPC-2-006",
+    "materialKey": "fpc",
+    "materialLabel": "FPC软板",
+    "layers": 2,
+    "widthMm": 115,
+    "heightMm": 175,
+    "quantity": 75,
+    "boardThickness": "0.20",
+    "solderColor": "页面默认",
+    "surfaceFinish": "沉金",
+    "copperThickness": "1oz",
+    "processChangedFields": [
+      "boardThickness"
+    ],
+    "sampleRole": "large_estimator_process",
+    "samplingVersion": "v5-large-accuracy"
+  },
+  {
+    "id": "JLC-CN-PCB-LARGE-FPC-2-007",
+    "materialKey": "fpc",
+    "materialLabel": "FPC软板",
+    "layers": 2,
+    "widthMm": 125,
+    "heightMm": 155,
+    "quantity": 150,
+    "boardThickness": "0.11",
+    "solderColor": "页面默认",
+    "surfaceFinish": "沉金",
+    "copperThickness": "1oz",
+    "processChangedFields": [],
+    "sampleRole": "large_estimator_base",
+    "samplingVersion": "v5-large-accuracy"
+  },
+  {
+    "id": "JLC-CN-PCB-LARGE-FPC-2-008",
+    "materialKey": "fpc",
+    "materialLabel": "FPC软板",
+    "layers": 2,
+    "widthMm": 135,
+    "heightMm": 190,
+    "quantity": 75,
+    "boardThickness": "0.12",
+    "solderColor": "页面默认",
+    "surfaceFinish": "沉金",
+    "copperThickness": "1oz",
+    "processChangedFields": [
+      "boardThickness"
+    ],
+    "sampleRole": "large_estimator_process",
+    "samplingVersion": "v5-large-accuracy"
+  },
+  {
+    "id": "JLC-CN-PCB-LARGE-FPC-2-009",
+    "materialKey": "fpc",
+    "materialLabel": "FPC软板",
+    "layers": 2,
+    "widthMm": 145,
+    "heightMm": 165,
+    "quantity": 15,
+    "boardThickness": "0.20",
+    "solderColor": "页面默认",
+    "surfaceFinish": "沉金",
+    "copperThickness": "1oz",
+    "processChangedFields": [
+      "boardThickness"
+    ],
+    "sampleRole": "large_estimator_process",
+    "samplingVersion": "v5-large-accuracy"
+  },
+  {
+    "id": "JLC-CN-PCB-LARGE-FPC-2-010",
+    "materialKey": "fpc",
+    "materialLabel": "FPC软板",
+    "layers": 2,
+    "widthMm": 155,
+    "heightMm": 185,
+    "quantity": 30,
+    "boardThickness": "0.11",
+    "solderColor": "页面默认",
+    "surfaceFinish": "沉金",
+    "copperThickness": "1oz",
+    "processChangedFields": [],
+    "sampleRole": "large_estimator_base",
+    "samplingVersion": "v5-large-accuracy"
+  },
+  {
+    "id": "JLC-CN-PCB-LARGE-FPC-2-011",
+    "materialKey": "fpc",
+    "materialLabel": "FPC软板",
+    "layers": 2,
+    "widthMm": 165,
+    "heightMm": 195,
+    "quantity": 75,
+    "boardThickness": "0.12",
+    "solderColor": "页面默认",
+    "surfaceFinish": "沉金",
+    "copperThickness": "1oz",
+    "processChangedFields": [
+      "boardThickness"
+    ],
+    "sampleRole": "large_estimator_process",
+    "samplingVersion": "v5-large-accuracy"
+  },
+  {
+    "id": "JLC-CN-PCB-LARGE-FPC-2-012",
+    "materialKey": "fpc",
+    "materialLabel": "FPC软板",
+    "layers": 2,
+    "widthMm": 175,
+    "heightMm": 185,
+    "quantity": 150,
+    "boardThickness": "0.20",
+    "solderColor": "页面默认",
+    "surfaceFinish": "沉金",
+    "copperThickness": "1oz",
+    "processChangedFields": [
+      "boardThickness"
+    ],
+    "sampleRole": "large_estimator_process",
+    "samplingVersion": "v5-large-accuracy"
+  },
+  {
+    "id": "JLC-CN-PCB-LARGE-FPC-2-013",
+    "materialKey": "fpc",
+    "materialLabel": "FPC软板",
+    "layers": 2,
+    "widthMm": 185,
+    "heightMm": 200,
+    "quantity": 15,
+    "boardThickness": "0.11",
+    "solderColor": "页面默认",
+    "surfaceFinish": "沉金",
+    "copperThickness": "1oz",
+    "processChangedFields": [],
+    "sampleRole": "large_estimator_base",
+    "samplingVersion": "v5-large-accuracy"
+  },
+  {
+    "id": "JLC-CN-PCB-LARGE-FPC-2-014",
+    "materialKey": "fpc",
+    "materialLabel": "FPC软板",
+    "layers": 2,
+    "widthMm": 195,
+    "heightMm": 170,
+    "quantity": 30,
+    "boardThickness": "0.12",
+    "solderColor": "页面默认",
+    "surfaceFinish": "沉金",
+    "copperThickness": "1oz",
+    "processChangedFields": [
+      "boardThickness"
+    ],
+    "sampleRole": "large_estimator_process",
+    "samplingVersion": "v5-large-accuracy"
+  },
+  {
+    "id": "JLC-CN-PCB-LARGE-FPC-2-015",
+    "materialKey": "fpc",
+    "materialLabel": "FPC软板",
+    "layers": 2,
+    "widthMm": 70,
+    "heightMm": 145,
+    "quantity": 75,
+    "boardThickness": "0.20",
+    "solderColor": "页面默认",
+    "surfaceFinish": "沉金",
+    "copperThickness": "1oz",
+    "processChangedFields": [
+      "boardThickness"
+    ],
+    "sampleRole": "large_estimator_process",
+    "samplingVersion": "v5-large-accuracy"
+  }
+]

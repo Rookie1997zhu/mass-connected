@@ -143,6 +143,37 @@ class UploadValidationTests(SimpleTestCase):
         self.assertEqual(ext, ".step")
 
 
+class Print3dDefaultPrinterTests(TestCase):
+    """打印机不再由会员选择：选项不下发，快照固定为管理端默认打印机。"""
+
+    def test_public_options_exclude_printers(self):
+        from apps.simplequote.print3d_config import public_options_payload
+
+        self.assertNotIn("printers", public_options_payload())
+
+    def test_snapshot_uses_default_printer_and_ignores_member_input(self):
+        from apps.simplequote.print3d_config import build_job_config_snapshot
+
+        snap = build_job_config_snapshot({"material": "PLA", "quality": "standard"})
+        self.assertEqual(snap["printer"]["key"], "prusa_mk3s")
+
+    def test_admin_configured_default_printer_wins(self):
+        from apps.simplequote.models import QuoteTable
+        from apps.simplequote.print3d_config import build_job_config_snapshot
+
+        QuoteTable.objects.create(
+            quote_type="print3d",
+            table_key="printers",
+            rows=[
+                {"key": "prusa_mk3s", "name": "Prusa", "enabled": True, "markup_multiplier": 1.3},
+                {"key": "bambu_x1", "name": "Bambu", "enabled": True, "is_default": True, "markup_multiplier": 1.4},
+            ],
+            is_active=True,
+        )
+        snap = build_job_config_snapshot({"material": "PLA", "quality": "standard"})
+        self.assertEqual(snap["printer"]["key"], "bambu_x1")
+
+
 class Print3dJobApiTests(TestCase):
     def setUp(self):
         User = get_user_model()

@@ -1,0 +1,42 @@
+[
+  {
+    "id": "JLC-CN-PCB-V3-SMOKE-FPC-1L",
+    "materialKey": "fpc",
+    "materialLabel": "FPC软板",
+    "layers": 1,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 5,
+    "samplingVersion": "v3"
+  },
+  {
+    "id": "JLC-CN-PCB-V3-SMOKE-FPC-2L",
+    "materialKey": "fpc",
+    "materialLabel": "FPC软板",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 20,
+    "samplingVersion": "v3"
+  },
+  {
+    "id": "JLC-CN-PCB-V3-SMOKE-ALU-1L-A",
+    "materialKey": "aluminum",
+    "materialLabel": "铝基板",
+    "layers": 1,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 5,
+    "samplingVersion": "v3"
+  },
+  {
+    "id": "JLC-CN-PCB-V3-SMOKE-ALU-1L-B",
+    "materialKey": "aluminum",
+    "materialLabel": "铝基板",
+    "layers": 1,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 20,
+    "samplingVersion": "v3"
+  }
+]

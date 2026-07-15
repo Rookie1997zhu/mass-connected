@@ -1,0 +1,23 @@
+[
+  {
+    "id": "JLC-CN-PCB-V7-ACC-FR4-001-R1",
+    "samplingVersion": "v7-acceptance",
+    "sampleRole": "final_acceptance",
+    "materialKey": "fr4",
+    "materialLabel": "FR-4",
+    "layers": 2,
+    "widthMm": 56,
+    "heightMm": 68,
+    "quantity": 15,
+    "boardThickness": "1.6",
+    "solderColor": "绿色",
+    "surfaceFinish": "有铅喷锡",
+    "copperThickness": "1oz",
+    "solderMaskCoverage": "过孔盖油",
+    "panelDesignCount": "1",
+    "processChangedFields": [],
+    "baseSampleId": "JLC-CN-PCB-V7-ACC-FR4-001",
+    "repeatIndex": 1,
+    "estimatorGroup": "final_acceptance"
+  }
+]

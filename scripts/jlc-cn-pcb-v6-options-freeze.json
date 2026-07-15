@@ -1,0 +1,81 @@
+{
+  "frozenAt": "2026-07-12",
+  "source": "JLC CN DOM probe + interactive browser verification",
+  "notes": [
+    "公开页当前无稳定可选的非 1oz 铜厚控件，铜厚仅发布 1oz",
+    "焊盘喷镀与表面处理合并为 surfaceFinish；页面文案 OSP 免费 归一为 OSP",
+    "过孔塞铜浆+过孔电镀盖帽 在验证规格下为 disabled，不发布",
+    "拼板款数页面 min=1、max 未稳定封顶；仅发布可稳定确认的 1 与 2，其余人工复核",
+    "金手指斜边与钢网继续排除；smt_required 仅记录需求"
+  ],
+  "fr4": {
+    "defaults": {
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "有铅喷锡",
+      "copperThickness": "1oz",
+      "solderMaskCoverage": "过孔盖油",
+      "panelDesignCount": "1"
+    },
+    "options": {
+      "boardThickness": ["1.0", "1.2", "1.6", "2.0"],
+      "solderColor": ["绿色", "红色", "黄色", "蓝色", "白色", "哑黑色"],
+      "surfaceFinish": ["OSP", "有铅喷锡", "无铅喷锡", "沉金"],
+      "copperThickness": ["1oz"],
+      "solderMaskCoverage": ["过孔盖油", "过孔开窗", "过孔塞油", "过孔塞树脂+过孔电镀盖帽"],
+      "panelDesignCount": ["1", "2"]
+    },
+    "excludedUnstable": {
+      "solderColor": ["嘉立创紫", "黑色", "深空蓝", "晚霞橙", "暮光紫", "曜日红"],
+      "solderMaskCoverage": ["过孔塞铜浆+过孔电镀盖帽"],
+      "copperThickness": ["2oz"],
+      "panelDesignCount": [">2"]
+    }
+  },
+  "fpc": {
+    "defaults": {
+      "boardThickness": "0.11",
+      "solderColor": "页面默认",
+      "surfaceFinish": "沉金",
+      "copperThickness": "1oz",
+      "solderMaskCoverage": "页面默认",
+      "panelDesignCount": "1"
+    },
+    "options": {
+      "boardThickness": ["0.11", "0.12", "0.20"],
+      "solderColor": ["页面默认"],
+      "surfaceFinish": ["沉金"],
+      "copperThickness": ["1oz"],
+      "solderMaskCoverage": ["页面默认"],
+      "panelDesignCount": ["1", "2"]
+    },
+    "excludedUnstable": {
+      "surfaceFinish": ["OSP", "有铅喷锡", "无铅喷锡"],
+      "solderMaskCoverage": ["过孔盖油", "过孔开窗", "过孔塞油", "过孔塞树脂+过孔电镀盖帽"],
+      "copperThickness": ["2oz"]
+    }
+  },
+  "aluminum": {
+    "defaults": {
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "无铅喷锡",
+      "copperThickness": "1oz",
+      "solderMaskCoverage": "过孔盖油",
+      "panelDesignCount": "1"
+    },
+    "options": {
+      "boardThickness": ["1.0", "1.2", "1.6"],
+      "solderColor": ["绿色", "红色", "黄色", "蓝色", "白色", "哑黑色"],
+      "surfaceFinish": ["无铅喷锡"],
+      "copperThickness": ["1oz"],
+      "solderMaskCoverage": ["过孔盖油"],
+      "panelDesignCount": ["1", "2"]
+    },
+    "excludedUnstable": {
+      "surfaceFinish": ["OSP", "有铅喷锡", "沉金"],
+      "solderMaskCoverage": ["过孔开窗", "过孔塞油", "过孔塞树脂+过孔电镀盖帽", "过孔塞铜浆+过孔电镀盖帽"],
+      "copperThickness": ["2oz"]
+    }
+  }
+}

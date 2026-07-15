@@ -1,9 +1,38 @@
 from django.db import transaction
+from django.utils import timezone
 
 from apps.notification.services import notify
 from apps.project.models import Project, ProjectStage
 
-DEFAULT_STAGES = ["需求确认", "打样/开模", "批量生产", "质检", "交付"]
+# 新项目默认制作流程；存量项目不回填覆盖
+DEFAULT_STAGES = ["订单", "采购", "生产", "出库", "物流"]
+
+
+def get_current_stage(project):
+    stages = list(project.stages.all())
+    for stage in stages:
+        if stage.status == "in_progress":
+            return stage
+    for stage in stages:
+        if stage.status == "pending":
+            return stage
+    return stages[-1] if stages else None
+
+
+def advance_next_stage(project, completed_stage):
+    """完成后自动将下一 pending 阶段置为 in_progress。"""
+    from django.utils import timezone
+
+    next_stage = (
+        project.stages.filter(sort_order__gt=completed_stage.sort_order, status="pending")
+        .order_by("sort_order", "id")
+        .first()
+    )
+    if next_stage:
+        next_stage.status = "in_progress"
+        if not next_stage.started_at:
+            next_stage.started_at = timezone.now()
+        next_stage.save(update_fields=["status", "started_at"])
 
 
 def recalc_progress(project):
@@ -31,7 +60,7 @@ def create_project_from_production_order(production_order, title=None):
         production_order=production_order,
         buyer=production_order.buyer,
         supplier=production_order.supplier,
-        amount=production_order.price_amount,
+        amount=production_order.display_customer_amount(),
         currency=production_order.currency,
         status="in_progress",
     )
@@ -41,6 +70,7 @@ def create_project_from_production_order(production_order, title=None):
             name=name,
             sort_order=idx,
             status="in_progress" if idx == 0 else "pending",
+            started_at=timezone.now() if idx == 0 else None,
         )
     notify(
         project.buyer,

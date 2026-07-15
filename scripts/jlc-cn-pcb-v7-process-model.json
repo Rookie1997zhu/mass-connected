@@ -1,0 +1,903 @@
+{
+  "version": "jlc-cn-pcb-v7-process-20260713",
+  "algorithm": "validated_ofat_scale_segment_interaction_v1",
+  "materials": {
+    "fr4": {
+      "defaults": {
+        "boardThickness": "1.6",
+        "solderColor": "绿色",
+        "surfaceFinish": "有铅喷锡",
+        "copperThickness": "1oz",
+        "solderMaskCoverage": "过孔盖油",
+        "panelDesignCount": "1"
+      },
+      "options": {
+        "boardThickness": [
+          "1.0",
+          "1.2",
+          "1.6",
+          "2.0"
+        ],
+        "solderColor": [
+          "绿色",
+          "红色",
+          "黄色",
+          "蓝色",
+          "白色",
+          "哑黑色"
+        ],
+        "surfaceFinish": [
+          "OSP",
+          "有铅喷锡",
+          "无铅喷锡",
+          "沉金"
+        ],
+        "copperThickness": [
+          "1oz"
+        ],
+        "solderMaskCoverage": [
+          "过孔盖油",
+          "过孔开窗",
+          "过孔塞油",
+          "过孔塞树脂+过孔电镀盖帽"
+        ],
+        "panelDesignCount": [
+          "1",
+          "2"
+        ]
+      },
+      "factors": {
+        "boardThickness": {
+          "1.0": {
+            "method": "multiplier",
+            "multiplier": 1,
+            "additiveCny": 0,
+            "sampleCount": 3,
+            "fitError": 0,
+            "layers": [
+              2,
+              4
+            ]
+          },
+          "1.2": {
+            "method": "multiplier",
+            "multiplier": 1,
+            "additiveCny": 0,
+            "sampleCount": 3,
+            "fitError": 0,
+            "layers": [
+              2,
+              4
+            ]
+          },
+          "1.6": {
+            "method": "multiplier",
+            "multiplier": 1,
+            "additiveCny": 0,
+            "sampleCount": 4
+          },
+          "2.0": {
+            "method": "additive",
+            "multiplier": 4.32,
+            "additiveCny": 142.06,
+            "sampleCount": 2,
+            "fitError": 0.3721,
+            "layers": [
+              2
+            ]
+          }
+        },
+        "solderColor": {
+          "绿色": {
+            "method": "multiplier",
+            "multiplier": 1,
+            "additiveCny": 0,
+            "sampleCount": 4
+          },
+          "红色": {
+            "method": "multiplier",
+            "multiplier": 1.067843,
+            "additiveCny": 100,
+            "sampleCount": 3,
+            "fitError": 0.0917,
+            "layers": [
+              2,
+              4
+            ]
+          },
+          "黄色": {
+            "method": "multiplier",
+            "multiplier": 1.067843,
+            "additiveCny": 100,
+            "sampleCount": 3,
+            "fitError": 0.0917,
+            "layers": [
+              2,
+              4
+            ]
+          },
+          "蓝色": {
+            "method": "multiplier",
+            "multiplier": 1,
+            "additiveCny": 0,
+            "sampleCount": 3,
+            "fitError": 0.0066,
+            "layers": [
+              2,
+              4
+            ]
+          },
+          "白色": {
+            "method": "multiplier",
+            "multiplier": 1,
+            "additiveCny": 0,
+            "sampleCount": 3,
+            "fitError": 0.0066,
+            "layers": [
+              2,
+              4
+            ]
+          },
+          "哑黑色": {
+            "method": "multiplier",
+            "multiplier": 1,
+            "additiveCny": 0,
+            "sampleCount": 3,
+            "fitError": 0.0066,
+            "layers": [
+              2,
+              4
+            ]
+          }
+        },
+        "surfaceFinish": {
+          "OSP": {
+            "method": "multiplier",
+            "multiplier": 1,
+            "additiveCny": 0,
+            "sampleCount": 4,
+            "fitError": 0,
+            "layers": [
+              2,
+              4
+            ],
+            "scaleSegments": {
+              "mid": {
+                "method": "multiplier",
+                "multiplier": 1,
+                "additiveCny": 0,
+                "sampleCount": 2,
+                "fitError": 0,
+                "layers": [
+                  2
+                ]
+              }
+            }
+          },
+          "有铅喷锡": {
+            "method": "multiplier",
+            "multiplier": 1,
+            "additiveCny": 0,
+            "sampleCount": 4
+          },
+          "无铅喷锡": {
+            "method": "multiplier",
+            "multiplier": 1.15625,
+            "additiveCny": 45,
+            "sampleCount": 3,
+            "fitError": 0.17,
+            "layers": [
+              2,
+              4
+            ]
+          },
+          "沉金": {
+            "method": "multiplier",
+            "multiplier": 1.590278,
+            "additiveCny": 170,
+            "sampleCount": 3,
+            "fitError": 0.2929,
+            "layers": [
+              2,
+              4
+            ]
+          }
+        },
+        "copperThickness": {
+          "1oz": {
+            "method": "multiplier",
+            "multiplier": 1,
+            "additiveCny": 0,
+            "sampleCount": 4
+          }
+        },
+        "solderMaskCoverage": {
+          "过孔盖油": {
+            "method": "multiplier",
+            "multiplier": 1,
+            "additiveCny": 0,
+            "sampleCount": 4
+          },
+          "过孔开窗": {
+            "method": "multiplier",
+            "multiplier": 1,
+            "additiveCny": 0,
+            "sampleCount": 3,
+            "fitError": 0,
+            "layers": [
+              2,
+              4
+            ]
+          },
+          "过孔塞油": {
+            "method": "multiplier",
+            "multiplier": 1.364583,
+            "additiveCny": 100.13,
+            "sampleCount": 3,
+            "fitError": 0.35,
+            "layers": [
+              2,
+              4
+            ]
+          },
+          "过孔塞树脂+过孔电镀盖帽": {
+            "method": "additive",
+            "multiplier": 2.595486,
+            "additiveCny": 324.75,
+            "sampleCount": 3,
+            "fitError": 0.0986,
+            "layers": [
+              2,
+              4
+            ]
+          }
+        },
+        "panelDesignCount": {
+          "1": {
+            "method": "multiplier",
+            "multiplier": 1,
+            "additiveCny": 0,
+            "sampleCount": 4
+          },
+          "2": {
+            "method": "multiplier",
+            "multiplier": 1.173611,
+            "additiveCny": 50,
+            "sampleCount": 5,
+            "fitError": 0.1381,
+            "layers": [
+              2,
+              4
+            ],
+            "scaleSegments": {
+              "small": {
+                "method": "additive",
+                "multiplier": 1.67,
+                "additiveCny": 20,
+                "sampleCount": 2,
+                "fitError": 0,
+                "layers": [
+                  2
+                ]
+              },
+              "mid": {
+                "method": "additive",
+                "multiplier": 1.17,
+                "additiveCny": 50,
+                "sampleCount": 2,
+                "fitError": 0,
+                "layers": [
+                  2
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "fpc": {
+      "defaults": {
+        "boardThickness": "0.11",
+        "solderColor": "页面默认",
+        "surfaceFinish": "沉金",
+        "copperThickness": "1oz",
+        "solderMaskCoverage": "页面默认",
+        "panelDesignCount": "1"
+      },
+      "options": {
+        "boardThickness": [
+          "0.11",
+          "0.12",
+          "0.20"
+        ],
+        "solderColor": [
+          "页面默认"
+        ],
+        "surfaceFinish": [
+          "沉金"
+        ],
+        "copperThickness": [
+          "1oz"
+        ],
+        "solderMaskCoverage": [
+          "页面默认"
+        ],
+        "panelDesignCount": [
+          "1",
+          "2"
+        ]
+      },
+      "factors": {
+        "boardThickness": {
+          "0.11": {
+            "method": "multiplier",
+            "multiplier": 1,
+            "additiveCny": 0,
+            "sampleCount": 2
+          },
+          "0.12": {
+            "method": "multiplier",
+            "multiplier": 1.05,
+            "additiveCny": 68.75,
+            "sampleCount": 2,
+            "fitError": 0.012,
+            "layers": [
+              2
+            ]
+          },
+          "0.20": {
+            "method": "multiplier",
+            "multiplier": 1.16,
+            "additiveCny": 206.25,
+            "sampleCount": 2,
+            "fitError": 0.033,
+            "layers": [
+              2
+            ]
+          }
+        },
+        "solderColor": {
+          "页面默认": {
+            "method": "multiplier",
+            "multiplier": 1,
+            "additiveCny": 0,
+            "sampleCount": 2
+          }
+        },
+        "surfaceFinish": {
+          "沉金": {
+            "method": "multiplier",
+            "multiplier": 1,
+            "additiveCny": 0,
+            "sampleCount": 2
+          }
+        },
+        "copperThickness": {
+          "1oz": {
+            "method": "multiplier",
+            "multiplier": 1,
+            "additiveCny": 0,
+            "sampleCount": 2
+          }
+        },
+        "solderMaskCoverage": {
+          "页面默认": {
+            "method": "multiplier",
+            "multiplier": 1,
+            "additiveCny": 0,
+            "sampleCount": 2
+          }
+        },
+        "panelDesignCount": {
+          "1": {
+            "method": "multiplier",
+            "multiplier": 1,
+            "additiveCny": 0,
+            "sampleCount": 2
+          },
+          "2": {
+            "method": "additive",
+            "multiplier": 1.05,
+            "additiveCny": 50,
+            "sampleCount": 4,
+            "fitError": 0,
+            "layers": [
+              2
+            ],
+            "scaleSegments": {
+              "mid": {
+                "method": "additive",
+                "multiplier": 1.08,
+                "additiveCny": 50,
+                "sampleCount": 2,
+                "fitError": 0,
+                "layers": [
+                  2
+                ]
+              },
+              "large": {
+                "method": "additive",
+                "multiplier": 1.03,
+                "additiveCny": 50,
+                "sampleCount": 2,
+                "fitError": 0,
+                "layers": [
+                  2
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "aluminum": {
+      "defaults": {
+        "boardThickness": "1.6",
+        "solderColor": "绿色",
+        "surfaceFinish": "无铅喷锡",
+        "copperThickness": "1oz",
+        "solderMaskCoverage": "页面默认",
+        "panelDesignCount": "1"
+      },
+      "options": {
+        "boardThickness": [
+          "1.0",
+          "1.2",
+          "1.6"
+        ],
+        "solderColor": [
+          "绿色",
+          "红色",
+          "黄色",
+          "蓝色",
+          "白色",
+          "哑黑色"
+        ],
+        "surfaceFinish": [
+          "无铅喷锡"
+        ],
+        "copperThickness": [
+          "1oz"
+        ],
+        "solderMaskCoverage": [
+          "页面默认"
+        ],
+        "panelDesignCount": [
+          "1",
+          "2"
+        ]
+      },
+      "factors": {
+        "boardThickness": {
+          "1.0": {
+            "method": "multiplier",
+            "multiplier": 1,
+            "additiveCny": 0,
+            "sampleCount": 3,
+            "fitError": 0,
+            "layers": [
+              1
+            ]
+          },
+          "1.2": {
+            "method": "multiplier",
+            "multiplier": 1,
+            "additiveCny": 0,
+            "sampleCount": 3,
+            "fitError": 0,
+            "layers": [
+              1
+            ]
+          },
+          "1.6": {
+            "method": "multiplier",
+            "multiplier": 1,
+            "additiveCny": 0,
+            "sampleCount": 3
+          }
+        },
+        "solderColor": {
+          "绿色": {
+            "method": "multiplier",
+            "multiplier": 1,
+            "additiveCny": 0,
+            "sampleCount": 3
+          },
+          "红色": {
+            "method": "additive",
+            "multiplier": 1.431034,
+            "additiveCny": 100,
+            "sampleCount": 3,
+            "fitError": 0.0193,
+            "layers": [
+              1
+            ]
+          },
+          "黄色": {
+            "method": "additive",
+            "multiplier": 1.431034,
+            "additiveCny": 100,
+            "sampleCount": 3,
+            "fitError": 0.0193,
+            "layers": [
+              1
+            ]
+          },
+          "蓝色": {
+            "method": "additive",
+            "multiplier": 1.431034,
+            "additiveCny": 100,
+            "sampleCount": 3,
+            "fitError": 0.0193,
+            "layers": [
+              1
+            ]
+          },
+          "白色": {
+            "method": "multiplier",
+            "multiplier": 1,
+            "additiveCny": 0,
+            "sampleCount": 3,
+            "fitError": 0,
+            "layers": [
+              1
+            ]
+          },
+          "哑黑色": {
+            "method": "additive",
+            "multiplier": 1.431034,
+            "additiveCny": 100,
+            "sampleCount": 3,
+            "fitError": 0.0193,
+            "layers": [
+              1
+            ]
+          }
+        },
+        "surfaceFinish": {
+          "无铅喷锡": {
+            "method": "multiplier",
+            "multiplier": 1,
+            "additiveCny": 0,
+            "sampleCount": 3
+          }
+        },
+        "copperThickness": {
+          "1oz": {
+            "method": "multiplier",
+            "multiplier": 1,
+            "additiveCny": 0,
+            "sampleCount": 3
+          }
+        },
+        "solderMaskCoverage": {
+          "页面默认": {
+            "method": "multiplier",
+            "multiplier": 1,
+            "additiveCny": 0,
+            "sampleCount": 3
+          }
+        },
+        "panelDesignCount": {
+          "1": {
+            "method": "multiplier",
+            "multiplier": 1,
+            "additiveCny": 0,
+            "sampleCount": 3
+          },
+          "2": {
+            "method": "multiplier",
+            "multiplier": 1.22,
+            "additiveCny": 50,
+            "sampleCount": 6,
+            "fitError": 0.1818,
+            "layers": [
+              1
+            ],
+            "scaleSegments": {
+              "small": {
+                "method": "multiplier",
+                "multiplier": 2,
+                "additiveCny": 20,
+                "sampleCount": 2,
+                "fitError": 0,
+                "layers": [
+                  1
+                ]
+              },
+              "mid": {
+                "method": "additive",
+                "multiplier": 1.22,
+                "additiveCny": 50,
+                "sampleCount": 2,
+                "fitError": 0,
+                "layers": [
+                  1
+                ]
+              },
+              "large": {
+                "method": "additive",
+                "multiplier": 1.06,
+                "additiveCny": 50,
+                "sampleCount": 2,
+                "fitError": 0,
+                "layers": [
+                  1
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "interactions": {},
+  "enabledMaterials": [
+    "aluminum"
+  ],
+  "enabledZones": [
+    {
+      "id": "fr4_boardThickness_1.0",
+      "material_key": "fr4",
+      "process_fields": {
+        "boardThickness": [
+          "1.0"
+        ]
+      },
+      "action": "auto_quote",
+      "hitRate20": 1,
+      "mape": 0.0692,
+      "maxRelativeError": 0.0705,
+      "sampleCount": 2
+    },
+    {
+      "id": "fr4_surfaceFinish_OSP",
+      "material_key": "fr4",
+      "process_fields": {
+        "surfaceFinish": [
+          "OSP"
+        ]
+      },
+      "action": "auto_quote",
+      "hitRate20": 1,
+      "mape": 0.0692,
+      "maxRelativeError": 0.0705,
+      "sampleCount": 2
+    },
+    {
+      "id": "fr4_panelDesignCount_2",
+      "material_key": "fr4",
+      "process_fields": {
+        "panelDesignCount": [
+          "2"
+        ]
+      },
+      "action": "auto_quote",
+      "hitRate20": 1,
+      "mape": 0.0964,
+      "maxRelativeError": 0.1223,
+      "sampleCount": 2
+    },
+    {
+      "id": "fr4_solderColor_白色",
+      "material_key": "fr4",
+      "process_fields": {
+        "solderColor": [
+          "白色"
+        ]
+      },
+      "action": "auto_quote",
+      "hitRate20": 1,
+      "mape": 0.0499,
+      "maxRelativeError": 0.0499,
+      "sampleCount": 1
+    },
+    {
+      "id": "fr4_surfaceFinish_无铅喷锡",
+      "material_key": "fr4",
+      "process_fields": {
+        "surfaceFinish": [
+          "无铅喷锡"
+        ]
+      },
+      "action": "auto_quote",
+      "hitRate20": 1,
+      "mape": 0.0499,
+      "maxRelativeError": 0.0499,
+      "sampleCount": 1
+    },
+    {
+      "id": "fpc_boardThickness_0.20",
+      "material_key": "fpc",
+      "process_fields": {
+        "boardThickness": [
+          "0.20"
+        ]
+      },
+      "action": "auto_quote",
+      "hitRate20": 1,
+      "mape": 0.0173,
+      "maxRelativeError": 0.0173,
+      "sampleCount": 1
+    }
+  ],
+  "validationStatus": "partial_pass",
+  "validationMetrics": {
+    "overall": {
+      "total": 12,
+      "hit20": 10,
+      "hitRate20": 0.8333,
+      "mape": 0.1002,
+      "maxRelativeError": 0.3129,
+      "pass": true
+    },
+    "byMaterial": {
+      "fr4": {
+        "total": 5,
+        "hit20": 4,
+        "hitRate20": 0.8,
+        "mape": 0.1247,
+        "maxRelativeError": 0.3129,
+        "pass": true
+      },
+      "fpc": {
+        "total": 3,
+        "hit20": 2,
+        "hitRate20": 0.6667,
+        "mape": 0.1266,
+        "maxRelativeError": 0.2497,
+        "pass": false
+      },
+      "aluminum": {
+        "total": 4,
+        "hit20": 4,
+        "hitRate20": 1,
+        "mape": 0.0497,
+        "maxRelativeError": 0.148,
+        "pass": true
+      }
+    }
+  },
+  "riskZones": [
+    {
+      "id": "fr4_4l_small_low",
+      "material_key": "fr4",
+      "layers": [
+        4
+      ],
+      "min_area_mm2": 3575,
+      "max_area_mm2": 3575,
+      "min_quantity": 15,
+      "max_quantity": 15,
+      "action": "manual_review",
+      "reason": "auto_calibrated_from_process_holdout",
+      "calibrated_max_error": 0.3129,
+      "estimator_hint": 0.237
+    },
+    {
+      "id": "fpc_2l_mid_mid",
+      "material_key": "fpc",
+      "layers": [
+        2
+      ],
+      "min_area_mm2": 6175,
+      "max_area_mm2": 6175,
+      "min_quantity": 30,
+      "max_quantity": 30,
+      "action": "manual_review",
+      "reason": "auto_calibrated_from_process_holdout",
+      "calibrated_max_error": 0.2497,
+      "estimator_hint": 0.237
+    }
+  ],
+  "confidenceCalibration": {
+    "method": "holdout_error_bands_v1",
+    "bands": [
+      {
+        "maxRelativeError": 0.05,
+        "confidence": 0.92
+      },
+      {
+        "maxRelativeError": 0.1,
+        "confidence": 0.85
+      },
+      {
+        "maxRelativeError": 0.2,
+        "confidence": 0.72
+      },
+      {
+        "maxRelativeError": 1,
+        "confidence": 0.45
+      }
+    ],
+    "holdoutMape": 0.1002,
+    "holdoutHitRate10": null,
+    "holdoutHitRate20": 0.8333
+  },
+  "processEnabledZones": [
+    {
+      "id": "fr4_boardThickness_1.0",
+      "material_key": "fr4",
+      "process_fields": {
+        "boardThickness": [
+          "1.0"
+        ]
+      },
+      "action": "auto_quote",
+      "hitRate20": 1,
+      "mape": 0.0692,
+      "maxRelativeError": 0.0705,
+      "sampleCount": 2
+    },
+    {
+      "id": "fr4_surfaceFinish_OSP",
+      "material_key": "fr4",
+      "process_fields": {
+        "surfaceFinish": [
+          "OSP"
+        ]
+      },
+      "action": "auto_quote",
+      "hitRate20": 1,
+      "mape": 0.0692,
+      "maxRelativeError": 0.0705,
+      "sampleCount": 2
+    },
+    {
+      "id": "fr4_panelDesignCount_2",
+      "material_key": "fr4",
+      "process_fields": {
+        "panelDesignCount": [
+          "2"
+        ]
+      },
+      "action": "auto_quote",
+      "hitRate20": 1,
+      "mape": 0.0964,
+      "maxRelativeError": 0.1223,
+      "sampleCount": 2
+    },
+    {
+      "id": "fr4_solderColor_白色",
+      "material_key": "fr4",
+      "process_fields": {
+        "solderColor": [
+          "白色"
+        ]
+      },
+      "action": "auto_quote",
+      "hitRate20": 1,
+      "mape": 0.0499,
+      "maxRelativeError": 0.0499,
+      "sampleCount": 1
+    },
+    {
+      "id": "fr4_surfaceFinish_无铅喷锡",
+      "material_key": "fr4",
+      "process_fields": {
+        "surfaceFinish": [
+          "无铅喷锡"
+        ]
+      },
+      "action": "auto_quote",
+      "hitRate20": 1,
+      "mape": 0.0499,
+      "maxRelativeError": 0.0499,
+      "sampleCount": 1
+    },
+    {
+      "id": "fpc_boardThickness_0.20",
+      "material_key": "fpc",
+      "process_fields": {
+        "boardThickness": [
+          "0.20"
+        ]
+      },
+      "action": "auto_quote",
+      "hitRate20": 1,
+      "mape": 0.0173,
+      "maxRelativeError": 0.0173,
+      "sampleCount": 1
+    }
+  ]
+}

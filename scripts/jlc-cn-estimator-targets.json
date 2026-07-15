@@ -1,0 +1,242 @@
+[
+  {
+    "id": "JLC-CN-EST-BASE-001",
+    "estimatorGroup": "base",
+    "variable": "FR-4 2L 100x100 qty5",
+    "materialKey": "fr4",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5
+  },
+  {
+    "id": "JLC-CN-EST-MATERIAL-001",
+    "estimatorGroup": "material",
+    "variable": "FR-4",
+    "materialKey": "fr4",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5
+  },
+  {
+    "id": "JLC-CN-EST-MATERIAL-002",
+    "estimatorGroup": "material",
+    "variable": "FPC软板",
+    "materialKey": "fpc",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5
+  },
+  {
+    "id": "JLC-CN-EST-MATERIAL-003",
+    "estimatorGroup": "material",
+    "variable": "铝基板",
+    "materialKey": "aluminum",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5
+  },
+  {
+    "id": "JLC-CN-EST-MATERIAL-004",
+    "estimatorGroup": "material",
+    "variable": "铜基板",
+    "materialKey": "copper",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5
+  },
+  {
+    "id": "JLC-CN-EST-MATERIAL-005",
+    "estimatorGroup": "material",
+    "variable": "罗杰斯高频板",
+    "materialKey": "rogers",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5
+  },
+  {
+    "id": "JLC-CN-EST-MATERIAL-006",
+    "estimatorGroup": "material",
+    "variable": "铁氟龙高频板",
+    "materialKey": "teflon",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5
+  },
+  {
+    "id": "JLC-CN-EST-MATERIAL-007",
+    "estimatorGroup": "material",
+    "variable": "HDI盲埋孔板",
+    "materialKey": "hdi",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5
+  },
+  {
+    "id": "JLC-CN-EST-LAYER-001",
+    "estimatorGroup": "layer",
+    "variable": "1层",
+    "materialKey": "fr4",
+    "layers": 1,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 5
+  },
+  {
+    "id": "JLC-CN-EST-LAYER-002",
+    "estimatorGroup": "layer",
+    "variable": "2层",
+    "materialKey": "fr4",
+    "layers": 2,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 5
+  },
+  {
+    "id": "JLC-CN-EST-LAYER-003",
+    "estimatorGroup": "layer",
+    "variable": "4层",
+    "materialKey": "fr4",
+    "layers": 4,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 5
+  },
+  {
+    "id": "JLC-CN-EST-LAYER-004",
+    "estimatorGroup": "layer",
+    "variable": "6层",
+    "materialKey": "fr4",
+    "layers": 6,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 5
+  },
+  {
+    "id": "JLC-CN-EST-LAYER-005",
+    "estimatorGroup": "layer",
+    "variable": "8层",
+    "materialKey": "fr4",
+    "layers": 8,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 5
+  },
+  {
+    "id": "JLC-CN-EST-SIZE-001",
+    "estimatorGroup": "size",
+    "variable": "50x50",
+    "materialKey": "fr4",
+    "layers": 2,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 5
+  },
+  {
+    "id": "JLC-CN-EST-SIZE-002",
+    "estimatorGroup": "size",
+    "variable": "100x100",
+    "materialKey": "fr4",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5
+  },
+  {
+    "id": "JLC-CN-EST-SIZE-003",
+    "estimatorGroup": "size",
+    "variable": "100x150",
+    "materialKey": "fr4",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 5
+  },
+  {
+    "id": "JLC-CN-EST-SIZE-004",
+    "estimatorGroup": "size",
+    "variable": "150x150",
+    "materialKey": "fr4",
+    "layers": 2,
+    "widthMm": 150,
+    "heightMm": 150,
+    "quantity": 5
+  },
+  {
+    "id": "JLC-CN-EST-SIZE-005",
+    "estimatorGroup": "size",
+    "variable": "200x200",
+    "materialKey": "fr4",
+    "layers": 2,
+    "widthMm": 200,
+    "heightMm": 200,
+    "quantity": 5
+  },
+  {
+    "id": "JLC-CN-EST-QUANTITY-001",
+    "estimatorGroup": "quantity",
+    "variable": "5pcs",
+    "materialKey": "fr4",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5
+  },
+  {
+    "id": "JLC-CN-EST-QUANTITY-002",
+    "estimatorGroup": "quantity",
+    "variable": "10pcs",
+    "materialKey": "fr4",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 10
+  },
+  {
+    "id": "JLC-CN-EST-QUANTITY-003",
+    "estimatorGroup": "quantity",
+    "variable": "20pcs",
+    "materialKey": "fr4",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 20
+  },
+  {
+    "id": "JLC-CN-EST-QUANTITY-004",
+    "estimatorGroup": "quantity",
+    "variable": "50pcs",
+    "materialKey": "fr4",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 50
+  },
+  {
+    "id": "JLC-CN-EST-QUANTITY-005",
+    "estimatorGroup": "quantity",
+    "variable": "100pcs",
+    "materialKey": "fr4",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 100
+  },
+  {
+    "id": "JLC-CN-EST-QUANTITY-006",
+    "estimatorGroup": "quantity",
+    "variable": "200pcs",
+    "materialKey": "fr4",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 200
+  }
+]

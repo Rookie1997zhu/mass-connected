@@ -934,7 +934,7 @@ def _estimate_pcb_v9_material_model(candidates, spec, estimator, material_config
     target_area = spec["width_mm"] * spec["height_mm"]
     fpc_formula = None
 
-    if model_type == "fpc_layered_floor_area_quantity":
+    if model_type == "fpc_layered_floor_area_quantity" or model_type == "fr4_layered_floor_area_quantity":
         quantity_band = _pcb_quantity_band(spec["quantity"])
         layer_bands = (material_config.get("layerQuantityBands") or {}).get(
             str(spec["layers"]),
@@ -997,6 +997,7 @@ def _estimate_pcb_v9_material_model(candidates, spec, estimator, material_config
         model_type == "aluminum_floor_area_quantity"
         or material_config.get("formula") == "floor_area_quantity"
         or model_type == "fpc_layered_floor_area_quantity"
+        or model_type == "fr4_layered_floor_area_quantity"
     ):
         formula = fpc_formula or material_config
         floor_price = _to_number(formula.get("floorPriceCny"), 0)
@@ -1151,6 +1152,7 @@ def _estimate_pcb_manufacturing_by_model(tables, spec, meta):
 
     if material_config.get("modelType") in {
         "fr4_segmented",
+        "fr4_layered_floor_area_quantity",
         "aluminum_floor_area_quantity",
         "fpc_local",
         "fpc_layered_floor_area_quantity",
@@ -1313,6 +1315,40 @@ def _match_pcb_risk_zone(spec, meta):
     return None
 
 
+PCB_QUOTE_RANGE_RATE = 0.10
+
+
+def _pcb_quote_range(*, jlc_mid_cny, customer_mid_cny, customer_mid_krw, rate=None):
+    """由中位价展开 ±rate 区间（默认 ±10%）。"""
+    range_rate = PCB_QUOTE_RANGE_RATE if rate is None else _to_number(rate, PCB_QUOTE_RANGE_RATE)
+    jlc_mid = _to_number(jlc_mid_cny, 0)
+    customer_cny = _to_number(customer_mid_cny, 0)
+    customer_krw = _to_number(customer_mid_krw, 0)
+    return {
+        "quote_range_rate": range_rate,
+        "pricing_display_mode": "range",
+        "jlc_estimate_cny_min": round(jlc_mid * (1 - range_rate), 2) if jlc_mid else 0,
+        "jlc_estimate_cny_max": round(jlc_mid * (1 + range_rate), 2) if jlc_mid else 0,
+        "customer_quote_cny_min": round(customer_cny * (1 - range_rate), 2) if customer_cny else 0,
+        "customer_quote_cny_max": round(customer_cny * (1 + range_rate), 2) if customer_cny else 0,
+        "customer_quote_krw_min": round(customer_krw * (1 - range_rate)) if customer_krw else 0,
+        "customer_quote_krw_max": round(customer_krw * (1 + range_rate)) if customer_krw else 0,
+    }
+
+
+def _pcb_manual_display_fields():
+    return {
+        "quote_range_rate": None,
+        "pricing_display_mode": "manual",
+        "jlc_estimate_cny_min": None,
+        "jlc_estimate_cny_max": None,
+        "customer_quote_cny_min": None,
+        "customer_quote_cny_max": None,
+        "customer_quote_krw_min": None,
+        "customer_quote_krw_max": None,
+    }
+
+
 def _estimate_pcb_manufacturing(inputs, params, tables):
     include = bool(inputs.get("include_pcb_manufacturing") or inputs.get("include_manufacturing"))
     meta = _pcb_manufacturing_meta(tables)
@@ -1320,6 +1356,7 @@ def _estimate_pcb_manufacturing(inputs, params, tables):
     acceptance_status = meta.get("acceptance_status")
     enabled_materials = meta.get("enabled_materials") or []
     allow_auto_estimate = _pcb_acceptance_allows_auto_estimate(meta)
+    range_rate = _to_number(meta.get("quote_range_rate"), PCB_QUOTE_RANGE_RATE)
     base_result = {
         "enabled": include,
         "requires_manual_review": False,
@@ -1341,6 +1378,7 @@ def _estimate_pcb_manufacturing(inputs, params, tables):
         "smt_price_included": False,
         "risk_zone": None,
         "risk_status": None,
+        **_pcb_manual_display_fields(),
     }
     if not include:
         return base_result
@@ -1496,6 +1534,12 @@ def _estimate_pcb_manufacturing(inputs, params, tables):
     cny_to_krw = _to_number(params.get("cny_to_krw"), 232.4)
     customer_quote_cny = round(jlc_price_cny * (1 + margin_rate), 2)
     customer_quote_krw = round(customer_quote_cny * cny_to_krw)
+    quote_range = _pcb_quote_range(
+        jlc_mid_cny=jlc_price_cny,
+        customer_mid_cny=customer_quote_cny,
+        customer_mid_krw=customer_quote_krw,
+        rate=range_rate,
+    )
     return {
         **base_result,
         "material_label": row.get("material_label"),
@@ -1510,6 +1554,7 @@ def _estimate_pcb_manufacturing(inputs, params, tables):
         "manual_review_reasons": [],
         "risk_zone": None,
         "risk_status": "ok",
+        **quote_range,
     }
 
 
@@ -1576,10 +1621,21 @@ def calc_pcb(inputs, params, tables=None):
     shipping_fee = shipping.get("fee_krw", 0)
     manufacturing = _estimate_pcb_manufacturing(inputs, params, tables)
     manufacturing_fee = 0
+    manufacturing_fee_min = 0
+    manufacturing_fee_max = 0
     if manufacturing.get("enabled") and not manufacturing.get("requires_manual_review"):
         manufacturing_fee = round(_to_number(manufacturing.get("customer_quote_krw"), 0))
+        manufacturing_fee_min = round(
+            _to_number(manufacturing.get("customer_quote_krw_min"), manufacturing_fee)
+        )
+        manufacturing_fee_max = round(
+            _to_number(manufacturing.get("customer_quote_krw_max"), manufacturing_fee)
+        )
 
-    total = dev_before_discount + service_total + shipping_fee + manufacturing_fee
+    fixed_total = dev_before_discount + service_total + shipping_fee
+    total = fixed_total + manufacturing_fee
+    total_min = fixed_total + manufacturing_fee_min
+    total_max = fixed_total + manufacturing_fee_max
 
     breakdown = [
         {
@@ -1594,7 +1650,14 @@ def calc_pcb(inputs, params, tables=None):
     for svc in service_items:
         breakdown.append({"label": f"服务 / {svc['label']}", "amount": svc["fee_krw"]})
     if manufacturing_fee:
-        breakdown.append({"label": "PCB 样板制造费 / PCB sample fabrication", "amount": manufacturing_fee})
+        breakdown.append(
+            {
+                "label": "PCB 样板制造费 / PCB sample fabrication",
+                "amount": manufacturing_fee,
+                "amount_min": manufacturing_fee_min,
+                "amount_max": manufacturing_fee_max,
+            }
+        )
     breakdown.append({"label": "配送费 / Shipping (简化规则)", "amount": shipping_fee})
 
     return {
@@ -1611,6 +1674,8 @@ def calc_pcb(inputs, params, tables=None):
         "service_total": service_total,
         "pcb_manufacturing": manufacturing,
         "pcb_manufacturing_fee": manufacturing_fee,
+        "pcb_manufacturing_fee_min": manufacturing_fee_min,
+        "pcb_manufacturing_fee_max": manufacturing_fee_max,
         "shipping": shipping,
         "shipping_fee": shipping_fee,
         "vat_included": False,
@@ -1618,6 +1683,8 @@ def calc_pcb(inputs, params, tables=None):
         "mold_fee": 0,
         "quantity": 1,
         "total": total,
+        "total_min": total_min,
+        "total_max": total_max,
         "breakdown": breakdown,
     }
 

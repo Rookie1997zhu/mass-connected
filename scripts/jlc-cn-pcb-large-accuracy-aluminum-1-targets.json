@@ -1,0 +1,266 @@
+[
+  {
+    "id": "JLC-CN-PCB-LARGE-ALUMINUM-1-001",
+    "materialKey": "aluminum",
+    "materialLabel": "铝基板",
+    "layers": 1,
+    "widthMm": 55,
+    "heightMm": 65,
+    "quantity": 15,
+    "boardThickness": "1.6",
+    "solderColor": "绿色",
+    "surfaceFinish": "无铅喷锡",
+    "copperThickness": "1oz",
+    "processChangedFields": [],
+    "sampleRole": "large_estimator_base",
+    "samplingVersion": "v5-large-accuracy"
+  },
+  {
+    "id": "JLC-CN-PCB-LARGE-ALUMINUM-1-002",
+    "materialKey": "aluminum",
+    "materialLabel": "铝基板",
+    "layers": 1,
+    "widthMm": 65,
+    "heightMm": 95,
+    "quantity": 30,
+    "boardThickness": "1.6",
+    "solderColor": "红色",
+    "surfaceFinish": "无铅喷锡",
+    "copperThickness": "1oz",
+    "processChangedFields": [
+      "solderColor"
+    ],
+    "sampleRole": "large_estimator_process",
+    "samplingVersion": "v5-large-accuracy"
+  },
+  {
+    "id": "JLC-CN-PCB-LARGE-ALUMINUM-1-003",
+    "materialKey": "aluminum",
+    "materialLabel": "铝基板",
+    "layers": 1,
+    "widthMm": 75,
+    "heightMm": 115,
+    "quantity": 15,
+    "boardThickness": "1.6",
+    "solderColor": "蓝色",
+    "surfaceFinish": "无铅喷锡",
+    "copperThickness": "1oz",
+    "processChangedFields": [
+      "solderColor"
+    ],
+    "sampleRole": "large_estimator_process",
+    "samplingVersion": "v5-large-accuracy"
+  },
+  {
+    "id": "JLC-CN-PCB-LARGE-ALUMINUM-1-004",
+    "materialKey": "aluminum",
+    "materialLabel": "铝基板",
+    "layers": 1,
+    "widthMm": 90,
+    "heightMm": 130,
+    "quantity": 150,
+    "boardThickness": "1.6",
+    "solderColor": "白色",
+    "surfaceFinish": "无铅喷锡",
+    "copperThickness": "1oz",
+    "processChangedFields": [
+      "solderColor"
+    ],
+    "sampleRole": "large_estimator_process",
+    "samplingVersion": "v5-large-accuracy"
+  },
+  {
+    "id": "JLC-CN-PCB-LARGE-ALUMINUM-1-005",
+    "materialKey": "aluminum",
+    "materialLabel": "铝基板",
+    "layers": 1,
+    "widthMm": 105,
+    "heightMm": 135,
+    "quantity": 30,
+    "boardThickness": "1.6",
+    "solderColor": "哑黑色",
+    "surfaceFinish": "无铅喷锡",
+    "copperThickness": "1oz",
+    "processChangedFields": [
+      "solderColor"
+    ],
+    "sampleRole": "large_estimator_process",
+    "samplingVersion": "v5-large-accuracy"
+  },
+  {
+    "id": "JLC-CN-PCB-LARGE-ALUMINUM-1-006",
+    "materialKey": "aluminum",
+    "materialLabel": "铝基板",
+    "layers": 1,
+    "widthMm": 115,
+    "heightMm": 175,
+    "quantity": 75,
+    "boardThickness": "1.6",
+    "solderColor": "绿色",
+    "surfaceFinish": "无铅喷锡",
+    "copperThickness": "1oz",
+    "processChangedFields": [],
+    "sampleRole": "large_estimator_base",
+    "samplingVersion": "v5-large-accuracy"
+  },
+  {
+    "id": "JLC-CN-PCB-LARGE-ALUMINUM-1-007",
+    "materialKey": "aluminum",
+    "materialLabel": "铝基板",
+    "layers": 1,
+    "widthMm": 125,
+    "heightMm": 155,
+    "quantity": 150,
+    "boardThickness": "1.6",
+    "solderColor": "红色",
+    "surfaceFinish": "无铅喷锡",
+    "copperThickness": "1oz",
+    "processChangedFields": [
+      "solderColor"
+    ],
+    "sampleRole": "large_estimator_process",
+    "samplingVersion": "v5-large-accuracy"
+  },
+  {
+    "id": "JLC-CN-PCB-LARGE-ALUMINUM-1-008",
+    "materialKey": "aluminum",
+    "materialLabel": "铝基板",
+    "layers": 1,
+    "widthMm": 135,
+    "heightMm": 190,
+    "quantity": 75,
+    "boardThickness": "1.6",
+    "solderColor": "蓝色",
+    "surfaceFinish": "无铅喷锡",
+    "copperThickness": "1oz",
+    "processChangedFields": [
+      "solderColor"
+    ],
+    "sampleRole": "large_estimator_process",
+    "samplingVersion": "v5-large-accuracy"
+  },
+  {
+    "id": "JLC-CN-PCB-LARGE-ALUMINUM-1-009",
+    "materialKey": "aluminum",
+    "materialLabel": "铝基板",
+    "layers": 1,
+    "widthMm": 145,
+    "heightMm": 165,
+    "quantity": 15,
+    "boardThickness": "1.6",
+    "solderColor": "白色",
+    "surfaceFinish": "无铅喷锡",
+    "copperThickness": "1oz",
+    "processChangedFields": [
+      "solderColor"
+    ],
+    "sampleRole": "large_estimator_process",
+    "samplingVersion": "v5-large-accuracy"
+  },
+  {
+    "id": "JLC-CN-PCB-LARGE-ALUMINUM-1-010",
+    "materialKey": "aluminum",
+    "materialLabel": "铝基板",
+    "layers": 1,
+    "widthMm": 155,
+    "heightMm": 185,
+    "quantity": 30,
+    "boardThickness": "1.6",
+    "solderColor": "哑黑色",
+    "surfaceFinish": "无铅喷锡",
+    "copperThickness": "1oz",
+    "processChangedFields": [
+      "solderColor"
+    ],
+    "sampleRole": "large_estimator_process",
+    "samplingVersion": "v5-large-accuracy"
+  },
+  {
+    "id": "JLC-CN-PCB-LARGE-ALUMINUM-1-011",
+    "materialKey": "aluminum",
+    "materialLabel": "铝基板",
+    "layers": 1,
+    "widthMm": 165,
+    "heightMm": 195,
+    "quantity": 75,
+    "boardThickness": "1.6",
+    "solderColor": "绿色",
+    "surfaceFinish": "无铅喷锡",
+    "copperThickness": "1oz",
+    "processChangedFields": [],
+    "sampleRole": "large_estimator_base",
+    "samplingVersion": "v5-large-accuracy"
+  },
+  {
+    "id": "JLC-CN-PCB-LARGE-ALUMINUM-1-012",
+    "materialKey": "aluminum",
+    "materialLabel": "铝基板",
+    "layers": 1,
+    "widthMm": 175,
+    "heightMm": 185,
+    "quantity": 150,
+    "boardThickness": "1.6",
+    "solderColor": "红色",
+    "surfaceFinish": "无铅喷锡",
+    "copperThickness": "1oz",
+    "processChangedFields": [
+      "solderColor"
+    ],
+    "sampleRole": "large_estimator_process",
+    "samplingVersion": "v5-large-accuracy"
+  },
+  {
+    "id": "JLC-CN-PCB-LARGE-ALUMINUM-1-013",
+    "materialKey": "aluminum",
+    "materialLabel": "铝基板",
+    "layers": 1,
+    "widthMm": 185,
+    "heightMm": 200,
+    "quantity": 15,
+    "boardThickness": "1.6",
+    "solderColor": "蓝色",
+    "surfaceFinish": "无铅喷锡",
+    "copperThickness": "1oz",
+    "processChangedFields": [
+      "solderColor"
+    ],
+    "sampleRole": "large_estimator_process",
+    "samplingVersion": "v5-large-accuracy"
+  },
+  {
+    "id": "JLC-CN-PCB-LARGE-ALUMINUM-1-014",
+    "materialKey": "aluminum",
+    "materialLabel": "铝基板",
+    "layers": 1,
+    "widthMm": 195,
+    "heightMm": 170,
+    "quantity": 30,
+    "boardThickness": "1.6",
+    "solderColor": "白色",
+    "surfaceFinish": "无铅喷锡",
+    "copperThickness": "1oz",
+    "processChangedFields": [
+      "solderColor"
+    ],
+    "sampleRole": "large_estimator_process",
+    "samplingVersion": "v5-large-accuracy"
+  },
+  {
+    "id": "JLC-CN-PCB-LARGE-ALUMINUM-1-015",
+    "materialKey": "aluminum",
+    "materialLabel": "铝基板",
+    "layers": 1,
+    "widthMm": 70,
+    "heightMm": 145,
+    "quantity": 75,
+    "boardThickness": "1.6",
+    "solderColor": "哑黑色",
+    "surfaceFinish": "无铅喷锡",
+    "copperThickness": "1oz",
+    "processChangedFields": [
+      "solderColor"
+    ],
+    "sampleRole": "large_estimator_process",
+    "samplingVersion": "v5-large-accuracy"
+  }
+]

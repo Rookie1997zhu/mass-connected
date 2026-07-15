@@ -1,0 +1,92 @@
+{
+  "version": "jlc-cn-pcb-v4-estimator-20260713",
+  "algorithm": "staged_log_interp_v1",
+  "neighbors": 4,
+  "areaWeight": 1,
+  "quantityWeight": 1.35,
+  "aspectWeight": 0.35,
+  "materials": {
+    "fr4": {
+      "layers": [
+        2,
+        4
+      ],
+      "minWidthMm": 50,
+      "maxWidthMm": 200,
+      "minHeightMm": 50,
+      "maxHeightMm": 200,
+      "minQuantity": 5,
+      "maxQuantity": 200
+    },
+    "fpc": {
+      "layers": [
+        1,
+        2
+      ],
+      "minWidthMm": 50,
+      "maxWidthMm": 200,
+      "minHeightMm": 50,
+      "maxHeightMm": 200,
+      "minQuantity": 5,
+      "maxQuantity": 200
+    },
+    "aluminum": {
+      "layers": [
+        1
+      ],
+      "minWidthMm": 50,
+      "maxWidthMm": 200,
+      "minHeightMm": 50,
+      "maxHeightMm": 200,
+      "minQuantity": 5,
+      "maxQuantity": 200
+    }
+  },
+  "enabledMaterials": [
+    "fr4",
+    "fpc"
+  ],
+  "validationStatus": "passed",
+  "validationMetrics": {
+    "overall": {
+      "total": 24,
+      "hit20": 21,
+      "hitRate20": 0.875,
+      "mape": 0.0701,
+      "maxRelativeError": 0.242,
+      "pass": true
+    },
+    "byMaterial": {
+      "fr4": {
+        "total": 8,
+        "hit20": 7,
+        "hitRate20": 0.875,
+        "mape": 0.0579,
+        "maxRelativeError": 0.237,
+        "pass": true
+      },
+      "fpc": {
+        "total": 8,
+        "hit20": 8,
+        "hitRate20": 1,
+        "mape": 0.067,
+        "maxRelativeError": 0.1081,
+        "pass": true
+      },
+      "aluminum": {
+        "total": 8,
+        "hit20": 6,
+        "hitRate20": 0.75,
+        "mape": 0.0855,
+        "maxRelativeError": 0.242,
+        "pass": false
+      }
+    }
+  },
+  "guards": {
+    "maxNeighborDistance": 0.85,
+    "minLocalNeighbors": 2
+  },
+  "maxNeighborDistance": 0.85,
+  "minLocalNeighbors": 2
+}

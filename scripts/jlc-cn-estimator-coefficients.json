@@ -1,0 +1,302 @@
+{
+  "source": "JLC CN public quote controlled sampling",
+  "generatedAt": "2026-07-10T04:14:56.613Z",
+  "base": {
+    "material": "FR-4",
+    "layers": 2,
+    "sizeMm": "100 x 100",
+    "quantity": 5,
+    "samplePrice": 30
+  },
+  "formula": "estimatedJlcPrice = max(minimumPrice, basePrice * materialRatio * layerRatio * sizeRatio * quantityRatio)",
+  "customerQuoteFormula": "customerQuote = round(estimatedJlcPrice * 1.10, 2)",
+  "materialCoefficients": [
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "samplePrice": 30,
+      "deltaFromBase": 0,
+      "ratio": 1,
+      "confidence": "high",
+      "note": "固定 2L / 100x100mm / 5pcs"
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "samplePrice": 201,
+      "deltaFromBase": 171,
+      "ratio": 6.7,
+      "confidence": "high",
+      "note": "固定 2L / 100x100mm / 5pcs"
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "samplePrice": 144.5,
+      "deltaFromBase": 114.5,
+      "ratio": 4.8167,
+      "confidence": "high",
+      "note": "固定 2L / 100x100mm / 5pcs"
+    }
+  ],
+  "layerCoefficients": [
+    {
+      "layers": 1,
+      "samplePrice": 20,
+      "deltaFrom2Layer": -10,
+      "ratio": 0.6667,
+      "confidence": "high",
+      "note": "固定 FR-4 / 50x50mm / 5pcs"
+    },
+    {
+      "layers": 2,
+      "samplePrice": 30,
+      "deltaFrom2Layer": 0,
+      "ratio": 1,
+      "confidence": "high",
+      "note": "固定 FR-4 / 50x50mm / 5pcs"
+    },
+    {
+      "layers": 4,
+      "samplePrice": 40,
+      "deltaFrom2Layer": 10,
+      "ratio": 1.3333,
+      "confidence": "high",
+      "note": "固定 FR-4 / 50x50mm / 5pcs"
+    },
+    {
+      "layers": 6,
+      "samplePrice": 210,
+      "deltaFrom2Layer": 180,
+      "ratio": 7,
+      "confidence": "high",
+      "note": "固定 FR-4 / 50x50mm / 5pcs"
+    },
+    {
+      "layers": 8,
+      "samplePrice": 610,
+      "deltaFrom2Layer": 580,
+      "ratio": 20.3333,
+      "confidence": "low",
+      "note": "固定 FR-4 / 50x50mm / 5pcs"
+    }
+  ],
+  "sizeCoefficients": [
+    {
+      "sizeMm": "50 x 50",
+      "areaCm2": 25,
+      "samplePrice": 30,
+      "deltaFrom100x100": 0,
+      "ratio": 1,
+      "approxAreaRateFromBase": 0,
+      "confidence": "high",
+      "note": "固定 FR-4 / 2L / 5pcs"
+    },
+    {
+      "sizeMm": "100 x 100",
+      "areaCm2": 100,
+      "samplePrice": 30,
+      "deltaFrom100x100": 0,
+      "ratio": 1,
+      "approxAreaRateFromBase": null,
+      "confidence": "high",
+      "note": "固定 FR-4 / 2L / 5pcs"
+    },
+    {
+      "sizeMm": "100 x 150",
+      "areaCm2": 150,
+      "samplePrice": 70.5,
+      "deltaFrom100x100": 40.5,
+      "ratio": 2.35,
+      "approxAreaRateFromBase": 0.81,
+      "confidence": "high",
+      "note": "固定 FR-4 / 2L / 5pcs"
+    },
+    {
+      "sizeMm": "150 x 150",
+      "areaCm2": 225,
+      "samplePrice": 90.75,
+      "deltaFrom100x100": 60.75,
+      "ratio": 3.025,
+      "approxAreaRateFromBase": 0.486,
+      "confidence": "high",
+      "note": "固定 FR-4 / 2L / 5pcs"
+    },
+    {
+      "sizeMm": "200 x 200",
+      "areaCm2": 400,
+      "samplePrice": 138,
+      "deltaFrom100x100": 108,
+      "ratio": 4.6,
+      "approxAreaRateFromBase": 0.36,
+      "confidence": "high",
+      "note": "固定 FR-4 / 2L / 5pcs"
+    }
+  ],
+  "quantityCoefficients": [
+    {
+      "quantity": 5,
+      "samplePrice": 30,
+      "deltaFrom5pcs": 0,
+      "ratio": 1,
+      "confidence": "high",
+      "note": "固定 FR-4 / 2L / 100x100mm"
+    },
+    {
+      "quantity": 10,
+      "samplePrice": 30,
+      "deltaFrom5pcs": 0,
+      "ratio": 1,
+      "confidence": "high",
+      "note": "固定 FR-4 / 2L / 100x100mm"
+    },
+    {
+      "quantity": 20,
+      "samplePrice": 138,
+      "deltaFrom5pcs": 108,
+      "ratio": 4.6,
+      "confidence": "high",
+      "note": "固定 FR-4 / 2L / 100x100mm"
+    },
+    {
+      "quantity": 50,
+      "samplePrice": 3018,
+      "deltaFrom5pcs": 2988,
+      "ratio": 100.6,
+      "confidence": "low",
+      "note": "批量价跳变明显，只作低置信度参考"
+    },
+    {
+      "quantity": 100,
+      "samplePrice": 498,
+      "deltaFrom5pcs": 468,
+      "ratio": 16.6,
+      "confidence": "medium",
+      "note": "固定 FR-4 / 2L / 100x100mm"
+    },
+    {
+      "quantity": 200,
+      "samplePrice": 3018,
+      "deltaFrom5pcs": 2988,
+      "ratio": 100.6,
+      "confidence": "low",
+      "note": "批量价跳变明显，只作低置信度参考"
+    }
+  ],
+  "materialSpecificCoefficients": [
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "defaultLayers": 2,
+      "baseSizeMm": "100 x 100",
+      "baseQuantity": 5,
+      "basePrice": 201,
+      "formula": "estimatedJlcPrice = materialBasePrice * materialSizeRatio * materialQuantityRatio",
+      "customerQuoteFormula": "customerQuote = round(estimatedJlcPrice * 1.10, 2)",
+      "sizeRatios": [
+        {
+          "sizeMm": "50 x 50",
+          "samplePrice": 170.25,
+          "ratio": 0.847,
+          "confidence": "medium",
+          "note": "非 FR-4 默认工艺样本，粗估使用"
+        },
+        {
+          "sizeMm": "100 x 100",
+          "samplePrice": 201,
+          "ratio": 1,
+          "confidence": "medium",
+          "note": "该材料基准尺寸"
+        },
+        {
+          "sizeMm": "100 x 150",
+          "samplePrice": 221.5,
+          "ratio": 1.102,
+          "confidence": "medium",
+          "note": "非 FR-4 默认工艺样本，粗估使用"
+        }
+      ],
+      "quantityRatios": [
+        {
+          "quantity": 5,
+          "samplePrice": 201,
+          "ratio": 1,
+          "confidence": "medium",
+          "note": "该材料基准数量"
+        },
+        {
+          "quantity": 10,
+          "samplePrice": 242,
+          "ratio": 1.204,
+          "confidence": "medium",
+          "note": "非 FR-4 默认工艺样本，粗估使用"
+        },
+        {
+          "quantity": 20,
+          "samplePrice": 324,
+          "ratio": 1.6119,
+          "confidence": "medium",
+          "note": "非 FR-4 默认工艺样本，粗估使用"
+        }
+      ]
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "defaultLayers": 1,
+      "baseSizeMm": "100 x 100",
+      "baseQuantity": 5,
+      "basePrice": 144.5,
+      "formula": "estimatedJlcPrice = materialBasePrice * materialSizeRatio * materialQuantityRatio",
+      "customerQuoteFormula": "customerQuote = round(estimatedJlcPrice * 1.10, 2)",
+      "sizeRatios": [
+        {
+          "sizeMm": "50 x 50",
+          "samplePrice": 167,
+          "ratio": 1.1557,
+          "confidence": "low",
+          "note": "小规格高于基准，固定工程费影响明显"
+        },
+        {
+          "sizeMm": "100 x 100",
+          "samplePrice": 144.5,
+          "ratio": 1,
+          "confidence": "medium",
+          "note": "该材料基准尺寸"
+        },
+        {
+          "sizeMm": "100 x 150",
+          "samplePrice": 167,
+          "ratio": 1.1557,
+          "confidence": "medium",
+          "note": "非 FR-4 默认工艺样本，粗估使用"
+        }
+      ],
+      "quantityRatios": [
+        {
+          "quantity": 5,
+          "samplePrice": 144.5,
+          "ratio": 1,
+          "confidence": "medium",
+          "note": "该材料基准数量"
+        },
+        {
+          "quantity": 10,
+          "samplePrice": 169,
+          "ratio": 1.1696,
+          "confidence": "medium",
+          "note": "非 FR-4 默认工艺样本，粗估使用"
+        },
+        {
+          "quantity": 20,
+          "samplePrice": 20,
+          "ratio": 0.1384,
+          "confidence": "low",
+          "note": "价格倒挂，疑似特价/活动价，只作内部粗估"
+        }
+      ]
+    }
+  ],
+  "materialSpecificFormula": "estimatedJlcPrice = materialBasePrice * materialSizeRatio * materialQuantityRatio",
+  "updatedAt": "2026-07-10T05:08:49.637Z"
+}

@@ -1,0 +1,3809 @@
+[
+  {
+    "id": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FR4-001-R1",
+    "samplingVersion": "v6",
+    "materialKey": "fr4",
+    "materialLabel": "FR-4",
+    "layers": 2,
+    "widthMm": 80,
+    "heightMm": 120,
+    "quantity": 20,
+    "boardThickness": "1.0",
+    "solderColor": "红色",
+    "surfaceFinish": "OSP",
+    "copperThickness": "1oz",
+    "solderMaskCoverage": "过孔开窗",
+    "panelDesignCount": "1",
+    "processChangedFields": [
+      "boardThickness",
+      "solderColor",
+      "surfaceFinish",
+      "solderMaskCoverage"
+    ],
+    "baseSampleId": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FR4-001",
+    "repeatIndex": 1,
+    "sampleRole": "process_holdout",
+    "estimatorGroup": "process_holdout",
+    "sampleTime": "2026-07-12T03:44:06.315Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 8,
+    "widthCm": 12,
+    "fixedOptions": "FR-4, 1.6mm, 绿色, 有铅喷锡, 1oz, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 133.68,
+    "domPriceCny": 133.68,
+    "apiPriceCny": 133.68,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "20",
+    "selectedLengthCm": "8",
+    "selectedWidthCm": "12",
+    "selectedMaterialLabel": "FR-4",
+    "selectedLayers": 2,
+    "selectedProcessOptions": {
+      "boardThickness": {
+        "requested": "1.0mm",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "solderColor": {
+        "requested": "红色",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "surfaceFinish": {
+        "requested": "OSP",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "copperThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderMaskCoverage": {
+        "requested": "过孔开窗",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "panelDesignCount": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      }
+    },
+    "unitPriceCny": 6.684,
+    "areaPriceEstimateCnyPerM2": 696.25,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥20.00\n\n板费\n\n￥103.68\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥133.68\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返2金豆\n交流群\n小程序\n联系客服\n更多\n提示\n过孔开窗指的是过孔上做表面喷锡/沉金。\n6层及以上板层小于等于0.3mm的孔统一做树脂塞孔，防焊开窗按原文件制作，即盘中孔工艺，不影响测试；大于0.3mm的孔不做树脂塞孔；如有小于等于0.3mm的孔，不允许做树脂塞孔的，需要备注清楚；如未提前说明的，不接受投诉！",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 133.68,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 20,
+      "stencilmoney": 103.68,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 103.68,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FR4-001-R2",
+    "samplingVersion": "v6",
+    "materialKey": "fr4",
+    "materialLabel": "FR-4",
+    "layers": 2,
+    "widthMm": 80,
+    "heightMm": 120,
+    "quantity": 20,
+    "boardThickness": "1.0",
+    "solderColor": "红色",
+    "surfaceFinish": "OSP",
+    "copperThickness": "1oz",
+    "solderMaskCoverage": "过孔开窗",
+    "panelDesignCount": "1",
+    "processChangedFields": [
+      "boardThickness",
+      "solderColor",
+      "surfaceFinish",
+      "solderMaskCoverage"
+    ],
+    "baseSampleId": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FR4-001",
+    "repeatIndex": 2,
+    "sampleRole": "process_holdout",
+    "estimatorGroup": "process_holdout",
+    "sampleTime": "2026-07-12T03:44:06.315Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 8,
+    "widthCm": 12,
+    "fixedOptions": "FR-4, 1.6mm, 绿色, 有铅喷锡, 1oz, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 133.68,
+    "domPriceCny": 133.68,
+    "apiPriceCny": 133.68,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "20",
+    "selectedLengthCm": "8",
+    "selectedWidthCm": "12",
+    "selectedMaterialLabel": "FR-4",
+    "selectedLayers": 2,
+    "selectedProcessOptions": {
+      "boardThickness": {
+        "requested": "1.0mm",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "solderColor": {
+        "requested": "红色",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "surfaceFinish": {
+        "requested": "OSP",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "copperThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderMaskCoverage": {
+        "requested": "过孔开窗",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "panelDesignCount": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      }
+    },
+    "unitPriceCny": 6.684,
+    "areaPriceEstimateCnyPerM2": 696.25,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥20.00\n\n板费\n\n￥103.68\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥133.68\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返2金豆\n交流群\n小程序\n联系客服\n更多\n提示\n过孔开窗指的是过孔上做表面喷锡/沉金。\n6层及以上板层小于等于0.3mm的孔统一做树脂塞孔，防焊开窗按原文件制作，即盘中孔工艺，不影响测试；大于0.3mm的孔不做树脂塞孔；如有小于等于0.3mm的孔，不允许做树脂塞孔的，需要备注清楚；如未提前说明的，不接受投诉！",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 133.68,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 20,
+      "stencilmoney": 103.68,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 103.68,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FR4-001-R3",
+    "samplingVersion": "v6",
+    "materialKey": "fr4",
+    "materialLabel": "FR-4",
+    "layers": 2,
+    "widthMm": 80,
+    "heightMm": 120,
+    "quantity": 20,
+    "boardThickness": "1.0",
+    "solderColor": "红色",
+    "surfaceFinish": "OSP",
+    "copperThickness": "1oz",
+    "solderMaskCoverage": "过孔开窗",
+    "panelDesignCount": "1",
+    "processChangedFields": [
+      "boardThickness",
+      "solderColor",
+      "surfaceFinish",
+      "solderMaskCoverage"
+    ],
+    "baseSampleId": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FR4-001",
+    "repeatIndex": 3,
+    "sampleRole": "process_holdout",
+    "estimatorGroup": "process_holdout",
+    "sampleTime": "2026-07-12T03:44:06.315Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 8,
+    "widthCm": 12,
+    "fixedOptions": "FR-4, 1.6mm, 绿色, 有铅喷锡, 1oz, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 133.68,
+    "domPriceCny": 133.68,
+    "apiPriceCny": 133.68,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "20",
+    "selectedLengthCm": "8",
+    "selectedWidthCm": "12",
+    "selectedMaterialLabel": "FR-4",
+    "selectedLayers": 2,
+    "selectedProcessOptions": {
+      "boardThickness": {
+        "requested": "1.0mm",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "solderColor": {
+        "requested": "红色",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "surfaceFinish": {
+        "requested": "OSP",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "copperThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderMaskCoverage": {
+        "requested": "过孔开窗",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "panelDesignCount": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      }
+    },
+    "unitPriceCny": 6.684,
+    "areaPriceEstimateCnyPerM2": 696.25,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥20.00\n\n板费\n\n￥103.68\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥133.68\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返2金豆\n交流群\n小程序\n联系客服\n更多\n提示\n过孔开窗指的是过孔上做表面喷锡/沉金。\n6层及以上板层小于等于0.3mm的孔统一做树脂塞孔，防焊开窗按原文件制作，即盘中孔工艺，不影响测试；大于0.3mm的孔不做树脂塞孔；如有小于等于0.3mm的孔，不允许做树脂塞孔的，需要备注清楚；如未提前说明的，不接受投诉！",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 133.68,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 20,
+      "stencilmoney": 103.68,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 103.68,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FR4-002-R1",
+    "samplingVersion": "v6",
+    "materialKey": "fr4",
+    "materialLabel": "FR-4",
+    "layers": 2,
+    "widthMm": 120,
+    "heightMm": 120,
+    "quantity": 50,
+    "boardThickness": "1.2",
+    "solderColor": "黄色",
+    "surfaceFinish": "沉金",
+    "copperThickness": "1oz",
+    "solderMaskCoverage": "过孔塞油",
+    "panelDesignCount": "2",
+    "processChangedFields": [
+      "boardThickness",
+      "solderColor",
+      "surfaceFinish",
+      "solderMaskCoverage",
+      "panelDesignCount"
+    ],
+    "baseSampleId": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FR4-002",
+    "repeatIndex": 1,
+    "sampleRole": "process_holdout",
+    "estimatorGroup": "process_holdout",
+    "sampleTime": "2026-07-12T04:27:48.355Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 12,
+    "widthCm": 12,
+    "fixedOptions": "FR-4, 1.6mm, 绿色, 有铅喷锡, 1oz, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 846.32,
+    "domPriceCny": 846.32,
+    "apiPriceCny": 846.32,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "50",
+    "selectedLengthCm": "12",
+    "selectedWidthCm": "12",
+    "selectedMaterialLabel": "FR-4",
+    "selectedLayers": 2,
+    "selectedProcessOptions": {
+      "boardThickness": {
+        "requested": "1.2mm",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "solderColor": {
+        "requested": "黄色",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "surfaceFinish": {
+        "requested": "沉金",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "copperThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderMaskCoverage": {
+        "requested": "过孔塞油",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "panelDesignCount": {
+        "requested": "2",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false,
+        "actual": "2"
+      }
+    },
+    "unitPriceCny": 16.9264,
+    "areaPriceEstimateCnyPerM2": 1175.44,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥50.00\n\n板费\n\n￥302.40\n\n拼板款数费\n\n￥50.00\n\n喷镀费\n\n￥200.80\n\n颜色费\n\n￥100.00\n\n菲林费\n\n￥25.92\n\n品质赔付费\n\n￥10.00\n\n阻焊覆盖费\n\n￥107.20\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥846.32\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返16金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 846.32,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 50,
+      "stencilmoney": 302.4,
+      "fillmoney": 25.92,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 50,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 302.4,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FR4-002-R2",
+    "samplingVersion": "v6",
+    "materialKey": "fr4",
+    "materialLabel": "FR-4",
+    "layers": 2,
+    "widthMm": 120,
+    "heightMm": 120,
+    "quantity": 50,
+    "boardThickness": "1.2",
+    "solderColor": "黄色",
+    "surfaceFinish": "沉金",
+    "copperThickness": "1oz",
+    "solderMaskCoverage": "过孔塞油",
+    "panelDesignCount": "2",
+    "processChangedFields": [
+      "boardThickness",
+      "solderColor",
+      "surfaceFinish",
+      "solderMaskCoverage",
+      "panelDesignCount"
+    ],
+    "baseSampleId": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FR4-002",
+    "repeatIndex": 2,
+    "sampleRole": "process_holdout",
+    "estimatorGroup": "process_holdout",
+    "sampleTime": "2026-07-12T03:44:06.315Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 12,
+    "widthCm": 12,
+    "fixedOptions": "FR-4, 1.6mm, 绿色, 有铅喷锡, 1oz, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 846.32,
+    "domPriceCny": 846.32,
+    "apiPriceCny": 846.32,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "50",
+    "selectedLengthCm": "12",
+    "selectedWidthCm": "12",
+    "selectedMaterialLabel": "FR-4",
+    "selectedLayers": 2,
+    "selectedProcessOptions": {
+      "boardThickness": {
+        "requested": "1.2mm",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "solderColor": {
+        "requested": "黄色",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "surfaceFinish": {
+        "requested": "沉金",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "copperThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderMaskCoverage": {
+        "requested": "过孔塞油",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "panelDesignCount": {
+        "requested": "2",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false,
+        "actual": "2"
+      }
+    },
+    "unitPriceCny": 16.9264,
+    "areaPriceEstimateCnyPerM2": 1175.44,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥50.00\n\n板费\n\n￥302.40\n\n拼板款数费\n\n￥50.00\n\n喷镀费\n\n￥200.80\n\n颜色费\n\n￥100.00\n\n菲林费\n\n￥25.92\n\n品质赔付费\n\n￥10.00\n\n阻焊覆盖费\n\n￥107.20\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥846.32\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返16金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 846.32,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 50,
+      "stencilmoney": 302.4,
+      "fillmoney": 25.92,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 302.4,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 50,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FR4-002-R3",
+    "samplingVersion": "v6",
+    "materialKey": "fr4",
+    "materialLabel": "FR-4",
+    "layers": 2,
+    "widthMm": 120,
+    "heightMm": 120,
+    "quantity": 50,
+    "boardThickness": "1.2",
+    "solderColor": "黄色",
+    "surfaceFinish": "沉金",
+    "copperThickness": "1oz",
+    "solderMaskCoverage": "过孔塞油",
+    "panelDesignCount": "2",
+    "processChangedFields": [
+      "boardThickness",
+      "solderColor",
+      "surfaceFinish",
+      "solderMaskCoverage",
+      "panelDesignCount"
+    ],
+    "baseSampleId": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FR4-002",
+    "repeatIndex": 3,
+    "sampleRole": "process_holdout",
+    "estimatorGroup": "process_holdout",
+    "sampleTime": "2026-07-12T03:44:06.315Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 12,
+    "widthCm": 12,
+    "fixedOptions": "FR-4, 1.6mm, 绿色, 有铅喷锡, 1oz, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 846.32,
+    "domPriceCny": 846.32,
+    "apiPriceCny": 846.32,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "50",
+    "selectedLengthCm": "12",
+    "selectedWidthCm": "12",
+    "selectedMaterialLabel": "FR-4",
+    "selectedLayers": 2,
+    "selectedProcessOptions": {
+      "boardThickness": {
+        "requested": "1.2mm",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "solderColor": {
+        "requested": "黄色",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "surfaceFinish": {
+        "requested": "沉金",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "copperThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderMaskCoverage": {
+        "requested": "过孔塞油",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "panelDesignCount": {
+        "requested": "2",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false,
+        "actual": "2"
+      }
+    },
+    "unitPriceCny": 16.9264,
+    "areaPriceEstimateCnyPerM2": 1175.44,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥50.00\n\n板费\n\n￥302.40\n\n拼板款数费\n\n￥50.00\n\n喷镀费\n\n￥200.80\n\n颜色费\n\n￥100.00\n\n菲林费\n\n￥25.92\n\n品质赔付费\n\n￥10.00\n\n阻焊覆盖费\n\n￥107.20\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥846.32\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返16金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 846.32,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 50,
+      "stencilmoney": 302.4,
+      "fillmoney": 25.92,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 302.4,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 50,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FR4-003-R1",
+    "samplingVersion": "v6",
+    "materialKey": "fr4",
+    "materialLabel": "FR-4",
+    "layers": 4,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 100,
+    "boardThickness": "1.6",
+    "solderColor": "白色",
+    "surfaceFinish": "无铅喷锡",
+    "copperThickness": "1oz",
+    "solderMaskCoverage": "过孔盖油",
+    "panelDesignCount": "1",
+    "processChangedFields": [
+      "solderColor",
+      "surfaceFinish"
+    ],
+    "baseSampleId": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FR4-003",
+    "repeatIndex": 1,
+    "sampleRole": "process_holdout",
+    "estimatorGroup": "process_holdout",
+    "sampleTime": "2026-07-12T03:44:06.315Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 15,
+    "fixedOptions": "FR-4, 1.6mm, 绿色, 有铅喷锡, 1oz, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 1141,
+    "domPriceCny": 1141,
+    "apiPriceCny": 1141,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "100",
+    "selectedLengthCm": "10",
+    "selectedWidthCm": "15",
+    "selectedMaterialLabel": "FR-4",
+    "selectedLayers": 4,
+    "selectedProcessOptions": {
+      "boardThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderColor": {
+        "requested": "白色",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "surfaceFinish": {
+        "requested": "无铅喷锡",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "copperThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderMaskCoverage": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "panelDesignCount": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      }
+    },
+    "unitPriceCny": 11.41,
+    "areaPriceEstimateCnyPerM2": 760.67,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥150.00\n\n板费\n\n￥765.00\n\n喷镀费\n\n￥75.00\n\n颜色费\n\n￥30.00\n\n测试费\n\n￥75.00\n\n菲林费\n\n￥36.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥1141\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返22金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 1141,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 150,
+      "stencilmoney": 765,
+      "fillmoney": 36,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 765,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 150,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FR4-003-R2",
+    "samplingVersion": "v6",
+    "materialKey": "fr4",
+    "materialLabel": "FR-4",
+    "layers": 4,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 100,
+    "boardThickness": "1.6",
+    "solderColor": "白色",
+    "surfaceFinish": "无铅喷锡",
+    "copperThickness": "1oz",
+    "solderMaskCoverage": "过孔盖油",
+    "panelDesignCount": "1",
+    "processChangedFields": [
+      "solderColor",
+      "surfaceFinish"
+    ],
+    "baseSampleId": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FR4-003",
+    "repeatIndex": 2,
+    "sampleRole": "process_holdout",
+    "estimatorGroup": "process_holdout",
+    "sampleTime": "2026-07-12T03:44:06.315Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 15,
+    "fixedOptions": "FR-4, 1.6mm, 绿色, 有铅喷锡, 1oz, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 1141,
+    "domPriceCny": 1141,
+    "apiPriceCny": 1141,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "100",
+    "selectedLengthCm": "10",
+    "selectedWidthCm": "15",
+    "selectedMaterialLabel": "FR-4",
+    "selectedLayers": 4,
+    "selectedProcessOptions": {
+      "boardThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderColor": {
+        "requested": "白色",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "surfaceFinish": {
+        "requested": "无铅喷锡",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "copperThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderMaskCoverage": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "panelDesignCount": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      }
+    },
+    "unitPriceCny": 11.41,
+    "areaPriceEstimateCnyPerM2": 760.67,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥150.00\n\n板费\n\n￥765.00\n\n喷镀费\n\n￥75.00\n\n颜色费\n\n￥30.00\n\n测试费\n\n￥75.00\n\n菲林费\n\n￥36.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥1141\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返22金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 1141,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 150,
+      "stencilmoney": 765,
+      "fillmoney": 36,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 765,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 150,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FR4-003-R3",
+    "samplingVersion": "v6",
+    "materialKey": "fr4",
+    "materialLabel": "FR-4",
+    "layers": 4,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 100,
+    "boardThickness": "1.6",
+    "solderColor": "白色",
+    "surfaceFinish": "无铅喷锡",
+    "copperThickness": "1oz",
+    "solderMaskCoverage": "过孔盖油",
+    "panelDesignCount": "1",
+    "processChangedFields": [
+      "solderColor",
+      "surfaceFinish"
+    ],
+    "baseSampleId": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FR4-003",
+    "repeatIndex": 3,
+    "sampleRole": "process_holdout",
+    "estimatorGroup": "process_holdout",
+    "sampleTime": "2026-07-12T03:44:06.315Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 15,
+    "fixedOptions": "FR-4, 1.6mm, 绿色, 有铅喷锡, 1oz, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 1141,
+    "domPriceCny": 1141,
+    "apiPriceCny": 1141,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "100",
+    "selectedLengthCm": "10",
+    "selectedWidthCm": "15",
+    "selectedMaterialLabel": "FR-4",
+    "selectedLayers": 4,
+    "selectedProcessOptions": {
+      "boardThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderColor": {
+        "requested": "白色",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "surfaceFinish": {
+        "requested": "无铅喷锡",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "copperThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderMaskCoverage": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "panelDesignCount": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      }
+    },
+    "unitPriceCny": 11.41,
+    "areaPriceEstimateCnyPerM2": 760.67,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥150.00\n\n板费\n\n￥765.00\n\n喷镀费\n\n￥75.00\n\n颜色费\n\n￥30.00\n\n测试费\n\n￥75.00\n\n菲林费\n\n￥36.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥1141\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返22金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 1141,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 150,
+      "stencilmoney": 765,
+      "fillmoney": 36,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 765,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 150,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FR4-004-R1",
+    "samplingVersion": "v6",
+    "materialKey": "fr4",
+    "materialLabel": "FR-4",
+    "layers": 4,
+    "widthMm": 55,
+    "heightMm": 65,
+    "quantity": 15,
+    "boardThickness": "1.6",
+    "solderColor": "绿色",
+    "surfaceFinish": "有铅喷锡",
+    "copperThickness": "1oz",
+    "solderMaskCoverage": "过孔盖油",
+    "panelDesignCount": "1",
+    "processChangedFields": [],
+    "baseSampleId": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FR4-004",
+    "repeatIndex": 1,
+    "sampleRole": "process_holdout",
+    "estimatorGroup": "process_holdout",
+    "sampleTime": "2026-07-12T03:44:06.315Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 5.5,
+    "widthCm": 6.5,
+    "fixedOptions": "FR-4, 1.6mm, 绿色, 有铅喷锡, 1oz, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 197.54,
+    "domPriceCny": 197.54,
+    "apiPriceCny": 197.54,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "15",
+    "selectedLengthCm": "5.5",
+    "selectedWidthCm": "6.5",
+    "selectedMaterialLabel": "FR-4",
+    "selectedLayers": 4,
+    "selectedProcessOptions": {
+      "boardThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderColor": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "surfaceFinish": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "copperThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderMaskCoverage": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "panelDesignCount": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      }
+    },
+    "unitPriceCny": 13.1693,
+    "areaPriceEstimateCnyPerM2": 3683.73,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥150.00\n\n板费\n\n￥37.54\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥197.54\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返3金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 197.54,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 150,
+      "stencilmoney": 37.54,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 150,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 37.54,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FR4-004-R2",
+    "samplingVersion": "v6",
+    "materialKey": "fr4",
+    "materialLabel": "FR-4",
+    "layers": 4,
+    "widthMm": 55,
+    "heightMm": 65,
+    "quantity": 15,
+    "boardThickness": "1.6",
+    "solderColor": "绿色",
+    "surfaceFinish": "有铅喷锡",
+    "copperThickness": "1oz",
+    "solderMaskCoverage": "过孔盖油",
+    "panelDesignCount": "1",
+    "processChangedFields": [],
+    "baseSampleId": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FR4-004",
+    "repeatIndex": 2,
+    "sampleRole": "process_holdout",
+    "estimatorGroup": "process_holdout",
+    "sampleTime": "2026-07-12T03:44:06.315Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 5.5,
+    "widthCm": 6.5,
+    "fixedOptions": "FR-4, 1.6mm, 绿色, 有铅喷锡, 1oz, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 197.54,
+    "domPriceCny": 197.54,
+    "apiPriceCny": 197.54,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "15",
+    "selectedLengthCm": "5.5",
+    "selectedWidthCm": "6.5",
+    "selectedMaterialLabel": "FR-4",
+    "selectedLayers": 4,
+    "selectedProcessOptions": {
+      "boardThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderColor": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "surfaceFinish": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "copperThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderMaskCoverage": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "panelDesignCount": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      }
+    },
+    "unitPriceCny": 13.1693,
+    "areaPriceEstimateCnyPerM2": 3683.73,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥150.00\n\n板费\n\n￥37.54\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥197.54\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返3金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 197.54,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 150,
+      "stencilmoney": 37.54,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 150,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 37.54,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FR4-004-R3",
+    "samplingVersion": "v6",
+    "materialKey": "fr4",
+    "materialLabel": "FR-4",
+    "layers": 4,
+    "widthMm": 55,
+    "heightMm": 65,
+    "quantity": 15,
+    "boardThickness": "1.6",
+    "solderColor": "绿色",
+    "surfaceFinish": "有铅喷锡",
+    "copperThickness": "1oz",
+    "solderMaskCoverage": "过孔盖油",
+    "panelDesignCount": "1",
+    "processChangedFields": [],
+    "baseSampleId": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FR4-004",
+    "repeatIndex": 3,
+    "sampleRole": "process_holdout",
+    "estimatorGroup": "process_holdout",
+    "sampleTime": "2026-07-12T03:44:06.315Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 5.5,
+    "widthCm": 6.5,
+    "fixedOptions": "FR-4, 1.6mm, 绿色, 有铅喷锡, 1oz, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 197.54,
+    "domPriceCny": 197.54,
+    "apiPriceCny": 197.54,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "15",
+    "selectedLengthCm": "5.5",
+    "selectedWidthCm": "6.5",
+    "selectedMaterialLabel": "FR-4",
+    "selectedLayers": 4,
+    "selectedProcessOptions": {
+      "boardThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderColor": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "surfaceFinish": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "copperThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderMaskCoverage": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "panelDesignCount": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      }
+    },
+    "unitPriceCny": 13.1693,
+    "areaPriceEstimateCnyPerM2": 3683.73,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥150.00\n\n板费\n\n￥37.54\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥197.54\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返3金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 197.54,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 150,
+      "stencilmoney": 37.54,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 150,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 37.54,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FR4-005-R1",
+    "samplingVersion": "v6",
+    "materialKey": "fr4",
+    "materialLabel": "FR-4",
+    "layers": 2,
+    "widthMm": 150,
+    "heightMm": 150,
+    "quantity": 20,
+    "boardThickness": "1.0",
+    "solderColor": "哑黑色",
+    "surfaceFinish": "OSP",
+    "copperThickness": "1oz",
+    "solderMaskCoverage": "过孔塞树脂+过孔电镀盖帽",
+    "panelDesignCount": "2",
+    "processChangedFields": [
+      "boardThickness",
+      "solderColor",
+      "surfaceFinish",
+      "solderMaskCoverage",
+      "panelDesignCount"
+    ],
+    "baseSampleId": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FR4-005",
+    "repeatIndex": 1,
+    "sampleRole": "process_holdout",
+    "estimatorGroup": "process_holdout",
+    "sampleTime": "2026-07-12T03:44:06.315Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 15,
+    "widthCm": 15,
+    "fixedOptions": "FR-4, 1.6mm, 绿色, 有铅喷锡, 1oz, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 754.75,
+    "domPriceCny": 754.75,
+    "apiPriceCny": 754.75,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "20",
+    "selectedLengthCm": "15",
+    "selectedWidthCm": "15",
+    "selectedMaterialLabel": "FR-4",
+    "selectedLayers": 2,
+    "selectedProcessOptions": {
+      "boardThickness": {
+        "requested": "1.0mm",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "solderColor": {
+        "requested": "哑黑色",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "surfaceFinish": {
+        "requested": "OSP",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "copperThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderMaskCoverage": {
+        "requested": "过孔塞树脂+过孔电镀盖帽",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "panelDesignCount": {
+        "requested": "2",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false,
+        "actual": "2"
+      }
+    },
+    "unitPriceCny": 37.7375,
+    "areaPriceEstimateCnyPerM2": 1677.22,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "过孔沉铜方式\n\n￥26.75\n\n工程费\n\n￥20.00\n\n板费\n\n￥243.00\n\n拼板款数费\n\n￥20.00\n\n品质赔付费\n\n￥10.00\n\n阻焊覆盖费\n\n￥435.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥754.75\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返15金豆\n交流群\n小程序\n联系客服\n更多\n提示\n\n过孔直径要求最大0.5mm；如果过孔超过0.5mm，默认不做树脂塞孔，依GERBER制作，不接受投诉。\n\n工艺说明：过孔塞树脂+过孔电镀盖帽是在孔壁镀铜之后，用环氧树脂填平过孔，再在表面镀铜。采用树脂塞孔工艺，PCB板表面无凹痕，孔可导通且不影响焊接，因此在盘中孔、高多层、厚板等产品上面备受青睐。",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 754.75,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 20,
+      "stencilmoney": 243,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 243,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FR4-005-R2",
+    "samplingVersion": "v6",
+    "materialKey": "fr4",
+    "materialLabel": "FR-4",
+    "layers": 2,
+    "widthMm": 150,
+    "heightMm": 150,
+    "quantity": 20,
+    "boardThickness": "1.0",
+    "solderColor": "哑黑色",
+    "surfaceFinish": "OSP",
+    "copperThickness": "1oz",
+    "solderMaskCoverage": "过孔塞树脂+过孔电镀盖帽",
+    "panelDesignCount": "2",
+    "processChangedFields": [
+      "boardThickness",
+      "solderColor",
+      "surfaceFinish",
+      "solderMaskCoverage",
+      "panelDesignCount"
+    ],
+    "baseSampleId": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FR4-005",
+    "repeatIndex": 2,
+    "sampleRole": "process_holdout",
+    "estimatorGroup": "process_holdout",
+    "sampleTime": "2026-07-12T03:44:06.315Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 15,
+    "widthCm": 15,
+    "fixedOptions": "FR-4, 1.6mm, 绿色, 有铅喷锡, 1oz, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 754.75,
+    "domPriceCny": 754.75,
+    "apiPriceCny": 754.75,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "20",
+    "selectedLengthCm": "15",
+    "selectedWidthCm": "15",
+    "selectedMaterialLabel": "FR-4",
+    "selectedLayers": 2,
+    "selectedProcessOptions": {
+      "boardThickness": {
+        "requested": "1.0mm",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "solderColor": {
+        "requested": "哑黑色",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "surfaceFinish": {
+        "requested": "OSP",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "copperThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderMaskCoverage": {
+        "requested": "过孔塞树脂+过孔电镀盖帽",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "panelDesignCount": {
+        "requested": "2",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false,
+        "actual": "2"
+      }
+    },
+    "unitPriceCny": 37.7375,
+    "areaPriceEstimateCnyPerM2": 1677.22,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "过孔沉铜方式\n\n￥26.75\n\n工程费\n\n￥20.00\n\n板费\n\n￥243.00\n\n拼板款数费\n\n￥20.00\n\n品质赔付费\n\n￥10.00\n\n阻焊覆盖费\n\n￥435.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥754.75\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返15金豆\n交流群\n小程序\n联系客服\n更多\n提示\n\n过孔直径要求最大0.5mm；如果过孔超过0.5mm，默认不做树脂塞孔，依GERBER制作，不接受投诉。\n\n工艺说明：过孔塞树脂+过孔电镀盖帽是在孔壁镀铜之后，用环氧树脂填平过孔，再在表面镀铜。采用树脂塞孔工艺，PCB板表面无凹痕，孔可导通且不影响焊接，因此在盘中孔、高多层、厚板等产品上面备受青睐。",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 754.75,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 20,
+      "stencilmoney": 243,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 243,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FR4-005-R3",
+    "samplingVersion": "v6",
+    "materialKey": "fr4",
+    "materialLabel": "FR-4",
+    "layers": 2,
+    "widthMm": 150,
+    "heightMm": 150,
+    "quantity": 20,
+    "boardThickness": "1.0",
+    "solderColor": "哑黑色",
+    "surfaceFinish": "OSP",
+    "copperThickness": "1oz",
+    "solderMaskCoverage": "过孔塞树脂+过孔电镀盖帽",
+    "panelDesignCount": "2",
+    "processChangedFields": [
+      "boardThickness",
+      "solderColor",
+      "surfaceFinish",
+      "solderMaskCoverage",
+      "panelDesignCount"
+    ],
+    "baseSampleId": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FR4-005",
+    "repeatIndex": 3,
+    "sampleRole": "process_holdout",
+    "estimatorGroup": "process_holdout",
+    "sampleTime": "2026-07-12T03:44:06.315Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 15,
+    "widthCm": 15,
+    "fixedOptions": "FR-4, 1.6mm, 绿色, 有铅喷锡, 1oz, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 754.75,
+    "domPriceCny": 754.75,
+    "apiPriceCny": 754.75,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "20",
+    "selectedLengthCm": "15",
+    "selectedWidthCm": "15",
+    "selectedMaterialLabel": "FR-4",
+    "selectedLayers": 2,
+    "selectedProcessOptions": {
+      "boardThickness": {
+        "requested": "1.0mm",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "solderColor": {
+        "requested": "哑黑色",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "surfaceFinish": {
+        "requested": "OSP",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "copperThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderMaskCoverage": {
+        "requested": "过孔塞树脂+过孔电镀盖帽",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "panelDesignCount": {
+        "requested": "2",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false,
+        "actual": "2"
+      }
+    },
+    "unitPriceCny": 37.7375,
+    "areaPriceEstimateCnyPerM2": 1677.22,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "过孔沉铜方式\n\n￥26.75\n\n工程费\n\n￥20.00\n\n板费\n\n￥243.00\n\n拼板款数费\n\n￥20.00\n\n品质赔付费\n\n￥10.00\n\n阻焊覆盖费\n\n￥435.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥754.75\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返15金豆\n交流群\n小程序\n联系客服\n更多\n提示\n\n过孔直径要求最大0.5mm；如果过孔超过0.5mm，默认不做树脂塞孔，依GERBER制作，不接受投诉。\n\n工艺说明：过孔塞树脂+过孔电镀盖帽是在孔壁镀铜之后，用环氧树脂填平过孔，再在表面镀铜。采用树脂塞孔工艺，PCB板表面无凹痕，孔可导通且不影响焊接，因此在盘中孔、高多层、厚板等产品上面备受青睐。",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 754.75,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 20,
+      "stencilmoney": 243,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 243,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FPC-001-R1",
+    "samplingVersion": "v6",
+    "materialKey": "fpc",
+    "materialLabel": "FPC软板",
+    "layers": 2,
+    "widthMm": 80,
+    "heightMm": 80,
+    "quantity": 20,
+    "boardThickness": "0.12",
+    "solderColor": "页面默认",
+    "surfaceFinish": "沉金",
+    "copperThickness": "1oz",
+    "solderMaskCoverage": "页面默认",
+    "panelDesignCount": "2",
+    "processChangedFields": [
+      "boardThickness",
+      "panelDesignCount"
+    ],
+    "baseSampleId": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FPC-001",
+    "repeatIndex": 1,
+    "sampleRole": "process_holdout",
+    "estimatorGroup": "process_holdout",
+    "sampleTime": "2026-07-12T03:44:06.315Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 8,
+    "widthCm": 8,
+    "fixedOptions": "FPC软板, 0.11mm, 页面默认阻焊, 沉金, 1oz, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 294.96,
+    "domPriceCny": 294.96,
+    "apiPriceCny": 294.96,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "20",
+    "selectedLengthCm": "8",
+    "selectedWidthCm": "8",
+    "selectedMaterialLabel": "FPC软板",
+    "selectedLayers": 2,
+    "selectedProcessOptions": {
+      "boardThickness": {
+        "requested": "0.12mm",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "solderColor": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "surfaceFinish": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "copperThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderMaskCoverage": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "panelDesignCount": {
+        "requested": "2",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false,
+        "actual": "2"
+      }
+    },
+    "unitPriceCny": 14.748,
+    "areaPriceEstimateCnyPerM2": 2304.38,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥50.00\n\n板费\n\n￥92.16\n\n拼板款数费\n\n￥30.00\n\n喷镀费\n\n￥112.80\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥294.96\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返5金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 294.96,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 50,
+      "stencilmoney": 92.16,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 92.16,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 50,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FPC-001-R2",
+    "samplingVersion": "v6",
+    "materialKey": "fpc",
+    "materialLabel": "FPC软板",
+    "layers": 2,
+    "widthMm": 80,
+    "heightMm": 80,
+    "quantity": 20,
+    "boardThickness": "0.12",
+    "solderColor": "页面默认",
+    "surfaceFinish": "沉金",
+    "copperThickness": "1oz",
+    "solderMaskCoverage": "页面默认",
+    "panelDesignCount": "2",
+    "processChangedFields": [
+      "boardThickness",
+      "panelDesignCount"
+    ],
+    "baseSampleId": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FPC-001",
+    "repeatIndex": 2,
+    "sampleRole": "process_holdout",
+    "estimatorGroup": "process_holdout",
+    "sampleTime": "2026-07-12T03:44:06.315Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 8,
+    "widthCm": 8,
+    "fixedOptions": "FPC软板, 0.11mm, 页面默认阻焊, 沉金, 1oz, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 294.96,
+    "domPriceCny": 294.96,
+    "apiPriceCny": 294.96,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "20",
+    "selectedLengthCm": "8",
+    "selectedWidthCm": "8",
+    "selectedMaterialLabel": "FPC软板",
+    "selectedLayers": 2,
+    "selectedProcessOptions": {
+      "boardThickness": {
+        "requested": "0.12mm",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "solderColor": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "surfaceFinish": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "copperThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderMaskCoverage": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "panelDesignCount": {
+        "requested": "2",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false,
+        "actual": "2"
+      }
+    },
+    "unitPriceCny": 14.748,
+    "areaPriceEstimateCnyPerM2": 2304.38,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥50.00\n\n板费\n\n￥92.16\n\n拼板款数费\n\n￥30.00\n\n喷镀费\n\n￥112.80\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥294.96\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返5金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 294.96,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 50,
+      "stencilmoney": 92.16,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 92.16,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 50,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FPC-001-R3",
+    "samplingVersion": "v6",
+    "materialKey": "fpc",
+    "materialLabel": "FPC软板",
+    "layers": 2,
+    "widthMm": 80,
+    "heightMm": 80,
+    "quantity": 20,
+    "boardThickness": "0.12",
+    "solderColor": "页面默认",
+    "surfaceFinish": "沉金",
+    "copperThickness": "1oz",
+    "solderMaskCoverage": "页面默认",
+    "panelDesignCount": "2",
+    "processChangedFields": [
+      "boardThickness",
+      "panelDesignCount"
+    ],
+    "baseSampleId": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FPC-001",
+    "repeatIndex": 3,
+    "sampleRole": "process_holdout",
+    "estimatorGroup": "process_holdout",
+    "sampleTime": "2026-07-12T03:44:06.315Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 8,
+    "widthCm": 8,
+    "fixedOptions": "FPC软板, 0.11mm, 页面默认阻焊, 沉金, 1oz, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 294.96,
+    "domPriceCny": 294.96,
+    "apiPriceCny": 294.96,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "20",
+    "selectedLengthCm": "8",
+    "selectedWidthCm": "8",
+    "selectedMaterialLabel": "FPC软板",
+    "selectedLayers": 2,
+    "selectedProcessOptions": {
+      "boardThickness": {
+        "requested": "0.12mm",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "solderColor": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "surfaceFinish": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "copperThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderMaskCoverage": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "panelDesignCount": {
+        "requested": "2",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false,
+        "actual": "2"
+      }
+    },
+    "unitPriceCny": 14.748,
+    "areaPriceEstimateCnyPerM2": 2304.38,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥50.00\n\n板费\n\n￥92.16\n\n拼板款数费\n\n￥30.00\n\n喷镀费\n\n￥112.80\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥294.96\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返5金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 294.96,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 50,
+      "stencilmoney": 92.16,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 92.16,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 50,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FPC-002-R1",
+    "samplingVersion": "v6",
+    "materialKey": "fpc",
+    "materialLabel": "FPC软板",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 50,
+    "boardThickness": "0.20",
+    "solderColor": "页面默认",
+    "surfaceFinish": "沉金",
+    "copperThickness": "1oz",
+    "solderMaskCoverage": "页面默认",
+    "panelDesignCount": "1",
+    "processChangedFields": [
+      "boardThickness"
+    ],
+    "baseSampleId": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FPC-002",
+    "repeatIndex": 1,
+    "sampleRole": "process_holdout",
+    "estimatorGroup": "process_holdout",
+    "sampleTime": "2026-07-12T03:44:06.315Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 15,
+    "fixedOptions": "FPC软板, 0.11mm, 页面默认阻焊, 沉金, 1oz, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 914.5,
+    "domPriceCny": 914.5,
+    "apiPriceCny": 914.5,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "50",
+    "selectedLengthCm": "10",
+    "selectedWidthCm": "15",
+    "selectedMaterialLabel": "FPC软板",
+    "selectedLayers": 2,
+    "selectedProcessOptions": {
+      "boardThickness": {
+        "requested": "0.20mm",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "solderColor": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "surfaceFinish": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "copperThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderMaskCoverage": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "panelDesignCount": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      }
+    },
+    "unitPriceCny": 18.29,
+    "areaPriceEstimateCnyPerM2": 1219.33,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "成型方式\n\n￥162.50\n\n工程费\n\n￥50.00\n\n板费\n\n￥352.50\n\n喷镀费\n\n￥175.00\n\n测试费\n\n￥137.50\n\n菲林费\n\n￥27.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥914.5\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返18金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 914.5,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 50,
+      "stencilmoney": 352.5,
+      "fillmoney": 27,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 352.5,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 50,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FPC-002-R2",
+    "samplingVersion": "v6",
+    "materialKey": "fpc",
+    "materialLabel": "FPC软板",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 50,
+    "boardThickness": "0.20",
+    "solderColor": "页面默认",
+    "surfaceFinish": "沉金",
+    "copperThickness": "1oz",
+    "solderMaskCoverage": "页面默认",
+    "panelDesignCount": "1",
+    "processChangedFields": [
+      "boardThickness"
+    ],
+    "baseSampleId": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FPC-002",
+    "repeatIndex": 2,
+    "sampleRole": "process_holdout",
+    "estimatorGroup": "process_holdout",
+    "sampleTime": "2026-07-12T03:44:06.315Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 15,
+    "fixedOptions": "FPC软板, 0.11mm, 页面默认阻焊, 沉金, 1oz, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 914.5,
+    "domPriceCny": 914.5,
+    "apiPriceCny": 914.5,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "50",
+    "selectedLengthCm": "10",
+    "selectedWidthCm": "15",
+    "selectedMaterialLabel": "FPC软板",
+    "selectedLayers": 2,
+    "selectedProcessOptions": {
+      "boardThickness": {
+        "requested": "0.20mm",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "solderColor": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "surfaceFinish": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "copperThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderMaskCoverage": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "panelDesignCount": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      }
+    },
+    "unitPriceCny": 18.29,
+    "areaPriceEstimateCnyPerM2": 1219.33,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "成型方式\n\n￥162.50\n\n工程费\n\n￥50.00\n\n板费\n\n￥352.50\n\n喷镀费\n\n￥175.00\n\n测试费\n\n￥137.50\n\n菲林费\n\n￥27.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥914.5\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返18金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 914.5,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 50,
+      "stencilmoney": 352.5,
+      "fillmoney": 27,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 352.5,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 50,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FPC-002-R3",
+    "samplingVersion": "v6",
+    "materialKey": "fpc",
+    "materialLabel": "FPC软板",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 50,
+    "boardThickness": "0.20",
+    "solderColor": "页面默认",
+    "surfaceFinish": "沉金",
+    "copperThickness": "1oz",
+    "solderMaskCoverage": "页面默认",
+    "panelDesignCount": "1",
+    "processChangedFields": [
+      "boardThickness"
+    ],
+    "baseSampleId": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FPC-002",
+    "repeatIndex": 3,
+    "sampleRole": "process_holdout",
+    "estimatorGroup": "process_holdout",
+    "sampleTime": "2026-07-12T03:44:06.315Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 15,
+    "fixedOptions": "FPC软板, 0.11mm, 页面默认阻焊, 沉金, 1oz, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 914.5,
+    "domPriceCny": 914.5,
+    "apiPriceCny": 914.5,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "50",
+    "selectedLengthCm": "10",
+    "selectedWidthCm": "15",
+    "selectedMaterialLabel": "FPC软板",
+    "selectedLayers": 2,
+    "selectedProcessOptions": {
+      "boardThickness": {
+        "requested": "0.20mm",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "solderColor": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "surfaceFinish": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "copperThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderMaskCoverage": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "panelDesignCount": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      }
+    },
+    "unitPriceCny": 18.29,
+    "areaPriceEstimateCnyPerM2": 1219.33,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "成型方式\n\n￥162.50\n\n工程费\n\n￥50.00\n\n板费\n\n￥352.50\n\n喷镀费\n\n￥175.00\n\n测试费\n\n￥137.50\n\n菲林费\n\n￥27.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥914.5\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返18金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 914.5,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 50,
+      "stencilmoney": 352.5,
+      "fillmoney": 27,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 352.5,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 50,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FPC-003-R1",
+    "samplingVersion": "v6",
+    "materialKey": "fpc",
+    "materialLabel": "FPC软板",
+    "layers": 2,
+    "widthMm": 65,
+    "heightMm": 95,
+    "quantity": 30,
+    "boardThickness": "0.12",
+    "solderColor": "页面默认",
+    "surfaceFinish": "沉金",
+    "copperThickness": "1oz",
+    "solderMaskCoverage": "页面默认",
+    "panelDesignCount": "1",
+    "processChangedFields": [
+      "boardThickness"
+    ],
+    "baseSampleId": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FPC-003",
+    "repeatIndex": 1,
+    "sampleRole": "process_holdout",
+    "estimatorGroup": "process_holdout",
+    "sampleTime": "2026-07-12T03:44:06.315Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 6.5,
+    "widthCm": 9.5,
+    "fixedOptions": "FPC软板, 0.11mm, 页面默认阻焊, 沉金, 1oz, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 311.91,
+    "domPriceCny": 311.91,
+    "apiPriceCny": 311.91,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "30",
+    "selectedLengthCm": "6.5",
+    "selectedWidthCm": "9.5",
+    "selectedMaterialLabel": "FPC软板",
+    "selectedLayers": 2,
+    "selectedProcessOptions": {
+      "boardThickness": {
+        "requested": "0.12mm",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "solderColor": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "surfaceFinish": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "copperThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderMaskCoverage": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "panelDesignCount": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      }
+    },
+    "unitPriceCny": 10.397,
+    "areaPriceEstimateCnyPerM2": 1683.72,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥50.00\n\n板费\n\n￥133.38\n\n喷镀费\n\n￥118.53\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥311.91\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返6金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 311.91,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 50,
+      "stencilmoney": 133.38,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 133.38,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 50,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FPC-003-R2",
+    "samplingVersion": "v6",
+    "materialKey": "fpc",
+    "materialLabel": "FPC软板",
+    "layers": 2,
+    "widthMm": 65,
+    "heightMm": 95,
+    "quantity": 30,
+    "boardThickness": "0.12",
+    "solderColor": "页面默认",
+    "surfaceFinish": "沉金",
+    "copperThickness": "1oz",
+    "solderMaskCoverage": "页面默认",
+    "panelDesignCount": "1",
+    "processChangedFields": [
+      "boardThickness"
+    ],
+    "baseSampleId": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FPC-003",
+    "repeatIndex": 2,
+    "sampleRole": "process_holdout",
+    "estimatorGroup": "process_holdout",
+    "sampleTime": "2026-07-12T03:44:06.315Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 6.5,
+    "widthCm": 9.5,
+    "fixedOptions": "FPC软板, 0.11mm, 页面默认阻焊, 沉金, 1oz, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 311.91,
+    "domPriceCny": 311.91,
+    "apiPriceCny": 311.91,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "30",
+    "selectedLengthCm": "6.5",
+    "selectedWidthCm": "9.5",
+    "selectedMaterialLabel": "FPC软板",
+    "selectedLayers": 2,
+    "selectedProcessOptions": {
+      "boardThickness": {
+        "requested": "0.12mm",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "solderColor": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "surfaceFinish": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "copperThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderMaskCoverage": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "panelDesignCount": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      }
+    },
+    "unitPriceCny": 10.397,
+    "areaPriceEstimateCnyPerM2": 1683.72,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥50.00\n\n板费\n\n￥133.38\n\n喷镀费\n\n￥118.53\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥311.91\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返6金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 311.91,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 50,
+      "stencilmoney": 133.38,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 133.38,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 50,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FPC-003-R3",
+    "samplingVersion": "v6",
+    "materialKey": "fpc",
+    "materialLabel": "FPC软板",
+    "layers": 2,
+    "widthMm": 65,
+    "heightMm": 95,
+    "quantity": 30,
+    "boardThickness": "0.12",
+    "solderColor": "页面默认",
+    "surfaceFinish": "沉金",
+    "copperThickness": "1oz",
+    "solderMaskCoverage": "页面默认",
+    "panelDesignCount": "1",
+    "processChangedFields": [
+      "boardThickness"
+    ],
+    "baseSampleId": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-FPC-003",
+    "repeatIndex": 3,
+    "sampleRole": "process_holdout",
+    "estimatorGroup": "process_holdout",
+    "sampleTime": "2026-07-12T03:44:06.315Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 6.5,
+    "widthCm": 9.5,
+    "fixedOptions": "FPC软板, 0.11mm, 页面默认阻焊, 沉金, 1oz, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 311.91,
+    "domPriceCny": 311.91,
+    "apiPriceCny": 311.91,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "30",
+    "selectedLengthCm": "6.5",
+    "selectedWidthCm": "9.5",
+    "selectedMaterialLabel": "FPC软板",
+    "selectedLayers": 2,
+    "selectedProcessOptions": {
+      "boardThickness": {
+        "requested": "0.12mm",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "solderColor": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "surfaceFinish": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "copperThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderMaskCoverage": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "panelDesignCount": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      }
+    },
+    "unitPriceCny": 10.397,
+    "areaPriceEstimateCnyPerM2": 1683.72,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥50.00\n\n板费\n\n￥133.38\n\n喷镀费\n\n￥118.53\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥311.91\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返6金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 311.91,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 50,
+      "stencilmoney": 133.38,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 133.38,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 50,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-ALUMINUM-001-R1",
+    "samplingVersion": "v6",
+    "materialKey": "aluminum",
+    "materialLabel": "铝基板",
+    "layers": 1,
+    "widthMm": 80,
+    "heightMm": 80,
+    "quantity": 20,
+    "boardThickness": "1.0",
+    "solderColor": "红色",
+    "surfaceFinish": "无铅喷锡",
+    "copperThickness": "1oz",
+    "solderMaskCoverage": "过孔盖油",
+    "panelDesignCount": "2",
+    "processChangedFields": [
+      "boardThickness",
+      "solderColor",
+      "panelDesignCount"
+    ],
+    "baseSampleId": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-ALUMINUM-001",
+    "repeatIndex": 1,
+    "sampleRole": "process_holdout",
+    "estimatorGroup": "process_holdout",
+    "sampleTime": "2026-07-12T04:27:48.355Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 8,
+    "widthCm": 8,
+    "fixedOptions": "铝基板, 1.6mm, 绿色, 无铅喷锡, 1oz, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 202.72,
+    "domPriceCny": 202.72,
+    "apiPriceCny": 202.72,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "20",
+    "selectedLengthCm": "8",
+    "selectedWidthCm": "8",
+    "selectedMaterialLabel": "铝基板",
+    "selectedLayers": 1,
+    "selectedProcessOptions": {
+      "boardThickness": {
+        "requested": "1.0mm",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "solderColor": {
+        "requested": "红色",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "surfaceFinish": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "copperThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderMaskCoverage": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "panelDesignCount": {
+        "requested": "2",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false,
+        "actual": "2"
+      }
+    },
+    "unitPriceCny": 10.136,
+    "areaPriceEstimateCnyPerM2": 1583.75,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥20.00\n\n板费\n\n￥62.72\n\n拼板款数费\n\n￥20.00\n\n颜色费\n\n￥100.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥202.72\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返4金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 202.72,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 0,
+      "projectmoney": 20,
+      "stencilmoney": 62.72,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 62.72,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-ALUMINUM-001-R2",
+    "samplingVersion": "v6",
+    "materialKey": "aluminum",
+    "materialLabel": "铝基板",
+    "layers": 1,
+    "widthMm": 80,
+    "heightMm": 80,
+    "quantity": 20,
+    "boardThickness": "1.0",
+    "solderColor": "红色",
+    "surfaceFinish": "无铅喷锡",
+    "copperThickness": "1oz",
+    "solderMaskCoverage": "过孔盖油",
+    "panelDesignCount": "2",
+    "processChangedFields": [
+      "boardThickness",
+      "solderColor",
+      "panelDesignCount"
+    ],
+    "baseSampleId": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-ALUMINUM-001",
+    "repeatIndex": 2,
+    "sampleRole": "process_holdout",
+    "estimatorGroup": "process_holdout",
+    "sampleTime": "2026-07-12T04:27:48.355Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 8,
+    "widthCm": 8,
+    "fixedOptions": "铝基板, 1.6mm, 绿色, 无铅喷锡, 1oz, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 202.72,
+    "domPriceCny": 202.72,
+    "apiPriceCny": 202.72,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "20",
+    "selectedLengthCm": "8",
+    "selectedWidthCm": "8",
+    "selectedMaterialLabel": "铝基板",
+    "selectedLayers": 1,
+    "selectedProcessOptions": {
+      "boardThickness": {
+        "requested": "1.0mm",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "solderColor": {
+        "requested": "红色",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "surfaceFinish": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "copperThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderMaskCoverage": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "panelDesignCount": {
+        "requested": "2",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false,
+        "actual": "2"
+      }
+    },
+    "unitPriceCny": 10.136,
+    "areaPriceEstimateCnyPerM2": 1583.75,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥20.00\n\n板费\n\n￥62.72\n\n拼板款数费\n\n￥20.00\n\n颜色费\n\n￥100.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥202.72\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返4金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 202.72,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 0,
+      "projectmoney": 20,
+      "stencilmoney": 62.72,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 62.72,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-ALUMINUM-001-R3",
+    "samplingVersion": "v6",
+    "materialKey": "aluminum",
+    "materialLabel": "铝基板",
+    "layers": 1,
+    "widthMm": 80,
+    "heightMm": 80,
+    "quantity": 20,
+    "boardThickness": "1.0",
+    "solderColor": "红色",
+    "surfaceFinish": "无铅喷锡",
+    "copperThickness": "1oz",
+    "solderMaskCoverage": "过孔盖油",
+    "panelDesignCount": "2",
+    "processChangedFields": [
+      "boardThickness",
+      "solderColor",
+      "panelDesignCount"
+    ],
+    "baseSampleId": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-ALUMINUM-001",
+    "repeatIndex": 3,
+    "sampleRole": "process_holdout",
+    "estimatorGroup": "process_holdout",
+    "sampleTime": "2026-07-12T04:27:48.355Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 8,
+    "widthCm": 8,
+    "fixedOptions": "铝基板, 1.6mm, 绿色, 无铅喷锡, 1oz, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 202.72,
+    "domPriceCny": 202.72,
+    "apiPriceCny": 202.72,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "20",
+    "selectedLengthCm": "8",
+    "selectedWidthCm": "8",
+    "selectedMaterialLabel": "铝基板",
+    "selectedLayers": 1,
+    "selectedProcessOptions": {
+      "boardThickness": {
+        "requested": "1.0mm",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "solderColor": {
+        "requested": "红色",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "surfaceFinish": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "copperThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderMaskCoverage": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "panelDesignCount": {
+        "requested": "2",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false,
+        "actual": "2"
+      }
+    },
+    "unitPriceCny": 10.136,
+    "areaPriceEstimateCnyPerM2": 1583.75,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥20.00\n\n板费\n\n￥62.72\n\n拼板款数费\n\n￥20.00\n\n颜色费\n\n￥100.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥202.72\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返4金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 202.72,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 0,
+      "projectmoney": 20,
+      "stencilmoney": 62.72,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 62.72,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-ALUMINUM-002-R1",
+    "samplingVersion": "v6",
+    "materialKey": "aluminum",
+    "materialLabel": "铝基板",
+    "layers": 1,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 50,
+    "boardThickness": "1.2",
+    "solderColor": "黄色",
+    "surfaceFinish": "无铅喷锡",
+    "copperThickness": "1oz",
+    "solderMaskCoverage": "过孔盖油",
+    "panelDesignCount": "2",
+    "processChangedFields": [
+      "boardThickness",
+      "solderColor",
+      "panelDesignCount"
+    ],
+    "baseSampleId": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-ALUMINUM-002",
+    "repeatIndex": 1,
+    "sampleRole": "process_holdout",
+    "estimatorGroup": "process_holdout",
+    "sampleTime": "2026-07-12T03:44:06.315Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 15,
+    "fixedOptions": "铝基板, 1.6mm, 绿色, 无铅喷锡, 1oz, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 473,
+    "domPriceCny": 473,
+    "apiPriceCny": 473,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "50",
+    "selectedLengthCm": "10",
+    "selectedWidthCm": "15",
+    "selectedMaterialLabel": "铝基板",
+    "selectedLayers": 1,
+    "selectedProcessOptions": {
+      "boardThickness": {
+        "requested": "1.2mm",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "solderColor": {
+        "requested": "黄色",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "surfaceFinish": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "copperThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderMaskCoverage": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "panelDesignCount": {
+        "requested": "2",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false,
+        "actual": "2"
+      }
+    },
+    "unitPriceCny": 9.46,
+    "areaPriceEstimateCnyPerM2": 630.67,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥50.00\n\n板费\n\n￥255.00\n\n拼板款数费\n\n￥50.00\n\n颜色费\n\n￥100.00\n\n菲林费\n\n￥18.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥473\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返9金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 473,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 0,
+      "projectmoney": 50,
+      "stencilmoney": 255,
+      "fillmoney": 18,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 255,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 50,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-ALUMINUM-002-R2",
+    "samplingVersion": "v6",
+    "materialKey": "aluminum",
+    "materialLabel": "铝基板",
+    "layers": 1,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 50,
+    "boardThickness": "1.2",
+    "solderColor": "黄色",
+    "surfaceFinish": "无铅喷锡",
+    "copperThickness": "1oz",
+    "solderMaskCoverage": "过孔盖油",
+    "panelDesignCount": "2",
+    "processChangedFields": [
+      "boardThickness",
+      "solderColor",
+      "panelDesignCount"
+    ],
+    "baseSampleId": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-ALUMINUM-002",
+    "repeatIndex": 2,
+    "sampleRole": "process_holdout",
+    "estimatorGroup": "process_holdout",
+    "sampleTime": "2026-07-12T03:44:06.315Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 15,
+    "fixedOptions": "铝基板, 1.6mm, 绿色, 无铅喷锡, 1oz, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 473,
+    "domPriceCny": 473,
+    "apiPriceCny": 473,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "50",
+    "selectedLengthCm": "10",
+    "selectedWidthCm": "15",
+    "selectedMaterialLabel": "铝基板",
+    "selectedLayers": 1,
+    "selectedProcessOptions": {
+      "boardThickness": {
+        "requested": "1.2mm",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "solderColor": {
+        "requested": "黄色",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "surfaceFinish": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "copperThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderMaskCoverage": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "panelDesignCount": {
+        "requested": "2",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false,
+        "actual": "2"
+      }
+    },
+    "unitPriceCny": 9.46,
+    "areaPriceEstimateCnyPerM2": 630.67,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥50.00\n\n板费\n\n￥255.00\n\n拼板款数费\n\n￥50.00\n\n颜色费\n\n￥100.00\n\n菲林费\n\n￥18.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥473\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返9金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 473,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 0,
+      "projectmoney": 50,
+      "stencilmoney": 255,
+      "fillmoney": 18,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 255,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 50,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-ALUMINUM-002-R3",
+    "samplingVersion": "v6",
+    "materialKey": "aluminum",
+    "materialLabel": "铝基板",
+    "layers": 1,
+    "widthMm": 100,
+    "heightMm": 150,
+    "quantity": 50,
+    "boardThickness": "1.2",
+    "solderColor": "黄色",
+    "surfaceFinish": "无铅喷锡",
+    "copperThickness": "1oz",
+    "solderMaskCoverage": "过孔盖油",
+    "panelDesignCount": "2",
+    "processChangedFields": [
+      "boardThickness",
+      "solderColor",
+      "panelDesignCount"
+    ],
+    "baseSampleId": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-ALUMINUM-002",
+    "repeatIndex": 3,
+    "sampleRole": "process_holdout",
+    "estimatorGroup": "process_holdout",
+    "sampleTime": "2026-07-12T03:44:06.315Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 10,
+    "widthCm": 15,
+    "fixedOptions": "铝基板, 1.6mm, 绿色, 无铅喷锡, 1oz, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 473,
+    "domPriceCny": 473,
+    "apiPriceCny": 473,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "50",
+    "selectedLengthCm": "10",
+    "selectedWidthCm": "15",
+    "selectedMaterialLabel": "铝基板",
+    "selectedLayers": 1,
+    "selectedProcessOptions": {
+      "boardThickness": {
+        "requested": "1.2mm",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "solderColor": {
+        "requested": "黄色",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "surfaceFinish": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "copperThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderMaskCoverage": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "panelDesignCount": {
+        "requested": "2",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false,
+        "actual": "2"
+      }
+    },
+    "unitPriceCny": 9.46,
+    "areaPriceEstimateCnyPerM2": 630.67,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥50.00\n\n板费\n\n￥255.00\n\n拼板款数费\n\n￥50.00\n\n颜色费\n\n￥100.00\n\n菲林费\n\n￥18.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥473\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返9金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 473,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 0,
+      "projectmoney": 50,
+      "stencilmoney": 255,
+      "fillmoney": 18,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 255,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 50,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-ALUMINUM-003-R1",
+    "samplingVersion": "v6",
+    "materialKey": "aluminum",
+    "materialLabel": "铝基板",
+    "layers": 1,
+    "widthMm": 150,
+    "heightMm": 150,
+    "quantity": 100,
+    "boardThickness": "1.0",
+    "solderColor": "白色",
+    "surfaceFinish": "无铅喷锡",
+    "copperThickness": "1oz",
+    "solderMaskCoverage": "过孔盖油",
+    "panelDesignCount": "1",
+    "processChangedFields": [
+      "boardThickness",
+      "solderColor"
+    ],
+    "baseSampleId": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-ALUMINUM-003",
+    "repeatIndex": 1,
+    "sampleRole": "process_holdout",
+    "estimatorGroup": "process_holdout",
+    "sampleTime": "2026-07-12T04:27:48.355Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 15,
+    "widthCm": 15,
+    "fixedOptions": "铝基板, 1.6mm, 绿色, 无铅喷锡, 1oz, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 842,
+    "domPriceCny": 842,
+    "apiPriceCny": 842,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "100",
+    "selectedLengthCm": "15",
+    "selectedWidthCm": "15",
+    "selectedMaterialLabel": "铝基板",
+    "selectedLayers": 1,
+    "selectedProcessOptions": {
+      "boardThickness": {
+        "requested": "1.0mm",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "solderColor": {
+        "requested": "白色",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "surfaceFinish": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "copperThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderMaskCoverage": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "panelDesignCount": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      }
+    },
+    "unitPriceCny": 8.42,
+    "areaPriceEstimateCnyPerM2": 374.22,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥50.00\n\n板费\n\n￥765.00\n\n菲林费\n\n￥27.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥842\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返16金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 842,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 0,
+      "projectmoney": 50,
+      "stencilmoney": 765,
+      "fillmoney": 27,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 50,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 765,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-ALUMINUM-003-R2",
+    "samplingVersion": "v6",
+    "materialKey": "aluminum",
+    "materialLabel": "铝基板",
+    "layers": 1,
+    "widthMm": 150,
+    "heightMm": 150,
+    "quantity": 100,
+    "boardThickness": "1.0",
+    "solderColor": "白色",
+    "surfaceFinish": "无铅喷锡",
+    "copperThickness": "1oz",
+    "solderMaskCoverage": "过孔盖油",
+    "panelDesignCount": "1",
+    "processChangedFields": [
+      "boardThickness",
+      "solderColor"
+    ],
+    "baseSampleId": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-ALUMINUM-003",
+    "repeatIndex": 2,
+    "sampleRole": "process_holdout",
+    "estimatorGroup": "process_holdout",
+    "sampleTime": "2026-07-12T04:27:48.355Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 15,
+    "widthCm": 15,
+    "fixedOptions": "铝基板, 1.6mm, 绿色, 无铅喷锡, 1oz, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 842,
+    "domPriceCny": 842,
+    "apiPriceCny": 842,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "100",
+    "selectedLengthCm": "15",
+    "selectedWidthCm": "15",
+    "selectedMaterialLabel": "铝基板",
+    "selectedLayers": 1,
+    "selectedProcessOptions": {
+      "boardThickness": {
+        "requested": "1.0mm",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "solderColor": {
+        "requested": "白色",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "surfaceFinish": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "copperThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderMaskCoverage": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "panelDesignCount": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      }
+    },
+    "unitPriceCny": 8.42,
+    "areaPriceEstimateCnyPerM2": 374.22,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥50.00\n\n板费\n\n￥765.00\n\n菲林费\n\n￥27.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥842\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返16金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 842,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 0,
+      "projectmoney": 50,
+      "stencilmoney": 765,
+      "fillmoney": 27,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 50,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 765,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-ALUMINUM-003-R3",
+    "samplingVersion": "v6",
+    "materialKey": "aluminum",
+    "materialLabel": "铝基板",
+    "layers": 1,
+    "widthMm": 150,
+    "heightMm": 150,
+    "quantity": 100,
+    "boardThickness": "1.0",
+    "solderColor": "白色",
+    "surfaceFinish": "无铅喷锡",
+    "copperThickness": "1oz",
+    "solderMaskCoverage": "过孔盖油",
+    "panelDesignCount": "1",
+    "processChangedFields": [
+      "boardThickness",
+      "solderColor"
+    ],
+    "baseSampleId": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-ALUMINUM-003",
+    "repeatIndex": 3,
+    "sampleRole": "process_holdout",
+    "estimatorGroup": "process_holdout",
+    "sampleTime": "2026-07-12T04:27:48.355Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 15,
+    "widthCm": 15,
+    "fixedOptions": "铝基板, 1.6mm, 绿色, 无铅喷锡, 1oz, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 842,
+    "domPriceCny": 842,
+    "apiPriceCny": 842,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "100",
+    "selectedLengthCm": "15",
+    "selectedWidthCm": "15",
+    "selectedMaterialLabel": "铝基板",
+    "selectedLayers": 1,
+    "selectedProcessOptions": {
+      "boardThickness": {
+        "requested": "1.0mm",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "solderColor": {
+        "requested": "白色",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "surfaceFinish": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "copperThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderMaskCoverage": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "panelDesignCount": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      }
+    },
+    "unitPriceCny": 8.42,
+    "areaPriceEstimateCnyPerM2": 374.22,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥50.00\n\n板费\n\n￥765.00\n\n菲林费\n\n￥27.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥842\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返16金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 842,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 0,
+      "projectmoney": 50,
+      "stencilmoney": 765,
+      "fillmoney": 27,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 50,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 765,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-ALUMINUM-004-R1",
+    "samplingVersion": "v6",
+    "materialKey": "aluminum",
+    "materialLabel": "铝基板",
+    "layers": 1,
+    "widthMm": 55,
+    "heightMm": 65,
+    "quantity": 15,
+    "boardThickness": "1.6",
+    "solderColor": "哑黑色",
+    "surfaceFinish": "无铅喷锡",
+    "copperThickness": "1oz",
+    "solderMaskCoverage": "过孔盖油",
+    "panelDesignCount": "1",
+    "processChangedFields": [
+      "solderColor"
+    ],
+    "baseSampleId": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-ALUMINUM-004",
+    "repeatIndex": 1,
+    "sampleRole": "process_holdout",
+    "estimatorGroup": "process_holdout",
+    "sampleTime": "2026-07-12T03:44:06.315Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 5.5,
+    "widthCm": 6.5,
+    "fixedOptions": "铝基板, 1.6mm, 绿色, 无铅喷锡, 1oz, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 146.28,
+    "domPriceCny": 146.28,
+    "apiPriceCny": 146.28,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "15",
+    "selectedLengthCm": "5.5",
+    "selectedWidthCm": "6.5",
+    "selectedMaterialLabel": "铝基板",
+    "selectedLayers": 1,
+    "selectedProcessOptions": {
+      "boardThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderColor": {
+        "requested": "哑黑色",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "surfaceFinish": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "copperThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderMaskCoverage": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "panelDesignCount": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      }
+    },
+    "unitPriceCny": 9.752,
+    "areaPriceEstimateCnyPerM2": 2727.83,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥20.00\n\n板费\n\n￥26.28\n\n颜色费\n\n￥100.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥146.28\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返2金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 146.28,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 0,
+      "projectmoney": 20,
+      "stencilmoney": 26.28,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 26.28,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-ALUMINUM-004-R2",
+    "samplingVersion": "v6",
+    "materialKey": "aluminum",
+    "materialLabel": "铝基板",
+    "layers": 1,
+    "widthMm": 55,
+    "heightMm": 65,
+    "quantity": 15,
+    "boardThickness": "1.6",
+    "solderColor": "哑黑色",
+    "surfaceFinish": "无铅喷锡",
+    "copperThickness": "1oz",
+    "solderMaskCoverage": "过孔盖油",
+    "panelDesignCount": "1",
+    "processChangedFields": [
+      "solderColor"
+    ],
+    "baseSampleId": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-ALUMINUM-004",
+    "repeatIndex": 2,
+    "sampleRole": "process_holdout",
+    "estimatorGroup": "process_holdout",
+    "sampleTime": "2026-07-12T03:44:06.315Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 5.5,
+    "widthCm": 6.5,
+    "fixedOptions": "铝基板, 1.6mm, 绿色, 无铅喷锡, 1oz, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 146.28,
+    "domPriceCny": 146.28,
+    "apiPriceCny": 146.28,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "15",
+    "selectedLengthCm": "5.5",
+    "selectedWidthCm": "6.5",
+    "selectedMaterialLabel": "铝基板",
+    "selectedLayers": 1,
+    "selectedProcessOptions": {
+      "boardThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderColor": {
+        "requested": "哑黑色",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "surfaceFinish": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "copperThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderMaskCoverage": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "panelDesignCount": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      }
+    },
+    "unitPriceCny": 9.752,
+    "areaPriceEstimateCnyPerM2": 2727.83,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥20.00\n\n板费\n\n￥26.28\n\n颜色费\n\n￥100.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥146.28\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返2金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 146.28,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 0,
+      "projectmoney": 20,
+      "stencilmoney": 26.28,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 26.28,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-ALUMINUM-004-R3",
+    "samplingVersion": "v6",
+    "materialKey": "aluminum",
+    "materialLabel": "铝基板",
+    "layers": 1,
+    "widthMm": 55,
+    "heightMm": 65,
+    "quantity": 15,
+    "boardThickness": "1.6",
+    "solderColor": "哑黑色",
+    "surfaceFinish": "无铅喷锡",
+    "copperThickness": "1oz",
+    "solderMaskCoverage": "过孔盖油",
+    "panelDesignCount": "1",
+    "processChangedFields": [
+      "solderColor"
+    ],
+    "baseSampleId": "JLC-CN-PCB-V6-PROCESS-HOLDOUT-ALUMINUM-004",
+    "repeatIndex": 3,
+    "sampleRole": "process_holdout",
+    "estimatorGroup": "process_holdout",
+    "sampleTime": "2026-07-12T03:44:06.315Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 5.5,
+    "widthCm": 6.5,
+    "fixedOptions": "铝基板, 1.6mm, 绿色, 无铅喷锡, 1oz, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 146.28,
+    "domPriceCny": 146.28,
+    "apiPriceCny": 146.28,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "15",
+    "selectedLengthCm": "5.5",
+    "selectedWidthCm": "6.5",
+    "selectedMaterialLabel": "铝基板",
+    "selectedLayers": 1,
+    "selectedProcessOptions": {
+      "boardThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderColor": {
+        "requested": "哑黑色",
+        "present": true,
+        "selected": true,
+        "implicitDefault": false
+      },
+      "surfaceFinish": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "copperThickness": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "solderMaskCoverage": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      },
+      "panelDesignCount": {
+        "requested": null,
+        "present": false,
+        "selected": true,
+        "implicitDefault": true
+      }
+    },
+    "unitPriceCny": 9.752,
+    "areaPriceEstimateCnyPerM2": 2727.83,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥20.00\n\n板费\n\n￥26.28\n\n颜色费\n\n￥100.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥146.28\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返2金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 146.28,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 0,
+      "projectmoney": 20,
+      "stencilmoney": 26.28,
+      "fillmoney": 0,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 26.28,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 20,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  }
+]

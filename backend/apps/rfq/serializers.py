@@ -3,12 +3,16 @@ from rest_framework import serializers
 from apps.i18n.fields import resolve_i18n
 from apps.rfq.models import (
     ProductionOrder,
+    QuoteAttachment,
     RFQ,
     Quote,
     QuoteRequest,
     RFQAttachment,
     ServiceCategory,
 )
+
+PREVIEWABLE_EXTS = {"xlsx", "xls", "csv", "jpg", "jpeg", "png", "gif", "webp", "pdf"}
+MAX_QUOTE_ATTACHMENTS = 10
 
 
 def apply_markup(amount, markup_percent):
@@ -49,9 +53,51 @@ class RFQAttachmentSerializer(serializers.ModelSerializer):
         return obj.file.url if obj.file else ""
 
 
+class QuoteAttachmentSerializer(serializers.ModelSerializer):
+    file_url = serializers.SerializerMethodField()
+    file_ext = serializers.SerializerMethodField()
+    is_previewable = serializers.SerializerMethodField()
+
+    class Meta:
+        model = QuoteAttachment
+        fields = [
+            "id",
+            "file_name",
+            "file_type",
+            "size",
+            "file_url",
+            "file_ext",
+            "is_previewable",
+            "uploaded_at",
+        ]
+        read_only_fields = fields
+
+    def get_file_ext(self, obj):
+        name = obj.file_name or ""
+        if "." not in name:
+            return obj.file_type or ""
+        return name.rsplit(".", 1)[-1].lower()
+
+    def get_is_previewable(self, obj):
+        return self.get_file_ext(obj) in PREVIEWABLE_EXTS
+
+    def get_file_url(self, obj):
+        request = self.context.get("request")
+        if not request or not obj.pk:
+            return ""
+        user = request.user
+        quote = obj.quote
+        if quote.supplier_id == user.id:
+            path = f"/api/supplier/quotes/{quote.id}/attachments/{obj.id}/download"
+        else:
+            path = f"/api/member/quotes/{quote.id}/attachments/{obj.id}/download"
+        return request.build_absolute_uri(path)
+
+
 class QuoteSerializer(serializers.ModelSerializer):
     supplier_name = serializers.SerializerMethodField()
     supplier_type = serializers.SerializerMethodField()
+    attachments = QuoteAttachmentSerializer(many=True, read_only=True)
 
     class Meta:
         model = Quote
@@ -73,10 +119,22 @@ class QuoteSerializer(serializers.ModelSerializer):
             "status",
             "is_customer_visible",
             "plan_label",
+            "revision_version",
+            "revised_at",
+            "attachments",
             "created_at",
             "updated_at",
         ]
-        read_only_fields = ["id", "supplier", "status", "created_at", "updated_at"]
+        read_only_fields = [
+            "id",
+            "supplier",
+            "status",
+            "revision_version",
+            "revised_at",
+            "attachments",
+            "created_at",
+            "updated_at",
+        ]
 
     def get_supplier_name(self, obj):
         if obj.supplier_id:
@@ -91,18 +149,21 @@ class QuoteSerializer(serializers.ModelSerializer):
 
 
 class CustomerPlanSerializer(serializers.ModelSerializer):
-    """面向客户的方案展示：隐藏供应商身份，价格按平台加价率呈现。"""
+    """面向客户的方案展示：显示供应商企业名（无联系方式），价格按平台加价率呈现。"""
 
+    supplier_name = serializers.SerializerMethodField()
     price_amount = serializers.SerializerMethodField()
     unit_price = serializers.SerializerMethodField()
     mold_fee = serializers.SerializerMethodField()
     sample_fee = serializers.SerializerMethodField()
+    attachment_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Quote
         fields = [
             "id",
             "plan_label",
+            "supplier_name",
             "price_amount",
             "unit_price",
             "mold_fee",
@@ -114,9 +175,19 @@ class CustomerPlanSerializer(serializers.ModelSerializer):
             "valid_until",
             "note",
             "status",
+            "revision_version",
+            "attachment_count",
             "created_at",
         ]
         read_only_fields = fields
+
+    def get_supplier_name(self, obj):
+        if obj.supplier_id:
+            profile = getattr(obj.supplier, "factory_profile", None)
+            if profile and profile.company_name:
+                return profile.company_name
+            return obj.supplier.name or "供应商"
+        return "平台"
 
     def get_price_amount(self, obj):
         markup = self.context.get("markup_percent", 0)
@@ -139,6 +210,45 @@ class CustomerPlanSerializer(serializers.ModelSerializer):
             return None
         markup = self.context.get("markup_percent", 0)
         return apply_markup(obj.sample_fee, markup)
+
+    def get_attachment_count(self, obj):
+        if hasattr(obj, "_prefetched_objects_cache") and "attachments" in obj._prefetched_objects_cache:
+            return len(obj.attachments.all())
+        return obj.attachments.count()
+
+
+class CustomerQuoteDetailSerializer(CustomerPlanSerializer):
+    """买家报价详情：含分项客户价、供应商公开资料与报价附件。"""
+
+    supplier_profile = serializers.SerializerMethodField()
+    attachments = serializers.SerializerMethodField()
+
+    class Meta(CustomerPlanSerializer.Meta):
+        fields = CustomerPlanSerializer.Meta.fields + [
+            "supplier_profile",
+            "attachments",
+            "revised_at",
+        ]
+
+    def get_supplier_profile(self, obj):
+        from apps.accounts.serializers import PublicSupplierProfileSerializer
+
+        if not obj.supplier_id:
+            return None
+        profile = getattr(obj.supplier, "factory_profile", None)
+        if not profile:
+            return None
+        ctx = {
+            **self.context,
+            "quote_id": obj.id,
+            "rfq_id": obj.rfq_id,
+        }
+        return PublicSupplierProfileSerializer(profile, context=ctx).data
+
+    def get_attachments(self, obj):
+        return QuoteAttachmentSerializer(
+            obj.attachments.all(), many=True, context=self.context
+        ).data
 
 
 class FactoryQuoteCreateSerializer(serializers.ModelSerializer):
@@ -401,11 +511,12 @@ class RFQDetailSerializer(serializers.ModelSerializer):
 
 
 class MemberRFQDetailSerializer(serializers.ModelSerializer):
-    """会员端 RFQ 详情：仅展示平台已公开的方案 A/B/C，隐藏供应商身份。"""
+    """会员端 RFQ 详情：仅展示平台已公开的方案，显示供应商企业名与加价后价格。"""
 
     service_category_name = serializers.SerializerMethodField()
     attachments = RFQAttachmentSerializer(many=True, read_only=True)
     plans = serializers.SerializerMethodField()
+    can_edit = serializers.SerializerMethodField()
 
     class Meta:
         model = RFQ
@@ -429,6 +540,7 @@ class MemberRFQDetailSerializer(serializers.ModelSerializer):
             "status",
             "attachments",
             "plans",
+            "can_edit",
             "created_at",
             "updated_at",
         ]
@@ -444,6 +556,12 @@ class MemberRFQDetailSerializer(serializers.ModelSerializer):
             visible, many=True, context={"markup_percent": obj.markup_percent}
         ).data
 
+    def get_can_edit(self, obj):
+        return not obj.quotes.filter(supplier__isnull=False).exists() and obj.status not in {
+            "won",
+            "closed",
+        }
+
 
 class AdminQuoteRequestCreateSerializer(serializers.Serializer):
     supplier_ids = serializers.ListField(
@@ -454,9 +572,56 @@ class AdminQuoteRequestCreateSerializer(serializers.Serializer):
     is_urgent = serializers.BooleanField(default=False)
 
 
+class SupplierPaymentSummarySerializer(serializers.Serializer):
+    """供应商只读付款摘要：含凭证预览信息，不含内部备注。"""
+
+    id = serializers.IntegerField()
+    payment_no = serializers.CharField()
+    status = serializers.CharField()
+    amount = serializers.SerializerMethodField()
+    currency = serializers.CharField()
+    updated_at = serializers.DateTimeField()
+    confirmed_at = serializers.DateTimeField(allow_null=True)
+    proof_url = serializers.SerializerMethodField()
+    proof_file_name = serializers.SerializerMethodField()
+    proof_file_ext = serializers.SerializerMethodField()
+    proof_is_previewable = serializers.SerializerMethodField()
+
+    def get_amount(self, obj):
+        order = self.context.get("production_order")
+        if order is not None:
+            return order.display_supplier_amount()
+        return obj.amount
+
+    def get_proof_url(self, obj):
+        request = self.context.get("request")
+        if obj.proof and request:
+            return request.build_absolute_uri(obj.proof.url)
+        return obj.proof.url if obj.proof else ""
+
+    def get_proof_file_name(self, obj):
+        from apps.payment.serializers import proof_file_meta
+
+        return proof_file_meta(obj)["proof_file_name"]
+
+    def get_proof_file_ext(self, obj):
+        from apps.payment.serializers import proof_file_meta
+
+        return proof_file_meta(obj)["proof_file_ext"]
+
+    def get_proof_is_previewable(self, obj):
+        from apps.payment.serializers import proof_file_meta
+
+        return proof_file_meta(obj)["proof_is_previewable"]
+
+
 class ProductionOrderSerializer(serializers.ModelSerializer):
     rfq_no = serializers.CharField(source="rfq.rfq_no", read_only=True)
+    quote_request_id = serializers.SerializerMethodField()
     supplier_name = serializers.SerializerMethodField()
+    price_amount = serializers.SerializerMethodField()
+    supplier_amount = serializers.SerializerMethodField()
+    customer_amount = serializers.SerializerMethodField()
 
     class Meta:
         model = ProductionOrder
@@ -466,11 +631,15 @@ class ProductionOrderSerializer(serializers.ModelSerializer):
             "rfq",
             "rfq_no",
             "quote",
+            "quote_request_id",
             "buyer",
             "supplier",
             "supplier_name",
             "status",
             "price_amount",
+            "supplier_amount",
+            "customer_amount",
+            "markup_percent_snapshot",
             "currency",
             "lead_time_days",
             "confirmed_at",
@@ -479,11 +648,34 @@ class ProductionOrderSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = fields
 
+    def get_quote_request_id(self, obj):
+        if not obj.quote_id:
+            return None
+        return obj.quote.quote_request_id
+
     def get_supplier_name(self, obj):
         profile = getattr(obj.supplier, "factory_profile", None)
         if profile:
             return profile.company_name
         return obj.supplier.name or obj.supplier.email
+
+    def get_price_amount(self, obj):
+        request = self.context.get("request")
+        if request and request.user.id == obj.supplier_id:
+            return obj.display_supplier_amount()
+        return obj.display_customer_amount()
+
+    def get_supplier_amount(self, obj):
+        request = self.context.get("request")
+        if request and (
+            request.user.id == obj.supplier_id
+            or getattr(request.user, "role", "") == "admin"
+        ):
+            return obj.display_supplier_amount()
+        return None
+
+    def get_customer_amount(self, obj):
+        return obj.display_customer_amount()
 
 
 class AdminProductionOrderSerializer(serializers.ModelSerializer):
@@ -505,13 +697,30 @@ class AdminProductionOrderSerializer(serializers.ModelSerializer):
             "supplier_name",
             "status",
             "price_amount",
+            "supplier_amount",
+            "customer_amount",
+            "markup_percent_snapshot",
             "currency",
             "lead_time_days",
             "confirmed_at",
             "created_at",
             "updated_at",
         ]
-        read_only_fields = ["id", "order_no", "rfq", "rfq_no", "quote", "buyer", "buyer_email", "supplier", "supplier_name", "created_at"]
+        read_only_fields = [
+            "id",
+            "order_no",
+            "rfq",
+            "rfq_no",
+            "quote",
+            "buyer",
+            "buyer_email",
+            "supplier",
+            "supplier_name",
+            "supplier_amount",
+            "customer_amount",
+            "markup_percent_snapshot",
+            "created_at",
+        ]
 
     def get_supplier_name(self, obj):
         profile = getattr(obj.supplier, "factory_profile", None)

@@ -93,6 +93,7 @@ DEFAULT_PRINTERS = [
         "key": "prusa_mk3s",
         "name": "Prusa i3 MK3S+",
         "enabled": True,
+        "is_default": True,
         "bed_size_mm": [250, 210, 210],
         "markup_multiplier": 1.3,
     },
@@ -239,17 +240,30 @@ def find_by_key(items: list[dict], key: str) -> dict | None:
     return None
 
 
+def default_printer(printers: list[dict]) -> dict | None:
+    """管理端指定的默认打印机；未指定时取第一台启用的。"""
+    if not printers:
+        return None
+    for item in printers:
+        if item.get("is_default"):
+            return item
+    return printers[0]
+
+
 def build_job_config_snapshot(inputs: dict[str, Any]) -> dict[str, Any]:
     """Freeze enabled catalogs + chosen option details for a slice job."""
     cfg = build_print3d_config()
     material = find_by_key(cfg["materials"], inputs.get("material", "PLA"))
-    printer = find_by_key(cfg["printers"], inputs.get("printer", "prusa_mk3s"))
+    # 打印机不再由会员选择；仅管理端试算可显式指定，否则用默认打印机
+    requested_printer = str(inputs.get("printer") or "").strip()
+    printer = find_by_key(cfg["printers"], requested_printer) if requested_printer else None
+    printer = printer or default_printer(cfg["printers"])
     quality = find_by_key(cfg["qualities"], inputs.get("quality", "standard"))
     post = find_by_key(cfg["post_processing"], inputs.get("post_process", "none"))
     if not material:
         raise ValueError("无效材料")
     if not printer:
-        raise ValueError("无效打印机")
+        raise ValueError("无可用打印机，请联系管理员")
     if not quality:
         raise ValueError("无效打印质量")
     infill = int(_to_number(inputs.get("infill_density"), cfg["infill"]["default"]))
@@ -286,13 +300,11 @@ def slice_params_from_snapshot(snapshot: dict[str, Any]) -> dict[str, Any]:
 
 
 def public_options_payload() -> dict[str, Any]:
+    """会员端选项；打印机由管理端配置默认值，不再下发给会员选择。"""
     cfg = build_print3d_config()
     return {
         "materials": [
             {"key": m["key"], "name": m.get("name", m["key"])} for m in cfg["materials"]
-        ],
-        "printers": [
-            {"key": p["key"], "name": p.get("name", p["key"])} for p in cfg["printers"]
         ],
         "qualities": [
             {

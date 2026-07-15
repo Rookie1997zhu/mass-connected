@@ -1,0 +1,58 @@
+[
+  {
+    "id": "JLC-CN-PCB-V4-SMOKE-FR4-2L",
+    "materialKey": "fr4",
+    "materialLabel": "FR-4",
+    "layers": 2,
+    "widthMm": 200,
+    "heightMm": 200,
+    "quantity": 200,
+    "boardThickness": "1.6",
+    "solderColor": "绿色",
+    "surfaceFinish": "有铅喷锡",
+    "samplingVersion": "v4"
+  },
+  {
+    "id": "JLC-CN-PCB-V4-SMOKE-FR4-4L",
+    "materialKey": "fr4",
+    "materialLabel": "FR-4",
+    "layers": 4,
+    "widthMm": 200,
+    "heightMm": 200,
+    "quantity": 200,
+    "boardThickness": "1.6",
+    "solderColor": "绿色",
+    "surfaceFinish": "有铅喷锡",
+    "samplingVersion": "v4"
+  },
+  {
+    "id": "JLC-CN-PCB-V4-SMOKE-FPC-1L",
+    "materialKey": "fpc",
+    "materialLabel": "FPC软板",
+    "layers": 1,
+    "widthMm": 200,
+    "heightMm": 200,
+    "quantity": 200,
+    "samplingVersion": "v4"
+  },
+  {
+    "id": "JLC-CN-PCB-V4-SMOKE-FPC-2L",
+    "materialKey": "fpc",
+    "materialLabel": "FPC软板",
+    "layers": 2,
+    "widthMm": 200,
+    "heightMm": 200,
+    "quantity": 200,
+    "samplingVersion": "v4"
+  },
+  {
+    "id": "JLC-CN-PCB-V4-SMOKE-ALU-1L",
+    "materialKey": "aluminum",
+    "materialLabel": "铝基板",
+    "layers": 1,
+    "widthMm": 200,
+    "heightMm": 200,
+    "quantity": 200,
+    "samplingVersion": "v4"
+  }
+]

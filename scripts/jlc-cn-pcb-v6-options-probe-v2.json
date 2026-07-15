@@ -1,0 +1,800 @@
+{
+  "probedAt": "2026-07-12T02:59:59.366Z",
+  "rows": [
+    {
+      "label": "FR-4",
+      "layers": 2,
+      "material": null,
+      "bodyHasOz": false,
+      "bodyHasCopper": false,
+      "coverage": [],
+      "surface": [
+        {
+          "text": "OSP 免费",
+          "disabled": false,
+          "selected": true
+        },
+        {
+          "text": "有铅喷锡",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "无铅喷锡",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "沉金",
+          "disabled": true,
+          "selected": false
+        }
+      ],
+      "colors": [
+        {
+          "text": "绿色",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "红色",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "黄色",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "蓝色",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "白色",
+          "disabled": false,
+          "selected": true
+        },
+        {
+          "text": "哑黑色",
+          "disabled": false,
+          "selected": false
+        },
+        {
+          "text": "嘉立创紫",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "黑色",
+          "disabled": false,
+          "selected": true
+        },
+        {
+          "text": "晚霞橙",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "暮光紫",
+          "disabled": true,
+          "selected": false
+        }
+      ],
+      "thickness": [
+        {
+          "text": "1",
+          "disabled": false,
+          "selected": true
+        },
+        {
+          "text": "4",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "6",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "8",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "10",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "12",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "64",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "0.4",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "0.6",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "0.8",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "1.0",
+          "disabled": false,
+          "selected": false
+        },
+        {
+          "text": "1.2",
+          "disabled": false,
+          "selected": false
+        },
+        {
+          "text": "1.6",
+          "disabled": false,
+          "selected": true
+        },
+        {
+          "text": "2.0",
+          "disabled": true,
+          "selected": false
+        }
+      ],
+      "panelSpin": {
+        "value": "1",
+        "min": "1",
+        "max": "Infinity"
+      }
+    },
+    {
+      "label": "FR-4",
+      "layers": 4,
+      "material": null,
+      "bodyHasOz": false,
+      "bodyHasCopper": false,
+      "coverage": [],
+      "surface": [
+        {
+          "text": "OSP 免费",
+          "disabled": false,
+          "selected": true
+        },
+        {
+          "text": "有铅喷锡",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "无铅喷锡",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "沉金",
+          "disabled": true,
+          "selected": false
+        }
+      ],
+      "colors": [
+        {
+          "text": "绿色",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "红色",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "黄色",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "蓝色",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "白色",
+          "disabled": false,
+          "selected": true
+        },
+        {
+          "text": "哑黑色",
+          "disabled": false,
+          "selected": false
+        },
+        {
+          "text": "嘉立创紫",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "黑色",
+          "disabled": false,
+          "selected": true
+        },
+        {
+          "text": "晚霞橙",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "暮光紫",
+          "disabled": true,
+          "selected": false
+        }
+      ],
+      "thickness": [
+        {
+          "text": "1",
+          "disabled": false,
+          "selected": true
+        },
+        {
+          "text": "4",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "6",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "8",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "10",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "12",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "64",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "0.4",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "0.6",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "0.8",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "1.0",
+          "disabled": false,
+          "selected": false
+        },
+        {
+          "text": "1.2",
+          "disabled": false,
+          "selected": false
+        },
+        {
+          "text": "1.6",
+          "disabled": false,
+          "selected": true
+        },
+        {
+          "text": "2.0",
+          "disabled": true,
+          "selected": false
+        }
+      ],
+      "panelSpin": {
+        "value": "1",
+        "min": "1",
+        "max": "Infinity"
+      }
+    },
+    {
+      "label": "FPC软板",
+      "layers": 1,
+      "material": null,
+      "bodyHasOz": false,
+      "bodyHasCopper": false,
+      "coverage": [],
+      "surface": [
+        {
+          "text": "OSP 免费",
+          "disabled": false,
+          "selected": true
+        },
+        {
+          "text": "有铅喷锡",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "无铅喷锡",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "沉金",
+          "disabled": true,
+          "selected": false
+        }
+      ],
+      "colors": [
+        {
+          "text": "绿色",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "红色",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "黄色",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "蓝色",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "白色",
+          "disabled": false,
+          "selected": true
+        },
+        {
+          "text": "哑黑色",
+          "disabled": false,
+          "selected": false
+        },
+        {
+          "text": "嘉立创紫",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "黑色",
+          "disabled": false,
+          "selected": true
+        },
+        {
+          "text": "晚霞橙",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "暮光紫",
+          "disabled": true,
+          "selected": false
+        }
+      ],
+      "thickness": [
+        {
+          "text": "1",
+          "disabled": false,
+          "selected": true
+        },
+        {
+          "text": "4",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "6",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "8",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "10",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "12",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "64",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "0.4",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "0.6",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "0.8",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "1.0",
+          "disabled": false,
+          "selected": false
+        },
+        {
+          "text": "1.2",
+          "disabled": false,
+          "selected": false
+        },
+        {
+          "text": "1.6",
+          "disabled": false,
+          "selected": true
+        },
+        {
+          "text": "2.0",
+          "disabled": true,
+          "selected": false
+        }
+      ],
+      "panelSpin": {
+        "value": "1",
+        "min": "1",
+        "max": "Infinity"
+      }
+    },
+    {
+      "label": "FPC软板",
+      "layers": 2,
+      "material": null,
+      "bodyHasOz": false,
+      "bodyHasCopper": false,
+      "coverage": [],
+      "surface": [
+        {
+          "text": "OSP 免费",
+          "disabled": false,
+          "selected": true
+        },
+        {
+          "text": "有铅喷锡",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "无铅喷锡",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "沉金",
+          "disabled": true,
+          "selected": false
+        }
+      ],
+      "colors": [
+        {
+          "text": "绿色",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "红色",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "黄色",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "蓝色",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "白色",
+          "disabled": false,
+          "selected": true
+        },
+        {
+          "text": "哑黑色",
+          "disabled": false,
+          "selected": false
+        },
+        {
+          "text": "嘉立创紫",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "黑色",
+          "disabled": false,
+          "selected": true
+        },
+        {
+          "text": "晚霞橙",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "暮光紫",
+          "disabled": true,
+          "selected": false
+        }
+      ],
+      "thickness": [
+        {
+          "text": "1",
+          "disabled": false,
+          "selected": true
+        },
+        {
+          "text": "4",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "6",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "8",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "10",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "12",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "64",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "0.4",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "0.6",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "0.8",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "1.0",
+          "disabled": false,
+          "selected": false
+        },
+        {
+          "text": "1.2",
+          "disabled": false,
+          "selected": false
+        },
+        {
+          "text": "1.6",
+          "disabled": false,
+          "selected": true
+        },
+        {
+          "text": "2.0",
+          "disabled": true,
+          "selected": false
+        }
+      ],
+      "panelSpin": {
+        "value": "1",
+        "min": "1",
+        "max": "Infinity"
+      }
+    },
+    {
+      "label": "铝基板",
+      "layers": 1,
+      "material": null,
+      "bodyHasOz": false,
+      "bodyHasCopper": false,
+      "coverage": [],
+      "surface": [
+        {
+          "text": "OSP 免费",
+          "disabled": false,
+          "selected": true
+        },
+        {
+          "text": "有铅喷锡",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "无铅喷锡",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "沉金",
+          "disabled": true,
+          "selected": false
+        }
+      ],
+      "colors": [
+        {
+          "text": "绿色",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "红色",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "黄色",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "蓝色",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "白色",
+          "disabled": false,
+          "selected": true
+        },
+        {
+          "text": "哑黑色",
+          "disabled": false,
+          "selected": false
+        },
+        {
+          "text": "嘉立创紫",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "黑色",
+          "disabled": false,
+          "selected": true
+        },
+        {
+          "text": "晚霞橙",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "暮光紫",
+          "disabled": true,
+          "selected": false
+        }
+      ],
+      "thickness": [
+        {
+          "text": "1",
+          "disabled": false,
+          "selected": true
+        },
+        {
+          "text": "4",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "6",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "8",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "10",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "12",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "64",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "0.4",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "0.6",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "0.8",
+          "disabled": true,
+          "selected": false
+        },
+        {
+          "text": "1.0",
+          "disabled": false,
+          "selected": false
+        },
+        {
+          "text": "1.2",
+          "disabled": false,
+          "selected": false
+        },
+        {
+          "text": "1.6",
+          "disabled": false,
+          "selected": true
+        },
+        {
+          "text": "2.0",
+          "disabled": true,
+          "selected": false
+        }
+      ],
+      "panelSpin": {
+        "value": "1",
+        "min": "1",
+        "max": "Infinity"
+      }
+    }
+  ]
+}

@@ -486,9 +486,27 @@ watch(() => route.query.id, (id) => { if (id) loadExisting(id); else result.valu
             <strong>{{ t('pcbDev.mfgTitle') }}</strong>
             <p v-if="!result.result.pcb_manufacturing.requires_manual_review">
               {{ t('pcbDev.mfgAutoQuoted') }}:
-              CNY {{ fmt(result.result.pcb_manufacturing.customer_quote_cny, 2) }}
-              /
-              KRW {{ fmt(result.result.pcb_manufacturing.customer_quote_krw) }}
+              <template v-if="result.result.pcb_manufacturing.pricing_display_mode === 'range'">
+                CNY {{ fmt(result.result.pcb_manufacturing.customer_quote_cny_min, 2) }}
+                ~
+                {{ fmt(result.result.pcb_manufacturing.customer_quote_cny_max, 2) }}
+                /
+                KRW {{ fmt(result.result.pcb_manufacturing.customer_quote_krw_min) }}
+                ~
+                {{ fmt(result.result.pcb_manufacturing.customer_quote_krw_max) }}
+              </template>
+              <template v-else>
+                CNY {{ fmt(result.result.pcb_manufacturing.customer_quote_cny, 2) }}
+                /
+                KRW {{ fmt(result.result.pcb_manufacturing.customer_quote_krw) }}
+              </template>
+            </p>
+            <p
+              v-if="!result.result.pcb_manufacturing.requires_manual_review
+                && result.result.pcb_manufacturing.pricing_display_mode === 'range'"
+              class="sq-stp-hint"
+            >
+              {{ t('pcbDev.mfgRangeNote') }}
             </p>
             <p
               v-if="!result.result.pcb_manufacturing.requires_manual_review"
@@ -543,6 +561,14 @@ watch(() => route.query.id, (id) => { if (id) loadExisting(id); else result.valu
               ({{ t('pcbDev.mfgFallbackVersion') }}: {{ result.result.pcb_manufacturing.fallback_version || 'jlc-cn-pcb-v6-20260712' }})
             </p>
           </div>
+          <p
+            v-if="result.result?.total_min != null && result.result?.total_max != null
+              && result.result.total_min !== result.result.total_max"
+            class="sq-total"
+          >
+            {{ t('pcbDev.totalRange') }}:
+            <strong>{{ fromQuote(result.result.total_min, result) }} ~ {{ fromQuote(result.result.total_max, result) }}</strong>
+          </p>
           <p class="sq-total">{{ t('simpleQuote.total') }}: <strong>{{ fromQuote(result.total_amount, result) }}</strong></p>
           <p class="sq-stp-hint">{{ t('pcbDev.vatExcluded') }}</p>
         </template>

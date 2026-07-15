@@ -48,7 +48,7 @@ class Print3dSliceJobListCreateView(APIView):
     def post(self, request):
         upload = request.FILES.get("file")
         form = {k: request.data.get(k) for k in (
-            "material", "printer", "quality", "infill_density",
+            "material", "quality", "infill_density",
             "support", "quantity", "post_process", "rush",
         )}
         # Normalize multipart string booleans

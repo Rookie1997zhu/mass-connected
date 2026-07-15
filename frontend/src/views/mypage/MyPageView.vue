@@ -5,6 +5,8 @@ import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '../../stores/auth'
 import {
   createRecharge,
+  deleteSupplierProfileAttachment,
+  fetchFactoryProfile,
   fetchMemberDashboard,
   fetchMemberFiles,
   fetchMemberTodos,
@@ -23,9 +25,11 @@ import {
   markNotificationRead,
   markSupplierNotificationRead,
   signContract,
+  updateFactoryProfile,
   updateProfile,
   updateProfileMultipart,
   uploadPaymentProof,
+  uploadSupplierProfileAttachment,
   toggleProjectTodo,
 } from '../../api'
 import { useLocaleCurrency } from '../../composables/useLocaleCurrency'
@@ -69,7 +73,28 @@ const todos = ref([])
 const files = ref([])
 const rechargeAmount = ref(50000)
 const rechargeProof = ref(null)
-const profileForm = ref({ name: '', phone: '', company_name: '', region: '', intro: '', contact_phone: '', country: '', city: '', payment_terms: '' })
+const profileForm = ref({
+  name: '',
+  phone: '',
+  company_name: '',
+  short_name: '',
+  region: '',
+  intro: '',
+  contact_phone: '',
+  country: '',
+  city: '',
+  payment_terms: '',
+  established_year: '',
+  employee_scale: '',
+  factory_area_sqm: '',
+  main_products: '',
+  monthly_capacity: '',
+  quality_certifications: '',
+  equipment_summary: '',
+})
+const profileAttachments = ref([])
+const companyFile = ref(null)
+const companyFileCategory = ref('company_profile')
 const licenseFile = ref(null)
 
 const money = (v, c = 'KRW', quote = null) => {
@@ -141,18 +166,37 @@ const loadTab = async (tab) => {
     } else if (tab === 'settings') {
       profileForm.value = { name: auth.user?.name || '', phone: auth.user?.phone || '' }
     } else if (tab === 'profile') {
-      const fp = auth.factoryProfile || {}
+      let fp = auth.factoryProfile || {}
+      if (auth.isSupplier) {
+        try {
+          const res = await fetchFactoryProfile()
+          fp = res.data || fp
+          auth.profile = fp
+          auth.persist()
+        } catch {
+          /* keep cached profile */
+        }
+      }
       profileForm.value = {
         name: auth.user?.name || '',
         phone: auth.user?.phone || '',
         company_name: fp.company_name || '',
+        short_name: fp.short_name || '',
         region: fp.region || '',
         intro: fp.intro || '',
         contact_phone: fp.contact_phone || '',
         country: fp.country || '',
         city: fp.city || '',
         payment_terms: fp.payment_terms || '',
+        established_year: fp.established_year || '',
+        employee_scale: fp.employee_scale || '',
+        factory_area_sqm: fp.factory_area_sqm || '',
+        main_products: fp.main_products || '',
+        monthly_capacity: fp.monthly_capacity || '',
+        quality_certifications: fp.quality_certifications || '',
+        equipment_summary: fp.equipment_summary || '',
       }
+      profileAttachments.value = fp.attachments || []
     }
   } finally {
     loading.value = false
@@ -206,16 +250,68 @@ const onMarkAllRead = async () => {
 
 const onSaveProfile = async () => {
   if (activeTab.value === 'profile' && auth.isEnterprise) {
-    const fd = new FormData()
-    Object.entries(profileForm.value).forEach(([k, v]) => fd.append(k, v || ''))
-    if (licenseFile.value) fd.append('business_license', licenseFile.value)
-    await updateProfileMultipart(fd)
+    const payload = {
+      company_name: profileForm.value.company_name,
+      short_name: profileForm.value.short_name,
+      region: profileForm.value.region,
+      country: profileForm.value.country,
+      city: profileForm.value.city,
+      intro: profileForm.value.intro,
+      contact_phone: profileForm.value.contact_phone,
+      payment_terms: profileForm.value.payment_terms,
+      established_year: profileForm.value.established_year || null,
+      employee_scale: profileForm.value.employee_scale,
+      factory_area_sqm: profileForm.value.factory_area_sqm || null,
+      main_products: profileForm.value.main_products,
+      monthly_capacity: profileForm.value.monthly_capacity,
+      quality_certifications: profileForm.value.quality_certifications,
+      equipment_summary: profileForm.value.equipment_summary,
+    }
+    if (auth.user?.role === 'factory') {
+      const res = await updateFactoryProfile({
+        ...payload,
+        name: profileForm.value.name,
+        phone: profileForm.value.phone,
+      })
+      auth.profile = res.data
+      profileAttachments.value = res.data.attachments || []
+      auth.persist()
+    } else {
+      const fd = new FormData()
+      fd.append('name', profileForm.value.name || '')
+      fd.append('phone', profileForm.value.phone || '')
+      Object.entries(payload).forEach(([k, v]) => fd.append(k, v ?? ''))
+      if (licenseFile.value) fd.append('business_license', licenseFile.value)
+      await updateProfileMultipart(fd)
+    }
   } else {
     await updateProfile({ name: profileForm.value.name, phone: profileForm.value.phone })
   }
   auth.user = { ...auth.user, name: profileForm.value.name, phone: profileForm.value.phone }
   auth.persist()
   feedback.value = t('mypage.saved')
+}
+
+const onCompanyFile = (e) => {
+  companyFile.value = e.target.files?.[0] || null
+}
+
+const onUploadCompanyAttachment = async () => {
+  if (!companyFile.value) return
+  const fd = new FormData()
+  fd.append('file', companyFile.value)
+  fd.append('category', companyFileCategory.value)
+  fd.append('is_public', 'true')
+  await uploadSupplierProfileAttachment(fd)
+  companyFile.value = null
+  feedback.value = t('mypage.companyAttachmentUploaded')
+  await loadTab('profile')
+}
+
+const onRemoveCompanyAttachment = async (attId) => {
+  await deleteSupplierProfileAttachment(attId)
+  feedback.value = t('mypage.companyAttachmentRemoved')
+  await loadTab('profile')
 }
 
 const onLicenseFile = (e) => {
@@ -318,12 +414,24 @@ const onLogout = () => {
       <div v-else-if="activeTab === 'projects'">
         <p v-if="!projects.length" class="page-empty">{{ t('mypage.empty') }}</p>
         <div v-else class="card-list">
-          <RouterLink v-for="p in projects" :key="p.id" :to="`/my/projects/${p.id}`" class="proj-card">
-            <div class="proj-head"><strong>{{ p.project_no }}</strong><span>{{ p.status }}</span></div>
-            <p class="proj-title">{{ p.title }}</p>
-            <div class="progress-bar"><span :style="{ width: p.progress_percent + '%' }" /></div>
-            <p class="proj-meta">{{ t('mypage.progress') }}: {{ p.progress_percent }}%</p>
-          </RouterLink>
+          <div v-for="p in projects" :key="p.id" class="proj-card">
+            <RouterLink :to="`/my/projects/${p.id}`" class="proj-card-main">
+              <div class="proj-head"><strong>{{ p.project_no }}</strong><span>{{ p.status }}</span></div>
+              <p class="proj-title">{{ p.title }}</p>
+              <div class="progress-bar"><span :style="{ width: p.progress_percent + '%' }" /></div>
+              <p class="proj-meta">
+                {{ t('mypage.progress') }}: {{ p.progress_percent }}%
+                <span v-if="p.current_stage"> · {{ t('workflow.currentStage') }}: {{ p.current_stage.name }}</span>
+              </p>
+            </RouterLink>
+            <RouterLink
+              v-if="p.rfq"
+              :to="`/my/rfqs/${p.rfq}`"
+              class="link deal-link"
+            >
+              {{ t('fulfillment.viewDeal') }}
+            </RouterLink>
+          </div>
         </div>
       </div>
 
@@ -338,6 +446,7 @@ const onLogout = () => {
               <td>{{ money(c.amount, c.currency) }}</td>
               <td>{{ c.status }}</td>
               <td class="actions-cell">
+                <RouterLink v-if="c.rfq" :to="`/my/rfqs/${c.rfq}`" class="link">{{ t('fulfillment.viewDeal') }}</RouterLink>
                 <button
                   v-if="c.status === 'pending_sign'"
                   type="button"
@@ -393,7 +502,8 @@ const onLogout = () => {
               <td>{{ p.payment_no }}</td>
               <td>{{ money(p.amount, p.currency) }}</td>
               <td>{{ p.status }}</td>
-              <td>
+              <td class="actions-cell">
+                <RouterLink v-if="p.rfq" :to="`/my/rfqs/${p.rfq}`" class="link">{{ t('fulfillment.viewDeal') }}</RouterLink>
                 <label v-if="p.status !== 'confirmed'" class="upload-label">
                   {{ t('mypage.uploadProof') }}
                   <input type="file" hidden @change="(e) => onUploadProof(p, e)" />
@@ -461,13 +571,48 @@ const onLogout = () => {
         <label>{{ t('account.phone') }}<input v-model="profileForm.phone" type="text" /></label>
         <template v-if="activeTab === 'profile' && auth.isEnterprise">
           <label>{{ t('mypage.companyName') }}<input v-model="profileForm.company_name" type="text" /></label>
+          <label>{{ t('mypage.shortName') }}<input v-model="profileForm.short_name" type="text" /></label>
           <label>{{ t('mypage.region') }}<input v-model="profileForm.region" type="text" /></label>
           <label>{{ t('mypage.country') }}<input v-model="profileForm.country" type="text" /></label>
           <label>{{ t('mypage.city') }}<input v-model="profileForm.city" type="text" /></label>
           <label>{{ t('mypage.intro') }}<textarea v-model="profileForm.intro" rows="3" /></label>
           <label>{{ t('mypage.contactPhone') }}<input v-model="profileForm.contact_phone" type="text" /></label>
           <label>{{ t('mypage.paymentTerms') }}<input v-model="profileForm.payment_terms" type="text" /></label>
-          <label>{{ t('mypage.businessLicense') }}<input type="file" @change="onLicenseFile" /></label>
+          <label>{{ t('quoteDetail.establishedYear') }}<input v-model="profileForm.established_year" type="number" min="1900" /></label>
+          <label>{{ t('quoteDetail.employeeScale') }}<input v-model="profileForm.employee_scale" type="text" /></label>
+          <label>{{ t('quoteDetail.factoryArea') }}<input v-model="profileForm.factory_area_sqm" type="number" min="0" /></label>
+          <label>{{ t('quoteDetail.mainProducts') }}<textarea v-model="profileForm.main_products" rows="2" /></label>
+          <label>{{ t('quoteDetail.monthlyCapacity') }}<input v-model="profileForm.monthly_capacity" type="text" /></label>
+          <label>{{ t('quoteDetail.certifications') }}<textarea v-model="profileForm.quality_certifications" rows="2" /></label>
+          <label>{{ t('quoteDetail.equipment') }}<textarea v-model="profileForm.equipment_summary" rows="2" /></label>
+          <p class="hint">{{ t('mypage.publicProfileHint') }}</p>
+          <template v-if="auth.isSupplier">
+            <div class="company-att-box">
+              <h3>{{ t('mypage.publicAttachments') }}</h3>
+              <ul v-if="profileAttachments.length" class="att-mini">
+                <li v-for="a in profileAttachments" :key="a.id">
+                  <span>{{ a.file_name }} · {{ a.category }} · {{ a.is_public ? t('mypage.public') : t('mypage.private') }}</span>
+                  <button type="button" class="btn btn-secondary btn-sm" @click="onRemoveCompanyAttachment(a.id)">
+                    {{ t('quoteRequest.removeAttachment') }}
+                  </button>
+                </li>
+              </ul>
+              <label>
+                {{ t('mypage.attachmentCategory') }}
+                <select v-model="companyFileCategory">
+                  <option value="company_profile">{{ t('mypage.catCompanyProfile') }}</option>
+                  <option value="certification">{{ t('mypage.catCertification') }}</option>
+                  <option value="equipment">{{ t('mypage.catEquipment') }}</option>
+                  <option value="case">{{ t('mypage.catCase') }}</option>
+                </select>
+              </label>
+              <label>{{ t('mypage.uploadPublicAttachment') }}<input type="file" @change="onCompanyFile" /></label>
+              <button type="button" class="btn btn-secondary btn-sm" @click="onUploadCompanyAttachment">
+                {{ t('mypage.uploadPublicAttachment') }}
+              </button>
+            </div>
+          </template>
+          <label v-if="auth.user?.role !== 'factory'">{{ t('mypage.businessLicense') }}<input type="file" @change="onLicenseFile" /></label>
           <p v-if="auth.factoryProfile?.business_license_url" class="hint">
             <a :href="auth.factoryProfile.business_license_url" target="_blank" rel="noopener">{{ t('mypage.viewLicense') }}</a>
           </p>
@@ -501,6 +646,8 @@ const onLogout = () => {
 .mb { margin-bottom: var(--space-md); }
 .card-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--space-lg); }
 .proj-card { border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-lg); text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 0.5rem; }
+.proj-card-main { text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 0.5rem; }
+.deal-link { font-size: 0.85rem; }
 .proj-head { display: flex; justify-content: space-between; font-size: 0.8rem; }
 .proj-title { margin: 0; font-weight: 600; }
 .progress-bar { height: 6px; background: var(--color-border); border-radius: 3px; overflow: hidden; span { display: block; height: 100%; background: var(--color-steel); } }
@@ -515,5 +662,23 @@ const onLogout = () => {
 .todo-list { list-style: none; padding: 0; margin: 0; li { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid var(--color-border); label { display: flex; align-items: center; gap: 0.5rem; } .done { text-decoration: line-through; opacity: 0.5; } } }
 .todo-meta { font-size: 0.75rem; opacity: 0.55; }
 .form-box textarea { padding: 0.625rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font: inherit; }
+.company-att-box {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  h3 { margin: 0; font-size: 0.95rem; }
+}
+.att-mini {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  li { display: flex; justify-content: space-between; gap: 0.5rem; align-items: center; font-size: 0.85rem; }
+}
 @media (max-width: 768px) { .mypage { grid-template-columns: 1fr; } .mypage-side { position: static; } .mypage-nav { flex-direction: row; flex-wrap: wrap; } }
 </style>

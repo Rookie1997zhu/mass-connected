@@ -2,6 +2,14 @@ from rest_framework import serializers
 
 from apps.accounts.models import FactoryProfile, SupplierAttachment, SupplierTag, User
 
+PREVIEWABLE_EXTS = {"xlsx", "xls", "csv", "jpg", "jpeg", "png", "gif", "webp", "pdf"}
+PUBLIC_SUPPLIER_ATTACHMENT_CATEGORIES = {
+    "company_profile",
+    "certification",
+    "equipment",
+    "case",
+}
+
 
 class FactoryProfileSummarySerializer(serializers.ModelSerializer):
     business_license_url = serializers.SerializerMethodField()
@@ -18,6 +26,13 @@ class FactoryProfileSummarySerializer(serializers.ModelSerializer):
             "intro",
             "contact_phone",
             "payment_terms",
+            "established_year",
+            "employee_scale",
+            "factory_area_sqm",
+            "main_products",
+            "monthly_capacity",
+            "quality_certifications",
+            "equipment_summary",
             "status",
             "business_license_url",
         ]
@@ -43,6 +58,13 @@ class MemberEnterpriseProfileSerializer(serializers.ModelSerializer):
             "intro",
             "contact_phone",
             "payment_terms",
+            "established_year",
+            "employee_scale",
+            "factory_area_sqm",
+            "main_products",
+            "monthly_capacity",
+            "quality_certifications",
+            "equipment_summary",
         ]
 
 
@@ -55,18 +77,130 @@ class SupplierTagSerializer(serializers.ModelSerializer):
 
 class SupplierAttachmentSerializer(serializers.ModelSerializer):
     file_url = serializers.SerializerMethodField()
+    file_ext = serializers.SerializerMethodField()
+    is_previewable = serializers.SerializerMethodField()
 
     class Meta:
         model = SupplierAttachment
-        fields = ["id", "file_name", "category", "file_url", "uploaded_at"]
+        fields = [
+            "id",
+            "file_name",
+            "category",
+            "is_public",
+            "file_url",
+            "file_ext",
+            "is_previewable",
+            "uploaded_at",
+        ]
         read_only_fields = fields
+
+    def get_file_ext(self, obj):
+        name = obj.file_name or ""
+        if "." not in name:
+            return ""
+        return name.rsplit(".", 1)[-1].lower()
+
+    def get_is_previewable(self, obj):
+        return self.get_file_ext(obj) in PREVIEWABLE_EXTS
 
     def get_file_url(self, obj):
         request = self.context.get("request")
-        if not obj.file:
+        if not request or not obj.pk:
             return ""
-        url = obj.file.url
-        return request.build_absolute_uri(url) if request else url
+        role = getattr(request.user, "role", "")
+        if role in {"super_admin", "operator", "sales"} or getattr(request.user, "is_staff", False):
+            path = f"/api/admin/suppliers/{obj.profile_id}/attachments/{obj.id}/download"
+        else:
+            path = f"/api/supplier/profile/attachments/{obj.id}/download"
+        return request.build_absolute_uri(path)
+
+
+class PublicSupplierAttachmentSerializer(serializers.ModelSerializer):
+    """买家可见的公开企业资料附件（不含敏感字段）。"""
+
+    file_url = serializers.SerializerMethodField()
+    file_ext = serializers.SerializerMethodField()
+    is_previewable = serializers.SerializerMethodField()
+
+    class Meta:
+        model = SupplierAttachment
+        fields = [
+            "id",
+            "file_name",
+            "category",
+            "file_url",
+            "file_ext",
+            "is_previewable",
+            "uploaded_at",
+        ]
+        read_only_fields = fields
+
+    def get_file_ext(self, obj):
+        name = obj.file_name or ""
+        if "." not in name:
+            return ""
+        return name.rsplit(".", 1)[-1].lower()
+
+    def get_is_previewable(self, obj):
+        return self.get_file_ext(obj) in PREVIEWABLE_EXTS
+
+    def get_file_url(self, obj):
+        request = self.context.get("request")
+        quote_id = self.context.get("quote_id")
+        rfq_id = self.context.get("rfq_id")
+        if not request or not obj.pk or not quote_id or not rfq_id:
+            return ""
+        path = (
+            f"/api/member/rfqs/{rfq_id}/quotes/{quote_id}/supplier-attachments/{obj.id}/download"
+        )
+        return request.build_absolute_uri(path)
+
+
+class PublicSupplierProfileSerializer(serializers.ModelSerializer):
+    """买家甄别用公开企业资料：不含联系方式与营业执照。"""
+
+    process_names = serializers.SerializerMethodField()
+    tags = serializers.SerializerMethodField()
+    public_attachments = serializers.SerializerMethodField()
+
+    class Meta:
+        model = FactoryProfile
+        fields = [
+            "id",
+            "company_name",
+            "short_name",
+            "region",
+            "country",
+            "city",
+            "intro",
+            "established_year",
+            "employee_scale",
+            "factory_area_sqm",
+            "main_products",
+            "monthly_capacity",
+            "quality_certifications",
+            "equipment_summary",
+            "score",
+            "process_names",
+            "tags",
+            "public_attachments",
+        ]
+        read_only_fields = fields
+
+    def get_process_names(self, obj):
+        lang = self.context.get("lang", "ko")
+        from apps.i18n.fields import resolve_i18n
+
+        return [resolve_i18n(p.name, lang) for p in obj.processes.filter(is_active=True)]
+
+    def get_tags(self, obj):
+        return [t.tag_name for t in obj.tags.all()]
+
+    def get_public_attachments(self, obj):
+        qs = obj.attachments.filter(
+            is_public=True, category__in=PUBLIC_SUPPLIER_ATTACHMENT_CATEGORIES
+        )
+        return PublicSupplierAttachmentSerializer(qs, many=True, context=self.context).data
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -180,6 +314,9 @@ class FactoryProfileSerializer(serializers.ModelSerializer):
     process_ids = serializers.PrimaryKeyRelatedField(
         source="processes", many=True, read_only=True
     )
+    tags = SupplierTagSerializer(many=True, read_only=True)
+    attachments = SupplierAttachmentSerializer(many=True, read_only=True)
+    business_license_url = serializers.SerializerMethodField()
 
     class Meta:
         model = FactoryProfile
@@ -188,15 +325,73 @@ class FactoryProfileSerializer(serializers.ModelSerializer):
             "email",
             "name",
             "company_name",
+            "short_name",
             "region",
+            "country",
+            "city",
             "intro",
             "contact_phone",
+            "payment_terms",
+            "established_year",
+            "employee_scale",
+            "factory_area_sqm",
+            "main_products",
+            "monthly_capacity",
+            "quality_certifications",
+            "equipment_summary",
             "process_ids",
+            "tags",
+            "attachments",
+            "score",
+            "is_public",
             "status",
+            "business_license_url",
             "created_at",
             "updated_at",
         ]
-        read_only_fields = ["id", "status", "created_at", "updated_at"]
+        read_only_fields = [
+            "id",
+            "email",
+            "name",
+            "process_ids",
+            "tags",
+            "attachments",
+            "score",
+            "status",
+            "business_license_url",
+            "created_at",
+            "updated_at",
+        ]
+
+    def get_business_license_url(self, obj):
+        request = self.context.get("request")
+        if not obj.business_license:
+            return ""
+        url = obj.business_license.url
+        return request.build_absolute_uri(url) if request else url
+
+
+class SupplierProfileUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FactoryProfile
+        fields = [
+            "company_name",
+            "short_name",
+            "region",
+            "country",
+            "city",
+            "intro",
+            "contact_phone",
+            "payment_terms",
+            "established_year",
+            "employee_scale",
+            "factory_area_sqm",
+            "main_products",
+            "monthly_capacity",
+            "quality_certifications",
+            "equipment_summary",
+            "is_public",
+        ]
 
 
 class PublicPartnerSerializer(serializers.ModelSerializer):
@@ -242,6 +437,13 @@ class AdminFactorySerializer(serializers.ModelSerializer):
             "intro",
             "contact_phone",
             "payment_terms",
+            "established_year",
+            "employee_scale",
+            "factory_area_sqm",
+            "main_products",
+            "monthly_capacity",
+            "quality_certifications",
+            "equipment_summary",
             "admin_note",
             "score",
             "is_public",
@@ -253,7 +455,18 @@ class AdminFactorySerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         ]
-        read_only_fields = ["id", "user_id", "email", "name", "member_type", "is_active", "created_at", "updated_at", "tags", "attachments"]
+        read_only_fields = [
+            "id",
+            "user_id",
+            "email",
+            "name",
+            "member_type",
+            "is_active",
+            "created_at",
+            "updated_at",
+            "tags",
+            "attachments",
+        ]
 
     def get_process_ids(self, obj):
         return list(obj.processes.values_list("id", flat=True))
@@ -271,6 +484,13 @@ class AdminSupplierUpdateSerializer(serializers.ModelSerializer):
             "intro",
             "contact_phone",
             "payment_terms",
+            "established_year",
+            "employee_scale",
+            "factory_area_sqm",
+            "main_products",
+            "monthly_capacity",
+            "quality_certifications",
+            "equipment_summary",
             "admin_note",
             "score",
             "is_public",
@@ -358,9 +578,12 @@ class AdminUserSerializer(serializers.ModelSerializer):
         read_only_fields = ["id"]
 
     def create(self, validated_data):
-        password = validated_data.pop("password")
-        user = User.objects.create_user(**validated_data)
-        user.set_password(password)
+        password = validated_data.pop("password", None)
+        user = User(**validated_data)
+        if password:
+            user.set_password(password)
+        else:
+            user.set_unusable_password()
         user.save()
         return user
 

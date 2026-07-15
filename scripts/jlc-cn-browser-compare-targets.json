@@ -1,0 +1,7 @@
+[
+  { "id": "COMPARE-001", "materialKey": "fr4", "layers": 2, "widthMm": 100, "heightMm": 100, "quantity": 5 },
+  { "id": "COMPARE-002", "materialKey": "fr4", "layers": 2, "widthMm": 100, "heightMm": 150, "quantity": 10 },
+  { "id": "COMPARE-003", "materialKey": "fr4", "layers": 4, "widthMm": 100, "heightMm": 150, "quantity": 5 },
+  { "id": "COMPARE-004", "materialKey": "fr4", "layers": 4, "widthMm": 100, "heightMm": 100, "quantity": 5 },
+  { "id": "COMPARE-005", "materialKey": "fpc", "layers": 2, "widthMm": 100, "heightMm": 150, "quantity": 20 }
+]

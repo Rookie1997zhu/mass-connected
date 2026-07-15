@@ -6,6 +6,8 @@ from apps.contract.models import Contract, NdaSignature, NdaTemplate
 class ContractSerializer(serializers.ModelSerializer):
     pdf_url = serializers.SerializerMethodField()
     supplier_name = serializers.SerializerMethodField()
+    rfq_no = serializers.CharField(source="rfq.rfq_no", read_only=True, default="")
+    quote_request_id = serializers.SerializerMethodField()
 
     class Meta:
         model = Contract
@@ -14,6 +16,8 @@ class ContractSerializer(serializers.ModelSerializer):
             "contract_no",
             "title",
             "rfq",
+            "rfq_no",
+            "quote_request_id",
             "amount",
             "currency",
             "status",
@@ -35,6 +39,14 @@ class ContractSerializer(serializers.ModelSerializer):
             return ""
         profile = getattr(obj.supplier, "factory_profile", None)
         return profile.company_name if profile else (obj.supplier.name or obj.supplier.email)
+
+    def get_quote_request_id(self, obj):
+        if obj.quote_id:
+            return getattr(obj.quote, "quote_request_id", None)
+        po = getattr(obj, "production_order", None)
+        if po and po.quote_id:
+            return getattr(po.quote, "quote_request_id", None)
+        return None
 
 
 class AdminContractSerializer(ContractSerializer):

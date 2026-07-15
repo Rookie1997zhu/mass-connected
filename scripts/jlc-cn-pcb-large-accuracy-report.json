@@ -1,0 +1,4276 @@
+{
+  "generatedAt": "2026-07-12T02:01:44.078755+00:00",
+  "source": "scripts\\jlc-cn-pcb-large-accuracy-live.json",
+  "priceVersion": "jlc-cn-pcb-v5-20260711",
+  "processModelVersion": "jlc-cn-pcb-v5-process-20260711",
+  "integrity": {
+    "domSources": 75,
+    "maxApiDomDiff": 0.0,
+    "verifiedEstimateRows": 75,
+    "processChangedSamples": 22,
+    "processSelectionMismatches": 0
+  },
+  "overall": {
+    "requested": 75,
+    "validDom": 75,
+    "autoQuoted": 75,
+    "manualReview": 0,
+    "hitRate10": 0.8,
+    "hitRate20": 0.9733,
+    "mape": 0.0645,
+    "meanSignedError": -0.0137,
+    "medianRelativeError": 0.0504,
+    "p90RelativeError": 0.1232,
+    "maxRelativeError": 0.3129,
+    "overEstimates": 30,
+    "underEstimates": 45,
+    "customerPrice": {
+      "hitRate10": 0.5867,
+      "hitRate20": 0.9067,
+      "mape": 0.1003,
+      "meanSignedError": 0.0849,
+      "maxRelativeError": 0.3606
+    }
+  },
+  "byMaterial": {
+    "aluminum": {
+      "requested": 15,
+      "validDom": 15,
+      "autoQuoted": 15,
+      "manualReview": 0,
+      "hitRate10": 0.7333,
+      "hitRate20": 1.0,
+      "mape": 0.0663,
+      "meanSignedError": -0.0413,
+      "medianRelativeError": 0.0461,
+      "p90RelativeError": 0.1346,
+      "maxRelativeError": 0.1608,
+      "overEstimates": 4,
+      "underEstimates": 11,
+      "customerPrice": {
+        "hitRate10": 0.7333,
+        "hitRate20": 1.0,
+        "mape": 0.0792,
+        "meanSignedError": 0.0546,
+        "maxRelativeError": 0.1863
+      }
+    },
+    "fpc": {
+      "requested": 30,
+      "validDom": 30,
+      "autoQuoted": 30,
+      "manualReview": 0,
+      "hitRate10": 0.8,
+      "hitRate20": 0.9667,
+      "mape": 0.0701,
+      "meanSignedError": 0.0117,
+      "medianRelativeError": 0.0587,
+      "p90RelativeError": 0.1114,
+      "maxRelativeError": 0.2369,
+      "overEstimates": 16,
+      "underEstimates": 14,
+      "customerPrice": {
+        "hitRate10": 0.4667,
+        "hitRate20": 0.8667,
+        "mape": 0.1162,
+        "meanSignedError": 0.1129,
+        "maxRelativeError": 0.3606
+      }
+    },
+    "fr4": {
+      "requested": 30,
+      "validDom": 30,
+      "autoQuoted": 30,
+      "manualReview": 0,
+      "hitRate10": 0.8333,
+      "hitRate20": 0.9667,
+      "mape": 0.0581,
+      "meanSignedError": -0.0253,
+      "medianRelativeError": 0.0389,
+      "p90RelativeError": 0.109,
+      "maxRelativeError": 0.3129,
+      "overEstimates": 10,
+      "underEstimates": 20,
+      "customerPrice": {
+        "hitRate10": 0.6333,
+        "hitRate20": 0.9,
+        "mape": 0.0949,
+        "meanSignedError": 0.0722,
+        "maxRelativeError": 0.2442
+      }
+    }
+  },
+  "byScenario": {
+    "estimator_base": {
+      "requested": 53,
+      "validDom": 53,
+      "autoQuoted": 53,
+      "manualReview": 0,
+      "hitRate10": 0.8491,
+      "hitRate20": 0.9811,
+      "mape": 0.0597,
+      "meanSignedError": -0.0158,
+      "medianRelativeError": 0.0449,
+      "p90RelativeError": 0.1062,
+      "maxRelativeError": 0.3129,
+      "overEstimates": 20,
+      "underEstimates": 33,
+      "customerPrice": {
+        "hitRate10": 0.6038,
+        "hitRate20": 0.9245,
+        "mape": 0.0992,
+        "meanSignedError": 0.0826,
+        "maxRelativeError": 0.3093
+      }
+    },
+    "estimator_process": {
+      "requested": 22,
+      "validDom": 22,
+      "autoQuoted": 22,
+      "manualReview": 0,
+      "hitRate10": 0.6818,
+      "hitRate20": 0.9545,
+      "mape": 0.0761,
+      "meanSignedError": -0.0086,
+      "medianRelativeError": 0.0639,
+      "p90RelativeError": 0.1391,
+      "maxRelativeError": 0.2369,
+      "overEstimates": 10,
+      "underEstimates": 12,
+      "customerPrice": {
+        "hitRate10": 0.5455,
+        "hitRate20": 0.8636,
+        "mape": 0.1029,
+        "meanSignedError": 0.0905,
+        "maxRelativeError": 0.3606
+      }
+    }
+  },
+  "rows": [
+    {
+      "id": "JLC-CN-PCB-LARGE-ALUMINUM-1-001",
+      "materialKey": "aluminum",
+      "layers": 1,
+      "widthMm": 55,
+      "heightMm": 65,
+      "quantity": 15,
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "无铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 46.28,
+      "predictedPriceCny": 38.84,
+      "customerPriceCny": 42.72,
+      "relativeError": 0.16076058772687982,
+      "signedRelativeError": -0.16076058772687982,
+      "customerRelativeError": 0.07692307692307697,
+      "customerSignedRelativeError": -0.07692307692307697,
+      "hit10": false,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-ALUMINUM-1-002",
+      "materialKey": "aluminum",
+      "layers": 1,
+      "widthMm": 65,
+      "heightMm": 95,
+      "quantity": 30,
+      "boardThickness": "1.6",
+      "solderColor": "红色",
+      "surfaceFinish": "无铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_process",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 210.77,
+      "predictedPriceCny": 220.18,
+      "customerPriceCny": 242.2,
+      "relativeError": 0.04464582246050195,
+      "signedRelativeError": 0.04464582246050195,
+      "customerRelativeError": 0.1491198937230155,
+      "customerSignedRelativeError": 0.1491198937230155,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": true,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": "红色",
+          "present": true,
+          "selected": true,
+          "implicitDefault": false
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-ALUMINUM-1-003",
+      "materialKey": "aluminum",
+      "layers": 1,
+      "widthMm": 75,
+      "heightMm": 115,
+      "quantity": 15,
+      "boardThickness": "1.6",
+      "solderColor": "蓝色",
+      "surfaceFinish": "无铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_process",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 183.39,
+      "predictedPriceCny": 162.71,
+      "customerPriceCny": 178.98,
+      "relativeError": 0.11276514531871956,
+      "signedRelativeError": -0.11276514531871956,
+      "customerRelativeError": 0.024047112710616703,
+      "customerSignedRelativeError": -0.024047112710616703,
+      "hit10": false,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": true,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": "蓝色",
+          "present": true,
+          "selected": true,
+          "implicitDefault": false
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-ALUMINUM-1-004",
+      "materialKey": "aluminum",
+      "layers": 1,
+      "widthMm": 90,
+      "heightMm": 130,
+      "quantity": 150,
+      "boardThickness": "1.6",
+      "solderColor": "白色",
+      "surfaceFinish": "无铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_process",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 660.74,
+      "predictedPriceCny": 688.01,
+      "customerPriceCny": 756.81,
+      "relativeError": 0.04127190725550138,
+      "signedRelativeError": 0.04127190725550138,
+      "customerRelativeError": 0.14539758452643994,
+      "customerSignedRelativeError": 0.14539758452643994,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": true,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": "白色",
+          "present": true,
+          "selected": true,
+          "implicitDefault": false
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-ALUMINUM-1-005",
+      "materialKey": "aluminum",
+      "layers": 1,
+      "widthMm": 105,
+      "heightMm": 135,
+      "quantity": 30,
+      "boardThickness": "1.6",
+      "solderColor": "哑黑色",
+      "surfaceFinish": "无铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_process",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 328.37,
+      "predictedPriceCny": 325.22,
+      "customerPriceCny": 357.74,
+      "relativeError": 0.00959283734811334,
+      "signedRelativeError": -0.00959283734811334,
+      "customerRelativeError": 0.0894417882266955,
+      "customerSignedRelativeError": 0.0894417882266955,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": true,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": "哑黑色",
+          "present": true,
+          "selected": true,
+          "implicitDefault": false
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-ALUMINUM-1-006",
+      "materialKey": "aluminum",
+      "layers": 1,
+      "widthMm": 115,
+      "heightMm": 175,
+      "quantity": 75,
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "无铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 587.34,
+      "predictedPriceCny": 576.58,
+      "customerPriceCny": 634.24,
+      "relativeError": 0.018319882861715514,
+      "signedRelativeError": -0.018319882861715514,
+      "customerRelativeError": 0.07985153403480093,
+      "customerSignedRelativeError": 0.07985153403480093,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-ALUMINUM-1-007",
+      "materialKey": "aluminum",
+      "layers": 1,
+      "widthMm": 125,
+      "heightMm": 155,
+      "quantity": 150,
+      "boardThickness": "1.6",
+      "solderColor": "红色",
+      "surfaceFinish": "无铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_process",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 1161.38,
+      "predictedPriceCny": 1107.85,
+      "customerPriceCny": 1218.63,
+      "relativeError": 0.04609171847285143,
+      "signedRelativeError": -0.04609171847285143,
+      "customerRelativeError": 0.04929480445676695,
+      "customerSignedRelativeError": 0.04929480445676695,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": true,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": "红色",
+          "present": true,
+          "selected": true,
+          "implicitDefault": false
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-ALUMINUM-1-008",
+      "materialKey": "aluminum",
+      "layers": 1,
+      "widthMm": 135,
+      "heightMm": 190,
+      "quantity": 75,
+      "boardThickness": "1.6",
+      "solderColor": "蓝色",
+      "surfaceFinish": "无铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_process",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 834.86,
+      "predictedPriceCny": 756.57,
+      "customerPriceCny": 832.23,
+      "relativeError": 0.09377620199793973,
+      "signedRelativeError": -0.09377620199793973,
+      "customerRelativeError": 0.003150228780873434,
+      "customerSignedRelativeError": -0.003150228780873434,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": true,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": "蓝色",
+          "present": true,
+          "selected": true,
+          "implicitDefault": false
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-ALUMINUM-1-009",
+      "materialKey": "aluminum",
+      "layers": 1,
+      "widthMm": 145,
+      "heightMm": 165,
+      "quantity": 15,
+      "boardThickness": "1.6",
+      "solderColor": "白色",
+      "surfaceFinish": "无铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_process",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 195.85,
+      "predictedPriceCny": 184.62,
+      "customerPriceCny": 203.08,
+      "relativeError": 0.05733980086801118,
+      "signedRelativeError": -0.05733980086801118,
+      "customerRelativeError": 0.0369160071483279,
+      "customerSignedRelativeError": 0.0369160071483279,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": true,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": "白色",
+          "present": true,
+          "selected": true,
+          "implicitDefault": false
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-ALUMINUM-1-010",
+      "materialKey": "aluminum",
+      "layers": 1,
+      "widthMm": 155,
+      "heightMm": 185,
+      "quantity": 30,
+      "boardThickness": "1.6",
+      "solderColor": "哑黑色",
+      "surfaceFinish": "无铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_process",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 541.52,
+      "predictedPriceCny": 460.79,
+      "customerPriceCny": 506.87,
+      "relativeError": 0.1490803663761264,
+      "signedRelativeError": -0.1490803663761264,
+      "customerRelativeError": 0.06398655635987587,
+      "customerSignedRelativeError": -0.06398655635987587,
+      "hit10": false,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": true,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": "哑黑色",
+          "present": true,
+          "selected": true,
+          "implicitDefault": false
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-ALUMINUM-1-011",
+      "materialKey": "aluminum",
+      "layers": 1,
+      "widthMm": 165,
+      "heightMm": 195,
+      "quantity": 75,
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "无铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 909.07,
+      "predictedPriceCny": 880.91,
+      "customerPriceCny": 969.0,
+      "relativeError": 0.03097671246438677,
+      "signedRelativeError": -0.03097671246438677,
+      "customerRelativeError": 0.06592451626387401,
+      "customerSignedRelativeError": 0.06592451626387401,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-ALUMINUM-1-012",
+      "materialKey": "aluminum",
+      "layers": 1,
+      "widthMm": 175,
+      "heightMm": 185,
+      "quantity": 150,
+      "boardThickness": "1.6",
+      "solderColor": "红色",
+      "surfaceFinish": "无铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_process",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 1839.98,
+      "predictedPriceCny": 1799.19,
+      "customerPriceCny": 1979.11,
+      "relativeError": 0.02216871922520895,
+      "signedRelativeError": -0.02216871922520895,
+      "customerRelativeError": 0.07561495233643838,
+      "customerSignedRelativeError": 0.07561495233643838,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": true,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": "红色",
+          "present": true,
+          "selected": true,
+          "implicitDefault": false
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-ALUMINUM-1-013",
+      "materialKey": "aluminum",
+      "layers": 1,
+      "widthMm": 185,
+      "heightMm": 200,
+      "quantity": 15,
+      "boardThickness": "1.6",
+      "solderColor": "蓝色",
+      "surfaceFinish": "无铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_process",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 391.95,
+      "predictedPriceCny": 401.1,
+      "customerPriceCny": 441.21,
+      "relativeError": 0.023344814389590598,
+      "signedRelativeError": 0.023344814389590598,
+      "customerRelativeError": 0.12567929582854953,
+      "customerSignedRelativeError": 0.12567929582854953,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": true,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": "蓝色",
+          "present": true,
+          "selected": true,
+          "implicitDefault": false
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-ALUMINUM-1-014",
+      "materialKey": "aluminum",
+      "layers": 1,
+      "widthMm": 195,
+      "heightMm": 170,
+      "quantity": 30,
+      "boardThickness": "1.6",
+      "solderColor": "白色",
+      "surfaceFinish": "无铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_process",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 507.31,
+      "predictedPriceCny": 453.31,
+      "customerPriceCny": 498.64,
+      "relativeError": 0.10644379176440441,
+      "signedRelativeError": -0.10644379176440441,
+      "customerRelativeError": 0.01709014212217385,
+      "customerSignedRelativeError": -0.01709014212217385,
+      "hit10": false,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": true,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": "白色",
+          "present": true,
+          "selected": true,
+          "implicitDefault": false
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-ALUMINUM-1-015",
+      "materialKey": "aluminum",
+      "layers": 1,
+      "widthMm": 70,
+      "heightMm": 145,
+      "quantity": 75,
+      "boardThickness": "1.6",
+      "solderColor": "哑黑色",
+      "surfaceFinish": "无铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_process",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 421.01,
+      "predictedPriceCny": 454.04,
+      "customerPriceCny": 499.44,
+      "relativeError": 0.07845419348709064,
+      "signedRelativeError": 0.07845419348709064,
+      "customerRelativeError": 0.18629011187382724,
+      "customerSignedRelativeError": 0.18629011187382724,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": true,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": "哑黑色",
+          "present": true,
+          "selected": true,
+          "implicitDefault": false
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FPC-1-001",
+      "materialKey": "fpc",
+      "layers": 1,
+      "widthMm": 55,
+      "heightMm": 65,
+      "quantity": 15,
+      "boardThickness": "0.11",
+      "solderColor": "页面默认",
+      "surfaceFinish": "沉金",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 193.97,
+      "predictedPriceCny": 205.3,
+      "customerPriceCny": 225.83,
+      "relativeError": 0.05841109449914942,
+      "signedRelativeError": 0.05841109449914942,
+      "customerRelativeError": 0.16425220394906437,
+      "customerSignedRelativeError": 0.16425220394906437,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FPC-1-002",
+      "materialKey": "fpc",
+      "layers": 1,
+      "widthMm": 65,
+      "heightMm": 95,
+      "quantity": 30,
+      "boardThickness": "0.11",
+      "solderColor": "页面默认",
+      "surfaceFinish": "沉金",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 301.91,
+      "predictedPriceCny": 359.36,
+      "customerPriceCny": 395.3,
+      "relativeError": 0.19028849657182598,
+      "signedRelativeError": 0.19028849657182598,
+      "customerRelativeError": 0.3093305952104931,
+      "customerSignedRelativeError": 0.3093305952104931,
+      "hit10": false,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FPC-1-003",
+      "materialKey": "fpc",
+      "layers": 1,
+      "widthMm": 75,
+      "heightMm": 115,
+      "quantity": 15,
+      "boardThickness": "0.11",
+      "solderColor": "页面默认",
+      "surfaceFinish": "沉金",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 256.09,
+      "predictedPriceCny": 274.95,
+      "customerPriceCny": 302.44,
+      "relativeError": 0.07364598383380849,
+      "signedRelativeError": 0.07364598383380849,
+      "customerRelativeError": 0.18099105783123132,
+      "customerSignedRelativeError": 0.18099105783123132,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FPC-1-004",
+      "materialKey": "fpc",
+      "layers": 1,
+      "widthMm": 90,
+      "heightMm": 130,
+      "quantity": 150,
+      "boardThickness": "0.11",
+      "solderColor": "页面默认",
+      "surfaceFinish": "沉金",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 1402.14,
+      "predictedPriceCny": 1463.98,
+      "customerPriceCny": 1610.38,
+      "relativeError": 0.044104012438130225,
+      "signedRelativeError": 0.044104012438130225,
+      "customerRelativeError": 0.14851584007303123,
+      "customerSignedRelativeError": 0.14851584007303123,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FPC-1-005",
+      "materialKey": "fpc",
+      "layers": 1,
+      "widthMm": 105,
+      "heightMm": 135,
+      "quantity": 30,
+      "boardThickness": "0.11",
+      "solderColor": "页面默认",
+      "surfaceFinish": "沉金",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 498.71,
+      "predictedPriceCny": 528.13,
+      "customerPriceCny": 580.94,
+      "relativeError": 0.05899219987567929,
+      "signedRelativeError": 0.05899219987567929,
+      "customerRelativeError": 0.16488540434320562,
+      "customerSignedRelativeError": 0.16488540434320562,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FPC-1-006",
+      "materialKey": "fpc",
+      "layers": 1,
+      "widthMm": 115,
+      "heightMm": 175,
+      "quantity": 75,
+      "boardThickness": "0.11",
+      "solderColor": "页面默认",
+      "surfaceFinish": "沉金",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 1259.97,
+      "predictedPriceCny": 1250.04,
+      "customerPriceCny": 1375.04,
+      "relativeError": 0.007881140027143553,
+      "signedRelativeError": -0.007881140027143553,
+      "customerRelativeError": 0.0913275712913799,
+      "customerSignedRelativeError": 0.0913275712913799,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FPC-1-007",
+      "materialKey": "fpc",
+      "layers": 1,
+      "widthMm": 125,
+      "heightMm": 155,
+      "quantity": 150,
+      "boardThickness": "0.11",
+      "solderColor": "页面默认",
+      "surfaceFinish": "沉金",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 2125.13,
+      "predictedPriceCny": 1989.78,
+      "customerPriceCny": 2188.76,
+      "relativeError": 0.06369022130410852,
+      "signedRelativeError": -0.06369022130410852,
+      "customerRelativeError": 0.029941697684377006,
+      "customerSignedRelativeError": 0.029941697684377006,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FPC-1-008",
+      "materialKey": "fpc",
+      "layers": 1,
+      "widthMm": 135,
+      "heightMm": 190,
+      "quantity": 75,
+      "boardThickness": "0.11",
+      "solderColor": "页面默认",
+      "surfaceFinish": "沉金",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 1523.51,
+      "predictedPriceCny": 1388.36,
+      "customerPriceCny": 1527.2,
+      "relativeError": 0.08870962448556301,
+      "signedRelativeError": -0.08870962448556301,
+      "customerRelativeError": 0.002422038581958802,
+      "customerSignedRelativeError": 0.002422038581958802,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FPC-1-009",
+      "materialKey": "fpc",
+      "layers": 1,
+      "widthMm": 145,
+      "heightMm": 165,
+      "quantity": 15,
+      "boardThickness": "0.11",
+      "solderColor": "页面默认",
+      "surfaceFinish": "沉金",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 444.28,
+      "predictedPriceCny": 430.23,
+      "customerPriceCny": 473.25,
+      "relativeError": 0.03162420095435301,
+      "signedRelativeError": -0.03162420095435301,
+      "customerRelativeError": 0.06520662645178722,
+      "customerSignedRelativeError": 0.06520662645178722,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FPC-1-010",
+      "materialKey": "fpc",
+      "layers": 1,
+      "widthMm": 155,
+      "heightMm": 185,
+      "quantity": 30,
+      "boardThickness": "0.11",
+      "solderColor": "页面默认",
+      "surfaceFinish": "沉金",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 855.41,
+      "predictedPriceCny": 766.13,
+      "customerPriceCny": 842.74,
+      "relativeError": 0.10437100337849683,
+      "signedRelativeError": -0.10437100337849683,
+      "customerRelativeError": 0.014811610806513787,
+      "customerSignedRelativeError": -0.014811610806513787,
+      "hit10": false,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FPC-1-011",
+      "materialKey": "fpc",
+      "layers": 1,
+      "widthMm": 165,
+      "heightMm": 195,
+      "quantity": 75,
+      "boardThickness": "0.11",
+      "solderColor": "页面默认",
+      "surfaceFinish": "沉金",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 1834.75,
+      "predictedPriceCny": 1750.67,
+      "customerPriceCny": 1925.74,
+      "relativeError": 0.04582640686742059,
+      "signedRelativeError": -0.04582640686742059,
+      "customerRelativeError": 0.04959258754598719,
+      "customerSignedRelativeError": 0.04959258754598719,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FPC-1-012",
+      "materialKey": "fpc",
+      "layers": 1,
+      "widthMm": 175,
+      "heightMm": 185,
+      "quantity": 150,
+      "boardThickness": "0.11",
+      "solderColor": "页面默认",
+      "surfaceFinish": "沉金",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 3082.64,
+      "predictedPriceCny": 3065.14,
+      "customerPriceCny": 3371.65,
+      "relativeError": 0.005676952222770093,
+      "signedRelativeError": -0.005676952222770093,
+      "customerRelativeError": 0.09375405496587348,
+      "customerSignedRelativeError": 0.09375405496587348,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FPC-1-013",
+      "materialKey": "fpc",
+      "layers": 1,
+      "widthMm": 185,
+      "heightMm": 200,
+      "quantity": 15,
+      "boardThickness": "0.11",
+      "solderColor": "页面默认",
+      "surfaceFinish": "沉金",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 605.1,
+      "predictedPriceCny": 626.91,
+      "customerPriceCny": 689.6,
+      "relativeError": 0.03604362915220616,
+      "signedRelativeError": 0.03604362915220616,
+      "customerRelativeError": 0.13964633944802513,
+      "customerSignedRelativeError": 0.13964633944802513,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FPC-1-014",
+      "materialKey": "fpc",
+      "layers": 1,
+      "widthMm": 195,
+      "heightMm": 170,
+      "quantity": 30,
+      "boardThickness": "0.11",
+      "solderColor": "页面默认",
+      "surfaceFinish": "沉金",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 965.49,
+      "predictedPriceCny": 936.04,
+      "customerPriceCny": 1029.64,
+      "relativeError": 0.030502646324664207,
+      "signedRelativeError": -0.030502646324664207,
+      "customerRelativeError": 0.0664429460688356,
+      "customerSignedRelativeError": 0.0664429460688356,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FPC-1-015",
+      "materialKey": "fpc",
+      "layers": 1,
+      "widthMm": 70,
+      "heightMm": 145,
+      "quantity": 75,
+      "boardThickness": "0.11",
+      "solderColor": "页面默认",
+      "surfaceFinish": "沉金",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 784.16,
+      "predictedPriceCny": 842.18,
+      "customerPriceCny": 926.4,
+      "relativeError": 0.0739900020403999,
+      "signedRelativeError": 0.0739900020403999,
+      "customerRelativeError": 0.1813915527443379,
+      "customerSignedRelativeError": 0.1813915527443379,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FPC-2-001",
+      "materialKey": "fpc",
+      "layers": 2,
+      "widthMm": 55,
+      "heightMm": 65,
+      "quantity": 15,
+      "boardThickness": "0.11",
+      "solderColor": "页面默认",
+      "surfaceFinish": "沉金",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 203.97,
+      "predictedPriceCny": 215.47,
+      "customerPriceCny": 237.02,
+      "relativeError": 0.05638084031965485,
+      "signedRelativeError": 0.05638084031965485,
+      "customerRelativeError": 0.16203363239692117,
+      "customerSignedRelativeError": 0.16203363239692117,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FPC-2-002",
+      "materialKey": "fpc",
+      "layers": 2,
+      "widthMm": 65,
+      "heightMm": 95,
+      "quantity": 30,
+      "boardThickness": "0.12",
+      "solderColor": "页面默认",
+      "surfaceFinish": "沉金",
+      "copperThickness": "1oz",
+      "scenario": "estimator_process",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 311.91,
+      "predictedPriceCny": 385.79,
+      "customerPriceCny": 424.37,
+      "relativeError": 0.2368631977172902,
+      "signedRelativeError": 0.2368631977172902,
+      "customerRelativeError": 0.3605527235420473,
+      "customerSignedRelativeError": 0.3605527235420473,
+      "hit10": false,
+      "hit20": false,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": true,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": "0.12mm",
+          "present": true,
+          "selected": true,
+          "implicitDefault": false
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FPC-2-003",
+      "materialKey": "fpc",
+      "layers": 2,
+      "widthMm": 75,
+      "heightMm": 115,
+      "quantity": 15,
+      "boardThickness": "0.20",
+      "solderColor": "页面默认",
+      "surfaceFinish": "沉金",
+      "copperThickness": "1oz",
+      "scenario": "estimator_process",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 279.03,
+      "predictedPriceCny": 318.65,
+      "customerPriceCny": 350.51,
+      "relativeError": 0.14199190051248972,
+      "signedRelativeError": 0.14199190051248972,
+      "customerRelativeError": 0.2561731713435832,
+      "customerSignedRelativeError": 0.2561731713435832,
+      "hit10": false,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": true,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": "0.20mm",
+          "present": true,
+          "selected": true,
+          "implicitDefault": false
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FPC-2-004",
+      "materialKey": "fpc",
+      "layers": 2,
+      "widthMm": 90,
+      "heightMm": 130,
+      "quantity": 150,
+      "boardThickness": "0.11",
+      "solderColor": "页面默认",
+      "surfaceFinish": "沉金",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 1419.16,
+      "predictedPriceCny": 1482.05,
+      "customerPriceCny": 1630.26,
+      "relativeError": 0.04431494686997933,
+      "signedRelativeError": 0.04431494686997933,
+      "customerRelativeError": 0.1487499647678908,
+      "customerSignedRelativeError": 0.1487499647678908,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FPC-2-005",
+      "materialKey": "fpc",
+      "layers": 2,
+      "widthMm": 105,
+      "heightMm": 135,
+      "quantity": 30,
+      "boardThickness": "0.12",
+      "solderColor": "页面默认",
+      "surfaceFinish": "沉金",
+      "copperThickness": "1oz",
+      "scenario": "estimator_process",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 508.71,
+      "predictedPriceCny": 562.58,
+      "customerPriceCny": 618.84,
+      "relativeError": 0.10589530380767051,
+      "signedRelativeError": 0.10589530380767051,
+      "customerRelativeError": 0.21648876570148032,
+      "customerSignedRelativeError": 0.21648876570148032,
+      "hit10": false,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": true,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": "0.12mm",
+          "present": true,
+          "selected": true,
+          "implicitDefault": false
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FPC-2-006",
+      "materialKey": "fpc",
+      "layers": 2,
+      "widthMm": 115,
+      "heightMm": 175,
+      "quantity": 75,
+      "boardThickness": "0.20",
+      "solderColor": "页面默认",
+      "surfaceFinish": "沉金",
+      "copperThickness": "1oz",
+      "scenario": "estimator_process",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 1508.46,
+      "predictedPriceCny": 1421.93,
+      "customerPriceCny": 1564.12,
+      "relativeError": 0.05736313856515915,
+      "signedRelativeError": -0.05736313856515915,
+      "customerRelativeError": 0.03689855879506242,
+      "customerSignedRelativeError": 0.03689855879506242,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": true,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": "0.20mm",
+          "present": true,
+          "selected": true,
+          "implicitDefault": false
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FPC-2-007",
+      "materialKey": "fpc",
+      "layers": 2,
+      "widthMm": 125,
+      "heightMm": 155,
+      "quantity": 150,
+      "boardThickness": "0.11",
+      "solderColor": "页面默认",
+      "surfaceFinish": "沉金",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 2146.76,
+      "predictedPriceCny": 2006.69,
+      "customerPriceCny": 2207.36,
+      "relativeError": 0.0652471631668189,
+      "signedRelativeError": -0.0652471631668189,
+      "customerRelativeError": 0.028228586334755588,
+      "customerSignedRelativeError": 0.028228586334755588,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FPC-2-008",
+      "materialKey": "fpc",
+      "layers": 2,
+      "widthMm": 135,
+      "heightMm": 190,
+      "quantity": 75,
+      "boardThickness": "0.12",
+      "solderColor": "页面默认",
+      "surfaceFinish": "沉金",
+      "copperThickness": "1oz",
+      "scenario": "estimator_process",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 1645.09,
+      "predictedPriceCny": 1467.4,
+      "customerPriceCny": 1614.14,
+      "relativeError": 0.10801232759301913,
+      "signedRelativeError": -0.10801232759301913,
+      "customerRelativeError": 0.01881356035232104,
+      "customerSignedRelativeError": -0.01881356035232104,
+      "hit10": false,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": true,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": "0.12mm",
+          "present": true,
+          "selected": true,
+          "implicitDefault": false
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FPC-2-009",
+      "materialKey": "fpc",
+      "layers": 2,
+      "widthMm": 145,
+      "heightMm": 165,
+      "quantity": 15,
+      "boardThickness": "0.20",
+      "solderColor": "页面默认",
+      "surfaceFinish": "沉金",
+      "copperThickness": "1oz",
+      "scenario": "estimator_process",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 490.17,
+      "predictedPriceCny": 492.31,
+      "customerPriceCny": 541.54,
+      "relativeError": 0.004365832262276325,
+      "signedRelativeError": 0.004365832262276325,
+      "customerRelativeError": 0.1048003753799701,
+      "customerSignedRelativeError": 0.1048003753799701,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": true,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": "0.20mm",
+          "present": true,
+          "selected": true,
+          "implicitDefault": false
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FPC-2-010",
+      "materialKey": "fpc",
+      "layers": 2,
+      "widthMm": 155,
+      "heightMm": 185,
+      "quantity": 30,
+      "boardThickness": "0.11",
+      "solderColor": "页面默认",
+      "surfaceFinish": "沉金",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 865.41,
+      "predictedPriceCny": 781.59,
+      "customerPriceCny": 859.75,
+      "relativeError": 0.09685582556245009,
+      "signedRelativeError": -0.09685582556245009,
+      "customerRelativeError": 0.0065402525970348945,
+      "customerSignedRelativeError": -0.0065402525970348945,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FPC-2-011",
+      "materialKey": "fpc",
+      "layers": 2,
+      "widthMm": 165,
+      "heightMm": 195,
+      "quantity": 75,
+      "boardThickness": "0.12",
+      "solderColor": "页面默认",
+      "surfaceFinish": "沉金",
+      "copperThickness": "1oz",
+      "scenario": "estimator_process",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 1984.72,
+      "predictedPriceCny": 1845.11,
+      "customerPriceCny": 2029.62,
+      "relativeError": 0.07034241605868845,
+      "signedRelativeError": -0.07034241605868845,
+      "customerRelativeError": 0.022622838486033227,
+      "customerSignedRelativeError": 0.022622838486033227,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": true,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": "0.12mm",
+          "present": true,
+          "selected": true,
+          "implicitDefault": false
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FPC-2-012",
+      "materialKey": "fpc",
+      "layers": 2,
+      "widthMm": 175,
+      "heightMm": 185,
+      "quantity": 150,
+      "boardThickness": "0.20",
+      "solderColor": "页面默认",
+      "surfaceFinish": "沉金",
+      "copperThickness": "1oz",
+      "scenario": "estimator_process",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 3816.23,
+      "predictedPriceCny": 3437.67,
+      "customerPriceCny": 3781.44,
+      "relativeError": 0.09919737542024457,
+      "signedRelativeError": -0.09919737542024457,
+      "customerRelativeError": 0.009116326846128238,
+      "customerSignedRelativeError": -0.009116326846128238,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": true,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": "0.20mm",
+          "present": true,
+          "selected": true,
+          "implicitDefault": false
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FPC-2-013",
+      "materialKey": "fpc",
+      "layers": 2,
+      "widthMm": 185,
+      "heightMm": 200,
+      "quantity": 15,
+      "boardThickness": "0.11",
+      "solderColor": "页面默认",
+      "surfaceFinish": "沉金",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 615.1,
+      "predictedPriceCny": 637.34,
+      "customerPriceCny": 701.07,
+      "relativeError": 0.03615672248414893,
+      "signedRelativeError": 0.03615672248414893,
+      "customerRelativeError": 0.13976589172492282,
+      "customerSignedRelativeError": 0.13976589172492282,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FPC-2-014",
+      "materialKey": "fpc",
+      "layers": 2,
+      "widthMm": 195,
+      "heightMm": 170,
+      "quantity": 30,
+      "boardThickness": "0.12",
+      "solderColor": "页面默认",
+      "surfaceFinish": "沉金",
+      "copperThickness": "1oz",
+      "scenario": "estimator_process",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 975.49,
+      "predictedPriceCny": 990.26,
+      "customerPriceCny": 1089.29,
+      "relativeError": 0.01514110857107708,
+      "signedRelativeError": 0.01514110857107708,
+      "customerRelativeError": 0.11665931993152155,
+      "customerSignedRelativeError": 0.11665931993152155,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": true,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": "0.12mm",
+          "present": true,
+          "selected": true,
+          "implicitDefault": false
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FPC-2-015",
+      "materialKey": "fpc",
+      "layers": 2,
+      "widthMm": 70,
+      "heightMm": 145,
+      "quantity": 75,
+      "boardThickness": "0.20",
+      "solderColor": "页面默认",
+      "surfaceFinish": "沉金",
+      "copperThickness": "1oz",
+      "scenario": "estimator_process",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 914.44,
+      "predictedPriceCny": 960.32,
+      "customerPriceCny": 1056.35,
+      "relativeError": 0.05017278334281089,
+      "signedRelativeError": 0.05017278334281089,
+      "customerRelativeError": 0.15518787454617017,
+      "customerSignedRelativeError": 0.15518787454617017,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": true,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": "0.20mm",
+          "present": true,
+          "selected": true,
+          "implicitDefault": false
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FR4-2-001",
+      "materialKey": "fr4",
+      "layers": 2,
+      "widthMm": 55,
+      "heightMm": 65,
+      "quantity": 15,
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "有铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 58.96,
+      "predictedPriceCny": 52.95,
+      "customerPriceCny": 58.25,
+      "relativeError": 0.10193351424694705,
+      "signedRelativeError": -0.10193351424694705,
+      "customerRelativeError": 0.012042062415196758,
+      "customerSignedRelativeError": -0.012042062415196758,
+      "hit10": false,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FR4-2-002",
+      "materialKey": "fr4",
+      "layers": 2,
+      "widthMm": 65,
+      "heightMm": 95,
+      "quantity": 30,
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "有铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 130.04,
+      "predictedPriceCny": 146.97,
+      "customerPriceCny": 161.67,
+      "relativeError": 0.1301907105505999,
+      "signedRelativeError": 0.1301907105505999,
+      "customerRelativeError": 0.2432328514303291,
+      "customerSignedRelativeError": 0.2432328514303291,
+      "hit10": false,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FR4-2-003",
+      "materialKey": "fr4",
+      "layers": 2,
+      "widthMm": 75,
+      "heightMm": 115,
+      "quantity": 15,
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "有铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 99.86,
+      "predictedPriceCny": 95.72,
+      "customerPriceCny": 105.29,
+      "relativeError": 0.04145804125776087,
+      "signedRelativeError": -0.04145804125776087,
+      "customerRelativeError": 0.05437612657720816,
+      "customerSignedRelativeError": 0.05437612657720816,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FR4-2-004",
+      "materialKey": "fr4",
+      "layers": 2,
+      "widthMm": 90,
+      "heightMm": 130,
+      "quantity": 150,
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "有铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 818.16,
+      "predictedPriceCny": 814.23,
+      "customerPriceCny": 895.65,
+      "relativeError": 0.0048034614256379565,
+      "signedRelativeError": -0.0048034614256379565,
+      "customerRelativeError": 0.09471252566735114,
+      "customerSignedRelativeError": 0.09471252566735114,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FR4-2-005",
+      "materialKey": "fr4",
+      "layers": 2,
+      "widthMm": 105,
+      "heightMm": 135,
+      "quantity": 30,
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "有铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 259.64,
+      "predictedPriceCny": 255.59,
+      "customerPriceCny": 281.15,
+      "relativeError": 0.015598521029117175,
+      "signedRelativeError": -0.015598521029117175,
+      "customerRelativeError": 0.08284547835464486,
+      "customerSignedRelativeError": 0.08284547835464486,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FR4-2-006",
+      "materialKey": "fr4",
+      "layers": 2,
+      "widthMm": 115,
+      "heightMm": 175,
+      "quantity": 75,
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "有铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 730.17,
+      "predictedPriceCny": 716.83,
+      "customerPriceCny": 788.51,
+      "relativeError": 0.01826971801087407,
+      "signedRelativeError": -0.01826971801087407,
+      "customerRelativeError": 0.07989920155580212,
+      "customerSignedRelativeError": 0.07989920155580212,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FR4-2-007",
+      "materialKey": "fr4",
+      "layers": 2,
+      "widthMm": 125,
+      "heightMm": 155,
+      "quantity": 150,
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "有铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 1315.51,
+      "predictedPriceCny": 1249.18,
+      "customerPriceCny": 1374.1,
+      "relativeError": 0.05042150952862382,
+      "signedRelativeError": -0.05042150952862382,
+      "customerRelativeError": 0.04453785984143026,
+      "customerSignedRelativeError": 0.04453785984143026,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FR4-2-008",
+      "materialKey": "fr4",
+      "layers": 2,
+      "widthMm": 135,
+      "heightMm": 190,
+      "quantity": 75,
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "有铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 914.15,
+      "predictedPriceCny": 816.64,
+      "customerPriceCny": 898.3,
+      "relativeError": 0.10666739594158507,
+      "signedRelativeError": -0.10666739594158507,
+      "customerRelativeError": 0.017338511185254087,
+      "customerSignedRelativeError": -0.017338511185254087,
+      "hit10": false,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FR4-2-009",
+      "materialKey": "fr4",
+      "layers": 2,
+      "widthMm": 145,
+      "heightMm": 165,
+      "quantity": 15,
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "有铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 223.79,
+      "predictedPriceCny": 211.86,
+      "customerPriceCny": 233.05,
+      "relativeError": 0.053308905670494566,
+      "signedRelativeError": -0.053308905670494566,
+      "customerRelativeError": 0.04137807766209402,
+      "customerSignedRelativeError": 0.04137807766209402,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FR4-2-010",
+      "materialKey": "fr4",
+      "layers": 2,
+      "widthMm": 155,
+      "heightMm": 185,
+      "quantity": 30,
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "有铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 494.54,
+      "predictedPriceCny": 419.37,
+      "customerPriceCny": 461.31,
+      "relativeError": 0.15199983823350996,
+      "signedRelativeError": -0.15199983823350996,
+      "customerRelativeError": 0.06719375581348327,
+      "customerSignedRelativeError": -0.06719375581348327,
+      "hit10": false,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FR4-2-011",
+      "materialKey": "fr4",
+      "layers": 2,
+      "widthMm": 165,
+      "heightMm": 195,
+      "quantity": 75,
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "有铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 1131.43,
+      "predictedPriceCny": 1096.47,
+      "customerPriceCny": 1206.12,
+      "relativeError": 0.030898950885163055,
+      "signedRelativeError": -0.030898950885163055,
+      "customerRelativeError": 0.06601380553812417,
+      "customerSignedRelativeError": 0.06601380553812417,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FR4-2-012",
+      "materialKey": "fr4",
+      "layers": 2,
+      "widthMm": 175,
+      "heightMm": 185,
+      "quantity": 150,
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "有铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 2157.91,
+      "predictedPriceCny": 2107.54,
+      "customerPriceCny": 2318.29,
+      "relativeError": 0.023342030019787616,
+      "signedRelativeError": -0.023342030019787616,
+      "customerRelativeError": 0.07432191333280819,
+      "customerSignedRelativeError": 0.07432191333280819,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FR4-2-013",
+      "materialKey": "fr4",
+      "layers": 2,
+      "widthMm": 185,
+      "heightMm": 200,
+      "quantity": 15,
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "有铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 329.7,
+      "predictedPriceCny": 340.34,
+      "customerPriceCny": 374.37,
+      "relativeError": 0.0322717622080679,
+      "signedRelativeError": 0.0322717622080679,
+      "customerRelativeError": 0.1354868061874432,
+      "customerSignedRelativeError": 0.1354868061874432,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FR4-2-014",
+      "materialKey": "fr4",
+      "layers": 2,
+      "widthMm": 195,
+      "heightMm": 170,
+      "quantity": 30,
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "有铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 567.03,
+      "predictedPriceCny": 534.46,
+      "customerPriceCny": 587.91,
+      "relativeError": 0.05743964164153561,
+      "signedRelativeError": -0.05743964164153561,
+      "customerRelativeError": 0.03682344849478863,
+      "customerSignedRelativeError": 0.03682344849478863,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FR4-2-015",
+      "materialKey": "fr4",
+      "layers": 2,
+      "widthMm": 70,
+      "heightMm": 145,
+      "quantity": 75,
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "有铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 398,
+      "predictedPriceCny": 408.07,
+      "customerPriceCny": 448.88,
+      "relativeError": 0.025301507537688426,
+      "signedRelativeError": 0.025301507537688426,
+      "customerRelativeError": 0.12783919597989948,
+      "customerSignedRelativeError": 0.12783919597989948,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FR4-4-001",
+      "materialKey": "fr4",
+      "layers": 4,
+      "widthMm": 55,
+      "heightMm": 65,
+      "quantity": 15,
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "有铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 197.54,
+      "predictedPriceCny": 135.73,
+      "customerPriceCny": 149.3,
+      "relativeError": 0.3128986534372786,
+      "signedRelativeError": -0.3128986534372786,
+      "customerRelativeError": 0.2442037055786169,
+      "customerSignedRelativeError": -0.2442037055786169,
+      "hit10": false,
+      "hit20": false,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FR4-4-002",
+      "materialKey": "fr4",
+      "layers": 4,
+      "widthMm": 65,
+      "heightMm": 95,
+      "quantity": 30,
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "有铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 289.68,
+      "predictedPriceCny": 317.04,
+      "customerPriceCny": 348.74,
+      "relativeError": 0.09444904722452366,
+      "signedRelativeError": 0.09444904722452366,
+      "customerRelativeError": 0.20388014360673848,
+      "customerSignedRelativeError": 0.20388014360673848,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FR4-4-003",
+      "materialKey": "fr4",
+      "layers": 4,
+      "widthMm": 75,
+      "heightMm": 115,
+      "quantity": 15,
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "有铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 250.56,
+      "predictedPriceCny": 234.6,
+      "customerPriceCny": 258.06,
+      "relativeError": 0.06369731800766287,
+      "signedRelativeError": -0.06369731800766287,
+      "customerRelativeError": 0.02993295019157088,
+      "customerSignedRelativeError": 0.02993295019157088,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FR4-4-004",
+      "materialKey": "fr4",
+      "layers": 4,
+      "widthMm": 90,
+      "heightMm": 130,
+      "quantity": 150,
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "有铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 1170.88,
+      "predictedPriceCny": 1170.51,
+      "customerPriceCny": 1287.56,
+      "relativeError": 0.0003160016397923939,
+      "signedRelativeError": -0.0003160016397923939,
+      "customerRelativeError": 0.09965154413774241,
+      "customerSignedRelativeError": 0.09965154413774241,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FR4-4-005",
+      "materialKey": "fr4",
+      "layers": 4,
+      "widthMm": 105,
+      "heightMm": 135,
+      "quantity": 30,
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "有铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 457.68,
+      "predictedPriceCny": 471.15,
+      "customerPriceCny": 518.26,
+      "relativeError": 0.0294310435238594,
+      "signedRelativeError": 0.0294310435238594,
+      "customerRelativeError": 0.132363223212725,
+      "customerSignedRelativeError": 0.132363223212725,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FR4-4-006",
+      "materialKey": "fr4",
+      "layers": 4,
+      "widthMm": 115,
+      "heightMm": 175,
+      "quantity": 75,
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "有铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 1053.55,
+      "predictedPriceCny": 1090.62,
+      "customerPriceCny": 1199.68,
+      "relativeError": 0.0351858003891604,
+      "signedRelativeError": 0.0351858003891604,
+      "customerRelativeError": 0.1387024820843815,
+      "customerSignedRelativeError": 0.1387024820843815,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FR4-4-007",
+      "materialKey": "fr4",
+      "layers": 4,
+      "widthMm": 125,
+      "heightMm": 155,
+      "quantity": 150,
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "有铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 1834,
+      "predictedPriceCny": 1751.59,
+      "customerPriceCny": 1926.75,
+      "relativeError": 0.044934569247546394,
+      "signedRelativeError": -0.044934569247546394,
+      "customerRelativeError": 0.05057251908396947,
+      "customerSignedRelativeError": 0.05057251908396947,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FR4-4-008",
+      "materialKey": "fr4",
+      "layers": 4,
+      "widthMm": 135,
+      "heightMm": 190,
+      "quantity": 75,
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "有铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 1298.86,
+      "predictedPriceCny": 1231.93,
+      "customerPriceCny": 1355.12,
+      "relativeError": 0.05152980305806618,
+      "signedRelativeError": -0.05152980305806618,
+      "customerRelativeError": 0.04331490691837457,
+      "customerSignedRelativeError": 0.04331490691837457,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FR4-4-009",
+      "materialKey": "fr4",
+      "layers": 4,
+      "widthMm": 145,
+      "heightMm": 165,
+      "quantity": 15,
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "有铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 411.21,
+      "predictedPriceCny": 400.07,
+      "customerPriceCny": 440.08,
+      "relativeError": 0.02709078086622404,
+      "signedRelativeError": -0.02709078086622404,
+      "customerRelativeError": 0.07020743658957712,
+      "customerSignedRelativeError": 0.07020743658957712,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FR4-4-010",
+      "materialKey": "fr4",
+      "layers": 4,
+      "widthMm": 155,
+      "heightMm": 185,
+      "quantity": 30,
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "有铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 762.18,
+      "predictedPriceCny": 705.71,
+      "customerPriceCny": 776.28,
+      "relativeError": 0.07409010994778126,
+      "signedRelativeError": -0.07409010994778126,
+      "customerRelativeError": 0.018499567031409935,
+      "customerSignedRelativeError": 0.018499567031409935,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FR4-4-011",
+      "materialKey": "fr4",
+      "layers": 4,
+      "widthMm": 165,
+      "heightMm": 195,
+      "quantity": 75,
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "有铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 1588.57,
+      "predictedPriceCny": 1630.04,
+      "customerPriceCny": 1793.04,
+      "relativeError": 0.026105239303272774,
+      "signedRelativeError": 0.026105239303272774,
+      "customerRelativeError": 0.12871324524572417,
+      "customerSignedRelativeError": 0.12871324524572417,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FR4-4-012",
+      "materialKey": "fr4",
+      "layers": 4,
+      "widthMm": 175,
+      "heightMm": 185,
+      "quantity": 150,
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "有铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 2957.2,
+      "predictedPriceCny": 2899.5,
+      "customerPriceCny": 3189.45,
+      "relativeError": 0.019511700256999803,
+      "signedRelativeError": -0.019511700256999803,
+      "customerRelativeError": 0.07853712971730015,
+      "customerSignedRelativeError": 0.07853712971730015,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FR4-4-013",
+      "materialKey": "fr4",
+      "layers": 4,
+      "widthMm": 185,
+      "heightMm": 200,
+      "quantity": 15,
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "有铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 548.5,
+      "predictedPriceCny": 568.41,
+      "customerPriceCny": 625.25,
+      "relativeError": 0.036298997265268855,
+      "signedRelativeError": 0.036298997265268855,
+      "customerRelativeError": 0.13992707383773928,
+      "customerSignedRelativeError": 0.13992707383773928,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FR4-4-014",
+      "materialKey": "fr4",
+      "layers": 4,
+      "widthMm": 195,
+      "heightMm": 170,
+      "quantity": 30,
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "有铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 856.15,
+      "predictedPriceCny": 867.73,
+      "customerPriceCny": 954.5,
+      "relativeError": 0.013525667231209532,
+      "signedRelativeError": 0.013525667231209532,
+      "customerRelativeError": 0.11487472989546227,
+      "customerSignedRelativeError": 0.11487472989546227,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    },
+    {
+      "id": "JLC-CN-PCB-LARGE-FR4-4-015",
+      "materialKey": "fr4",
+      "layers": 4,
+      "widthMm": 70,
+      "heightMm": 145,
+      "quantity": 75,
+      "boardThickness": "1.6",
+      "solderColor": "绿色",
+      "surfaceFinish": "有铅喷锡",
+      "copperThickness": "1oz",
+      "scenario": "estimator_base",
+      "validActual": true,
+      "autoQuoted": true,
+      "actualPriceCny": 610.66,
+      "predictedPriceCny": 652.61,
+      "customerPriceCny": 717.87,
+      "relativeError": 0.06869616480529271,
+      "signedRelativeError": 0.06869616480529271,
+      "customerRelativeError": 0.17556414371335938,
+      "customerSignedRelativeError": 0.17556414371335938,
+      "hit10": true,
+      "hit20": true,
+      "pricingMode": "verified_estimate",
+      "basePricingMode": "verified_estimate",
+      "processAdjusted": false,
+      "manualReviewReasons": [],
+      "sampleError": null,
+      "selectedProcessOptions": {
+        "boardThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "solderColor": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "surfaceFinish": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        },
+        "copperThickness": {
+          "requested": null,
+          "present": false,
+          "selected": true,
+          "implicitDefault": true
+        }
+      }
+    }
+  ]
+}

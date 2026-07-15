@@ -1,0 +1,273 @@
+[
+  {
+    "id": "JLC-CN-PCB-V4-SMOKE-FR4-2L",
+    "materialKey": "fr4",
+    "materialLabel": "FR-4",
+    "layers": 2,
+    "widthMm": 200,
+    "heightMm": 200,
+    "quantity": 200,
+    "boardThickness": "1.6",
+    "solderColor": "绿色",
+    "surfaceFinish": "有铅喷锡",
+    "samplingVersion": "v4",
+    "sampleTime": "2026-07-11T15:04:06.405Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 20,
+    "widthCm": 20,
+    "fixedOptions": "FR-4, 1.6mm, 绿色, 有铅喷锡, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 3492,
+    "domPriceCny": 3492,
+    "apiPriceCny": 3492,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "200",
+    "selectedLengthCm": "20",
+    "selectedWidthCm": "20",
+    "selectedMaterialLabel": "FR-4",
+    "selectedLayers": 2,
+    "unitPriceCny": 17.46,
+    "areaPriceEstimateCnyPerM2": 436.5,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥50.00\n\n板费\n\n￥3360.00\n\n菲林费\n\n￥72.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥3492\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返69金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 3492,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 50,
+      "stencilmoney": 3360,
+      "fillmoney": 72,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 3360,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 50,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V4-SMOKE-FR4-4L",
+    "materialKey": "fr4",
+    "materialLabel": "FR-4",
+    "layers": 4,
+    "widthMm": 200,
+    "heightMm": 200,
+    "quantity": 200,
+    "boardThickness": "1.6",
+    "solderColor": "绿色",
+    "surfaceFinish": "有铅喷锡",
+    "samplingVersion": "v4",
+    "sampleTime": "2026-07-11T15:04:06.405Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 20,
+    "widthCm": 20,
+    "fixedOptions": "FR-4, 1.6mm, 绿色, 有铅喷锡, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 4736,
+    "domPriceCny": 4736,
+    "apiPriceCny": 4736,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "200",
+    "selectedLengthCm": "20",
+    "selectedWidthCm": "20",
+    "selectedMaterialLabel": "FR-4",
+    "selectedLayers": 4,
+    "unitPriceCny": 23.68,
+    "areaPriceEstimateCnyPerM2": 592,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥150.00\n\n板费\n\n￥4080.00\n\n测试费\n\n￥400.00\n\n菲林费\n\n￥96.00\n\n品质赔付费\n\n￥10.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥4736\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返94金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 4736,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 150,
+      "stencilmoney": 4080,
+      "fillmoney": 96,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 150,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 4080,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V4-SMOKE-FPC-1L",
+    "materialKey": "fpc",
+    "materialLabel": "FPC软板",
+    "layers": 1,
+    "widthMm": 200,
+    "heightMm": 200,
+    "quantity": 200,
+    "samplingVersion": "v4",
+    "sampleTime": "2026-07-11T15:04:06.405Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 20,
+    "widthCm": 20,
+    "fixedOptions": "FPC软板, 页面默认 FPC 工艺, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 4788,
+    "domPriceCny": 4788,
+    "apiPriceCny": 4788,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "200",
+    "selectedLengthCm": "20",
+    "selectedWidthCm": "20",
+    "selectedMaterialLabel": "FPC软板",
+    "selectedLayers": 1,
+    "unitPriceCny": 23.94,
+    "areaPriceEstimateCnyPerM2": 598.5,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "成型方式(按面积收费)\n\n￥850.00\n\n工程费\n\n￥50.00\n\n板费\n\n￥2560.00\n\n喷镀费\n\n￥900.00\n\n测试费\n\n￥500.00\n\n菲林费\n\n￥48.00\n\n减免板费\n\n￥120.00\n\n快递费\n\n减\n板费已减 ¥120\n总价\n预估支付总价(不含运费):\n¥4788\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返95金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 4788,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 0,
+      "projectmoney": 50,
+      "stencilmoney": 2560,
+      "fillmoney": 48,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 2560,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 50,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V4-SMOKE-FPC-2L",
+    "materialKey": "fpc",
+    "materialLabel": "FPC软板",
+    "layers": 2,
+    "widthMm": 200,
+    "heightMm": 200,
+    "quantity": 200,
+    "samplingVersion": "v4",
+    "sampleTime": "2026-07-11T15:04:06.405Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 20,
+    "widthCm": 20,
+    "fixedOptions": "FPC软板, 页面默认 FPC 工艺, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 4782,
+    "domPriceCny": 4782,
+    "apiPriceCny": 4782,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "200",
+    "selectedLengthCm": "20",
+    "selectedWidthCm": "20",
+    "selectedMaterialLabel": "FPC软板",
+    "selectedLayers": 2,
+    "unitPriceCny": 23.91,
+    "areaPriceEstimateCnyPerM2": 597.75,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "成型方式(按面积收费)\n\n￥850.00\n\n工程费\n\n￥50.00\n\n板费\n\n￥2560.00\n\n喷镀费\n\n￥900.00\n\n测试费\n\n￥500.00\n\n菲林费\n\n￥72.00\n\n品质赔付费\n\n￥10.00\n\n减免板费\n\n￥160.00\n\n快递费\n\n减\n板费已减 ¥160\n总价\n预估支付总价(不含运费):\n¥4782\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返95金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 4782,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 10,
+      "projectmoney": 50,
+      "stencilmoney": 2560,
+      "fillmoney": 72,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 50,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 2560,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "JLC-CN-PCB-V4-SMOKE-ALU-1L",
+    "materialKey": "aluminum",
+    "materialLabel": "铝基板",
+    "layers": 1,
+    "widthMm": 200,
+    "heightMm": 200,
+    "quantity": 200,
+    "samplingVersion": "v4",
+    "sampleTime": "2026-07-11T15:04:06.405Z",
+    "sourceUrl": "https://www.jlc.com/newOrder/#/pcb/pcbPlaceOrder?spm=PCB.Homepage.functionbar.1002",
+    "currency": "CNY",
+    "lengthCm": 20,
+    "widthCm": 20,
+    "fixedOptions": "铝基板, 页面默认铝基板工艺, 工业/消费类, 不需要确认生产稿, 默认测试项",
+    "displayedPriceCny": 2818,
+    "domPriceCny": 2818,
+    "apiPriceCny": 2818,
+    "apiDomDiff": 0,
+    "priceSource": "dom",
+    "selectedQuantity": "200",
+    "selectedLengthCm": "20",
+    "selectedWidthCm": "20",
+    "selectedMaterialLabel": "铝基板",
+    "selectedLayers": 1,
+    "unitPriceCny": 14.09,
+    "areaPriceEstimateCnyPerM2": 352.25,
+    "notes": "中文站公开下单页样本；尺寸输入单位为 cm（方案 mm 已换算）；不含运费/税费/Gerber 审核附加费",
+    "priceText": "工程费\n\n￥50.00\n\n板费\n\n￥2720.00\n\n菲林费\n\n￥48.00\n\n快递费\n\n总价\n预估支付总价(不含运费):\n¥2818\n检查订单\n提交订单\n我已知悉\n《免责声明》\n本单预计返56金豆\n交流群\n小程序\n联系客服\n更多",
+    "priceBreakdown": {
+      "internetPayTotalmoney": 2818,
+      "specialProduceMoney": 0,
+      "guaranteeMoney": 0,
+      "projectmoney": 50,
+      "stencilmoney": 2720,
+      "fillmoney": 48,
+      "comfirmFileMoney": 0,
+      "additionalCostItemList": [
+        {
+          "costItemCode": "basicProjectMoney",
+          "costItemName": "基础工程费",
+          "costItemMoney": 50,
+          "originalCostItemMoney": null
+        },
+        {
+          "costItemCode": "basicStencilMoney",
+          "costItemName": "基础板费",
+          "costItemMoney": 2720,
+          "originalCostItemMoney": null
+        }
+      ]
+    }
+  }
+]

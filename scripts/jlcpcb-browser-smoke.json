@@ -1,0 +1,47 @@
+[
+  {
+    "id": "SMOKE-001",
+    "layers": 2,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 5,
+    "sampleTime": "2026-07-09T15:47:41.874Z",
+    "sourceUrl": "https://cart.jlcpcb.com/quote",
+    "currency": "USD",
+    "fixedOptions": "FR-4, Single PCB, Green, White silkscreen, HASL(with lead), 1oz, default test options",
+    "calculatedPriceUsd": 0,
+    "specialOfferUsd": 2,
+    "notes": "Public quote page sample; excludes shipping/tax/Gerber review surcharges",
+    "priceText": "Calculated Price\n$0.00"
+  },
+  {
+    "id": "SMOKE-002",
+    "layers": 2,
+    "widthMm": 100,
+    "heightMm": 100,
+    "quantity": 5,
+    "sampleTime": "2026-07-09T15:47:41.874Z",
+    "sourceUrl": "https://cart.jlcpcb.com/quote",
+    "currency": "USD",
+    "fixedOptions": "FR-4, Single PCB, Green, White silkscreen, HASL(with lead), 1oz, default test options",
+    "calculatedPriceUsd": 0,
+    "specialOfferUsd": 2,
+    "notes": "Public quote page sample; excludes shipping/tax/Gerber review surcharges",
+    "priceText": "Calculated Price\n$0.00"
+  },
+  {
+    "id": "SMOKE-003",
+    "layers": 4,
+    "widthMm": 50,
+    "heightMm": 50,
+    "quantity": 5,
+    "sampleTime": "2026-07-09T15:47:41.874Z",
+    "sourceUrl": "https://cart.jlcpcb.com/quote",
+    "currency": "USD",
+    "fixedOptions": "FR-4, Single PCB, Green, White silkscreen, HASL(with lead), 1oz, default test options",
+    "calculatedPriceUsd": 0,
+    "specialOfferUsd": 2,
+    "notes": "Public quote page sample; excludes shipping/tax/Gerber review surcharges",
+    "priceText": "Calculated Price\n$0.00"
+  }
+]

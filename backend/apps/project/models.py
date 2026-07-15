@@ -126,6 +126,10 @@ class ProjectFile(models.Model):
         ("design", "Design"),
         ("contract", "Contract"),
         ("report", "Report"),
+        ("bom", "BOM"),
+        ("purchase_order", "Purchase Order"),
+        ("defect_report", "Defect Report"),
+        ("sample_image", "Sample Image"),
         ("other", "Other"),
     ]
     VISIBILITY_CHOICES = [
@@ -134,6 +138,13 @@ class ProjectFile(models.Model):
     ]
 
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="files")
+    stage = models.ForeignKey(
+        ProjectStage,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="files",
+    )
     uploader = models.ForeignKey(
         "accounts.User", null=True, blank=True, on_delete=models.SET_NULL, related_name="uploaded_project_files"
     )

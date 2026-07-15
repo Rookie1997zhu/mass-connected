@@ -28,8 +28,12 @@ export const uploadRfqAttachment = (id, formData) =>
   })
 export const fetchMyRfqs = (params) => http.get('/member/rfqs', { params })
 export const fetchMyRfq = (id) => http.get(`/member/rfqs/${id}`)
+export const fetchMyRfqFulfillment = (id) => http.get(`/member/rfqs/${id}/fulfillment`)
+export const updateMyRfq = (id, data) => http.patch(`/member/rfqs/${id}`, data)
 export const acceptQuote = (rfqId, quoteId) =>
   http.post(`/member/rfqs/${rfqId}/quotes/${quoteId}/accept`)
+export const fetchMyQuoteDetail = (rfqId, quoteId) =>
+  http.get(`/member/rfqs/${rfqId}/quotes/${quoteId}`)
 
 export const fetchDemandHall = (params) => http.get('/public/demand-hall', { params })
 export const fetchDemandDetail = (id) => http.get(`/public/demand-hall/${id}`)
@@ -39,7 +43,38 @@ export const fetchMyFactoryQuotes = (params) => http.get('/supplier/quotes', { p
 // 供应商抢单报价请求
 export const fetchSupplierQuoteRequests = (params) => http.get('/supplier/quote-requests', { params })
 export const fetchSupplierQuoteRequest = (id) => http.get(`/supplier/quote-requests/${id}`)
-export const submitSupplierQuote = (id, data) => http.post(`/supplier/quote-requests/${id}/quotes`, data)
+export const fetchSupplierQuoteRequestFulfillment = (id) =>
+  http.get(`/supplier/quote-requests/${id}/fulfillment`)
+export const submitSupplierQuote = (id, data) => {
+  if (data instanceof FormData) {
+    return http.post(`/supplier/quote-requests/${id}/quotes`, data, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    })
+  }
+  return http.post(`/supplier/quote-requests/${id}/quotes`, data)
+}
+export const updateSupplierQuote = (id, data) => {
+  if (data instanceof FormData) {
+    return http.patch(`/supplier/quote-requests/${id}/quotes`, data, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    })
+  }
+  return http.patch(`/supplier/quote-requests/${id}/quotes`, data)
+}
+export const uploadSupplierQuoteAttachment = (quoteId, formData) =>
+  http.post(`/supplier/quotes/${quoteId}/attachments`, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  })
+export const deleteSupplierQuoteAttachment = (quoteId, fileId) =>
+  http.delete(`/supplier/quotes/${quoteId}/attachments/${fileId}`)
+
+export const updateFactoryProfile = (data) => http.patch('/factory/profile', data)
+export const uploadSupplierProfileAttachment = (formData) =>
+  http.post('/supplier/profile/attachments', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  })
+export const deleteSupplierProfileAttachment = (attachmentId) =>
+  http.delete('/supplier/profile/attachments', { data: { attachment_id: attachmentId } })
 
 export const fetchMyProductionOrders = (params) => http.get('/member/production-orders', { params })
 export const fetchMyProductionOrder = (id) => http.get(`/member/production-orders/${id}`)
@@ -59,6 +94,10 @@ export const uploadSupplierProjectFile = (projectId, formData) =>
   http.post(`/supplier/projects/${projectId}/files`, formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   })
+export const downloadDefectReportTemplate = () =>
+  http.get('/member/defect-report-template', { responseType: 'blob' })
+export const downloadSupplierDefectReportTemplate = () =>
+  http.get('/supplier/defect-report-template', { responseType: 'blob' })
 export const downloadRfqQuotePdf = (id) =>
   http.get(`/member/rfqs/${id}/quote-pdf`, { responseType: 'blob' })
 
@@ -115,6 +154,7 @@ export const uploadPaymentProof = (id, formData) =>
   http.post(`/member/payments/${id}/proof`, formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   })
+export const confirmSupplierPayment = (id) => http.post(`/supplier/payments/${id}/confirm`)
 
 // 供应商合同
 export const fetchSupplierContracts = (params) => http.get('/supplier/contracts', { params })

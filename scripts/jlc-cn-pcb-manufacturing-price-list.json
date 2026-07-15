@@ -1,0 +1,6015 @@
+{
+  "source": "JLC CN public quote golden sampling",
+  "generatedAt": "2026-07-13T06:51:01.460Z",
+  "marginRate": 0.1,
+  "pricingMode": "hybrid",
+  "validationStatus": "passed",
+  "enabledMaterials": [
+    "fr4",
+    "fpc",
+    "aluminum"
+  ],
+  "estimatorEnabledMaterials": [
+    "fr4",
+    "fpc"
+  ],
+  "estimator": {
+    "version": "jlc-cn-pcb-v4-estimator-20260713",
+    "algorithm": "staged_log_interp_v1",
+    "neighbors": 4,
+    "areaWeight": 1,
+    "quantityWeight": 1.35,
+    "aspectWeight": 0.35,
+    "materials": {
+      "fr4": {
+        "layers": [
+          2,
+          4
+        ],
+        "minWidthMm": 50,
+        "maxWidthMm": 200,
+        "minHeightMm": 50,
+        "maxHeightMm": 200,
+        "minQuantity": 5,
+        "maxQuantity": 200
+      },
+      "fpc": {
+        "layers": [
+          1,
+          2
+        ],
+        "minWidthMm": 50,
+        "maxWidthMm": 200,
+        "minHeightMm": 50,
+        "maxHeightMm": 200,
+        "minQuantity": 5,
+        "maxQuantity": 200
+      },
+      "aluminum": {
+        "layers": [
+          1
+        ],
+        "minWidthMm": 50,
+        "maxWidthMm": 200,
+        "minHeightMm": 50,
+        "maxHeightMm": 200,
+        "minQuantity": 5,
+        "maxQuantity": 200
+      }
+    },
+    "enabledMaterials": [
+      "fr4",
+      "fpc"
+    ],
+    "validationStatus": "passed",
+    "validationMetrics": {
+      "overall": {
+        "total": 24,
+        "hit20": 21,
+        "hitRate20": 0.875,
+        "mape": 0.0701,
+        "maxRelativeError": 0.242,
+        "pass": true
+      },
+      "byMaterial": {
+        "fr4": {
+          "total": 8,
+          "hit20": 7,
+          "hitRate20": 0.875,
+          "mape": 0.0579,
+          "maxRelativeError": 0.237,
+          "pass": true
+        },
+        "fpc": {
+          "total": 8,
+          "hit20": 8,
+          "hitRate20": 1,
+          "mape": 0.067,
+          "maxRelativeError": 0.1081,
+          "pass": true
+        },
+        "aluminum": {
+          "total": 8,
+          "hit20": 6,
+          "hitRate20": 0.75,
+          "mape": 0.0855,
+          "maxRelativeError": 0.242,
+          "pass": false
+        }
+      }
+    },
+    "guards": {
+      "maxNeighborDistance": 0.85,
+      "minLocalNeighbors": 2
+    },
+    "maxNeighborDistance": 0.85,
+    "minLocalNeighbors": 2
+  },
+  "estimatorGuards": {
+    "maxNeighborDistance": 0.85,
+    "minLocalNeighbors": 2
+  },
+  "processEnabledMaterials": [
+    "aluminum"
+  ],
+  "processEnabledZones": [
+    {
+      "id": "fr4_boardThickness_1.0",
+      "material_key": "fr4",
+      "process_fields": {
+        "boardThickness": [
+          "1.0"
+        ]
+      },
+      "action": "auto_quote",
+      "hitRate20": 1,
+      "mape": 0.0692,
+      "maxRelativeError": 0.0705,
+      "sampleCount": 2
+    },
+    {
+      "id": "fr4_surfaceFinish_OSP",
+      "material_key": "fr4",
+      "process_fields": {
+        "surfaceFinish": [
+          "OSP"
+        ]
+      },
+      "action": "auto_quote",
+      "hitRate20": 1,
+      "mape": 0.0692,
+      "maxRelativeError": 0.0705,
+      "sampleCount": 2
+    },
+    {
+      "id": "fr4_panelDesignCount_2",
+      "material_key": "fr4",
+      "process_fields": {
+        "panelDesignCount": [
+          "2"
+        ]
+      },
+      "action": "auto_quote",
+      "hitRate20": 1,
+      "mape": 0.0964,
+      "maxRelativeError": 0.1223,
+      "sampleCount": 2
+    },
+    {
+      "id": "fr4_solderColor_白色",
+      "material_key": "fr4",
+      "process_fields": {
+        "solderColor": [
+          "白色"
+        ]
+      },
+      "action": "auto_quote",
+      "hitRate20": 1,
+      "mape": 0.0499,
+      "maxRelativeError": 0.0499,
+      "sampleCount": 1
+    },
+    {
+      "id": "fr4_surfaceFinish_无铅喷锡",
+      "material_key": "fr4",
+      "process_fields": {
+        "surfaceFinish": [
+          "无铅喷锡"
+        ]
+      },
+      "action": "auto_quote",
+      "hitRate20": 1,
+      "mape": 0.0499,
+      "maxRelativeError": 0.0499,
+      "sampleCount": 1
+    },
+    {
+      "id": "fpc_boardThickness_0.20",
+      "material_key": "fpc",
+      "process_fields": {
+        "boardThickness": [
+          "0.20"
+        ]
+      },
+      "action": "auto_quote",
+      "hitRate20": 1,
+      "mape": 0.0173,
+      "maxRelativeError": 0.0173,
+      "sampleCount": 1
+    }
+  ],
+  "processModel": {
+    "version": "jlc-cn-pcb-v7-process-20260713",
+    "algorithm": "validated_ofat_scale_segment_interaction_v1",
+    "materials": {
+      "fr4": {
+        "defaults": {
+          "boardThickness": "1.6",
+          "solderColor": "绿色",
+          "surfaceFinish": "有铅喷锡",
+          "copperThickness": "1oz",
+          "solderMaskCoverage": "过孔盖油",
+          "panelDesignCount": "1"
+        },
+        "options": {
+          "boardThickness": [
+            "1.0",
+            "1.2",
+            "1.6",
+            "2.0"
+          ],
+          "solderColor": [
+            "绿色",
+            "红色",
+            "黄色",
+            "蓝色",
+            "白色",
+            "哑黑色"
+          ],
+          "surfaceFinish": [
+            "OSP",
+            "有铅喷锡",
+            "无铅喷锡",
+            "沉金"
+          ],
+          "copperThickness": [
+            "1oz"
+          ],
+          "solderMaskCoverage": [
+            "过孔盖油",
+            "过孔开窗",
+            "过孔塞油",
+            "过孔塞树脂+过孔电镀盖帽"
+          ],
+          "panelDesignCount": [
+            "1",
+            "2"
+          ]
+        },
+        "factors": {
+          "boardThickness": {
+            "1.0": {
+              "method": "multiplier",
+              "multiplier": 1,
+              "additiveCny": 0,
+              "sampleCount": 3,
+              "fitError": 0,
+              "layers": [
+                2,
+                4
+              ]
+            },
+            "1.2": {
+              "method": "multiplier",
+              "multiplier": 1,
+              "additiveCny": 0,
+              "sampleCount": 3,
+              "fitError": 0,
+              "layers": [
+                2,
+                4
+              ]
+            },
+            "1.6": {
+              "method": "multiplier",
+              "multiplier": 1,
+              "additiveCny": 0,
+              "sampleCount": 4
+            },
+            "2.0": {
+              "method": "additive",
+              "multiplier": 4.32,
+              "additiveCny": 142.06,
+              "sampleCount": 2,
+              "fitError": 0.3721,
+              "layers": [
+                2
+              ]
+            }
+          },
+          "solderColor": {
+            "绿色": {
+              "method": "multiplier",
+              "multiplier": 1,
+              "additiveCny": 0,
+              "sampleCount": 4
+            },
+            "红色": {
+              "method": "multiplier",
+              "multiplier": 1.067843,
+              "additiveCny": 100,
+              "sampleCount": 3,
+              "fitError": 0.0917,
+              "layers": [
+                2,
+                4
+              ]
+            },
+            "黄色": {
+              "method": "multiplier",
+              "multiplier": 1.067843,
+              "additiveCny": 100,
+              "sampleCount": 3,
+              "fitError": 0.0917,
+              "layers": [
+                2,
+                4
+              ]
+            },
+            "蓝色": {
+              "method": "multiplier",
+              "multiplier": 1,
+              "additiveCny": 0,
+              "sampleCount": 3,
+              "fitError": 0.0066,
+              "layers": [
+                2,
+                4
+              ]
+            },
+            "白色": {
+              "method": "multiplier",
+              "multiplier": 1,
+              "additiveCny": 0,
+              "sampleCount": 3,
+              "fitError": 0.0066,
+              "layers": [
+                2,
+                4
+              ]
+            },
+            "哑黑色": {
+              "method": "multiplier",
+              "multiplier": 1,
+              "additiveCny": 0,
+              "sampleCount": 3,
+              "fitError": 0.0066,
+              "layers": [
+                2,
+                4
+              ]
+            }
+          },
+          "surfaceFinish": {
+            "OSP": {
+              "method": "multiplier",
+              "multiplier": 1,
+              "additiveCny": 0,
+              "sampleCount": 4,
+              "fitError": 0,
+              "layers": [
+                2,
+                4
+              ],
+              "scaleSegments": {
+                "mid": {
+                  "method": "multiplier",
+                  "multiplier": 1,
+                  "additiveCny": 0,
+                  "sampleCount": 2,
+                  "fitError": 0,
+                  "layers": [
+                    2
+                  ]
+                }
+              }
+            },
+            "有铅喷锡": {
+              "method": "multiplier",
+              "multiplier": 1,
+              "additiveCny": 0,
+              "sampleCount": 4
+            },
+            "无铅喷锡": {
+              "method": "multiplier",
+              "multiplier": 1.15625,
+              "additiveCny": 45,
+              "sampleCount": 3,
+              "fitError": 0.17,
+              "layers": [
+                2,
+                4
+              ]
+            },
+            "沉金": {
+              "method": "multiplier",
+              "multiplier": 1.590278,
+              "additiveCny": 170,
+              "sampleCount": 3,
+              "fitError": 0.2929,
+              "layers": [
+                2,
+                4
+              ]
+            }
+          },
+          "copperThickness": {
+            "1oz": {
+              "method": "multiplier",
+              "multiplier": 1,
+              "additiveCny": 0,
+              "sampleCount": 4
+            }
+          },
+          "solderMaskCoverage": {
+            "过孔盖油": {
+              "method": "multiplier",
+              "multiplier": 1,
+              "additiveCny": 0,
+              "sampleCount": 4
+            },
+            "过孔开窗": {
+              "method": "multiplier",
+              "multiplier": 1,
+              "additiveCny": 0,
+              "sampleCount": 3,
+              "fitError": 0,
+              "layers": [
+                2,
+                4
+              ]
+            },
+            "过孔塞油": {
+              "method": "multiplier",
+              "multiplier": 1.364583,
+              "additiveCny": 100.13,
+              "sampleCount": 3,
+              "fitError": 0.35,
+              "layers": [
+                2,
+                4
+              ]
+            },
+            "过孔塞树脂+过孔电镀盖帽": {
+              "method": "additive",
+              "multiplier": 2.595486,
+              "additiveCny": 324.75,
+              "sampleCount": 3,
+              "fitError": 0.0986,
+              "layers": [
+                2,
+                4
+              ]
+            }
+          },
+          "panelDesignCount": {
+            "1": {
+              "method": "multiplier",
+              "multiplier": 1,
+              "additiveCny": 0,
+              "sampleCount": 4
+            },
+            "2": {
+              "method": "multiplier",
+              "multiplier": 1.173611,
+              "additiveCny": 50,
+              "sampleCount": 5,
+              "fitError": 0.1381,
+              "layers": [
+                2,
+                4
+              ],
+              "scaleSegments": {
+                "small": {
+                  "method": "additive",
+                  "multiplier": 1.67,
+                  "additiveCny": 20,
+                  "sampleCount": 2,
+                  "fitError": 0,
+                  "layers": [
+                    2
+                  ]
+                },
+                "mid": {
+                  "method": "additive",
+                  "multiplier": 1.17,
+                  "additiveCny": 50,
+                  "sampleCount": 2,
+                  "fitError": 0,
+                  "layers": [
+                    2
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "fpc": {
+        "defaults": {
+          "boardThickness": "0.11",
+          "solderColor": "页面默认",
+          "surfaceFinish": "沉金",
+          "copperThickness": "1oz",
+          "solderMaskCoverage": "页面默认",
+          "panelDesignCount": "1"
+        },
+        "options": {
+          "boardThickness": [
+            "0.11",
+            "0.12",
+            "0.20"
+          ],
+          "solderColor": [
+            "页面默认"
+          ],
+          "surfaceFinish": [
+            "沉金"
+          ],
+          "copperThickness": [
+            "1oz"
+          ],
+          "solderMaskCoverage": [
+            "页面默认"
+          ],
+          "panelDesignCount": [
+            "1",
+            "2"
+          ]
+        },
+        "factors": {
+          "boardThickness": {
+            "0.11": {
+              "method": "multiplier",
+              "multiplier": 1,
+              "additiveCny": 0,
+              "sampleCount": 2
+            },
+            "0.12": {
+              "method": "multiplier",
+              "multiplier": 1.05,
+              "additiveCny": 68.75,
+              "sampleCount": 2,
+              "fitError": 0.012,
+              "layers": [
+                2
+              ]
+            },
+            "0.20": {
+              "method": "multiplier",
+              "multiplier": 1.16,
+              "additiveCny": 206.25,
+              "sampleCount": 2,
+              "fitError": 0.033,
+              "layers": [
+                2
+              ]
+            }
+          },
+          "solderColor": {
+            "页面默认": {
+              "method": "multiplier",
+              "multiplier": 1,
+              "additiveCny": 0,
+              "sampleCount": 2
+            }
+          },
+          "surfaceFinish": {
+            "沉金": {
+              "method": "multiplier",
+              "multiplier": 1,
+              "additiveCny": 0,
+              "sampleCount": 2
+            }
+          },
+          "copperThickness": {
+            "1oz": {
+              "method": "multiplier",
+              "multiplier": 1,
+              "additiveCny": 0,
+              "sampleCount": 2
+            }
+          },
+          "solderMaskCoverage": {
+            "页面默认": {
+              "method": "multiplier",
+              "multiplier": 1,
+              "additiveCny": 0,
+              "sampleCount": 2
+            }
+          },
+          "panelDesignCount": {
+            "1": {
+              "method": "multiplier",
+              "multiplier": 1,
+              "additiveCny": 0,
+              "sampleCount": 2
+            },
+            "2": {
+              "method": "additive",
+              "multiplier": 1.05,
+              "additiveCny": 50,
+              "sampleCount": 4,
+              "fitError": 0,
+              "layers": [
+                2
+              ],
+              "scaleSegments": {
+                "mid": {
+                  "method": "additive",
+                  "multiplier": 1.08,
+                  "additiveCny": 50,
+                  "sampleCount": 2,
+                  "fitError": 0,
+                  "layers": [
+                    2
+                  ]
+                },
+                "large": {
+                  "method": "additive",
+                  "multiplier": 1.03,
+                  "additiveCny": 50,
+                  "sampleCount": 2,
+                  "fitError": 0,
+                  "layers": [
+                    2
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "aluminum": {
+        "defaults": {
+          "boardThickness": "1.6",
+          "solderColor": "绿色",
+          "surfaceFinish": "无铅喷锡",
+          "copperThickness": "1oz",
+          "solderMaskCoverage": "页面默认",
+          "panelDesignCount": "1"
+        },
+        "options": {
+          "boardThickness": [
+            "1.0",
+            "1.2",
+            "1.6"
+          ],
+          "solderColor": [
+            "绿色",
+            "红色",
+            "黄色",
+            "蓝色",
+            "白色",
+            "哑黑色"
+          ],
+          "surfaceFinish": [
+            "无铅喷锡"
+          ],
+          "copperThickness": [
+            "1oz"
+          ],
+          "solderMaskCoverage": [
+            "页面默认"
+          ],
+          "panelDesignCount": [
+            "1",
+            "2"
+          ]
+        },
+        "factors": {
+          "boardThickness": {
+            "1.0": {
+              "method": "multiplier",
+              "multiplier": 1,
+              "additiveCny": 0,
+              "sampleCount": 3,
+              "fitError": 0,
+              "layers": [
+                1
+              ]
+            },
+            "1.2": {
+              "method": "multiplier",
+              "multiplier": 1,
+              "additiveCny": 0,
+              "sampleCount": 3,
+              "fitError": 0,
+              "layers": [
+                1
+              ]
+            },
+            "1.6": {
+              "method": "multiplier",
+              "multiplier": 1,
+              "additiveCny": 0,
+              "sampleCount": 3
+            }
+          },
+          "solderColor": {
+            "绿色": {
+              "method": "multiplier",
+              "multiplier": 1,
+              "additiveCny": 0,
+              "sampleCount": 3
+            },
+            "红色": {
+              "method": "additive",
+              "multiplier": 1.431034,
+              "additiveCny": 100,
+              "sampleCount": 3,
+              "fitError": 0.0193,
+              "layers": [
+                1
+              ]
+            },
+            "黄色": {
+              "method": "additive",
+              "multiplier": 1.431034,
+              "additiveCny": 100,
+              "sampleCount": 3,
+              "fitError": 0.0193,
+              "layers": [
+                1
+              ]
+            },
+            "蓝色": {
+              "method": "additive",
+              "multiplier": 1.431034,
+              "additiveCny": 100,
+              "sampleCount": 3,
+              "fitError": 0.0193,
+              "layers": [
+                1
+              ]
+            },
+            "白色": {
+              "method": "multiplier",
+              "multiplier": 1,
+              "additiveCny": 0,
+              "sampleCount": 3,
+              "fitError": 0,
+              "layers": [
+                1
+              ]
+            },
+            "哑黑色": {
+              "method": "additive",
+              "multiplier": 1.431034,
+              "additiveCny": 100,
+              "sampleCount": 3,
+              "fitError": 0.0193,
+              "layers": [
+                1
+              ]
+            }
+          },
+          "surfaceFinish": {
+            "无铅喷锡": {
+              "method": "multiplier",
+              "multiplier": 1,
+              "additiveCny": 0,
+              "sampleCount": 3
+            }
+          },
+          "copperThickness": {
+            "1oz": {
+              "method": "multiplier",
+              "multiplier": 1,
+              "additiveCny": 0,
+              "sampleCount": 3
+            }
+          },
+          "solderMaskCoverage": {
+            "页面默认": {
+              "method": "multiplier",
+              "multiplier": 1,
+              "additiveCny": 0,
+              "sampleCount": 3
+            }
+          },
+          "panelDesignCount": {
+            "1": {
+              "method": "multiplier",
+              "multiplier": 1,
+              "additiveCny": 0,
+              "sampleCount": 3
+            },
+            "2": {
+              "method": "multiplier",
+              "multiplier": 1.22,
+              "additiveCny": 50,
+              "sampleCount": 6,
+              "fitError": 0.1818,
+              "layers": [
+                1
+              ],
+              "scaleSegments": {
+                "small": {
+                  "method": "multiplier",
+                  "multiplier": 2,
+                  "additiveCny": 20,
+                  "sampleCount": 2,
+                  "fitError": 0,
+                  "layers": [
+                    1
+                  ]
+                },
+                "mid": {
+                  "method": "additive",
+                  "multiplier": 1.22,
+                  "additiveCny": 50,
+                  "sampleCount": 2,
+                  "fitError": 0,
+                  "layers": [
+                    1
+                  ]
+                },
+                "large": {
+                  "method": "additive",
+                  "multiplier": 1.06,
+                  "additiveCny": 50,
+                  "sampleCount": 2,
+                  "fitError": 0,
+                  "layers": [
+                    1
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "interactions": {},
+    "enabledMaterials": [
+      "aluminum"
+    ],
+    "enabledZones": [
+      {
+        "id": "fr4_boardThickness_1.0",
+        "material_key": "fr4",
+        "process_fields": {
+          "boardThickness": [
+            "1.0"
+          ]
+        },
+        "action": "auto_quote",
+        "hitRate20": 1,
+        "mape": 0.0692,
+        "maxRelativeError": 0.0705,
+        "sampleCount": 2
+      },
+      {
+        "id": "fr4_surfaceFinish_OSP",
+        "material_key": "fr4",
+        "process_fields": {
+          "surfaceFinish": [
+            "OSP"
+          ]
+        },
+        "action": "auto_quote",
+        "hitRate20": 1,
+        "mape": 0.0692,
+        "maxRelativeError": 0.0705,
+        "sampleCount": 2
+      },
+      {
+        "id": "fr4_panelDesignCount_2",
+        "material_key": "fr4",
+        "process_fields": {
+          "panelDesignCount": [
+            "2"
+          ]
+        },
+        "action": "auto_quote",
+        "hitRate20": 1,
+        "mape": 0.0964,
+        "maxRelativeError": 0.1223,
+        "sampleCount": 2
+      },
+      {
+        "id": "fr4_solderColor_白色",
+        "material_key": "fr4",
+        "process_fields": {
+          "solderColor": [
+            "白色"
+          ]
+        },
+        "action": "auto_quote",
+        "hitRate20": 1,
+        "mape": 0.0499,
+        "maxRelativeError": 0.0499,
+        "sampleCount": 1
+      },
+      {
+        "id": "fr4_surfaceFinish_无铅喷锡",
+        "material_key": "fr4",
+        "process_fields": {
+          "surfaceFinish": [
+            "无铅喷锡"
+          ]
+        },
+        "action": "auto_quote",
+        "hitRate20": 1,
+        "mape": 0.0499,
+        "maxRelativeError": 0.0499,
+        "sampleCount": 1
+      },
+      {
+        "id": "fpc_boardThickness_0.20",
+        "material_key": "fpc",
+        "process_fields": {
+          "boardThickness": [
+            "0.20"
+          ]
+        },
+        "action": "auto_quote",
+        "hitRate20": 1,
+        "mape": 0.0173,
+        "maxRelativeError": 0.0173,
+        "sampleCount": 1
+      }
+    ],
+    "validationStatus": "partial_pass",
+    "validationMetrics": {
+      "overall": {
+        "total": 12,
+        "hit20": 10,
+        "hitRate20": 0.8333,
+        "mape": 0.0973,
+        "maxRelativeError": 0.3129,
+        "pass": true
+      },
+      "byMaterial": {
+        "fr4": {
+          "total": 5,
+          "hit20": 4,
+          "hitRate20": 0.8,
+          "mape": 0.1247,
+          "maxRelativeError": 0.3129,
+          "pass": true
+        },
+        "fpc": {
+          "total": 3,
+          "hit20": 2,
+          "hitRate20": 0.6667,
+          "mape": 0.1266,
+          "maxRelativeError": 0.2497,
+          "pass": false
+        },
+        "aluminum": {
+          "total": 4,
+          "hit20": 4,
+          "hitRate20": 1,
+          "mape": 0.041,
+          "maxRelativeError": 0.148,
+          "pass": true
+        }
+      }
+    },
+    "riskZones": [
+      {
+        "id": "fr4_4l_small_low",
+        "material_key": "fr4",
+        "layers": [
+          4
+        ],
+        "min_area_mm2": 3575,
+        "max_area_mm2": 3575,
+        "min_quantity": 15,
+        "max_quantity": 15,
+        "action": "manual_review",
+        "reason": "auto_calibrated_from_process_holdout",
+        "calibrated_max_error": 0.3129,
+        "estimator_hint": 0.242
+      },
+      {
+        "id": "fpc_2l_mid_mid",
+        "material_key": "fpc",
+        "layers": [
+          2
+        ],
+        "min_area_mm2": 6175,
+        "max_area_mm2": 11700,
+        "min_quantity": 30,
+        "max_quantity": 75,
+        "action": "manual_review",
+        "reason": "auto_calibrated_from_process_holdout",
+        "calibrated_max_error": 0.4886,
+        "estimator_hint": 0.242
+      },
+      {
+        "id": "aluminum_1l_small_low",
+        "material_key": "aluminum",
+        "layers": [
+          1
+        ],
+        "min_area_mm2": 3850,
+        "max_area_mm2": 4800,
+        "min_quantity": 10,
+        "max_quantity": 15,
+        "action": "manual_review",
+        "reason": "auto_calibrated_from_process_holdout",
+        "calibrated_max_error": 0.683,
+        "estimator_hint": 0.242
+      },
+      {
+        "id": "aluminum_1l_mid_low",
+        "material_key": "aluminum",
+        "layers": [
+          1
+        ],
+        "min_area_mm2": 5950,
+        "max_area_mm2": 5950,
+        "min_quantity": 20,
+        "max_quantity": 20,
+        "action": "manual_review",
+        "reason": "auto_calibrated_from_process_holdout",
+        "calibrated_max_error": 0.6026,
+        "estimator_hint": 0.242
+      },
+      {
+        "id": "fpc_nonstd_thickness_mid",
+        "material_key": "fpc",
+        "layers": [
+          1,
+          2
+        ],
+        "min_area_mm2": 4000,
+        "max_area_mm2": 12000,
+        "min_quantity": 20,
+        "max_quantity": 50,
+        "process_fields": {
+          "boardThickness": [
+            "0.12",
+            "0.20"
+          ]
+        },
+        "action": "manual_review",
+        "reason": "fallback_preserved_from_prior_calibration",
+        "calibrated_max_error": null,
+        "estimator_hint": 0.242
+      },
+      {
+        "id": "fr4_2l_large_high_qty",
+        "material_key": "fr4",
+        "layers": [
+          2
+        ],
+        "min_area_mm2": 14000,
+        "min_quantity": 75,
+        "action": "manual_review",
+        "reason": "v8_boundary_guard_from_diagnostic_anchor",
+        "calibrated_max_error": 0.548,
+        "estimator_hint": 0.242
+      },
+      {
+        "id": "aluminum_small_low_qty",
+        "material_key": "aluminum",
+        "layers": [
+          1
+        ],
+        "max_area_mm2": 7000,
+        "max_quantity": 20,
+        "action": "manual_review",
+        "reason": "v8_boundary_guard_from_diagnostic_anchor",
+        "calibrated_max_error": 0.2527,
+        "estimator_hint": 0.242
+      }
+    ],
+    "confidenceCalibration": {
+      "method": "holdout_error_bands_v1",
+      "bands": [
+        {
+          "maxRelativeError": 0.05,
+          "confidence": 0.92
+        },
+        {
+          "maxRelativeError": 0.1,
+          "confidence": 0.85
+        },
+        {
+          "maxRelativeError": 0.2,
+          "confidence": 0.72
+        },
+        {
+          "maxRelativeError": 1,
+          "confidence": 0.45
+        }
+      ],
+      "holdoutMape": 0.0973,
+      "holdoutHitRate10": null,
+      "holdoutHitRate20": 0.8333
+    },
+    "processEnabledZones": [
+      {
+        "id": "fr4_boardThickness_1.0",
+        "material_key": "fr4",
+        "process_fields": {
+          "boardThickness": [
+            "1.0"
+          ]
+        },
+        "action": "auto_quote",
+        "hitRate20": 1,
+        "mape": 0.0692,
+        "maxRelativeError": 0.0705,
+        "sampleCount": 2
+      },
+      {
+        "id": "fr4_surfaceFinish_OSP",
+        "material_key": "fr4",
+        "process_fields": {
+          "surfaceFinish": [
+            "OSP"
+          ]
+        },
+        "action": "auto_quote",
+        "hitRate20": 1,
+        "mape": 0.0692,
+        "maxRelativeError": 0.0705,
+        "sampleCount": 2
+      },
+      {
+        "id": "fr4_panelDesignCount_2",
+        "material_key": "fr4",
+        "process_fields": {
+          "panelDesignCount": [
+            "2"
+          ]
+        },
+        "action": "auto_quote",
+        "hitRate20": 1,
+        "mape": 0.0964,
+        "maxRelativeError": 0.1223,
+        "sampleCount": 2
+      },
+      {
+        "id": "fr4_solderColor_白色",
+        "material_key": "fr4",
+        "process_fields": {
+          "solderColor": [
+            "白色"
+          ]
+        },
+        "action": "auto_quote",
+        "hitRate20": 1,
+        "mape": 0.0499,
+        "maxRelativeError": 0.0499,
+        "sampleCount": 1
+      },
+      {
+        "id": "fr4_surfaceFinish_无铅喷锡",
+        "material_key": "fr4",
+        "process_fields": {
+          "surfaceFinish": [
+            "无铅喷锡"
+          ]
+        },
+        "action": "auto_quote",
+        "hitRate20": 1,
+        "mape": 0.0499,
+        "maxRelativeError": 0.0499,
+        "sampleCount": 1
+      },
+      {
+        "id": "fpc_boardThickness_0.20",
+        "material_key": "fpc",
+        "process_fields": {
+          "boardThickness": [
+            "0.20"
+          ]
+        },
+        "action": "auto_quote",
+        "hitRate20": 1,
+        "mape": 0.0173,
+        "maxRelativeError": 0.0173,
+        "sampleCount": 1
+      }
+    ]
+  },
+  "riskZones": [
+    {
+      "id": "fr4_4l_small_low",
+      "material_key": "fr4",
+      "layers": [
+        4
+      ],
+      "min_area_mm2": 3575,
+      "max_area_mm2": 3575,
+      "min_quantity": 15,
+      "max_quantity": 15,
+      "action": "manual_review",
+      "reason": "auto_calibrated_from_process_holdout",
+      "calibrated_max_error": 0.3129,
+      "estimator_hint": 0.242
+    },
+    {
+      "id": "fpc_2l_mid_mid",
+      "material_key": "fpc",
+      "layers": [
+        2
+      ],
+      "min_area_mm2": 6175,
+      "max_area_mm2": 11700,
+      "min_quantity": 30,
+      "max_quantity": 75,
+      "action": "manual_review",
+      "reason": "auto_calibrated_from_process_holdout",
+      "calibrated_max_error": 0.4886,
+      "estimator_hint": 0.242
+    },
+    {
+      "id": "aluminum_1l_small_low",
+      "material_key": "aluminum",
+      "layers": [
+        1
+      ],
+      "min_area_mm2": 3850,
+      "max_area_mm2": 4800,
+      "min_quantity": 10,
+      "max_quantity": 15,
+      "action": "manual_review",
+      "reason": "auto_calibrated_from_process_holdout",
+      "calibrated_max_error": 0.683,
+      "estimator_hint": 0.242
+    },
+    {
+      "id": "aluminum_1l_mid_low",
+      "material_key": "aluminum",
+      "layers": [
+        1
+      ],
+      "min_area_mm2": 5950,
+      "max_area_mm2": 5950,
+      "min_quantity": 20,
+      "max_quantity": 20,
+      "action": "manual_review",
+      "reason": "auto_calibrated_from_process_holdout",
+      "calibrated_max_error": 0.6026,
+      "estimator_hint": 0.242
+    },
+    {
+      "id": "fpc_nonstd_thickness_mid",
+      "material_key": "fpc",
+      "layers": [
+        1,
+        2
+      ],
+      "min_area_mm2": 4000,
+      "max_area_mm2": 12000,
+      "min_quantity": 20,
+      "max_quantity": 50,
+      "process_fields": {
+        "boardThickness": [
+          "0.12",
+          "0.20"
+        ]
+      },
+      "action": "manual_review",
+      "reason": "fallback_preserved_from_prior_calibration",
+      "calibrated_max_error": null,
+      "estimator_hint": 0.242
+    },
+    {
+      "id": "fr4_2l_large_high_qty",
+      "material_key": "fr4",
+      "layers": [
+        2
+      ],
+      "min_area_mm2": 14000,
+      "min_quantity": 75,
+      "action": "manual_review",
+      "reason": "v8_boundary_guard_from_diagnostic_anchor",
+      "calibrated_max_error": 0.548,
+      "estimator_hint": 0.242
+    },
+    {
+      "id": "aluminum_small_low_qty",
+      "material_key": "aluminum",
+      "layers": [
+        1
+      ],
+      "max_area_mm2": 7000,
+      "max_quantity": 20,
+      "action": "manual_review",
+      "reason": "v8_boundary_guard_from_diagnostic_anchor",
+      "calibrated_max_error": 0.2527,
+      "estimator_hint": 0.242
+    }
+  ],
+  "confidenceCalibration": {
+    "method": "holdout_error_bands_v1",
+    "bands": [
+      {
+        "maxRelativeError": 0.05,
+        "confidence": 0.92
+      },
+      {
+        "maxRelativeError": 0.1,
+        "confidence": 0.85
+      },
+      {
+        "maxRelativeError": 0.2,
+        "confidence": 0.72
+      },
+      {
+        "maxRelativeError": 1,
+        "confidence": 0.45
+      }
+    ],
+    "holdoutMape": 0.0973,
+    "holdoutHitRate10": null,
+    "holdoutHitRate20": 0.8333
+  },
+  "independenceProof": {
+    "generatedAt": "2026-07-13T05:59:15.146Z",
+    "acceptancePath": "scripts/jlc-cn-pcb-v8-acceptance-targets.json",
+    "ok": true,
+    "neighborOk": false,
+    "checks": [
+      {
+        "ok": true,
+        "left": "fit",
+        "right": "tuning_holdout",
+        "overlapCount": 0,
+        "overlap": []
+      },
+      {
+        "ok": true,
+        "left": "fit",
+        "right": "process_holdout",
+        "overlapCount": 0,
+        "overlap": []
+      },
+      {
+        "ok": true,
+        "left": "fit",
+        "right": "final_acceptance",
+        "overlapCount": 0,
+        "overlap": []
+      },
+      {
+        "ok": true,
+        "left": "tuning_holdout",
+        "right": "final_acceptance",
+        "overlapCount": 0,
+        "overlap": []
+      },
+      {
+        "ok": true,
+        "left": "process_holdout",
+        "right": "final_acceptance",
+        "overlapCount": 0,
+        "overlap": []
+      },
+      {
+        "ok": true,
+        "left": "diagnostic_v7",
+        "right": "final_acceptance",
+        "overlapCount": 0,
+        "overlap": []
+      },
+      {
+        "ok": false,
+        "left": "fit_neighbor",
+        "right": "final_acceptance_neighbor",
+        "overlapCount": 31,
+        "overlap": [
+          "aluminum|1|large|high",
+          "aluminum|1|large|low",
+          "aluminum|1|large|mid",
+          "aluminum|1|mid|high",
+          "aluminum|1|mid|low",
+          "aluminum|1|mid|mid",
+          "aluminum|1|small|low",
+          "fpc|1|large|high",
+          "fpc|1|large|low",
+          "fpc|1|large|mid",
+          "fpc|1|mid|high",
+          "fpc|1|mid|low",
+          "fpc|1|mid|mid",
+          "fpc|1|small|low",
+          "fpc|2|large|high",
+          "fpc|2|large|low",
+          "fpc|2|large|mid",
+          "fpc|2|mid|high",
+          "fpc|2|mid|mid",
+          "fr4|2|large|high",
+          "fr4|2|large|low",
+          "fr4|2|large|mid",
+          "fr4|2|mid|high",
+          "fr4|2|mid|low",
+          "fr4|2|mid|mid",
+          "fr4|2|small|low",
+          "fr4|4|large|high",
+          "fr4|4|large|low",
+          "fr4|4|large|mid",
+          "fr4|4|mid|high"
+        ]
+      },
+      {
+        "ok": false,
+        "left": "tuning_holdout_neighbor",
+        "right": "final_acceptance_neighbor",
+        "overlapCount": 6,
+        "overlap": [
+          "aluminum|1|mid|low",
+          "aluminum|1|small|low",
+          "fpc|1|mid|mid",
+          "fpc|2|mid|mid",
+          "fr4|2|large|high",
+          "fr4|2|mid|high"
+        ]
+      }
+    ],
+    "fingerprintCheck": {
+      "ok": true,
+      "current": {
+        "count": 120,
+        "hash": "fnvish_a22c73ed",
+        "sampleKeysHead": [
+          "aluminum|1|100|153|18|1.6|绿色|无铅喷锡|1oz|页面默认|1",
+          "aluminum|1|101|163|80|1.6|绿色|无铅喷锡|1oz|页面默认|1",
+          "aluminum|1|104|150|18|1.6|绿色|无铅喷锡|1oz|页面默认|1",
+          "aluminum|1|108|164|12|1.6|绿色|无铅喷锡|1oz|页面默认|1",
+          "aluminum|1|111|159|8|1.6|绿色|无铅喷锡|1oz|页面默认|1"
+        ]
+      },
+      "frozen": {
+        "frozenAt": "2026-07-13T05:59:15.015Z",
+        "count": 120,
+        "hash": "fnvish_a22c73ed",
+        "sampleKeysHead": [
+          "aluminum|1|100|153|18|1.6|绿色|无铅喷锡|1oz|页面默认|1",
+          "aluminum|1|101|163|80|1.6|绿色|无铅喷锡|1oz|页面默认|1",
+          "aluminum|1|104|150|18|1.6|绿色|无铅喷锡|1oz|页面默认|1",
+          "aluminum|1|108|164|12|1.6|绿色|无铅喷锡|1oz|页面默认|1",
+          "aluminum|1|111|159|8|1.6|绿色|无铅喷锡|1oz|页面默认|1"
+        ],
+        "oneShot": true,
+        "note": "Do not retune model against this set after scoring; generate a new fingerprint for next version."
+      }
+    },
+    "counts": {
+      "fit": 1269,
+      "tuningHoldout": 27,
+      "processHoldout": 288,
+      "finalAcceptance": 360,
+      "diagnostic": 336
+    }
+  },
+  "rows": [
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 50,
+      "heightMm": 50,
+      "quantity": 5,
+      "jlcPriceCny": 20,
+      "customerQuoteCny": 22,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-001-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-001-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-001-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 50,
+      "heightMm": 50,
+      "quantity": 10,
+      "jlcPriceCny": 20,
+      "customerQuoteCny": 22,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-002-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-002-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-002-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 50,
+      "heightMm": 50,
+      "quantity": 20,
+      "jlcPriceCny": 44.5,
+      "customerQuoteCny": 48.95,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-003-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-003-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-003-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 50,
+      "heightMm": 50,
+      "quantity": 50,
+      "jlcPriceCny": 95.5,
+      "customerQuoteCny": 105.05,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-004-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-004-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-004-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 50,
+      "heightMm": 50,
+      "quantity": 100,
+      "jlcPriceCny": 138,
+      "customerQuoteCny": 151.8,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-005-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-005-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-005-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 50,
+      "heightMm": 50,
+      "quantity": 200,
+      "jlcPriceCny": 223,
+      "customerQuoteCny": 245.3,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-006-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-006-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-006-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 80,
+      "heightMm": 80,
+      "quantity": 5,
+      "jlcPriceCny": 20,
+      "customerQuoteCny": 22,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-007-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-007-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-007-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 80,
+      "heightMm": 80,
+      "quantity": 10,
+      "jlcPriceCny": 20,
+      "customerQuoteCny": 22,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-008-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-008-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-008-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 80,
+      "heightMm": 80,
+      "quantity": 20,
+      "jlcPriceCny": 82.72,
+      "customerQuoteCny": 90.99,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-009-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-009-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-009-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 80,
+      "heightMm": 80,
+      "quantity": 50,
+      "jlcPriceCny": 166.48,
+      "customerQuoteCny": 183.13,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-010-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-010-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-010-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 80,
+      "heightMm": 80,
+      "quantity": 100,
+      "jlcPriceCny": 275.28,
+      "customerQuoteCny": 302.81,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-011-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-011-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-011-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 80,
+      "heightMm": 80,
+      "quantity": 200,
+      "jlcPriceCny": 492.88,
+      "customerQuoteCny": 542.17,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-012-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-012-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-012-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 100,
+      "heightMm": 100,
+      "quantity": 5,
+      "jlcPriceCny": 20,
+      "customerQuoteCny": 22,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-013-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-013-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-013-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 100,
+      "heightMm": 100,
+      "quantity": 10,
+      "jlcPriceCny": 20,
+      "customerQuoteCny": 22,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-014-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-014-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-014-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 100,
+      "heightMm": 100,
+      "quantity": 20,
+      "jlcPriceCny": 118,
+      "customerQuoteCny": 129.8,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-015-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-015-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-015-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 100,
+      "heightMm": 100,
+      "quantity": 50,
+      "jlcPriceCny": 232,
+      "customerQuoteCny": 255.2,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-016-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-016-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-016-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 100,
+      "heightMm": 100,
+      "quantity": 100,
+      "jlcPriceCny": 402,
+      "customerQuoteCny": 442.2,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-017-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-017-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-017-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 100,
+      "heightMm": 100,
+      "quantity": 200,
+      "jlcPriceCny": 742,
+      "customerQuoteCny": 816.2,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-018-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-018-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-018-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 100,
+      "heightMm": 150,
+      "quantity": 5,
+      "jlcPriceCny": 56.75,
+      "customerQuoteCny": 62.43,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-019-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-019-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-019-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 100,
+      "heightMm": 150,
+      "quantity": 10,
+      "jlcPriceCny": 93.5,
+      "customerQuoteCny": 102.85,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-020-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-020-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-020-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 100,
+      "heightMm": 150,
+      "quantity": 20,
+      "jlcPriceCny": 167,
+      "customerQuoteCny": 183.7,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-021-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-021-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-021-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 100,
+      "heightMm": 150,
+      "quantity": 50,
+      "jlcPriceCny": 323,
+      "customerQuoteCny": 355.3,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-022-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-022-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-022-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 100,
+      "heightMm": 150,
+      "quantity": 100,
+      "jlcPriceCny": 578,
+      "customerQuoteCny": 635.8,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-023-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-023-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-023-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 100,
+      "heightMm": 150,
+      "quantity": 200,
+      "jlcPriceCny": 1088,
+      "customerQuoteCny": 1196.8,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-024-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-024-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-024-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 120,
+      "heightMm": 120,
+      "quantity": 5,
+      "jlcPriceCny": 55.28,
+      "customerQuoteCny": 60.81,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-025-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-025-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-025-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 120,
+      "heightMm": 120,
+      "quantity": 10,
+      "jlcPriceCny": 90.56,
+      "customerQuoteCny": 99.62,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-026-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-026-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-026-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 120,
+      "heightMm": 120,
+      "quantity": 20,
+      "jlcPriceCny": 161.12,
+      "customerQuoteCny": 177.23,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-027-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-027-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-027-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 120,
+      "heightMm": 120,
+      "quantity": 50,
+      "jlcPriceCny": 312.08,
+      "customerQuoteCny": 343.29,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-028-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-028-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-028-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 120,
+      "heightMm": 120,
+      "quantity": 100,
+      "jlcPriceCny": 556.88,
+      "customerQuoteCny": 612.57,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-029-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-029-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-029-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 120,
+      "heightMm": 120,
+      "quantity": 200,
+      "jlcPriceCny": 1046.48,
+      "customerQuoteCny": 1151.13,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-030-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-030-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-030-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 150,
+      "heightMm": 150,
+      "quantity": 5,
+      "jlcPriceCny": 75.13,
+      "customerQuoteCny": 82.64,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-031-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-031-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-031-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 150,
+      "heightMm": 150,
+      "quantity": 10,
+      "jlcPriceCny": 130.25,
+      "customerQuoteCny": 143.28,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-032-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-032-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-032-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 150,
+      "heightMm": 150,
+      "quantity": 20,
+      "jlcPriceCny": 240.5,
+      "customerQuoteCny": 264.55,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-033-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-033-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-033-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 150,
+      "heightMm": 150,
+      "quantity": 50,
+      "jlcPriceCny": 459.5,
+      "customerQuoteCny": 505.45,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-034-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-034-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-034-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 150,
+      "heightMm": 150,
+      "quantity": 100,
+      "jlcPriceCny": 842,
+      "customerQuoteCny": 926.2,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-035-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-035-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-035-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 150,
+      "heightMm": 150,
+      "quantity": 200,
+      "jlcPriceCny": 1607,
+      "customerQuoteCny": 1767.7,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-036-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-036-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-036-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 200,
+      "heightMm": 200,
+      "quantity": 5,
+      "jlcPriceCny": 118,
+      "customerQuoteCny": 129.8,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-037-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-037-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-037-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 200,
+      "heightMm": 200,
+      "quantity": 10,
+      "jlcPriceCny": 216,
+      "customerQuoteCny": 237.6,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-038-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-038-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-038-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 200,
+      "heightMm": 200,
+      "quantity": 20,
+      "jlcPriceCny": 412,
+      "customerQuoteCny": 453.2,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-039-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-039-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-039-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 200,
+      "heightMm": 200,
+      "quantity": 50,
+      "jlcPriceCny": 778,
+      "customerQuoteCny": 855.8,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-040-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-040-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-040-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 200,
+      "heightMm": 200,
+      "quantity": 100,
+      "jlcPriceCny": 1458,
+      "customerQuoteCny": 1603.8,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-041-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-041-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-041-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 200,
+      "heightMm": 200,
+      "quantity": 200,
+      "jlcPriceCny": 2818,
+      "customerQuoteCny": 3099.8,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-ALU-042-R1",
+        "JLC-CN-PCB-GOLDEN-ALU-042-R2",
+        "JLC-CN-PCB-GOLDEN-ALU-042-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 50,
+      "heightMm": 50,
+      "quantity": 5,
+      "jlcPriceCny": 160.25,
+      "customerQuoteCny": 176.28,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-001-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-001-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-001-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 50,
+      "heightMm": 50,
+      "quantity": 10,
+      "jlcPriceCny": 170.5,
+      "customerQuoteCny": 187.55,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-002-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-002-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-002-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 50,
+      "heightMm": 50,
+      "quantity": 20,
+      "jlcPriceCny": 191,
+      "customerQuoteCny": 210.1,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-003-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-003-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-003-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 50,
+      "heightMm": 50,
+      "quantity": 50,
+      "jlcPriceCny": 380.5,
+      "customerQuoteCny": 418.55,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-004-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-004-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-004-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 50,
+      "heightMm": 50,
+      "quantity": 100,
+      "jlcPriceCny": 458,
+      "customerQuoteCny": 503.8,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-005-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-005-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-005-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 50,
+      "heightMm": 50,
+      "quantity": 200,
+      "jlcPriceCny": 613,
+      "customerQuoteCny": 674.3,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-006-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-006-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-006-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 80,
+      "heightMm": 80,
+      "quantity": 5,
+      "jlcPriceCny": 176.24,
+      "customerQuoteCny": 193.86,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-007-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-007-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-007-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 80,
+      "heightMm": 80,
+      "quantity": 10,
+      "jlcPriceCny": 202.48,
+      "customerQuoteCny": 222.73,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-008-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-008-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-008-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 80,
+      "heightMm": 80,
+      "quantity": 20,
+      "jlcPriceCny": 254.96,
+      "customerQuoteCny": 280.46,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-009-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-009-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-009-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 80,
+      "heightMm": 80,
+      "quantity": 50,
+      "jlcPriceCny": 506.08,
+      "customerQuoteCny": 556.69,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-010-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-010-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-010-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 80,
+      "heightMm": 80,
+      "quantity": 100,
+      "jlcPriceCny": 704.48,
+      "customerQuoteCny": 774.93,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-011-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-011-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-011-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 80,
+      "heightMm": 80,
+      "quantity": 200,
+      "jlcPriceCny": 1101.28,
+      "customerQuoteCny": 1211.41,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-012-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-012-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-012-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 100,
+      "heightMm": 100,
+      "quantity": 5,
+      "jlcPriceCny": 191,
+      "customerQuoteCny": 210.1,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-013-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-013-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-013-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 100,
+      "heightMm": 100,
+      "quantity": 10,
+      "jlcPriceCny": 232,
+      "customerQuoteCny": 255.2,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-014-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-014-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-014-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 100,
+      "heightMm": 100,
+      "quantity": 20,
+      "jlcPriceCny": 314,
+      "customerQuoteCny": 345.4,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-015-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-015-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-015-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 100,
+      "heightMm": 100,
+      "quantity": 50,
+      "jlcPriceCny": 622,
+      "customerQuoteCny": 684.2,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-016-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-016-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-016-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 100,
+      "heightMm": 100,
+      "quantity": 100,
+      "jlcPriceCny": 932,
+      "customerQuoteCny": 1025.2,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-017-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-017-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-017-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 100,
+      "heightMm": 100,
+      "quantity": 200,
+      "jlcPriceCny": 1552,
+      "customerQuoteCny": 1707.2,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-018-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-018-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-018-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 100,
+      "heightMm": 150,
+      "quantity": 5,
+      "jlcPriceCny": 211.5,
+      "customerQuoteCny": 232.65,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-019-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-019-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-019-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 100,
+      "heightMm": 150,
+      "quantity": 10,
+      "jlcPriceCny": 273,
+      "customerQuoteCny": 300.3,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-020-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-020-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-020-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 100,
+      "heightMm": 150,
+      "quantity": 20,
+      "jlcPriceCny": 396,
+      "customerQuoteCny": 435.6,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-021-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-021-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-021-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 100,
+      "heightMm": 150,
+      "quantity": 50,
+      "jlcPriceCny": 783,
+      "customerQuoteCny": 861.3,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-022-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-022-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-022-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 100,
+      "heightMm": 150,
+      "quantity": 100,
+      "jlcPriceCny": 1248,
+      "customerQuoteCny": 1372.8,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-023-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-023-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-023-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 100,
+      "heightMm": 150,
+      "quantity": 200,
+      "jlcPriceCny": 2178,
+      "customerQuoteCny": 2395.8,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-024-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-024-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-024-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 120,
+      "heightMm": 120,
+      "quantity": 5,
+      "jlcPriceCny": 209.04,
+      "customerQuoteCny": 229.94,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-025-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-025-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-025-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 120,
+      "heightMm": 120,
+      "quantity": 10,
+      "jlcPriceCny": 268.08,
+      "customerQuoteCny": 294.89,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-026-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-026-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-026-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 120,
+      "heightMm": 120,
+      "quantity": 20,
+      "jlcPriceCny": 386.16,
+      "customerQuoteCny": 424.78,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-027-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-027-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-027-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 120,
+      "heightMm": 120,
+      "quantity": 50,
+      "jlcPriceCny": 763.68,
+      "customerQuoteCny": 840.05,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-028-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-028-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-028-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 120,
+      "heightMm": 120,
+      "quantity": 100,
+      "jlcPriceCny": 1210.08,
+      "customerQuoteCny": 1331.09,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-029-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-029-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-029-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 120,
+      "heightMm": 120,
+      "quantity": 200,
+      "jlcPriceCny": 2102.88,
+      "customerQuoteCny": 2313.17,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-030-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-030-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-030-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 150,
+      "heightMm": 150,
+      "quantity": 5,
+      "jlcPriceCny": 242.25,
+      "customerQuoteCny": 266.48,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-031-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-031-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-031-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 150,
+      "heightMm": 150,
+      "quantity": 10,
+      "jlcPriceCny": 334.5,
+      "customerQuoteCny": 367.95,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-032-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-032-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-032-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 150,
+      "heightMm": 150,
+      "quantity": 20,
+      "jlcPriceCny": 519,
+      "customerQuoteCny": 570.9,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-033-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-033-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-033-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 150,
+      "heightMm": 150,
+      "quantity": 50,
+      "jlcPriceCny": 1024.5,
+      "customerQuoteCny": 1126.95,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-034-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-034-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-034-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 150,
+      "heightMm": 150,
+      "quantity": 100,
+      "jlcPriceCny": 1722,
+      "customerQuoteCny": 1894.2,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-035-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-035-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-035-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 150,
+      "heightMm": 150,
+      "quantity": 200,
+      "jlcPriceCny": 2869.5,
+      "customerQuoteCny": 3156.45,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-036-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-036-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-036-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 200,
+      "heightMm": 200,
+      "quantity": 5,
+      "jlcPriceCny": 314,
+      "customerQuoteCny": 345.4,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-037-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-037-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-037-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 200,
+      "heightMm": 200,
+      "quantity": 10,
+      "jlcPriceCny": 478,
+      "customerQuoteCny": 525.8,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-038-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-038-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-038-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 200,
+      "heightMm": 200,
+      "quantity": 20,
+      "jlcPriceCny": 806,
+      "customerQuoteCny": 886.6,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-039-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-039-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-039-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 200,
+      "heightMm": 200,
+      "quantity": 50,
+      "jlcPriceCny": 1588,
+      "customerQuoteCny": 1746.8,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-040-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-040-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-040-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 200,
+      "heightMm": 200,
+      "quantity": 100,
+      "jlcPriceCny": 2608,
+      "customerQuoteCny": 2868.8,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-041-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-041-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-041-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 1,
+      "widthMm": 200,
+      "heightMm": 200,
+      "quantity": 200,
+      "jlcPriceCny": 4788,
+      "customerQuoteCny": 5266.8,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-042-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-042-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-042-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 50,
+      "heightMm": 50,
+      "quantity": 5,
+      "jlcPriceCny": 170.25,
+      "customerQuoteCny": 187.28,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-043-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-043-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-043-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 50,
+      "heightMm": 50,
+      "quantity": 10,
+      "jlcPriceCny": 180.5,
+      "customerQuoteCny": 198.55,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-044-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-044-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-044-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 50,
+      "heightMm": 50,
+      "quantity": 20,
+      "jlcPriceCny": 201,
+      "customerQuoteCny": 221.1,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-045-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-045-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-045-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 50,
+      "heightMm": 50,
+      "quantity": 50,
+      "jlcPriceCny": 392,
+      "customerQuoteCny": 431.2,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-046-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-046-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-046-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 50,
+      "heightMm": 50,
+      "quantity": 100,
+      "jlcPriceCny": 469.5,
+      "customerQuoteCny": 516.45,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-047-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-047-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-047-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 50,
+      "heightMm": 50,
+      "quantity": 200,
+      "jlcPriceCny": 624.5,
+      "customerQuoteCny": 686.95,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-048-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-048-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-048-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 80,
+      "heightMm": 80,
+      "quantity": 5,
+      "jlcPriceCny": 186.24,
+      "customerQuoteCny": 204.86,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-049-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-049-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-049-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 80,
+      "heightMm": 80,
+      "quantity": 10,
+      "jlcPriceCny": 212.48,
+      "customerQuoteCny": 233.73,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-050-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-050-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-050-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 80,
+      "heightMm": 80,
+      "quantity": 20,
+      "jlcPriceCny": 264.96,
+      "customerQuoteCny": 291.46,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-051-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-051-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-051-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 80,
+      "heightMm": 80,
+      "quantity": 50,
+      "jlcPriceCny": 519.92,
+      "customerQuoteCny": 571.91,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-052-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-052-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-052-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 80,
+      "heightMm": 80,
+      "quantity": 100,
+      "jlcPriceCny": 718.32,
+      "customerQuoteCny": 790.15,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-053-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-053-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-053-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 80,
+      "heightMm": 80,
+      "quantity": 200,
+      "jlcPriceCny": 1115.12,
+      "customerQuoteCny": 1226.63,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-054-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-054-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-054-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 100,
+      "heightMm": 100,
+      "quantity": 5,
+      "jlcPriceCny": 201,
+      "customerQuoteCny": 221.1,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-055-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-055-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-055-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 100,
+      "heightMm": 100,
+      "quantity": 10,
+      "jlcPriceCny": 242,
+      "customerQuoteCny": 266.2,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-056-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-056-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-056-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 100,
+      "heightMm": 100,
+      "quantity": 20,
+      "jlcPriceCny": 324,
+      "customerQuoteCny": 356.4,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-057-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-057-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-057-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 100,
+      "heightMm": 100,
+      "quantity": 50,
+      "jlcPriceCny": 638,
+      "customerQuoteCny": 701.8,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-058-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-058-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-058-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 100,
+      "heightMm": 100,
+      "quantity": 100,
+      "jlcPriceCny": 948,
+      "customerQuoteCny": 1042.8,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-059-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-059-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-059-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 100,
+      "heightMm": 100,
+      "quantity": 200,
+      "jlcPriceCny": 1568,
+      "customerQuoteCny": 1724.8,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-060-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-060-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-060-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 100,
+      "heightMm": 150,
+      "quantity": 5,
+      "jlcPriceCny": 221.5,
+      "customerQuoteCny": 243.65,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-061-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-061-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-061-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 100,
+      "heightMm": 150,
+      "quantity": 10,
+      "jlcPriceCny": 283,
+      "customerQuoteCny": 311.3,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-062-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-062-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-062-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 100,
+      "heightMm": 150,
+      "quantity": 20,
+      "jlcPriceCny": 406,
+      "customerQuoteCny": 446.6,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-063-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-063-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-063-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 100,
+      "heightMm": 150,
+      "quantity": 50,
+      "jlcPriceCny": 802,
+      "customerQuoteCny": 882.2,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-064-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-064-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-064-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 100,
+      "heightMm": 150,
+      "quantity": 100,
+      "jlcPriceCny": 1267,
+      "customerQuoteCny": 1393.7,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-065-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-065-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-065-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 100,
+      "heightMm": 150,
+      "quantity": 200,
+      "jlcPriceCny": 2197,
+      "customerQuoteCny": 2416.7,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-066-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-066-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-066-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 120,
+      "heightMm": 120,
+      "quantity": 5,
+      "jlcPriceCny": 219.04,
+      "customerQuoteCny": 240.94,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-067-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-067-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-067-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 120,
+      "heightMm": 120,
+      "quantity": 10,
+      "jlcPriceCny": 278.08,
+      "customerQuoteCny": 305.89,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-068-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-068-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-068-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 120,
+      "heightMm": 120,
+      "quantity": 20,
+      "jlcPriceCny": 396.16,
+      "customerQuoteCny": 435.78,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-069-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-069-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-069-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 120,
+      "heightMm": 120,
+      "quantity": 50,
+      "jlcPriceCny": 782.32,
+      "customerQuoteCny": 860.55,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-070-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-070-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-070-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 120,
+      "heightMm": 120,
+      "quantity": 100,
+      "jlcPriceCny": 1228.72,
+      "customerQuoteCny": 1351.59,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-071-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-071-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-071-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 120,
+      "heightMm": 120,
+      "quantity": 200,
+      "jlcPriceCny": 2121.52,
+      "customerQuoteCny": 2333.67,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-072-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-072-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-072-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 150,
+      "heightMm": 150,
+      "quantity": 5,
+      "jlcPriceCny": 252.25,
+      "customerQuoteCny": 277.48,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-073-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-073-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-073-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 150,
+      "heightMm": 150,
+      "quantity": 10,
+      "jlcPriceCny": 344.5,
+      "customerQuoteCny": 378.95,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-074-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-074-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-074-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 150,
+      "heightMm": 150,
+      "quantity": 20,
+      "jlcPriceCny": 529,
+      "customerQuoteCny": 581.9,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-075-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-075-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-075-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 150,
+      "heightMm": 150,
+      "quantity": 50,
+      "jlcPriceCny": 1048,
+      "customerQuoteCny": 1152.8,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-076-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-076-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-076-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 150,
+      "heightMm": 150,
+      "quantity": 100,
+      "jlcPriceCny": 1745.5,
+      "customerQuoteCny": 1920.05,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-077-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-077-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-077-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 150,
+      "heightMm": 150,
+      "quantity": 200,
+      "jlcPriceCny": 2870.5,
+      "customerQuoteCny": 3157.55,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-078-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-078-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-078-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 200,
+      "heightMm": 200,
+      "quantity": 5,
+      "jlcPriceCny": 324,
+      "customerQuoteCny": 356.4,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-079-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-079-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-079-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 200,
+      "heightMm": 200,
+      "quantity": 10,
+      "jlcPriceCny": 488,
+      "customerQuoteCny": 536.8,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-080-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-080-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-080-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 200,
+      "heightMm": 200,
+      "quantity": 20,
+      "jlcPriceCny": 816,
+      "customerQuoteCny": 897.6,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-081-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-081-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-081-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 200,
+      "heightMm": 200,
+      "quantity": 50,
+      "jlcPriceCny": 1622,
+      "customerQuoteCny": 1784.2,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-082-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-082-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-082-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 200,
+      "heightMm": 200,
+      "quantity": 100,
+      "jlcPriceCny": 2622,
+      "customerQuoteCny": 2884.2,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-083-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-083-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-083-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fpc",
+      "materialLabel": "FPC软板",
+      "layers": 2,
+      "widthMm": 200,
+      "heightMm": 200,
+      "quantity": 200,
+      "jlcPriceCny": 4782,
+      "customerQuoteCny": 5260.2,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FPC-084-R1",
+        "JLC-CN-PCB-GOLDEN-FPC-084-R2",
+        "JLC-CN-PCB-GOLDEN-FPC-084-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 50,
+      "heightMm": 50,
+      "quantity": 5,
+      "jlcPriceCny": 30,
+      "customerQuoteCny": 33,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-001-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-001-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-001-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 50,
+      "heightMm": 50,
+      "quantity": 10,
+      "jlcPriceCny": 30,
+      "customerQuoteCny": 33,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-002-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-002-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-002-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 50,
+      "heightMm": 50,
+      "quantity": 20,
+      "jlcPriceCny": 57,
+      "customerQuoteCny": 62.7,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-003-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-003-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-003-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 50,
+      "heightMm": 50,
+      "quantity": 50,
+      "jlcPriceCny": 117,
+      "customerQuoteCny": 128.7,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-004-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-004-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-004-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 50,
+      "heightMm": 50,
+      "quantity": 100,
+      "jlcPriceCny": 169.5,
+      "customerQuoteCny": 186.45,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-005-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-005-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-005-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 50,
+      "heightMm": 50,
+      "quantity": 200,
+      "jlcPriceCny": 274.5,
+      "customerQuoteCny": 301.95,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-006-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-006-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-006-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 80,
+      "heightMm": 80,
+      "quantity": 5,
+      "jlcPriceCny": 30,
+      "customerQuoteCny": 33,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-007-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-007-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-007-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 80,
+      "heightMm": 80,
+      "quantity": 10,
+      "jlcPriceCny": 30,
+      "customerQuoteCny": 33,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-008-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-008-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-008-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 80,
+      "heightMm": 80,
+      "quantity": 20,
+      "jlcPriceCny": 99.12,
+      "customerQuoteCny": 109.03,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-009-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-009-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-009-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 80,
+      "heightMm": 80,
+      "quantity": 50,
+      "jlcPriceCny": 205.92,
+      "customerQuoteCny": 226.51,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-010-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-010-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-010-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 80,
+      "heightMm": 80,
+      "quantity": 100,
+      "jlcPriceCny": 340.32,
+      "customerQuoteCny": 374.35,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-011-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-011-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-011-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 80,
+      "heightMm": 80,
+      "quantity": 200,
+      "jlcPriceCny": 609.12,
+      "customerQuoteCny": 670.03,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-012-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-012-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-012-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 80,
+      "heightMm": 120,
+      "quantity": 5,
+      "jlcPriceCny": 55.92,
+      "customerQuoteCny": 61.51,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-013-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-013-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-013-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 80,
+      "heightMm": 120,
+      "quantity": 10,
+      "jlcPriceCny": 81.84,
+      "customerQuoteCny": 90.02,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-014-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-014-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-014-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 80,
+      "heightMm": 120,
+      "quantity": 20,
+      "jlcPriceCny": 133.68,
+      "customerQuoteCny": 147.05,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-015-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-015-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-015-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 80,
+      "heightMm": 120,
+      "quantity": 50,
+      "jlcPriceCny": 278.88,
+      "customerQuoteCny": 306.77,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-016-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-016-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-016-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 80,
+      "heightMm": 120,
+      "quantity": 100,
+      "jlcPriceCny": 480.48,
+      "customerQuoteCny": 528.53,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-017-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-017-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-017-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 80,
+      "heightMm": 120,
+      "quantity": 200,
+      "jlcPriceCny": 883.68,
+      "customerQuoteCny": 972.05,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-018-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-018-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-018-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 100,
+      "heightMm": 100,
+      "quantity": 5,
+      "jlcPriceCny": 30,
+      "customerQuoteCny": 33,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-019-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-019-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-019-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 100,
+      "heightMm": 100,
+      "quantity": 10,
+      "jlcPriceCny": 30,
+      "customerQuoteCny": 33,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-020-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-020-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-020-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 100,
+      "heightMm": 100,
+      "quantity": 20,
+      "jlcPriceCny": 138,
+      "customerQuoteCny": 151.8,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-021-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-021-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-021-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 100,
+      "heightMm": 100,
+      "quantity": 50,
+      "jlcPriceCny": 288,
+      "customerQuoteCny": 316.8,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-022-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-022-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-022-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 100,
+      "heightMm": 100,
+      "quantity": 100,
+      "jlcPriceCny": 498,
+      "customerQuoteCny": 547.8,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-023-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-023-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-023-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 100,
+      "heightMm": 100,
+      "quantity": 200,
+      "jlcPriceCny": 918,
+      "customerQuoteCny": 1009.8,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-024-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-024-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-024-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 100,
+      "heightMm": 150,
+      "quantity": 5,
+      "jlcPriceCny": 70.5,
+      "customerQuoteCny": 77.55,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-025-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-025-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-025-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 100,
+      "heightMm": 150,
+      "quantity": 10,
+      "jlcPriceCny": 111,
+      "customerQuoteCny": 122.1,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-026-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-026-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-026-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 100,
+      "heightMm": 150,
+      "quantity": 20,
+      "jlcPriceCny": 192,
+      "customerQuoteCny": 211.2,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-027-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-027-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-027-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 100,
+      "heightMm": 150,
+      "quantity": 50,
+      "jlcPriceCny": 402,
+      "customerQuoteCny": 442.2,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-028-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-028-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-028-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 100,
+      "heightMm": 150,
+      "quantity": 100,
+      "jlcPriceCny": 717,
+      "customerQuoteCny": 788.7,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-029-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-029-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-029-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 100,
+      "heightMm": 150,
+      "quantity": 200,
+      "jlcPriceCny": 1347,
+      "customerQuoteCny": 1481.7,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-030-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-030-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-030-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 120,
+      "heightMm": 120,
+      "quantity": 5,
+      "jlcPriceCny": 68.88,
+      "customerQuoteCny": 75.77,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-031-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-031-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-031-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 120,
+      "heightMm": 120,
+      "quantity": 10,
+      "jlcPriceCny": 107.76,
+      "customerQuoteCny": 118.54,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-032-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-032-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-032-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 120,
+      "heightMm": 120,
+      "quantity": 20,
+      "jlcPriceCny": 185.52,
+      "customerQuoteCny": 204.07,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-033-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-033-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-033-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 120,
+      "heightMm": 120,
+      "quantity": 50,
+      "jlcPriceCny": 388.32,
+      "customerQuoteCny": 427.15,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-034-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-034-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-034-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 120,
+      "heightMm": 120,
+      "quantity": 100,
+      "jlcPriceCny": 690.72,
+      "customerQuoteCny": 759.79,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-035-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-035-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-035-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 120,
+      "heightMm": 120,
+      "quantity": 200,
+      "jlcPriceCny": 1295.52,
+      "customerQuoteCny": 1425.07,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-036-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-036-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-036-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 150,
+      "heightMm": 150,
+      "quantity": 5,
+      "jlcPriceCny": 90.75,
+      "customerQuoteCny": 99.83,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-037-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-037-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-037-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 150,
+      "heightMm": 150,
+      "quantity": 10,
+      "jlcPriceCny": 151.5,
+      "customerQuoteCny": 166.65,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-038-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-038-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-038-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 150,
+      "heightMm": 150,
+      "quantity": 20,
+      "jlcPriceCny": 273,
+      "customerQuoteCny": 300.3,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-039-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-039-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-039-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 150,
+      "heightMm": 150,
+      "quantity": 50,
+      "jlcPriceCny": 573,
+      "customerQuoteCny": 630.3,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-040-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-040-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-040-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 150,
+      "heightMm": 150,
+      "quantity": 100,
+      "jlcPriceCny": 1045.5,
+      "customerQuoteCny": 1150.05,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-041-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-041-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-041-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 150,
+      "heightMm": 150,
+      "quantity": 200,
+      "jlcPriceCny": 1990.5,
+      "customerQuoteCny": 2189.55,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-042-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-042-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-042-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 200,
+      "heightMm": 200,
+      "quantity": 5,
+      "jlcPriceCny": 138,
+      "customerQuoteCny": 151.8,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-043-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-043-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-043-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 200,
+      "heightMm": 200,
+      "quantity": 10,
+      "jlcPriceCny": 246,
+      "customerQuoteCny": 270.6,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-044-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-044-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-044-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 200,
+      "heightMm": 200,
+      "quantity": 20,
+      "jlcPriceCny": 462,
+      "customerQuoteCny": 508.2,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-045-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-045-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-045-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 200,
+      "heightMm": 200,
+      "quantity": 50,
+      "jlcPriceCny": 972,
+      "customerQuoteCny": 1069.2,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-046-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-046-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-046-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 200,
+      "heightMm": 200,
+      "quantity": 100,
+      "jlcPriceCny": 1812,
+      "customerQuoteCny": 1993.2,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-047-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-047-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-047-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 200,
+      "heightMm": 200,
+      "quantity": 200,
+      "jlcPriceCny": 3492,
+      "customerQuoteCny": 3841.2,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-048-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-048-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-048-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 50,
+      "heightMm": 50,
+      "quantity": 5,
+      "jlcPriceCny": 40,
+      "customerQuoteCny": 44,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-049-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-049-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-049-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 50,
+      "heightMm": 50,
+      "quantity": 10,
+      "jlcPriceCny": 50,
+      "customerQuoteCny": 55,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-050-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-050-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-050-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 50,
+      "heightMm": 50,
+      "quantity": 20,
+      "jlcPriceCny": 195,
+      "customerQuoteCny": 214.5,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-051-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-051-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-051-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 50,
+      "heightMm": 50,
+      "quantity": 50,
+      "jlcPriceCny": 247.5,
+      "customerQuoteCny": 272.25,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-052-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-052-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-052-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 50,
+      "heightMm": 50,
+      "quantity": 100,
+      "jlcPriceCny": 306,
+      "customerQuoteCny": 336.6,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-053-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-053-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-053-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 50,
+      "heightMm": 50,
+      "quantity": 200,
+      "jlcPriceCny": 446,
+      "customerQuoteCny": 490.6,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-054-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-054-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-054-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 80,
+      "heightMm": 80,
+      "quantity": 5,
+      "jlcPriceCny": 60,
+      "customerQuoteCny": 66,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-055-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-055-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-055-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 80,
+      "heightMm": 80,
+      "quantity": 10,
+      "jlcPriceCny": 90,
+      "customerQuoteCny": 99,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-056-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-056-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-056-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 80,
+      "heightMm": 80,
+      "quantity": 20,
+      "jlcPriceCny": 249.6,
+      "customerQuoteCny": 274.56,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-057-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-057-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-057-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 80,
+      "heightMm": 80,
+      "quantity": 50,
+      "jlcPriceCny": 384,
+      "customerQuoteCny": 422.4,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-058-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-058-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-058-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 80,
+      "heightMm": 80,
+      "quantity": 100,
+      "jlcPriceCny": 533.76,
+      "customerQuoteCny": 587.14,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-059-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-059-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-059-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 80,
+      "heightMm": 80,
+      "quantity": 200,
+      "jlcPriceCny": 892.16,
+      "customerQuoteCny": 981.38,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-060-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-060-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-060-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 80,
+      "heightMm": 120,
+      "quantity": 5,
+      "jlcPriceCny": 193.6,
+      "customerQuoteCny": 212.96,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-061-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-061-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-061-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 80,
+      "heightMm": 120,
+      "quantity": 10,
+      "jlcPriceCny": 227.2,
+      "customerQuoteCny": 249.92,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-062-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-062-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-062-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 80,
+      "heightMm": 120,
+      "quantity": 20,
+      "jlcPriceCny": 294.4,
+      "customerQuoteCny": 323.84,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-063-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-063-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-063-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 80,
+      "heightMm": 120,
+      "quantity": 50,
+      "jlcPriceCny": 496,
+      "customerQuoteCny": 545.6,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-064-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-064-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-064-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 80,
+      "heightMm": 120,
+      "quantity": 100,
+      "jlcPriceCny": 720.64,
+      "customerQuoteCny": 792.7,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-065-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-065-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-065-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 80,
+      "heightMm": 120,
+      "quantity": 200,
+      "jlcPriceCny": 1258.24,
+      "customerQuoteCny": 1384.06,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-066-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-066-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-066-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 100,
+      "heightMm": 100,
+      "quantity": 5,
+      "jlcPriceCny": 60,
+      "customerQuoteCny": 66,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-067-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-067-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-067-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 100,
+      "heightMm": 100,
+      "quantity": 10,
+      "jlcPriceCny": 90,
+      "customerQuoteCny": 99,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-068-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-068-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-068-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 100,
+      "heightMm": 100,
+      "quantity": 20,
+      "jlcPriceCny": 300,
+      "customerQuoteCny": 330,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-069-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-069-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-069-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 100,
+      "heightMm": 100,
+      "quantity": 50,
+      "jlcPriceCny": 510,
+      "customerQuoteCny": 561,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-070-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-070-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-070-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 100,
+      "heightMm": 100,
+      "quantity": 100,
+      "jlcPriceCny": 744,
+      "customerQuoteCny": 818.4,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-071-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-071-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-071-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 100,
+      "heightMm": 100,
+      "quantity": 200,
+      "jlcPriceCny": 1304,
+      "customerQuoteCny": 1434.4,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-072-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-072-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-072-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 100,
+      "heightMm": 150,
+      "quantity": 5,
+      "jlcPriceCny": 212.5,
+      "customerQuoteCny": 233.75,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-073-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-073-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-073-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 100,
+      "heightMm": 150,
+      "quantity": 10,
+      "jlcPriceCny": 265,
+      "customerQuoteCny": 291.5,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-074-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-074-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-074-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 100,
+      "heightMm": 150,
+      "quantity": 20,
+      "jlcPriceCny": 370,
+      "customerQuoteCny": 407,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-075-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-075-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-075-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 100,
+      "heightMm": 150,
+      "quantity": 50,
+      "jlcPriceCny": 685,
+      "customerQuoteCny": 753.5,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-076-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-076-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-076-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 100,
+      "heightMm": 150,
+      "quantity": 100,
+      "jlcPriceCny": 1036,
+      "customerQuoteCny": 1139.6,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-077-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-077-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-077-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 100,
+      "heightMm": 150,
+      "quantity": 200,
+      "jlcPriceCny": 1876,
+      "customerQuoteCny": 2063.6,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-078-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-078-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-078-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 120,
+      "heightMm": 120,
+      "quantity": 5,
+      "jlcPriceCny": 210.4,
+      "customerQuoteCny": 231.44,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-079-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-079-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-079-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 120,
+      "heightMm": 120,
+      "quantity": 10,
+      "jlcPriceCny": 260.8,
+      "customerQuoteCny": 286.88,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-080-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-080-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-080-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 120,
+      "heightMm": 120,
+      "quantity": 20,
+      "jlcPriceCny": 361.6,
+      "customerQuoteCny": 397.76,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-081-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-081-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-081-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 120,
+      "heightMm": 120,
+      "quantity": 50,
+      "jlcPriceCny": 664,
+      "customerQuoteCny": 730.4,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-082-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-082-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-082-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 120,
+      "heightMm": 120,
+      "quantity": 100,
+      "jlcPriceCny": 1000.96,
+      "customerQuoteCny": 1101.06,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-083-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-083-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-083-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 120,
+      "heightMm": 120,
+      "quantity": 200,
+      "jlcPriceCny": 1807.36,
+      "customerQuoteCny": 1988.1,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-084-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-084-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-084-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 150,
+      "heightMm": 150,
+      "quantity": 5,
+      "jlcPriceCny": 238.75,
+      "customerQuoteCny": 262.63,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-085-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-085-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-085-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 150,
+      "heightMm": 150,
+      "quantity": 10,
+      "jlcPriceCny": 317.5,
+      "customerQuoteCny": 349.25,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-086-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-086-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-086-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 150,
+      "heightMm": 150,
+      "quantity": 20,
+      "jlcPriceCny": 475,
+      "customerQuoteCny": 522.5,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-087-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-087-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-087-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 150,
+      "heightMm": 150,
+      "quantity": 50,
+      "jlcPriceCny": 947.5,
+      "customerQuoteCny": 1042.25,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-088-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-088-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-088-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 150,
+      "heightMm": 150,
+      "quantity": 100,
+      "jlcPriceCny": 1474,
+      "customerQuoteCny": 1621.4,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-089-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-089-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-089-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 150,
+      "heightMm": 150,
+      "quantity": 200,
+      "jlcPriceCny": 2734,
+      "customerQuoteCny": 3007.4,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-090-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-090-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-090-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 200,
+      "heightMm": 200,
+      "quantity": 5,
+      "jlcPriceCny": 300,
+      "customerQuoteCny": 330,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-091-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-091-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-091-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 200,
+      "heightMm": 200,
+      "quantity": 10,
+      "jlcPriceCny": 440,
+      "customerQuoteCny": 484,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-092-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-092-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-092-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 200,
+      "heightMm": 200,
+      "quantity": 20,
+      "jlcPriceCny": 720,
+      "customerQuoteCny": 792,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-093-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-093-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-093-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 200,
+      "heightMm": 200,
+      "quantity": 50,
+      "jlcPriceCny": 1560,
+      "customerQuoteCny": 1716,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-094-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-094-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-094-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 200,
+      "heightMm": 200,
+      "quantity": 100,
+      "jlcPriceCny": 2496,
+      "customerQuoteCny": 2745.6,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-095-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-095-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-095-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 4,
+      "widthMm": 200,
+      "heightMm": 200,
+      "quantity": 200,
+      "jlcPriceCny": 4736,
+      "customerQuoteCny": 5209.6,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-GOLDEN-FR4-096-R1",
+        "JLC-CN-PCB-GOLDEN-FR4-096-R2",
+        "JLC-CN-PCB-GOLDEN-FR4-096-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 50,
+      "heightMm": 60,
+      "quantity": 5,
+      "jlcPriceCny": 157.8,
+      "customerQuoteCny": 173.58,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-V8-FIT-ALU-SM-001-R1",
+        "JLC-CN-PCB-V8-FIT-ALU-SM-001-R2",
+        "JLC-CN-PCB-V8-FIT-ALU-SM-001-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 60,
+      "heightMm": 90,
+      "quantity": 10,
+      "jlcPriceCny": 178.08,
+      "customerQuoteCny": 195.89,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-V8-FIT-ALU-SM-002-R1",
+        "JLC-CN-PCB-V8-FIT-ALU-SM-002-R2",
+        "JLC-CN-PCB-V8-FIT-ALU-SM-002-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "aluminum",
+      "materialLabel": "铝基板",
+      "layers": 1,
+      "widthMm": 70,
+      "heightMm": 100,
+      "quantity": 15,
+      "jlcPriceCny": 204.6,
+      "customerQuoteCny": 225.06,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-V8-FIT-ALU-SM-003-R1",
+        "JLC-CN-PCB-V8-FIT-ALU-SM-003-R2",
+        "JLC-CN-PCB-V8-FIT-ALU-SM-003-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 100,
+      "heightMm": 160,
+      "quantity": 100,
+      "jlcPriceCny": 760.8,
+      "customerQuoteCny": 836.88,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-V8-FIT-FR4-LG-001-R1",
+        "JLC-CN-PCB-V8-FIT-FR4-LG-001-R2",
+        "JLC-CN-PCB-V8-FIT-FR4-LG-001-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 120,
+      "heightMm": 180,
+      "quantity": 150,
+      "jlcPriceCny": 1459.68,
+      "customerQuoteCny": 1605.65,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-V8-FIT-FR4-LG-002-R1",
+        "JLC-CN-PCB-V8-FIT-FR4-LG-002-R2",
+        "JLC-CN-PCB-V8-FIT-FR4-LG-002-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    },
+    {
+      "materialKey": "fr4",
+      "materialLabel": "FR-4",
+      "layers": 2,
+      "widthMm": 150,
+      "heightMm": 200,
+      "quantity": 200,
+      "jlcPriceCny": 2634,
+      "customerQuoteCny": 2897.4,
+      "sampleCount": 3,
+      "validSampleCount": 3,
+      "sourceSampleIds": [
+        "JLC-CN-PCB-V8-FIT-FR4-LG-003-R1",
+        "JLC-CN-PCB-V8-FIT-FR4-LG-003-R2",
+        "JLC-CN-PCB-V8-FIT-FR4-LG-003-R3"
+      ],
+      "sampleRole": "golden",
+      "pricingMode": "exact_lookup",
+      "enabled": true
+    }
+  ]
+}
