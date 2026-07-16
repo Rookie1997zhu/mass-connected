@@ -4,9 +4,11 @@ import { RouterLink, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PageShell from '../../components/PageShell.vue'
 import FilePreviewModal from '../../components/FilePreviewModal.vue'
+import TextTranslateBlock from '../../components/TextTranslateBlock.vue'
 import {
   addSupplierProjectIssue,
   addSupplierProjectUpdate,
+  deleteSupplierProjectFile,
   downloadSupplierDefectReportTemplate,
   fetchSupplierProject,
   updateSupplierProjectStage,
@@ -18,14 +20,16 @@ const route = useRoute()
 const project = ref(null)
 const loading = ref(true)
 const submitting = ref(false)
+const actionError = ref('')
 const uploadError = ref('')
+const fileActionError = ref('')
+const deletingFileId = ref(null)
 const previewFile = ref(null)
 const previewOpen = ref(false)
 
-const updateForm = ref({ content: '', is_customer_visible: true, stage: '' })
+const updateForm = ref({ content: '', is_customer_visible: true })
 const issueForm = ref({ title: '', description: '', severity: 'medium' })
 const uploadForm = ref({
-  stage: '',
   file_category: 'bom',
   file: null,
 })
@@ -55,9 +59,6 @@ const fileCategories = [
 const load = async () => {
   const res = await fetchSupplierProject(route.params.id)
   project.value = res.data
-  if (!uploadForm.value.stage && res.data.current_stage?.id) {
-    uploadForm.value.stage = String(res.data.current_stage.id)
-  }
 }
 
 onMounted(async () => {
@@ -68,7 +69,9 @@ onMounted(async () => {
   }
 })
 
-const currentStageName = computed(() => project.value?.current_stage?.name || '—')
+const currentStage = computed(() => project.value?.current_stage || null)
+const currentStageName = computed(() => currentStage.value?.name || '—')
+const hasCurrentStage = computed(() => Boolean(currentStage.value?.id))
 
 const filesByStage = computed(() => {
   const map = {}
@@ -80,11 +83,22 @@ const filesByStage = computed(() => {
   return map
 })
 
+/** Current-stage updates first; legacy rows without stage remain visible. */
+const panelUpdates = computed(() => {
+  const stageId = currentStage.value?.id
+  const updates = project.value?.updates || []
+  if (!stageId) return updates
+  return updates.filter((u) => !u.stage || u.stage === stageId)
+})
+
 const onStageChange = async (stage, status) => {
   submitting.value = true
+  actionError.value = ''
   try {
     await updateSupplierProjectStage(project.value.id, stage.id, { status })
     await load()
+  } catch (e) {
+    actionError.value = e.message || t('supplierProject.uploadFailed')
   } finally {
     submitting.value = false
   }
@@ -92,15 +106,22 @@ const onStageChange = async (stage, status) => {
 
 const onSubmitUpdate = async () => {
   if (!updateForm.value.content.trim()) return
+  if (!hasCurrentStage.value) {
+    actionError.value = t('supplierProject.noActiveStage')
+    return
+  }
   submitting.value = true
+  actionError.value = ''
   try {
     await addSupplierProjectUpdate(project.value.id, {
       content: updateForm.value.content.trim(),
       is_customer_visible: updateForm.value.is_customer_visible,
-      stage: updateForm.value.stage || null,
+      stage: currentStage.value.id,
     })
     updateForm.value.content = ''
     await load()
+  } catch (e) {
+    actionError.value = e.message || t('supplierProject.uploadFailed')
   } finally {
     submitting.value = false
   }
@@ -109,6 +130,7 @@ const onSubmitUpdate = async () => {
 const onSubmitIssue = async () => {
   if (!issueForm.value.title.trim()) return
   submitting.value = true
+  actionError.value = ''
   try {
     await addSupplierProjectIssue(project.value.id, {
       title: issueForm.value.title.trim(),
@@ -117,6 +139,8 @@ const onSubmitIssue = async () => {
     })
     issueForm.value = { title: '', description: '', severity: 'medium' }
     await load()
+  } catch (e) {
+    actionError.value = e.message || t('supplierProject.uploadFailed')
   } finally {
     submitting.value = false
   }
@@ -132,8 +156,8 @@ const onUploadFile = async () => {
     uploadError.value = t('supplierProject.fileRequired')
     return
   }
-  if (!uploadForm.value.stage) {
-    uploadError.value = t('supplierProject.stageRequired')
+  if (!hasCurrentStage.value) {
+    uploadError.value = t('supplierProject.noActiveStage')
     return
   }
   submitting.value = true
@@ -141,7 +165,7 @@ const onUploadFile = async () => {
     const fd = new FormData()
     fd.append('file', uploadForm.value.file)
     fd.append('file_category', uploadForm.value.file_category)
-    fd.append('stage', uploadForm.value.stage)
+    fd.append('stage', String(currentStage.value.id))
     fd.append('visibility', 'all')
     await uploadSupplierProjectFile(project.value.id, fd)
     uploadForm.value.file = null
@@ -158,7 +182,7 @@ const onDownloadTemplate = async () => {
   const url = URL.createObjectURL(blob instanceof Blob ? blob : new Blob([blob]))
   const a = document.createElement('a')
   a.href = url
-  a.download = 'defect_report_template.xlsx'
+  a.download = 'defect_report_template.docx'
   a.click()
   URL.revokeObjectURL(url)
 }
@@ -166,6 +190,20 @@ const onDownloadTemplate = async () => {
 const openPreview = (file) => {
   previewFile.value = file
   previewOpen.value = true
+}
+
+const onDeleteFile = async (fileId) => {
+  if (!project.value?.id || deletingFileId.value) return
+  fileActionError.value = ''
+  deletingFileId.value = fileId
+  try {
+    await deleteSupplierProjectFile(project.value.id, fileId)
+    await load()
+  } catch (e) {
+    fileActionError.value = e.message || t('supplierProject.fileDeleteFailed')
+  } finally {
+    deletingFileId.value = null
+  }
 }
 </script>
 
@@ -187,101 +225,150 @@ const openPreview = (file) => {
       </p>
 
       <h2 class="section-sub">{{ t('workflow.title') }}</h2>
+      <p class="hint">{{ t('supplierProject.stageAutoBindHint') }}</p>
+      <p v-if="actionError" class="page-message page-message--error">{{ actionError }}</p>
       <ol class="workflow-steps">
         <li
           v-for="s in project.stages"
           :key="s.id"
-          :class="[s.status, { current: project.current_stage?.id === s.id }]"
+          :class="[s.status, { current: currentStage?.id === s.id, expanded: currentStage?.id === s.id }]"
         >
-          <span class="step-name">{{ s.name }}</span>
-          <select
-            class="stage-select"
-            :value="s.status"
-            :disabled="submitting"
-            @change="onStageChange(s, $event.target.value)"
-          >
-            <option v-for="opt in stageOptions" :key="opt.value" :value="opt.value">
-              {{ t(opt.labelKey) }}
-            </option>
-          </select>
+          <div class="step-head">
+            <span class="step-name">{{ s.name }}</span>
+            <select
+              class="stage-select"
+              :value="s.status"
+              :disabled="submitting"
+              @change="onStageChange(s, $event.target.value)"
+            >
+              <option v-for="opt in stageOptions" :key="opt.value" :value="opt.value">
+                {{ t(opt.labelKey) }}
+              </option>
+            </select>
+          </div>
+
+          <div v-if="currentStage?.id === s.id" class="stage-panel">
+            <section class="panel-block">
+              <h3>{{ t('supplierProject.postUpdate') }}</h3>
+              <form class="action-form" @submit.prevent="onSubmitUpdate">
+                <textarea
+                  v-model="updateForm.content"
+                  rows="3"
+                  :placeholder="t('supplierProject.updatePlaceholder')"
+                  required
+                />
+                <div class="form-row">
+                  <label class="checkbox-label">
+                    <input v-model="updateForm.is_customer_visible" type="checkbox" />
+                    {{ t('supplierProject.customerVisible') }}
+                  </label>
+                  <button
+                    type="submit"
+                    class="btn btn-primary btn-sm"
+                    :disabled="submitting || !hasCurrentStage"
+                  >
+                    {{ t('supplierProject.submitUpdate') }}
+                  </button>
+                </div>
+              </form>
+            </section>
+
+            <section class="panel-block">
+              <h3>{{ t('supplierProject.reportIssue') }}</h3>
+              <form class="action-form" @submit.prevent="onSubmitIssue">
+                <input
+                  v-model="issueForm.title"
+                  type="text"
+                  :placeholder="t('supplierProject.issueTitle')"
+                  required
+                />
+                <textarea
+                  v-model="issueForm.description"
+                  rows="2"
+                  :placeholder="t('supplierProject.issueDesc')"
+                />
+                <div class="form-row">
+                  <select v-model="issueForm.severity">
+                    <option v-for="opt in severityOptions" :key="opt.value" :value="opt.value">
+                      {{ t(opt.labelKey) }}
+                    </option>
+                  </select>
+                  <button type="submit" class="btn btn-secondary btn-sm" :disabled="submitting">
+                    {{ t('supplierProject.submitIssue') }}
+                  </button>
+                </div>
+              </form>
+            </section>
+
+            <section class="panel-block">
+              <h3>{{ t('supplierProject.timeline') }}</h3>
+              <p v-if="!panelUpdates.length" class="page-empty">{{ t('mypage.empty') }}</p>
+              <ul v-else class="timeline">
+                <li v-for="u in panelUpdates" :key="u.id">
+                  <span class="tl-time">{{ (u.created_at || '').slice(0, 16).replace('T', ' ') }}</span>
+                  <span v-if="!u.is_customer_visible" class="tl-private">{{ t('supplierProject.internalOnly') }}</span>
+                  <p>{{ u.content }}</p>
+                  <TextTranslateBlock :project-id="project.id" role="supplier" :text="u.content" />
+                </li>
+              </ul>
+            </section>
+
+            <section class="panel-block">
+              <h3>{{ t('supplierProject.issues') }}</h3>
+              <p v-if="!project.issues?.length" class="page-empty">{{ t('mypage.empty') }}</p>
+              <ul v-else class="issue-list">
+                <li v-for="issue in project.issues" :key="issue.id">
+                  <strong>{{ issue.title }}</strong>
+                  <span class="issue-meta">{{ issue.severity }} · {{ issue.status }}</span>
+                  <p v-if="issue.description">{{ issue.description }}</p>
+                  <TextTranslateBlock
+                    :project-id="project.id"
+                    role="supplier"
+                    :text="[issue.title, issue.description].filter(Boolean).join('\n')"
+                  />
+                </li>
+              </ul>
+            </section>
+
+            <section class="panel-block">
+              <h3>{{ t('supplierProject.files') }}</h3>
+              <p class="hint">{{ t('supplierProject.fileBuyerVisibleHint') }}</p>
+              <div class="upload-form">
+                <label>
+                  {{ t('fileCategory.label') }}
+                  <select v-model="uploadForm.file_category">
+                    <option v-for="c in fileCategories" :key="c.value" :value="c.value">
+                      {{ t(c.labelKey) }}
+                    </option>
+                  </select>
+                </label>
+                <label>
+                  {{ t('mypage.uploadFile') }}
+                  <input type="file" @change="onFilePicked" />
+                </label>
+                <div class="form-row">
+                  <button
+                    type="button"
+                    class="btn btn-primary btn-sm"
+                    :disabled="submitting || !hasCurrentStage"
+                    @click="onUploadFile"
+                  >
+                    {{ t('supplierProject.upload') }}
+                  </button>
+                  <button type="button" class="btn btn-secondary btn-sm" @click="onDownloadTemplate">
+                    {{ t('supplierProject.downloadDefectTemplate') }}
+                  </button>
+                </div>
+                <p v-if="uploadError" class="page-message page-message--error">{{ uploadError }}</p>
+              </div>
+            </section>
+          </div>
         </li>
       </ol>
-
-      <h2 class="section-sub">{{ t('supplierProject.postUpdate') }}</h2>
-      <form class="action-form" @submit.prevent="onSubmitUpdate">
-        <textarea
-          v-model="updateForm.content"
-          rows="3"
-          :placeholder="t('supplierProject.updatePlaceholder')"
-          required
-        />
-        <div class="form-row">
-          <label>
-            <select v-model="updateForm.stage">
-              <option value="">{{ t('supplierProject.noStage') }}</option>
-              <option v-for="s in project.stages" :key="s.id" :value="s.id">{{ s.name }}</option>
-            </select>
-          </label>
-          <label class="checkbox-label">
-            <input v-model="updateForm.is_customer_visible" type="checkbox" />
-            {{ t('supplierProject.customerVisible') }}
-          </label>
-          <button type="submit" class="btn btn-primary btn-sm" :disabled="submitting">
-            {{ t('supplierProject.submitUpdate') }}
-          </button>
-        </div>
-      </form>
-
-      <h2 class="section-sub">{{ t('supplierProject.reportIssue') }}</h2>
-      <form class="action-form" @submit.prevent="onSubmitIssue">
-        <input v-model="issueForm.title" type="text" :placeholder="t('supplierProject.issueTitle')" required />
-        <textarea
-          v-model="issueForm.description"
-          rows="2"
-          :placeholder="t('supplierProject.issueDesc')"
-        />
-        <div class="form-row">
-          <select v-model="issueForm.severity">
-            <option v-for="opt in severityOptions" :key="opt.value" :value="opt.value">
-              {{ t(opt.labelKey) }}
-            </option>
-          </select>
-          <button type="submit" class="btn btn-secondary btn-sm" :disabled="submitting">
-            {{ t('supplierProject.submitIssue') }}
-          </button>
-        </div>
-      </form>
+      <p v-if="!hasCurrentStage" class="page-empty">{{ t('supplierProject.noActiveStage') }}</p>
 
       <h2 class="section-sub">{{ t('supplierProject.files') }}</h2>
-      <p class="hint">{{ t('supplierProject.fileBuyerVisibleHint') }}</p>
-      <div class="upload-form">
-        <label>
-          {{ t('workflow.stage') }}
-          <select v-model="uploadForm.stage">
-            <option v-for="s in project.stages" :key="s.id" :value="String(s.id)">{{ s.name }}</option>
-          </select>
-        </label>
-        <label>
-          {{ t('fileCategory.label') }}
-          <select v-model="uploadForm.file_category">
-            <option v-for="c in fileCategories" :key="c.value" :value="c.value">{{ t(c.labelKey) }}</option>
-          </select>
-        </label>
-        <label>
-          {{ t('mypage.uploadFile') }}
-          <input type="file" @change="onFilePicked" />
-        </label>
-        <div class="form-row">
-          <button type="button" class="btn btn-primary btn-sm" :disabled="submitting" @click="onUploadFile">
-            {{ t('supplierProject.upload') }}
-          </button>
-          <button type="button" class="btn btn-secondary btn-sm" @click="onDownloadTemplate">
-            {{ t('supplierProject.downloadDefectTemplate') }}
-          </button>
-        </div>
-        <p v-if="uploadError" class="page-message page-message--error">{{ uploadError }}</p>
-      </div>
-
+      <p v-if="fileActionError" class="page-message page-message--error">{{ fileActionError }}</p>
       <template v-for="s in project.stages" :key="'files-' + s.id">
         <h3 class="stage-file-title">{{ s.name }}</h3>
         <p v-if="!(filesByStage[s.id] || []).length" class="page-empty">—</p>
@@ -297,31 +384,25 @@ const openPreview = (file) => {
             >
               {{ t('filePreview.preview') }}
             </button>
+            <button
+              type="button"
+              class="btn btn-secondary btn-sm"
+              :disabled="deletingFileId === f.id"
+              @click="onDeleteFile(f.id)"
+            >
+              {{ t('supplierProject.removeFile') }}
+            </button>
           </li>
         </ul>
       </template>
 
-      <h2 class="section-sub">{{ t('supplierProject.timeline') }}</h2>
-      <p v-if="!project.updates?.length" class="page-empty">—</p>
-      <ul v-else class="timeline">
-        <li v-for="u in project.updates" :key="u.id">
-          <span class="tl-time">{{ (u.created_at || '').slice(0, 16).replace('T', ' ') }}</span>
-          <span v-if="!u.is_customer_visible" class="tl-private">{{ t('supplierProject.internalOnly') }}</span>
-          <p>{{ u.content }}</p>
-        </li>
-      </ul>
-
-      <h2 class="section-sub">{{ t('supplierProject.issues') }}</h2>
-      <p v-if="!project.issues?.length" class="page-empty">—</p>
-      <ul v-else class="issue-list">
-        <li v-for="issue in project.issues" :key="issue.id">
-          <strong>{{ issue.title }}</strong>
-          <span class="issue-meta">{{ issue.severity }} · {{ issue.status }}</span>
-          <p v-if="issue.description">{{ issue.description }}</p>
-        </li>
-      </ul>
-
-      <FilePreviewModal :open="previewOpen" :file="previewFile" @close="previewOpen = false" />
+      <FilePreviewModal
+        :open="previewOpen"
+        :file="previewFile"
+        :project-id="project?.id"
+        role="supplier"
+        @close="previewOpen = false"
+      />
     </template>
   </PageShell>
 </template>
@@ -348,23 +429,39 @@ const openPreview = (file) => {
   flex-direction: column;
   gap: var(--space-sm);
   li {
-    display: flex;
-    align-items: center;
-    gap: var(--space-md);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     padding: 0.75rem 1rem;
   }
   li.current { border-color: var(--color-steel); }
-  .step-name { flex: 1; font-weight: 600; }
+  li.expanded { padding-bottom: 1rem; }
 }
+.step-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+.step-name { flex: 1; font-weight: 600; }
 .stage-select { font-size: 0.85rem; padding: 0.25rem 0.5rem; }
+.stage-panel {
+  margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+.panel-block {
+  h3 {
+    margin: 0 0 var(--space-sm);
+    font-size: 0.95rem;
+  }
+}
 .action-form, .upload-form {
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
   max-width: 560px;
-  margin-bottom: var(--space-lg);
   textarea, input, select {
     width: 100%;
     padding: 0.5rem;
@@ -375,7 +472,13 @@ const openPreview = (file) => {
   label { display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.85rem; }
 }
 .form-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-md); }
-.checkbox-label { display: flex; align-items: center; gap: 0.35rem; font-size: 0.85rem; flex-direction: row !important; }
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  flex-direction: row !important;
+}
 .timeline {
   list-style: none;
   padding-left: var(--space-md);

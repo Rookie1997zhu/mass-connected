@@ -11,7 +11,12 @@ from apps.project.models import (
 from apps.project.services import get_current_stage
 
 
-PREVIEWABLE_EXTS = {"xlsx", "xls", "csv", "jpg", "jpeg", "png", "gif", "webp", "pdf"}
+from core.document_preview import CONVERT_TO_PDF_EXTS, preview_mode_for_ext
+
+TRANSLATABLE_EXTS = {"pdf", *CONVERT_TO_PDF_EXTS, "docx", "doc", "xlsx", "xls", "csv"}
+
+
+PREVIEWABLE_EXTS = {"xlsx", "xls", "csv", "docx", "doc", "jpg", "jpeg", "png", "gif", "webp", "pdf"}
 
 
 class ProjectFileSerializer(serializers.ModelSerializer):
@@ -21,6 +26,9 @@ class ProjectFileSerializer(serializers.ModelSerializer):
     stage_name = serializers.CharField(source="stage.name", read_only=True, allow_null=True)
     file_ext = serializers.SerializerMethodField()
     is_previewable = serializers.SerializerMethodField()
+    preview_mode = serializers.SerializerMethodField()
+    preview_pdf_url = serializers.SerializerMethodField()
+    is_translatable = serializers.SerializerMethodField()
 
     class Meta:
         model = ProjectFile
@@ -35,6 +43,9 @@ class ProjectFileSerializer(serializers.ModelSerializer):
             "stage_name",
             "file_ext",
             "is_previewable",
+            "preview_mode",
+            "preview_pdf_url",
+            "is_translatable",
             "created_at",
         ]
         read_only_fields = [
@@ -45,6 +56,9 @@ class ProjectFileSerializer(serializers.ModelSerializer):
             "stage_name",
             "file_ext",
             "is_previewable",
+            "preview_mode",
+            "preview_pdf_url",
+            "is_translatable",
             "created_at",
         ]
 
@@ -56,6 +70,37 @@ class ProjectFileSerializer(serializers.ModelSerializer):
 
     def get_is_previewable(self, obj):
         return self.get_file_ext(obj) in PREVIEWABLE_EXTS
+
+    def get_preview_mode(self, obj):
+        return preview_mode_for_ext(self.get_file_ext(obj))
+
+    def _preview_api_base(self, obj):
+        request = self.context.get("request")
+        if not request or not obj.pk:
+            return ""
+        project = obj.project
+        user = request.user
+        if getattr(user, "role", "") == "admin":
+            return f"/api/admin/projects/{project.id}/files/{obj.id}"
+        if project.supplier_id == user.id:
+            return f"/api/supplier/projects/{project.id}/files/{obj.id}"
+        return f"/api/member/projects/{project.id}/files/{obj.id}"
+
+    def get_preview_pdf_url(self, obj):
+        ext = self.get_file_ext(obj)
+        mode = preview_mode_for_ext(ext)
+        if mode not in {"direct", "pdf_convert"}:
+            return ""
+        if ext not in {"pdf", *CONVERT_TO_PDF_EXTS}:
+            return ""
+        request = self.context.get("request")
+        base = self._preview_api_base(obj)
+        if not base or not request:
+            return ""
+        return request.build_absolute_uri(f"{base}/preview-pdf")
+
+    def get_is_translatable(self, obj):
+        return self.get_file_ext(obj) in TRANSLATABLE_EXTS
 
     def get_file_url(self, obj):
         """返回鉴权下载接口，避免直接暴露公开 /media URL。"""

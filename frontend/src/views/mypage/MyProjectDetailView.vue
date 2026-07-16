@@ -4,6 +4,7 @@ import { RouterLink, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PageShell from '../../components/PageShell.vue'
 import FilePreviewModal from '../../components/FilePreviewModal.vue'
+import TextTranslateBlock from '../../components/TextTranslateBlock.vue'
 import { fetchMyProject, toggleProjectTodo } from '../../api'
 
 const { t } = useI18n()
@@ -97,6 +98,31 @@ const openPreview = (file) => {
         </li>
       </ul>
 
+      <h2 class="section-sub">{{ t('mypage.timeline') }}</h2>
+      <p v-if="!project.updates?.length" class="page-empty">{{ t('mypage.empty') }}</p>
+      <ul v-else class="timeline">
+        <li v-for="u in project.updates" :key="u.id">
+          <span class="tl-time">{{ (u.created_at || '').slice(0, 16).replace('T', ' ') }}</span>
+          <p>{{ u.content }}</p>
+          <TextTranslateBlock :project-id="project.id" role="member" :text="u.content" />
+        </li>
+      </ul>
+
+      <h2 class="section-sub">{{ t('mypage.issues') }}</h2>
+      <p v-if="!project.issues?.length" class="page-empty">{{ t('mypage.empty') }}</p>
+      <ul v-else class="issue-list">
+        <li v-for="issue in project.issues" :key="issue.id">
+          <strong>{{ issue.title }}</strong>
+          <span class="issue-meta">{{ issue.severity }} · {{ issue.status }}</span>
+          <p v-if="issue.description">{{ issue.description }}</p>
+          <TextTranslateBlock
+            :project-id="project.id"
+            role="member"
+            :text="[issue.title, issue.description].filter(Boolean).join('\n')"
+          />
+        </li>
+      </ul>
+
       <h2 class="section-sub">{{ t('mypage.files') }}</h2>
       <template v-for="s in project.stages" :key="'files-' + s.id">
         <h3 class="stage-file-title">{{ s.name }}</h3>
@@ -133,16 +159,13 @@ const openPreview = (file) => {
         </ul>
       </template>
 
-      <h2 class="section-sub">{{ t('mypage.timeline') }}</h2>
-      <p v-if="!project.updates?.length" class="page-empty">—</p>
-      <ul v-else class="timeline">
-        <li v-for="u in project.updates" :key="u.id">
-          <span class="tl-time">{{ (u.created_at || '').slice(0, 16).replace('T', ' ') }}</span>
-          <p>{{ u.content }}</p>
-        </li>
-      </ul>
-
-      <FilePreviewModal :open="previewOpen" :file="previewFile" @close="previewOpen = false" />
+      <FilePreviewModal
+        :open="previewOpen"
+        :file="previewFile"
+        :project-id="project?.id"
+        role="member"
+        @close="previewOpen = false"
+      />
     </template>
   </PageShell>
 </template>
@@ -230,4 +253,15 @@ const openPreview = (file) => {
   li { padding: 0 0 var(--space-md) var(--space-md); p { margin: 0.25rem 0 0; font-size: 0.9rem; } }
 }
 .tl-time { font-size: 0.72rem; opacity: 0.55; }
+.issue-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  li {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--color-border);
+    p { margin: 0.25rem 0 0; font-size: 0.85rem; opacity: 0.8; }
+  }
+}
+.issue-meta { font-size: 0.72rem; opacity: 0.55; margin-left: 0.5rem; }
 </style>

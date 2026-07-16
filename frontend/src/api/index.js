@@ -94,6 +94,8 @@ export const uploadSupplierProjectFile = (projectId, formData) =>
   http.post(`/supplier/projects/${projectId}/files`, formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   })
+export const deleteSupplierProjectFile = (projectId, fileId) =>
+  http.delete(`/supplier/projects/${projectId}/files/${fileId}`)
 export const downloadDefectReportTemplate = () =>
   http.get('/member/defect-report-template', { responseType: 'blob' })
 export const downloadSupplierDefectReportTemplate = () =>
@@ -138,12 +140,20 @@ export const fetchMyProjects = (params) => http.get('/member/projects', { params
 export const fetchMyProject = (id) => http.get(`/member/projects/${id}`)
 export const toggleProjectTodo = (projectId, todoId) =>
   http.post(`/member/projects/${projectId}/todos/${todoId}/toggle`)
+export const translateMemberProjectText = (id, data) =>
+  http.post(`/member/projects/${id}/translate`, data, { timeout: 45000 })
+export const translateMemberProjectFile = (projectId, fileId, data) =>
+  http.post(`/member/projects/${projectId}/files/${fileId}/translate`, data, { timeout: 120000 })
 export const fetchSupplierProjects = (params) => http.get('/supplier/projects', { params })
 export const fetchSupplierProject = (id) => http.get(`/supplier/projects/${id}`)
 export const addSupplierProjectUpdate = (id, data) => http.post(`/supplier/projects/${id}/updates`, data)
 export const updateSupplierProjectStage = (id, stageId, data) =>
   http.patch(`/supplier/projects/${id}/stages/${stageId}`, data)
 export const addSupplierProjectIssue = (id, data) => http.post(`/supplier/projects/${id}/issues`, data)
+export const translateSupplierProjectText = (id, data) =>
+  http.post(`/supplier/projects/${id}/translate`, data, { timeout: 45000 })
+export const translateSupplierProjectFile = (projectId, fileId, data) =>
+  http.post(`/supplier/projects/${projectId}/files/${fileId}/translate`, data, { timeout: 120000 })
 
 // 合同 / 付款
 export const fetchMyContracts = (params) => http.get('/member/contracts', { params })

@@ -1,5 +1,7 @@
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
+from pathlib import Path
+import logging
 from rest_framework import status
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import BasePermission
@@ -24,11 +26,39 @@ from apps.project.serializers import (
     ProjectTodoSerializer,
     ProjectUpdateSerializer,
 )
-from apps.project.services import recalc_progress
+from apps.project.services import get_current_stage, recalc_progress
+from apps.project.translation import (
+    TranslationError,
+    translate_project_file_text,
+    translate_text,
+)
+from core.document_preview import (
+    PreviewError,
+    cleanup_preview_cache,
+    extract_text_from_file,
+    file_ext,
+    get_or_create_preview_pdf,
+    preview_mode_for_ext,
+)
 from core.file_validation import validate_upload_file
 from core.pagination import StandardPagination
 from core.permissions import IsAdminRole, IsBuyerRole, IsSupplierRole
 from core.responses import error_response, success_response
+
+logger = logging.getLogger(__name__)
+
+
+def _project_translate_response(request, _project):
+    text = request.data.get("text", "")
+    target_lang = request.data.get("target_lang", "")
+    try:
+        translated = translate_text(text, target_lang)
+    except TranslationError as exc:
+        status_code = 503 if exc.code == "TRANSLATE_NOT_CONFIGURED" else 400
+        if exc.code == "TRANSLATE_FAILED":
+            status_code = 502
+        return error_response(exc.code, exc.message, status=status_code, request=request)
+    return success_response({"translated_text": translated}, request=request)
 
 
 class IsAuthenticatedPlatformUser(BasePermission):
@@ -75,6 +105,14 @@ class MemberProjectDetailView(APIView):
         )
 
 
+class MemberProjectTranslateView(APIView):
+    permission_classes = [IsBuyerRole]
+
+    def post(self, request, pk):
+        project = get_object_or_404(Project, pk=pk, buyer=request.user)
+        return _project_translate_response(request, project)
+
+
 class MemberProjectTodoToggleView(APIView):
     permission_classes = [IsBuyerRole]
 
@@ -118,6 +156,14 @@ class SupplierProjectDetailView(APIView):
         )
 
 
+class SupplierProjectTranslateView(APIView):
+    permission_classes = [IsSupplierRole]
+
+    def post(self, request, pk):
+        project = get_object_or_404(Project, pk=pk, supplier=request.user)
+        return _project_translate_response(request, project)
+
+
 class SupplierProjectUpdateCreateView(APIView):
     permission_classes = [IsSupplierRole]
 
@@ -126,9 +172,21 @@ class SupplierProjectUpdateCreateView(APIView):
         content = request.data.get("content", "").strip()
         if not content:
             return error_response("PROJECT_UPDATE_CONTENT_REQUIRED", "进度内容不能为空", request=request)
+        stage_id = request.data.get("stage") or request.data.get("stage_id") or None
+        stage = None
+        if stage_id:
+            stage = ProjectStage.objects.filter(pk=stage_id, project=project).first()
+            if not stage:
+                return error_response(
+                    "PROJECT_STAGE_NOT_FOUND",
+                    "阶段不存在或不属于该项目",
+                    request=request,
+                )
+        else:
+            stage = get_current_stage(project)
         update = ProjectUpdate.objects.create(
             project=project,
-            stage_id=request.data.get("stage") or None,
+            stage=stage,
             author=request.user,
             content=content,
             is_customer_visible=bool(request.data.get("is_customer_visible", True)),
@@ -367,7 +425,7 @@ class MemberFileCenterView(APIView):
         return success_response({"items": items}, request=request)
 
 
-def _create_project_file(request, project, default_visibility="all"):
+def _create_project_file(request, project, default_visibility="all", *, fallback_current_stage=False):
     file_obj = request.FILES.get("file")
     code, msg = validate_upload_file(file_obj)
     if code:
@@ -391,6 +449,14 @@ def _create_project_file(request, project, default_visibility="all"):
             return None, error_response(
                 "PROJECT_STAGE_NOT_FOUND",
                 "阶段不存在或不属于该项目",
+                request=request,
+            )
+    elif fallback_current_stage:
+        stage = get_current_stage(project)
+        if not stage:
+            return None, error_response(
+                "PROJECT_STAGE_REQUIRED",
+                "当前无进行中的阶段，无法上传文件",
                 request=request,
             )
 
@@ -419,6 +485,102 @@ def _user_can_access_project_file(user, project, pf):
     if project.supplier_id == user.id:
         return True
     return False
+
+
+def _preview_error_response(exc: PreviewError, request):
+    status_code = status.HTTP_400_BAD_REQUEST
+    if exc.code == "PREVIEW_PDF_NOT_APPLICABLE":
+        status_code = status.HTTP_415_UNSUPPORTED_MEDIA_TYPE
+    elif exc.code in {"PREVIEW_CONVERT_TIMEOUT", "PREVIEW_CONVERT_FAILED"}:
+        status_code = status.HTTP_502_BAD_GATEWAY
+    elif exc.code == "PREVIEW_CONVERT_UNAVAILABLE":
+        status_code = status.HTTP_503_SERVICE_UNAVAILABLE
+    return error_response(exc.code, exc.message, status=status_code, request=request)
+
+
+def _preview_project_file_pdf(request, project, file_id):
+    from django.http import FileResponse
+
+    pf = get_object_or_404(ProjectFile, pk=file_id, project=project)
+    if not _user_can_access_project_file(request.user, project, pf):
+        return error_response(
+            "PROJECT_FILE_FORBIDDEN",
+            "无权访问该文件",
+            status=status.HTTP_403_FORBIDDEN,
+            request=request,
+        )
+    if not pf.file:
+        return error_response("PROJECT_FILE_MISSING", "文件不存在", request=request)
+
+    ext = file_ext(pf.file_name or pf.file.name)
+    mode = preview_mode_for_ext(ext)
+    if mode not in {"direct", "pdf_convert"}:
+        return error_response(
+            "PREVIEW_PDF_NOT_APPLICABLE",
+            "该文件类型不支持 PDF 预览",
+            status=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
+            request=request,
+        )
+
+    try:
+        source_path = pf.file.path
+        pdf_path = get_or_create_preview_pdf(source_path, pf.id, ext)
+    except PreviewError as exc:
+        return _preview_error_response(exc, request)
+    except Exception:
+        logger.exception("preview pdf failed file_id=%s", pf.id)
+        return error_response(
+            "PREVIEW_CONVERT_FAILED",
+            "文档转换失败，请下载原件查看",
+            status=status.HTTP_502_BAD_GATEWAY,
+            request=request,
+        )
+
+    response = FileResponse(
+        pdf_path.open("rb"),
+        content_type="application/pdf",
+        as_attachment=False,
+        filename=f"{Path(pf.file_name or 'preview').stem}.pdf",
+    )
+    response["Content-Disposition"] = 'inline; filename="preview.pdf"'
+    return response
+
+
+def _translate_project_file_response(request, project, file_id):
+    pf = get_object_or_404(ProjectFile, pk=file_id, project=project)
+    if not _user_can_access_project_file(request.user, project, pf):
+        return error_response(
+            "PROJECT_FILE_FORBIDDEN",
+            "无权访问该文件",
+            status=status.HTTP_403_FORBIDDEN,
+            request=request,
+        )
+    if not pf.file:
+        return error_response("PROJECT_FILE_MISSING", "文件不存在", request=request)
+
+    target_lang = request.data.get("target_lang", "")
+    ext = file_ext(pf.file_name or pf.file.name)
+
+    try:
+        extracted = extract_text_from_file(pf.file.path, ext)
+        translated = translate_project_file_text(pf.id, extracted["text"], target_lang)
+    except PreviewError as exc:
+        return error_response(exc.code, exc.message, status=status.HTTP_400_BAD_REQUEST, request=request)
+    except TranslationError as exc:
+        status_code = 503 if exc.code == "TRANSLATE_NOT_CONFIGURED" else 400
+        if exc.code == "TRANSLATE_FAILED":
+            status_code = 502
+        return error_response(exc.code, exc.message, status=status_code, request=request)
+
+    return success_response(
+        {
+            "translated_text": translated,
+            "truncated": extracted.get("truncated", False),
+            "extraction_method": extracted.get("extraction_method", ""),
+            "char_count": extracted.get("char_count", 0),
+        },
+        request=request,
+    )
 
 
 def _download_project_file(request, project, file_id):
@@ -457,6 +619,22 @@ class MemberProjectFileDownloadView(APIView):
         return _download_project_file(request, project, file_id)
 
 
+class MemberProjectFilePreviewPdfView(APIView):
+    permission_classes = [IsBuyerRole]
+
+    def get(self, request, pk, file_id):
+        project = get_object_or_404(Project, pk=pk, buyer=request.user)
+        return _preview_project_file_pdf(request, project, file_id)
+
+
+class MemberProjectFileTranslateView(APIView):
+    permission_classes = [IsBuyerRole]
+
+    def post(self, request, pk, file_id):
+        project = get_object_or_404(Project, pk=pk, buyer=request.user)
+        return _translate_project_file_response(request, project, file_id)
+
+
 class SupplierProjectFileListCreateView(APIView):
     permission_classes = [IsSupplierRole]
     parser_classes = [MultiPartParser, FormParser]
@@ -471,7 +649,12 @@ class SupplierProjectFileListCreateView(APIView):
 
     def post(self, request, pk):
         project = get_object_or_404(Project, pk=pk, supplier=request.user)
-        pf, err = _create_project_file(request, project, default_visibility="all")
+        pf, err = _create_project_file(
+            request,
+            project,
+            default_visibility="all",
+            fallback_current_stage=True,
+        )
         if err:
             return err
         return success_response(
@@ -487,6 +670,34 @@ class SupplierProjectFileDownloadView(APIView):
     def get(self, request, pk, file_id):
         project = get_object_or_404(Project, pk=pk, supplier=request.user)
         return _download_project_file(request, project, file_id)
+
+
+class SupplierProjectFilePreviewPdfView(APIView):
+    permission_classes = [IsSupplierRole]
+
+    def get(self, request, pk, file_id):
+        project = get_object_or_404(Project, pk=pk, supplier=request.user)
+        return _preview_project_file_pdf(request, project, file_id)
+
+
+class SupplierProjectFileTranslateView(APIView):
+    permission_classes = [IsSupplierRole]
+
+    def post(self, request, pk, file_id):
+        project = get_object_or_404(Project, pk=pk, supplier=request.user)
+        return _translate_project_file_response(request, project, file_id)
+
+
+class SupplierProjectFileDeleteView(APIView):
+    permission_classes = [IsSupplierRole]
+
+    def delete(self, request, pk, file_id):
+        project = get_object_or_404(Project, pk=pk, supplier=request.user)
+        pf = get_object_or_404(ProjectFile, pk=file_id, project=project)
+        cleanup_preview_cache(pf.id)
+        pf.file.delete(save=False)
+        pf.delete()
+        return success_response({}, message="文件已删除", request=request)
 
 
 class AdminProjectFileListCreateView(APIView):
@@ -527,25 +738,30 @@ class AdminProjectFileDeleteView(APIView):
     def delete(self, request, pk, file_id):
         project = get_object_or_404(Project, pk=pk)
         pf = get_object_or_404(ProjectFile, pk=file_id, project=project)
+        cleanup_preview_cache(pf.id)
         pf.file.delete(save=False)
         pf.delete()
         return success_response({}, message="文件已删除", request=request)
 
 
 class DefectReportTemplateDownloadView(APIView):
-    """下载默认不良报告模板（xlsx），后续可替换正式模板。"""
+    """下载不良报告 Word 模板。"""
 
     permission_classes = [IsAuthenticatedPlatformUser]
 
     def get(self, request):
-        from django.http import HttpResponse
+        from django.http import FileResponse, Http404
 
-        from apps.project.defect_template import build_defect_report_template_bytes
+        from apps.project.defect_template import get_defect_report_template_path
 
-        content = build_defect_report_template_bytes()
-        response = HttpResponse(
-            content,
-            content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        try:
+            path = get_defect_report_template_path()
+        except FileNotFoundError as exc:
+            raise Http404(str(exc)) from exc
+        response = FileResponse(
+            path.open("rb"),
+            as_attachment=True,
+            filename="defect_report_template.docx",
+            content_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
         )
-        response["Content-Disposition"] = 'attachment; filename="defect_report_template.xlsx"'
         return response
