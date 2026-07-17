@@ -23,6 +23,15 @@ CONVERT_TIMEOUT_SEC = 60
 MAX_EXTRACT_CHARS = 50_000
 MAX_OCR_PAGES = 20
 OCR_LANG = "eng+kor+chi_sim"
+OCR_DPI = 300
+# psm 11: sparse text — 适配图纸/设计稿上零散分布的标注文字
+OCR_CONFIG = "--psm 11"
+
+# Gemini vision fallback for image-only PDFs
+MAX_VISION_PAGES = 5
+VISION_DPI = 150
+VISION_MAX_SIDE = 1600
+VISION_JPEG_QUALITY = 85
 
 CHUNK_SIZE = 6000
 
@@ -55,14 +64,14 @@ def _source_fingerprint(source_path: str) -> str:
     return hashlib.sha256(raw.encode()).hexdigest()[:16]
 
 
-def preview_cache_dir(file_id: int) -> Path:
-    base = Path(settings.MEDIA_ROOT) / "preview_cache" / "project" / str(file_id)
+def preview_cache_dir(file_id: int, cache_ns: str = "project") -> Path:
+    base = Path(settings.MEDIA_ROOT) / "preview_cache" / cache_ns / str(file_id)
     base.mkdir(parents=True, exist_ok=True)
     return base
 
 
-def cleanup_preview_cache(file_id: int) -> None:
-    cache_dir = Path(settings.MEDIA_ROOT) / "preview_cache" / "project" / str(file_id)
+def cleanup_preview_cache(file_id: int, cache_ns: str = "project") -> None:
+    cache_dir = Path(settings.MEDIA_ROOT) / "preview_cache" / cache_ns / str(file_id)
     if cache_dir.is_dir():
         shutil.rmtree(cache_dir, ignore_errors=True)
 
@@ -116,7 +125,12 @@ def convert_to_pdf(source_path: str, out_dir: str) -> Path:
     return out_path
 
 
-def get_or_create_preview_pdf(source_path: str, file_id: int, ext: str) -> Path:
+def get_or_create_preview_pdf(
+    source_path: str,
+    file_id: int,
+    ext: str,
+    cache_ns: str = "project",
+) -> Path:
     """Return path to PDF suitable for inline preview (original or converted)."""
     ext = (ext or "").lower()
     if ext == PDF_EXT:
@@ -125,7 +139,7 @@ def get_or_create_preview_pdf(source_path: str, file_id: int, ext: str) -> Path:
         raise PreviewError("PREVIEW_PDF_NOT_APPLICABLE", "该文件类型不支持 PDF 预览")
 
     fingerprint = _source_fingerprint(source_path)
-    cache_dir = preview_cache_dir(file_id)
+    cache_dir = preview_cache_dir(file_id, cache_ns=cache_ns)
     cached = cache_dir / f"{fingerprint}.pdf"
     if cached.is_file():
         return cached
@@ -187,22 +201,85 @@ def _extract_csv(path: str) -> tuple[str, str]:
     return "\n".join(lines), "csv_text"
 
 
-def _extract_pdf(path: str) -> tuple[str, str]:
+def inspect_pdf_text_layer(path: str) -> dict:
+    """Inspect whether a PDF has an extractable text layer."""
     import fitz  # PyMuPDF
 
     doc = fitz.open(path)
-    parts: list[str] = []
-    page_count = doc.page_count
-    for i in range(page_count):
-        page = doc.load_page(i)
-        text = (page.get_text() or "").strip()
-        if text:
-            parts.append(text)
-    doc.close()
-    combined = "\n\n".join(parts)
-    if combined.strip():
-        return combined, "pdf_text"
-    return _extract_pdf_ocr(path, min(page_count, MAX_OCR_PAGES))
+    try:
+        page_count = doc.page_count
+        parts: list[str] = []
+        for i in range(page_count):
+            page = doc.load_page(i)
+            text = (page.get_text() or "").strip()
+            if text:
+                parts.append(text)
+        combined = "\n\n".join(parts).strip()
+        return {
+            "has_text_layer": bool(combined),
+            "page_count": page_count,
+            "text": combined,
+        }
+    finally:
+        doc.close()
+
+
+def render_pdf_pages_as_images(
+    path: str,
+    max_pages: int = MAX_VISION_PAGES,
+    dpi: int = VISION_DPI,
+) -> dict:
+    """Render the first N PDF pages as compressed JPEG bytes for Gemini vision."""
+    import fitz  # PyMuPDF
+    from io import BytesIO
+
+    from PIL import Image
+
+    doc = fitz.open(path)
+    try:
+        page_count = doc.page_count
+        process_count = min(page_count, max_pages)
+        images: list[dict] = []
+        for i in range(process_count):
+            page = doc.load_page(i)
+            pix = page.get_pixmap(dpi=dpi)
+            mode = "RGB" if pix.n < 4 else "RGBA"
+            img = Image.frombytes(mode, (pix.width, pix.height), pix.samples)
+            if img.mode != "RGB":
+                img = img.convert("RGB")
+            max_side = max(img.size)
+            if max_side > VISION_MAX_SIDE:
+                scale = VISION_MAX_SIDE / max_side
+                img = img.resize(
+                    (max(1, int(img.width * scale)), max(1, int(img.height * scale))),
+                    Image.Resampling.LANCZOS,
+                )
+            buf = BytesIO()
+            img.save(buf, format="JPEG", quality=VISION_JPEG_QUALITY, optimize=True)
+            images.append(
+                {
+                    "page_index": i,
+                    "mime_type": "image/jpeg",
+                    "data": buf.getvalue(),
+                }
+            )
+            img.close()
+            buf.close()
+        return {
+            "page_count": page_count,
+            "processed_pages": process_count,
+            "truncated": page_count > process_count,
+            "images": images,
+        }
+    finally:
+        doc.close()
+
+
+def _extract_pdf(path: str) -> tuple[str, str]:
+    inspected = inspect_pdf_text_layer(path)
+    if inspected["has_text_layer"]:
+        return inspected["text"], "pdf_text"
+    return _extract_pdf_ocr(path, min(inspected["page_count"], MAX_OCR_PAGES))
 
 
 def _extract_pdf_ocr(path: str, max_pages: int) -> tuple[str, str]:
@@ -214,10 +291,10 @@ def _extract_pdf_ocr(path: str, max_pages: int) -> tuple[str, str]:
     parts: list[str] = []
     for i in range(min(doc.page_count, max_pages)):
         page = doc.load_page(i)
-        pix = page.get_pixmap(dpi=200)
+        pix = page.get_pixmap(dpi=OCR_DPI)
         mode = "RGB" if pix.n < 4 else "RGBA"
         img = Image.frombytes(mode, (pix.width, pix.height), pix.samples)
-        parts.append(pytesseract.image_to_string(img, lang=OCR_LANG))
+        parts.append(pytesseract.image_to_string(img, lang=OCR_LANG, config=OCR_CONFIG))
     doc.close()
     return "\n\n".join(parts), "pdf_ocr"
 

@@ -13,7 +13,7 @@ todos:
     status: completed
   - id: p1-verify
     content: Docker 重建、样件 xlsx/docx 手测、权限与缓存回归
-    status: in_progress
+    status: completed
   - id: p2-extract-text
     content: document_preview 抽文（docx/openpyxl/pymupdf/OCR）+ 字符上限与截断
     status: completed

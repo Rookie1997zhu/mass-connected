@@ -63,17 +63,18 @@ def _collect_files(rfq, quote, project, request, *, customer_only=False):
     files = []
     for att in rfq.attachments.all():
         item = RFQAttachmentSerializer(att, context={"request": request}).data
-        ext = (item.get("file_type") or "").lower()
         files.append(
             {
                 "id": f"rfq-{att.id}",
                 "source": "rfq",
                 "source_label": "rfq",
                 "file_name": item.get("file_name"),
-                "file_url": item.get("url") or "",
-                "file_ext": ext,
-                "is_previewable": ext
-                in {"pdf", "jpg", "jpeg", "png", "gif", "webp", "xlsx", "xls", "csv"},
+                "file_url": item.get("file_url") or item.get("url") or "",
+                "file_ext": item.get("file_ext") or (item.get("file_type") or "").lower(),
+                "is_previewable": bool(item.get("is_previewable")),
+                "preview_mode": item.get("preview_mode") or "",
+                "preview_pdf_url": item.get("preview_pdf_url") or "",
+                "is_translatable": bool(item.get("is_translatable")),
                 "stage_name": None,
                 "file_category": "rfq",
                 "created_at": item.get("uploaded_at"),
@@ -91,6 +92,9 @@ def _collect_files(rfq, quote, project, request, *, customer_only=False):
                     "file_url": item.get("file_url") or "",
                     "file_ext": item.get("file_ext") or "",
                     "is_previewable": bool(item.get("is_previewable")),
+                    "preview_mode": item.get("preview_mode") or "",
+                    "preview_pdf_url": item.get("preview_pdf_url") or "",
+                    "is_translatable": bool(item.get("is_translatable")),
                     "stage_name": None,
                     "file_category": "quote",
                     "created_at": item.get("uploaded_at"),

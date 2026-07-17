@@ -553,7 +553,12 @@ class SupplierQuoteRequestDetailView(APIView):
         maybe_mark_quote_request_expired(qr)
         data = QuoteRequestSerializer(qr, context={"lang": get_lang(request)}).data
         data["rfq_detail"] = DemandHallDetailSerializer(
-            qr.rfq, context={"request": request, "lang": get_lang(request)}
+            qr.rfq,
+            context={
+                "request": request,
+                "lang": get_lang(request),
+                "quote_request_id": qr.id,
+            },
         ).data
         my_quote = qr.quotes.filter(supplier=request.user).first()
         data["my_quote"] = (
@@ -839,6 +844,9 @@ class SupplierQuoteAttachmentDeleteView(APIView):
                 request=request,
             )
         attachment = get_object_or_404(QuoteAttachment, pk=file_id, quote=quote)
+        from apps.rfq.translate_views import cleanup_quote_attachment_cache
+
+        cleanup_quote_attachment_cache(attachment.id)
         if attachment.file:
             attachment.file.delete(save=False)
         attachment.delete()

@@ -100,7 +100,10 @@ def run_print3d_slice(self, job_id: int) -> dict:
             slice_params,
             timeout=timeout,
         )
-        usage = extract_filament_usage(gcode_path)
+        usage = extract_filament_usage(
+            gcode_path,
+            density_g_cm3=slice_params.get("filament_density"),
+        )
         job.result = {
             "filament_weight_g": usage["filament_weight_g"],
             "filament_length_mm": usage.get("filament_length_mm", 0),

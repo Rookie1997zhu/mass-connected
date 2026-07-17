@@ -1,5 +1,21 @@
 from django.urls import path
 
+from apps.rfq.translate_views import (
+    MemberQuoteAttachmentPreviewPdfView,
+    MemberQuoteAttachmentTranslateView,
+    MemberQuoteTranslateView,
+    MemberRfqAttachmentDownloadView,
+    MemberRfqAttachmentPreviewPdfView,
+    MemberRfqAttachmentTranslateView,
+    MemberRfqTranslateView,
+    SupplierQuoteAttachmentPreviewPdfView,
+    SupplierQuoteAttachmentTranslateView,
+    SupplierQuoteRequestTranslateView,
+    SupplierQuoteTranslateView,
+    SupplierRfqAttachmentDownloadView,
+    SupplierRfqAttachmentPreviewPdfView,
+    SupplierRfqAttachmentTranslateView,
+)
 from apps.rfq.views import (
     AdminProductionOrderDetailView,
     AdminProductionOrderListView,
@@ -47,8 +63,21 @@ urlpatterns = [
     path("public/demand-hall/<int:pk>", PublicDemandHallDetailView.as_view()),
     path("member/rfqs", MemberRFQListCreateView.as_view()),
     path("member/rfqs/<int:pk>", MemberRFQDetailView.as_view()),
+    path("member/rfqs/<int:pk>/translate", MemberRfqTranslateView.as_view()),
     path("member/rfqs/<int:pk>/fulfillment", MemberRfqFulfillmentView.as_view()),
     path("member/rfqs/<int:pk>/attachments", MemberRFQAttachmentView.as_view()),
+    path(
+        "member/rfqs/<int:pk>/attachments/<int:file_id>/download",
+        MemberRfqAttachmentDownloadView.as_view(),
+    ),
+    path(
+        "member/rfqs/<int:pk>/attachments/<int:file_id>/preview-pdf",
+        MemberRfqAttachmentPreviewPdfView.as_view(),
+    ),
+    path(
+        "member/rfqs/<int:pk>/attachments/<int:file_id>/translate",
+        MemberRfqAttachmentTranslateView.as_view(),
+    ),
     path("member/rfqs/<int:pk>/quote-pdf", MemberRFQQuotePdfView.as_view()),
     path("member/rfqs/<int:pk>/quotes/<int:quote_id>", MemberQuoteDetailView.as_view()),
     path(
@@ -59,9 +88,18 @@ urlpatterns = [
         "member/rfqs/<int:pk>/quotes/<int:quote_id>/supplier-attachments/<int:attachment_id>/download",
         MemberSupplierAttachmentDownloadView.as_view(),
     ),
+    path("member/quotes/<int:quote_id>/translate", MemberQuoteTranslateView.as_view()),
     path(
         "member/quotes/<int:quote_id>/attachments/<int:file_id>/download",
         MemberQuoteAttachmentDownloadView.as_view(),
+    ),
+    path(
+        "member/quotes/<int:quote_id>/attachments/<int:file_id>/preview-pdf",
+        MemberQuoteAttachmentPreviewPdfView.as_view(),
+    ),
+    path(
+        "member/quotes/<int:quote_id>/attachments/<int:file_id>/translate",
+        MemberQuoteAttachmentTranslateView.as_view(),
     ),
     path("member/production-orders", MemberProductionOrderListView.as_view()),
     path("member/production-orders/<int:pk>", MemberProductionOrderDetailView.as_view()),
@@ -69,11 +107,28 @@ urlpatterns = [
     path("supplier/quote-requests", SupplierQuoteRequestListView.as_view()),
     path("supplier/quote-requests/<int:pk>", SupplierQuoteRequestDetailView.as_view()),
     path(
+        "supplier/quote-requests/<int:pk>/translate",
+        SupplierQuoteRequestTranslateView.as_view(),
+    ),
+    path(
         "supplier/quote-requests/<int:pk>/fulfillment",
         SupplierQuoteRequestFulfillmentView.as_view(),
     ),
     path("supplier/quote-requests/<int:pk>/quotes", SupplierQuoteRequestQuoteView.as_view()),
+    path(
+        "supplier/quote-requests/<int:pk>/rfq-attachments/<int:file_id>/download",
+        SupplierRfqAttachmentDownloadView.as_view(),
+    ),
+    path(
+        "supplier/quote-requests/<int:pk>/rfq-attachments/<int:file_id>/preview-pdf",
+        SupplierRfqAttachmentPreviewPdfView.as_view(),
+    ),
+    path(
+        "supplier/quote-requests/<int:pk>/rfq-attachments/<int:file_id>/translate",
+        SupplierRfqAttachmentTranslateView.as_view(),
+    ),
     path("supplier/quotes", FactoryQuoteListView.as_view()),
+    path("supplier/quotes/<int:quote_id>/translate", SupplierQuoteTranslateView.as_view()),
     path(
         "supplier/quotes/<int:quote_id>/attachments",
         SupplierQuoteAttachmentListCreateView.as_view(),
@@ -81,6 +136,14 @@ urlpatterns = [
     path(
         "supplier/quotes/<int:quote_id>/attachments/<int:file_id>/download",
         SupplierQuoteAttachmentDownloadView.as_view(),
+    ),
+    path(
+        "supplier/quotes/<int:quote_id>/attachments/<int:file_id>/preview-pdf",
+        SupplierQuoteAttachmentPreviewPdfView.as_view(),
+    ),
+    path(
+        "supplier/quotes/<int:quote_id>/attachments/<int:file_id>/translate",
+        SupplierQuoteAttachmentTranslateView.as_view(),
     ),
     path(
         "supplier/quotes/<int:quote_id>/attachments/<int:file_id>",

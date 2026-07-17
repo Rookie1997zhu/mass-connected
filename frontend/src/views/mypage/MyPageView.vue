@@ -34,8 +34,16 @@ import {
 } from '../../api'
 import { useLocaleCurrency } from '../../composables/useLocaleCurrency'
 
-const { t } = useI18n()
+const { t, te } = useI18n()
 const { formatMoney } = useLocaleCurrency()
+
+const trOr = (key, fallback) => (te(key) ? t(key) : fallback)
+const projectStatusLabel = (status) => trOr(`workflow.projectStatus.${status}`, status)
+const stageLabel = (name) => trOr(`workflow.stageNames.${name}`, name)
+const displayProjectTitle = (raw) => {
+  const m = (raw || '').match(/^项目\s*(.+)$/)
+  return m ? `${t('workflow.projectWord')} ${m[1]}` : raw
+}
 const auth = useAuthStore()
 const route = useRoute()
 const router = useRouter()
@@ -416,12 +424,12 @@ const onLogout = () => {
         <div v-else class="card-list">
           <div v-for="p in projects" :key="p.id" class="proj-card">
             <RouterLink :to="`/my/projects/${p.id}`" class="proj-card-main">
-              <div class="proj-head"><strong>{{ p.project_no }}</strong><span>{{ p.status }}</span></div>
-              <p class="proj-title">{{ p.title }}</p>
+              <div class="proj-head"><strong>{{ p.project_no }}</strong><span>{{ projectStatusLabel(p.status) }}</span></div>
+              <p class="proj-title">{{ displayProjectTitle(p.title) }}</p>
               <div class="progress-bar"><span :style="{ width: p.progress_percent + '%' }" /></div>
               <p class="proj-meta">
                 {{ t('mypage.progress') }}: {{ p.progress_percent }}%
-                <span v-if="p.current_stage"> · {{ t('workflow.currentStage') }}: {{ p.current_stage.name }}</span>
+                <span v-if="p.current_stage"> · {{ t('workflow.currentStage') }}: {{ stageLabel(p.current_stage.name) }}</span>
               </p>
             </RouterLink>
             <RouterLink
@@ -471,7 +479,7 @@ const onLogout = () => {
               <input type="checkbox" :checked="td.is_done" @change="onToggleTodo(td)" />
               <span :class="{ done: td.is_done }">{{ td.title }}</span>
             </label>
-            <span class="todo-meta">{{ td.project_no }} · {{ td.project_title }}</span>
+            <span class="todo-meta">{{ td.project_no }} · {{ displayProjectTitle(td.project_title) }}</span>
           </li>
         </ul>
       </div>

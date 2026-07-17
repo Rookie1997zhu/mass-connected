@@ -7,8 +7,16 @@ import FilePreviewModal from '../../components/FilePreviewModal.vue'
 import TextTranslateBlock from '../../components/TextTranslateBlock.vue'
 import { fetchMyProject, toggleProjectTodo } from '../../api'
 
-const { t } = useI18n()
+const { t, te } = useI18n()
 const route = useRoute()
+
+// 后端存量数据为中文（阶段名/标题前缀），展示层做本地化映射，未知值回退原文
+const trOr = (key, fallback) => (te(key) ? t(key) : fallback)
+const stageLabel = (name) => trOr(`workflow.stageNames.${name}`, name)
+const projectStatusLabel = (status) => trOr(`workflow.projectStatus.${status}`, status)
+const issueSeverityLabel = (v) => trOr(`workflow.issueSeverity.${v}`, v)
+const issueStatusLabel = (v) => trOr(`workflow.issueStatus.${v}`, v)
+const fileCategoryLabel = (v) => trOr(`fileCategory.${v}`, v)
 const project = ref(null)
 const loading = ref(true)
 const previewFile = ref(null)
@@ -32,7 +40,16 @@ const onToggle = async (todo) => {
   await load()
 }
 
-const currentStageName = computed(() => project.value?.current_stage?.name || '—')
+const currentStageName = computed(() => {
+  const name = project.value?.current_stage?.name
+  return name ? stageLabel(name) : '—'
+})
+
+const displayTitle = computed(() => {
+  const raw = project.value?.title || ''
+  const m = raw.match(/^项目\s*(.+)$/)
+  return m ? `${t('workflow.projectWord')} ${m[1]}` : raw
+})
 
 const filesByStage = computed(() => {
   const map = {}
@@ -54,9 +71,9 @@ const openPreview = (file) => {
   <PageShell>
     <p v-if="loading" class="page-empty">{{ t('common.loading') }}</p>
     <template v-else-if="project">
-      <h1 class="page-title">{{ project.title }}</h1>
+      <h1 class="page-title">{{ displayTitle }}</h1>
       <p class="proj-no">
-        {{ project.project_no }} · {{ project.status }}
+        {{ project.project_no }} · {{ projectStatusLabel(project.status) }}
         <span v-if="project.production_order_no"> · {{ project.production_order_no }}</span>
       </p>
       <div class="progress-bar"><span :style="{ width: project.progress_percent + '%' }" /></div>
@@ -76,7 +93,7 @@ const openPreview = (file) => {
           :class="[s.status, { current: project.current_stage?.id === s.id }]"
         >
           <span class="step-index">{{ s.sort_order + 1 }}</span>
-          <span class="step-name">{{ s.name }}</span>
+          <span class="step-name">{{ stageLabel(s.name) }}</span>
           <span class="step-status">{{ t(`workflow.status.${s.status}`) }}</span>
         </li>
       </ol>
@@ -94,7 +111,7 @@ const openPreview = (file) => {
             />
             <span :class="{ done: td.is_done }">{{ td.title }}</span>
           </label>
-          <span class="todo-assignee">{{ td.assignee_type }}</span>
+          <span class="todo-assignee">{{ trOr(`workflow.assignee.${td.assignee_type}`, td.assignee_type) }}</span>
         </li>
       </ul>
 
@@ -113,7 +130,9 @@ const openPreview = (file) => {
       <ul v-else class="issue-list">
         <li v-for="issue in project.issues" :key="issue.id">
           <strong>{{ issue.title }}</strong>
-          <span class="issue-meta">{{ issue.severity }} · {{ issue.status }}</span>
+          <span class="issue-meta">
+            {{ issueSeverityLabel(issue.severity) }} · {{ issueStatusLabel(issue.status) }}
+          </span>
           <p v-if="issue.description">{{ issue.description }}</p>
           <TextTranslateBlock
             :project-id="project.id"
@@ -125,12 +144,12 @@ const openPreview = (file) => {
 
       <h2 class="section-sub">{{ t('mypage.files') }}</h2>
       <template v-for="s in project.stages" :key="'files-' + s.id">
-        <h3 class="stage-file-title">{{ s.name }}</h3>
+        <h3 class="stage-file-title">{{ stageLabel(s.name) }}</h3>
         <p v-if="!(filesByStage[s.id] || []).length" class="page-empty">—</p>
         <ul v-else class="file-list">
           <li v-for="f in filesByStage[s.id]" :key="f.id">
             <span>{{ f.file_name }}</span>
-            <span class="file-meta">{{ f.file_category }}</span>
+            <span class="file-meta">{{ fileCategoryLabel(f.file_category) }}</span>
             <button
               v-if="f.is_previewable"
               type="button"

@@ -77,6 +77,9 @@ def convert_stl_to_gcode(
         str(params.get("infill_speed", 80)),
         "--solid-infill-speed",
         str(params.get("solid_infill_speed", 60)),
+        # 提供密度后 PrusaSlicer 才会写出 "filament used [g]"
+        "--filament-density",
+        str(params.get("filament_density", 1.24)),
     ]
     if params.get("support"):
         cmd.append("--support-material")
@@ -114,8 +117,13 @@ def _parse_time_string(time_str: str) -> int | None:
     return total if total > 0 else None
 
 
-def extract_filament_usage(gcode_path: str) -> dict[str, float | int]:
-    """Parse PrusaSlicer G-code comments. Raises if weight or time missing."""
+def extract_filament_usage(
+    gcode_path: str, density_g_cm3: float | None = None
+) -> dict[str, float | int]:
+    """Parse PrusaSlicer G-code comments. Raises if weight or time missing.
+
+    density_g_cm3: 当 G-code 缺少 [g] 注释时，用体积 [cm3] × 密度换算重量。
+    """
     try:
         with open(gcode_path, "r", encoding="utf-8", errors="ignore") as fh:
             content = fh.read()
@@ -143,9 +151,13 @@ def extract_filament_usage(gcode_path: str) -> dict[str, float | int]:
     if m := re.search(r";\s*estimated\s+printing\s+time.*?=\s*(.+?)(?:\n|$)", content, re.I):
         estimated_time_seconds = _parse_time_string(m.group(1).strip())
 
-    if filament_used_g is None and filament_used_cm3 is not None:
-        # Density must be supplied by caller via material; use volume-only marker.
-        filament_used_g = None
+    if (
+        (filament_used_g is None or filament_used_g <= 0)
+        and filament_used_cm3
+        and density_g_cm3
+        and density_g_cm3 > 0
+    ):
+        filament_used_g = filament_used_cm3 * density_g_cm3
 
     if filament_used_g is None or filament_used_g <= 0:
         raise SlicerError(

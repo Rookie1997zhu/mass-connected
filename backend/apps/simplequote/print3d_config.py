@@ -290,6 +290,8 @@ def slice_params_from_snapshot(snapshot: dict[str, Any]) -> dict[str, Any]:
     return {
         "layer_height": _to_number(quality.get("layer_height"), 0.2),
         "infill_density": int(_to_number(snapshot.get("infill_density"), 20)),
+        # 不传密度时 PrusaSlicer 不输出 filament used [g]，重量解析会失败
+        "filament_density": _to_number(material.get("density_g_cm3"), 1.24),
         "bed_temp": int(_to_number(material.get("bed_temp"), 60)),
         "extruder_temp": int(_to_number(material.get("extruder_temp"), 210)),
         "perimeter_speed": int(_to_number(material.get("perimeter_speed"), 60)),

@@ -2,6 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import FilePreviewModal from './FilePreviewModal.vue'
+import TextTranslateBlock from './TextTranslateBlock.vue'
 import { useLocaleCurrency } from '../composables/useLocaleCurrency'
 import { downloadAuthedFile } from '../utils/downloadAuthedFile'
 
@@ -108,11 +109,28 @@ const downloadFile = async (file) => {
             <ul class="plain-list">
               <li>{{ t('rfq.leadTime') }}: {{ detail.lead_time_days }}</li>
               <li>{{ t('rfq.validUntil') }}: {{ detail.valid_until || '—' }}</li>
-              <li>{{ t('myRfqs.paymentTerms') }}: {{ detail.payment_terms || '—' }}</li>
+              <li>
+                {{ t('myRfqs.paymentTerms') }}: {{ detail.payment_terms || '—' }}
+                <TextTranslateBlock
+                  v-if="detail.payment_terms"
+                  context-type="quote"
+                  :context-id="detail.id"
+                  role="member"
+                  :text="detail.payment_terms"
+                />
+              </li>
               <li v-if="detail.revision_version">
                 {{ t('quoteRequest.revision') }}: v{{ detail.revision_version }}
               </li>
-              <li v-if="detail.note">{{ t('rfq.note') }}: {{ detail.note }}</li>
+              <li v-if="detail.note">
+                {{ t('rfq.note') }}: {{ detail.note }}
+                <TextTranslateBlock
+                  context-type="quote"
+                  :context-id="detail.id"
+                  role="member"
+                  :text="detail.note"
+                />
+              </li>
             </ul>
           </section>
 
@@ -222,7 +240,14 @@ const downloadFile = async (file) => {
     </div>
   </div>
 
-  <FilePreviewModal :open="previewOpen" :file="previewFile" @close="previewOpen = false" />
+  <FilePreviewModal
+    :open="previewOpen"
+    :file="previewFile"
+    context-type="quote"
+    :context-id="detail?.id"
+    role="member"
+    @close="previewOpen = false"
+  />
 </template>
 
 <style scoped lang="scss">

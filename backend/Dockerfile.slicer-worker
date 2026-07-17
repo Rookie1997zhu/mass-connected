@@ -9,11 +9,13 @@ ENV PRUSA_SLICER_PATH=/usr/local/bin/prusa-slicer
 
 WORKDIR /app
 
+# PrusaSlicer 2.7 AppImage 是 GTK2 构建，需 gtk2/pangoxft/EGL 运行库
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc default-libmysqlclient-dev pkg-config \
     libgl1 libglib2.0-0 libx11-6 \
     curl ca-certificates \
-    libgtk-3-0 \
+    libgtk-3-0 libgtk2.0-0 libpangoxft-1.0-0 \
+    libegl1 libglu1-mesa libopengl0 \
     libxcb1 libxcb-render0 libxcb-shm0 libxcomposite1 libxcursor1 \
     libxdamage1 libxext6 libxfixes3 libxi6 libxinerama1 libxkbcommon0 \
     libxrandr2 libxrender1 libxtst6 libsm6 libice6 \

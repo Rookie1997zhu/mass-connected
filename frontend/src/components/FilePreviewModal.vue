@@ -4,17 +4,34 @@ import { useI18n } from 'vue-i18n'
 import http from '../api/http'
 import {
   translateMemberProjectFile,
+  translateMemberQuoteFile,
+  translateMemberRfqFile,
   translateSupplierProjectFile,
+  translateSupplierQuoteFile,
+  translateSupplierRfqFile,
 } from '../api'
 import { toApiPath } from '../utils/downloadAuthedFile'
 
 const props = defineProps({
   file: { type: Object, default: null },
   open: { type: Boolean, default: false },
+  // Legacy: projectId implies contextType=project
   projectId: { type: [Number, String], default: null },
+  contextType: { type: String, default: '' }, // 'project' | 'rfq' | 'quote'
+  contextId: { type: [Number, String], default: null },
   role: { type: String, default: '' }, // 'member' | 'supplier'
 })
 const emit = defineEmits(['close'])
+
+const resolvedContextType = computed(() => {
+  if (props.contextType) return props.contextType
+  if (props.projectId != null) return 'project'
+  return ''
+})
+const resolvedContextId = computed(() => {
+  if (props.contextId != null && props.contextId !== '') return props.contextId
+  return props.projectId
+})
 
 const { t, locale } = useI18n()
 const MAX_ROWS = 200
@@ -33,15 +50,35 @@ let renderSheetFn = null
 const translateLoading = ref(false)
 const translateError = ref('')
 const translatedText = ref('')
+const translateSourceText = ref('')
 const translateTruncated = ref(false)
 const translateMethod = ref('')
+const translatePageCount = ref(0)
+const translateProcessedPages = ref(0)
 
 const title = computed(() => props.file?.file_name || t('filePreview.title'))
 
 const showTranslatePanel = computed(() => {
-  if (!props.projectId || !props.role) return false
+  if (!resolvedContextType.value || resolvedContextId.value == null || !props.role) return false
   return Boolean(props.file?.is_translatable)
 })
+
+const resolveFileTranslateApi = () => {
+  const type = resolvedContextType.value
+  const id = resolvedContextId.value
+  const fileId = props.file?.id
+  if (!type || id == null || fileId == null) return null
+  if (props.role === 'supplier') {
+    if (type === 'project') return (data) => translateSupplierProjectFile(id, fileId, data)
+    if (type === 'rfq') return (data) => translateSupplierRfqFile(id, fileId, data)
+    if (type === 'quote') return (data) => translateSupplierQuoteFile(id, fileId, data)
+  } else {
+    if (type === 'project') return (data) => translateMemberProjectFile(id, fileId, data)
+    if (type === 'rfq') return (data) => translateMemberRfqFile(id, fileId, data)
+    if (type === 'quote') return (data) => translateMemberQuoteFile(id, fileId, data)
+  }
+  return null
+}
 
 const reset = () => {
   loading.value = false
@@ -57,8 +94,11 @@ const reset = () => {
   translateLoading.value = false
   translateError.value = ''
   translatedText.value = ''
+  translateSourceText.value = ''
   translateTruncated.value = false
   translateMethod.value = ''
+  translatePageCount.value = 0
+  translateProcessedPages.value = 0
 }
 
 const close = () => {
@@ -156,17 +196,19 @@ const downloadOriginal = async () => {
 }
 
 const onTranslateFile = async () => {
-  if (!props.projectId || !props.file?.id) return
+  const api = resolveFileTranslateApi()
+  if (!api) return
   translateLoading.value = true
   translateError.value = ''
   try {
     const payload = { target_lang: locale.value }
-    const api =
-      props.role === 'supplier' ? translateSupplierProjectFile : translateMemberProjectFile
-    const res = await api(props.projectId, props.file.id, payload)
+    const res = await api(payload)
     translatedText.value = res.data?.translated_text || ''
+    translateSourceText.value = res.data?.source_text || ''
     translateTruncated.value = Boolean(res.data?.truncated)
     translateMethod.value = res.data?.extraction_method || ''
+    translatePageCount.value = Number(res.data?.page_count || 0)
+    translateProcessedPages.value = Number(res.data?.processed_pages || 0)
     if (!translatedText.value) {
       translateError.value = t('aiTranslate.translateFailed')
     }
@@ -174,6 +216,8 @@ const onTranslateFile = async () => {
     const code = e?.code || e?.response?.data?.code
     if (code === 'TRANSLATE_NOT_CONFIGURED') {
       translateError.value = t('aiTranslate.notConfigured')
+    } else if (code === 'PREVIEW_EXTRACT_EMPTY') {
+      translateError.value = t('filePreview.noExtractableText')
     } else {
       translateError.value = e.message || t('aiTranslate.translateFailed')
     }
@@ -260,11 +304,35 @@ watch(
           <p v-if="translateMethod === 'pdf_ocr'" class="hint warn">
             {{ t('filePreview.translateScannedHint') }}
           </p>
-          <p v-if="translateTruncated" class="hint warn">
+          <p v-if="translateMethod === 'gemini_vision'" class="hint warn">
+            {{ t('filePreview.translateVisionHint') }}
+          </p>
+          <p
+            v-if="translateMethod === 'gemini_vision' && translateTruncated"
+            class="hint warn"
+          >
+            {{
+              t('filePreview.translateVisionTruncated', {
+                processed: translateProcessedPages || 5,
+                total: translatePageCount || translateProcessedPages || 5,
+              })
+            }}
+          </p>
+          <p v-else-if="translateTruncated" class="hint warn">
             {{ t('filePreview.translateTruncated') }}
           </p>
           <p v-if="translateError" class="translate-error">{{ translateError }}</p>
-          <p v-if="translatedText" class="translate-result">{{ translatedText }}</p>
+          <div v-if="translatedText && translateSourceText" class="translate-compare">
+            <div class="translate-col">
+              <p class="translate-col-title">{{ t('filePreview.sourceTextLabel') }}</p>
+              <p class="translate-result">{{ translateSourceText }}</p>
+            </div>
+            <div class="translate-col">
+              <p class="translate-col-title">{{ t('filePreview.translatedTextLabel') }}</p>
+              <p class="translate-result">{{ translatedText }}</p>
+            </div>
+          </div>
+          <p v-else-if="translatedText" class="translate-result">{{ translatedText }}</p>
         </section>
       </div>
     </div>
@@ -348,6 +416,21 @@ watch(
   background: var(--color-steel-muted, rgba(0, 0, 0, 0.04));
   border-radius: 4px;
 }
+.translate-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+  @media (max-width: 640px) { grid-template-columns: 1fr; }
+}
+.translate-col { min-width: 0; }
+.translate-col-title {
+  margin: 0 0 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  opacity: 0.7;
+}
+.translate-col .translate-result { margin-top: 0; }
 .translate-error {
   margin: 0.35rem 0 0;
   font-size: 0.78rem;

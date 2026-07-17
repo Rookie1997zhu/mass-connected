@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PageShell from '../../components/PageShell.vue'
 import FilePreviewModal from '../../components/FilePreviewModal.vue'
+import TextTranslateBlock from '../../components/TextTranslateBlock.vue'
 import FulfillmentHub from '../../components/FulfillmentHub.vue'
 import {
   deleteSupplierQuoteAttachment,
@@ -28,6 +29,8 @@ const pendingFiles = ref([])
 const uploading = ref(false)
 const previewFile = ref(null)
 const previewOpen = ref(false)
+const previewContextType = ref('quote')
+const previewContextId = ref(null)
 const activeTab = ref('specs')
 const form = ref({
   price_amount: '',
@@ -181,15 +184,22 @@ const removeUploaded = async (fileId) => {
   }
 }
 
-const openPreview = (file) => {
+const openPreview = (file, contextType = 'quote', contextId = null) => {
   previewFile.value = file
+  previewContextType.value = contextType
+  previewContextId.value = contextId ?? data.value?.my_quote?.id ?? null
   previewOpen.value = true
 }
 
+const openRfqPreview = (file) => {
+  openPreview(file, 'rfq', data.value?.id)
+}
+
 const downloadFile = async (file) => {
-  if (!file?.file_url) return
+  const url = file?.file_url || file?.url
+  if (!url) return
   try {
-    await downloadAuthedFile(file.file_url, file.file_name || 'file')
+    await downloadAuthedFile(url, file.file_name || 'file')
   } catch (e) {
     error.value = e.message || t('quoteRequest.attachmentUploadFailed')
   }
@@ -223,14 +233,49 @@ const downloadFile = async (file) => {
           <div><dt>{{ t('rfq.quantity') }}</dt><dd>{{ data.rfq_detail?.quantity }}</dd></div>
           <div><dt>{{ t('rfq.material') }}</dt><dd>{{ data.rfq_detail?.material || '—' }}</dd></div>
           <div><dt>{{ t('quoteRequest.deadline') }}</dt><dd>{{ data.deadline || '—' }}</dd></div>
-          <div class="full"><dt>{{ t('quoteRequest.adminNote') }}</dt><dd>{{ data.admin_note || '—' }}</dd></div>
-          <div class="full"><dt>{{ t('rfq.remark') }}</dt><dd>{{ data.rfq_detail?.remark || '—' }}</dd></div>
+          <div class="full">
+            <dt>{{ t('quoteRequest.adminNote') }}</dt>
+            <dd>
+              {{ data.admin_note || '—' }}
+              <TextTranslateBlock
+                v-if="data.admin_note"
+                context-type="quoteRequest"
+                :context-id="data.id"
+                role="supplier"
+                :text="data.admin_note"
+              />
+            </dd>
+          </div>
+          <div class="full">
+            <dt>{{ t('rfq.remark') }}</dt>
+            <dd>
+              {{ data.rfq_detail?.remark || '—' }}
+              <TextTranslateBlock
+                v-if="data.rfq_detail?.remark"
+                context-type="quoteRequest"
+                :context-id="data.id"
+                role="supplier"
+                :text="data.rfq_detail.remark"
+              />
+            </dd>
+          </div>
         </dl>
 
         <h2 class="section-sub">{{ t('rfq.attachments') }}</h2>
         <ul v-if="data.rfq_detail?.attachments?.length" class="att-list">
           <li v-for="a in data.rfq_detail.attachments" :key="a.id">
-            <a :href="a.url" target="_blank" rel="noopener">{{ a.file_name }}</a>
+            <span>{{ a.file_name }}</span>
+            <button
+              v-if="a.is_previewable"
+              type="button"
+              class="btn btn-secondary btn-sm"
+              @click="openRfqPreview(a)"
+            >
+              {{ t('filePreview.preview') }}
+            </button>
+            <button type="button" class="btn btn-secondary btn-sm" @click="downloadFile(a)">
+              {{ t('filePreview.download') }}
+            </button>
           </li>
         </ul>
         <p v-else class="page-empty">—</p>
@@ -250,6 +295,24 @@ const downloadFile = async (file) => {
           <p v-if="data.my_quote.revision_version">
             {{ t('quoteRequest.revision') }}: v{{ data.my_quote.revision_version }}
           </p>
+          <p v-if="data.my_quote.payment_terms">
+            {{ t('myRfqs.paymentTerms') }}: {{ data.my_quote.payment_terms }}
+            <TextTranslateBlock
+              context-type="quote"
+              :context-id="data.my_quote.id"
+              role="supplier"
+              :text="data.my_quote.payment_terms"
+            />
+          </p>
+          <p v-if="data.my_quote.note">
+            {{ t('rfq.note') }}: {{ data.my_quote.note }}
+            <TextTranslateBlock
+              context-type="quote"
+              :context-id="data.my_quote.id"
+              role="supplier"
+              :text="data.my_quote.note"
+            />
+          </p>
           <h3 class="sub">{{ t('quoteRequest.attachments') }}</h3>
           <ul v-if="data.my_quote.attachments?.length" class="file-list">
             <li v-for="a in data.my_quote.attachments" :key="a.id">
@@ -258,7 +321,7 @@ const downloadFile = async (file) => {
                 v-if="a.is_previewable"
                 type="button"
                 class="btn btn-secondary btn-sm"
-                @click="openPreview(a)"
+                @click="openPreview(a, 'quote', data.my_quote.id)"
               >
                 {{ t('filePreview.preview') }}
               </button>
@@ -329,7 +392,14 @@ const downloadFile = async (file) => {
       />
     </template>
 
-    <FilePreviewModal :open="previewOpen" :file="previewFile" @close="previewOpen = false" />
+    <FilePreviewModal
+      :open="previewOpen"
+      :file="previewFile"
+      :context-type="previewContextType"
+      :context-id="previewContextId"
+      role="supplier"
+      @close="previewOpen = false"
+    />
   </PageShell>
 </template>
 

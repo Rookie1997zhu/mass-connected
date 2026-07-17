@@ -5,9 +5,16 @@ import { useI18n } from 'vue-i18n'
 import PageShell from '../../components/PageShell.vue'
 import { fetchSupplierProjects } from '../../api'
 
-const { t } = useI18n()
+const { t, te } = useI18n()
 const items = ref([])
 const loading = ref(true)
+
+const trOr = (key, fallback) => (te(key) ? t(key) : fallback)
+const projectStatusLabel = (status) => trOr(`workflow.projectStatus.${status}`, status)
+const displayTitle = (raw) => {
+  const m = (raw || '').match(/^项目\s*(.+)$/)
+  return m ? `${t('workflow.projectWord')} ${m[1]}` : raw
+}
 
 onMounted(async () => {
   try {
@@ -39,8 +46,8 @@ onMounted(async () => {
       <tbody>
         <tr v-for="p in items" :key="p.id">
           <td>{{ p.project_no }}</td>
-          <td>{{ p.title }}</td>
-          <td><span class="badge" :class="p.status">{{ p.status }}</span></td>
+          <td>{{ displayTitle(p.title) }}</td>
+          <td><span class="badge" :class="p.status">{{ projectStatusLabel(p.status) }}</span></td>
           <td>{{ p.progress_percent }}%</td>
           <td>{{ p.expected_delivery_date || '—' }}</td>
           <td>

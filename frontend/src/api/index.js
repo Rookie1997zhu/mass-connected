@@ -144,6 +144,14 @@ export const translateMemberProjectText = (id, data) =>
   http.post(`/member/projects/${id}/translate`, data, { timeout: 45000 })
 export const translateMemberProjectFile = (projectId, fileId, data) =>
   http.post(`/member/projects/${projectId}/files/${fileId}/translate`, data, { timeout: 120000 })
+export const translateMemberRfqText = (id, data) =>
+  http.post(`/member/rfqs/${id}/translate`, data, { timeout: 45000 })
+export const translateMemberRfqFile = (rfqId, fileId, data) =>
+  http.post(`/member/rfqs/${rfqId}/attachments/${fileId}/translate`, data, { timeout: 120000 })
+export const translateMemberQuoteText = (quoteId, data) =>
+  http.post(`/member/quotes/${quoteId}/translate`, data, { timeout: 45000 })
+export const translateMemberQuoteFile = (quoteId, fileId, data) =>
+  http.post(`/member/quotes/${quoteId}/attachments/${fileId}/translate`, data, { timeout: 120000 })
 export const fetchSupplierProjects = (params) => http.get('/supplier/projects', { params })
 export const fetchSupplierProject = (id) => http.get(`/supplier/projects/${id}`)
 export const addSupplierProjectUpdate = (id, data) => http.post(`/supplier/projects/${id}/updates`, data)
@@ -154,6 +162,18 @@ export const translateSupplierProjectText = (id, data) =>
   http.post(`/supplier/projects/${id}/translate`, data, { timeout: 45000 })
 export const translateSupplierProjectFile = (projectId, fileId, data) =>
   http.post(`/supplier/projects/${projectId}/files/${fileId}/translate`, data, { timeout: 120000 })
+export const translateSupplierQuoteRequestText = (id, data) =>
+  http.post(`/supplier/quote-requests/${id}/translate`, data, { timeout: 45000 })
+export const translateSupplierRfqFile = (quoteRequestId, fileId, data) =>
+  http.post(
+    `/supplier/quote-requests/${quoteRequestId}/rfq-attachments/${fileId}/translate`,
+    data,
+    { timeout: 120000 },
+  )
+export const translateSupplierQuoteText = (quoteId, data) =>
+  http.post(`/supplier/quotes/${quoteId}/translate`, data, { timeout: 45000 })
+export const translateSupplierQuoteFile = (quoteId, fileId, data) =>
+  http.post(`/supplier/quotes/${quoteId}/attachments/${fileId}/translate`, data, { timeout: 120000 })
 
 // 合同 / 付款
 export const fetchMyContracts = (params) => http.get('/member/contracts', { params })

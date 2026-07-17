@@ -15,8 +15,16 @@ import {
   uploadSupplierProjectFile,
 } from '../../api'
 
-const { t } = useI18n()
+const { t, te } = useI18n()
 const route = useRoute()
+
+// 后端存量数据为中文（阶段名/标题前缀），展示层做本地化映射，未知值回退原文
+const trOr = (key, fallback) => (te(key) ? t(key) : fallback)
+const stageLabel = (name) => trOr(`workflow.stageNames.${name}`, name)
+const projectStatusLabel = (status) => trOr(`workflow.projectStatus.${status}`, status)
+const issueSeverityLabel = (v) => trOr(`workflow.issueSeverity.${v}`, v)
+const issueStatusLabel = (v) => trOr(`workflow.issueStatus.${v}`, v)
+const fileCategoryLabel = (v) => trOr(`fileCategory.${v}`, v)
 const project = ref(null)
 const loading = ref(true)
 const submitting = ref(false)
@@ -70,8 +78,17 @@ onMounted(async () => {
 })
 
 const currentStage = computed(() => project.value?.current_stage || null)
-const currentStageName = computed(() => currentStage.value?.name || '—')
+const currentStageName = computed(() => {
+  const name = currentStage.value?.name
+  return name ? stageLabel(name) : '—'
+})
 const hasCurrentStage = computed(() => Boolean(currentStage.value?.id))
+
+const displayTitle = computed(() => {
+  const raw = project.value?.title || ''
+  const m = raw.match(/^项目\s*(.+)$/)
+  return m ? `${t('workflow.projectWord')} ${m[1]}` : raw
+})
 
 const filesByStage = computed(() => {
   const map = {}
@@ -211,8 +228,8 @@ const onDeleteFile = async (fileId) => {
   <PageShell>
     <p v-if="loading" class="page-empty">{{ t('common.loading') }}</p>
     <template v-else-if="project">
-      <h1 class="page-title">{{ project.title }}</h1>
-      <p class="proj-no">{{ project.project_no }} · {{ project.status }}</p>
+      <h1 class="page-title">{{ displayTitle }}</h1>
+      <p class="proj-no">{{ project.project_no }} · {{ projectStatusLabel(project.status) }}</p>
       <div class="progress-bar"><span :style="{ width: project.progress_percent + '%' }" /></div>
       <p class="proj-meta">
         {{ t('mypage.progress') }}: {{ project.progress_percent }}% ·
@@ -234,7 +251,7 @@ const onDeleteFile = async (fileId) => {
           :class="[s.status, { current: currentStage?.id === s.id, expanded: currentStage?.id === s.id }]"
         >
           <div class="step-head">
-            <span class="step-name">{{ s.name }}</span>
+            <span class="step-name">{{ stageLabel(s.name) }}</span>
             <select
               class="stage-select"
               :value="s.status"
@@ -319,7 +336,9 @@ const onDeleteFile = async (fileId) => {
               <ul v-else class="issue-list">
                 <li v-for="issue in project.issues" :key="issue.id">
                   <strong>{{ issue.title }}</strong>
-                  <span class="issue-meta">{{ issue.severity }} · {{ issue.status }}</span>
+                  <span class="issue-meta">
+                    {{ issueSeverityLabel(issue.severity) }} · {{ issueStatusLabel(issue.status) }}
+                  </span>
                   <p v-if="issue.description">{{ issue.description }}</p>
                   <TextTranslateBlock
                     :project-id="project.id"
@@ -370,12 +389,12 @@ const onDeleteFile = async (fileId) => {
       <h2 class="section-sub">{{ t('supplierProject.files') }}</h2>
       <p v-if="fileActionError" class="page-message page-message--error">{{ fileActionError }}</p>
       <template v-for="s in project.stages" :key="'files-' + s.id">
-        <h3 class="stage-file-title">{{ s.name }}</h3>
+        <h3 class="stage-file-title">{{ stageLabel(s.name) }}</h3>
         <p v-if="!(filesByStage[s.id] || []).length" class="page-empty">—</p>
         <ul v-else class="file-list">
           <li v-for="f in filesByStage[s.id]" :key="f.id">
             <span>{{ f.file_name }}</span>
-            <span class="file-meta">{{ f.file_category }}</span>
+            <span class="file-meta">{{ fileCategoryLabel(f.file_category) }}</span>
             <button
               v-if="f.is_previewable"
               type="button"

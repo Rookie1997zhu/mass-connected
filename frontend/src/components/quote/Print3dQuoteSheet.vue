@@ -59,18 +59,17 @@ const weightDisplay = computed(() => job.value?.result?.filament_weight_g ?? '�
 const hoursDisplay = computed(() => job.value?.result?.print_hours ?? '—')
 const canQuote = computed(() => job.value?.status === 'done')
 
+// readAsDataURL 由浏览器原生编码 base64；逐字节拼接字符串在大文件时会拖垮页面
 const fileToBase64 = (file) =>
   new Promise((resolve, reject) => {
     const reader = new FileReader()
     reader.onload = () => {
-      const buffer = reader.result
-      const bytes = new Uint8Array(buffer)
-      let binary = ''
-      for (let i = 0; i < bytes.length; i += 1) binary += String.fromCharCode(bytes[i])
-      resolve(btoa(binary))
+      const result = String(reader.result || '')
+      const comma = result.indexOf(',')
+      resolve(comma >= 0 ? result.slice(comma + 1) : result)
     }
     reader.onerror = () => reject(reader.error)
-    reader.readAsArrayBuffer(file)
+    reader.readAsDataURL(file)
   })
 
 const loadOptions = async () => {
@@ -128,7 +127,8 @@ const pollJob = async (id) => {
     try {
       const res = await fetchPrint3dSliceJob(id)
       job.value = res.data
-      if (res.data.preview_mesh?.data) previewMesh.value = res.data.preview_mesh
+      // 本地已有预览时不用轮询结果反复覆盖（每次都是数 MB 的 base64）
+      if (!previewMesh.value?.data && res.data.preview_mesh?.data) previewMesh.value = res.data.preview_mesh
       if (res.data.status === 'done') {
         stopPoll()
         slicing.value = false

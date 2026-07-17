@@ -284,6 +284,7 @@ const messages = {
     nav: {
       home: '홈',
       manufacturingQuote: '제조 견적',
+      detailedQuote: '상세 견적',
       postRequest: '요청 게시',
       findDemands: '수요 찾기',
       partners: '파트너 입점',
@@ -442,9 +443,15 @@ const messages = {
     workflow: {
       title: '제작 프로세스', currentStage: '현재 단계', stage: '단계', unassignedFiles: '미지정 파일',
       status: { pending: '대기', in_progress: '진행 중', completed: '완료' },
+      projectWord: '프로젝트',
+      projectStatus: { pending: '대기', in_progress: '진행 중', paused: '일시중지', completed: '완료', cancelled: '취소' },
+      stageNames: { 订单: '주문', 采购: '구매', 生产: '생산', 出库: '출고', 物流: '물류' },
+      issueSeverity: { low: '낮음', medium: '보통', high: '높음' },
+      issueStatus: { open: '미해결', resolved: '해결됨' },
+      assignee: { customer: '고객', supplier: '공급사', platform: '플랫폼' },
     },
     filePreview: {
-      title: '파일 미리보기', preview: '미리보기', download: '원본 다운로드', loadFailed: '미리보기 로드 실패', unsupported: '이 파일 형식은 미리보기를 지원하지 않습니다', excelHint: '최대 {rows}행 × {cols}열까지 미리보기합니다. 복잡한 서식은 원본을 다운로드하세요.', converting: '미리보기 PDF 생성 중…', convertFailed: '미리보기 생성 실패', complexFormatHint: '복잡한 형식은 원본을 다운로드하여 확인하세요.', translateFile: '전문 번역', translateFileHint: 'AI 번역은 내용 이해용입니다. 복잡한 서식은 원본 PDF와 대조하세요.', translateTruncated: '문서가 길어 일부만 번역되었습니다.', translateScannedHint: '스캔 PDF는 OCR로 인식했으며, 일부 내용이 누락될 수 있습니다.',
+      title: '파일 미리보기', preview: '미리보기', download: '원본 다운로드', loadFailed: '미리보기 로드 실패', unsupported: '이 파일 형식은 미리보기를 지원하지 않습니다', excelHint: '최대 {rows}행 × {cols}열까지 미리보기합니다. 복잡한 서식은 원본을 다운로드하세요.', converting: '미리보기 PDF 생성 중…', convertFailed: '미리보기 생성 실패', complexFormatHint: '복잡한 형식은 원본을 다운로드하여 확인하세요.', translateFile: '전문 번역', translateFileHint: 'AI 번역은 내용 이해용입니다. 복잡한 서식은 원본 PDF와 대조하세요.', translateTruncated: '문서가 길어 일부만 번역되었습니다.', translateScannedHint: '스캔 PDF는 OCR로 인식했으며, 일부 내용이 누락될 수 있습니다.', noExtractableText: '이 파일은 이미지/도면 위주 콘텐츠로, 번역할 텍스트가 없습니다.', translateVisionHint: '이미지/도면 PDF는 AI 이미지 인식으로 번역했습니다. 결과는 참고용이며 원본과 대조하세요.', translateVisionTruncated: '문서가 {total}페이지라 앞 {processed}페이지만 번역했습니다.', sourceTextLabel: '원문', translatedTextLabel: '번역',
     },
     fileCategory: {
       label: '파일 분류', bom: 'BOM', purchase_order: '발주서', defect_report: '불량 보고서', sample_image: '샘플 이미지', report: '보고서', design: '설계', other: '기타',
@@ -455,6 +462,7 @@ const messages = {
     nav: {
       home: '首页',
       manufacturingQuote: '制造报价',
+      detailedQuote: '详细报价',
       postRequest: '发布请求',
       findDemands: '寻找需求',
       partners: '合作伙伴',
@@ -613,9 +621,15 @@ const messages = {
     workflow: {
       title: '制作流程', currentStage: '当前阶段', stage: '阶段', unassignedFiles: '未关联阶段文件',
       status: { pending: '待开始', in_progress: '进行中', completed: '已完成' },
+      projectWord: '项目',
+      projectStatus: { pending: '待开始', in_progress: '进行中', paused: '已暂停', completed: '已完成', cancelled: '已取消' },
+      stageNames: { 订单: '订单', 采购: '采购', 生产: '生产', 出库: '出库', 物流: '物流' },
+      issueSeverity: { low: '低', medium: '中', high: '高' },
+      issueStatus: { open: '待处理', resolved: '已解决' },
+      assignee: { customer: '客户', supplier: '供应商', platform: '平台' },
     },
     filePreview: {
-      title: '文件预览', preview: '预览', download: '下载原件', loadFailed: '预览加载失败', unsupported: '该文件类型暂不支持预览', excelHint: '最多预览 {rows} 行 × {cols} 列；复杂格式请下载原件查看。', converting: '正在生成预览 PDF…', convertFailed: '预览生成失败', complexFormatHint: '复杂格式请下载原件查看。', translateFile: '翻译全文', translateFileHint: 'AI 译文供理解内容，复杂排版请对照上方原件 PDF。', translateTruncated: '文档较长，已截断部分内容后再翻译。', translateScannedHint: '扫描 PDF 经 OCR 识别，部分内容可能不完整。',
+      title: '文件预览', preview: '预览', download: '下载原件', loadFailed: '预览加载失败', unsupported: '该文件类型暂不支持预览', excelHint: '最多预览 {rows} 行 × {cols} 列；复杂格式请下载原件查看。', converting: '正在生成预览 PDF…', convertFailed: '预览生成失败', complexFormatHint: '复杂格式请下载原件查看。', translateFile: '翻译全文', translateFileHint: 'AI 译文供理解内容，复杂排版请对照上方原件 PDF。', translateTruncated: '文档较长，已截断部分内容后再翻译。', translateScannedHint: '扫描 PDF 经 OCR 识别，部分内容可能不完整。', noExtractableText: '该文件为图片/图纸类内容，暂无可翻译的文字。', translateVisionHint: '图片/图纸类 PDF 已通过 AI 图像识别翻译，结果仅供参考，请对照原件。', translateVisionTruncated: '文档共 {total} 页，仅翻译了前 {processed} 页。', sourceTextLabel: '原文', translatedTextLabel: '译文',
     },
     fileCategory: {
       label: '文件分类', bom: 'BOM', purchase_order: '采购单', defect_report: '不良报告', sample_image: '样品图', report: '报告', design: '设计', other: '其他',
@@ -626,6 +640,7 @@ const messages = {
     nav: {
       home: 'Home',
       manufacturingQuote: 'Manufacturing RFQ',
+      detailedQuote: 'Detailed Quote',
       postRequest: 'Post Request',
       findDemands: 'Find Demands',
       partners: 'Partners',
@@ -784,9 +799,15 @@ const messages = {
     workflow: {
       title: 'Production Workflow', currentStage: 'Current stage', stage: 'Stage', unassignedFiles: 'Unassigned files',
       status: { pending: 'Pending', in_progress: 'In progress', completed: 'Completed' },
+      projectWord: 'Project',
+      projectStatus: { pending: 'Pending', in_progress: 'In progress', paused: 'Paused', completed: 'Completed', cancelled: 'Cancelled' },
+      stageNames: { 订单: 'Order', 采购: 'Procurement', 生产: 'Production', 出库: 'Outbound', 物流: 'Logistics' },
+      issueSeverity: { low: 'Low', medium: 'Medium', high: 'High' },
+      issueStatus: { open: 'Open', resolved: 'Resolved' },
+      assignee: { customer: 'Customer', supplier: 'Supplier', platform: 'Platform' },
     },
     filePreview: {
-      title: 'File Preview', preview: 'Preview', download: 'Download original', loadFailed: 'Failed to load preview', unsupported: 'This file type cannot be previewed', excelHint: 'Preview limited to {rows} rows × {cols} cols. Download original for complex formatting.', converting: 'Generating preview PDF…', convertFailed: 'Failed to generate preview', complexFormatHint: 'For complex formatting, please download the original file.', translateFile: 'Translate full text', translateFileHint: 'AI translation is for understanding content; compare with the PDF above for layout.', translateTruncated: 'Document was truncated before translation due to length.', translateScannedHint: 'Scanned PDF was processed with OCR; some content may be missing.',
+      title: 'File Preview', preview: 'Preview', download: 'Download original', loadFailed: 'Failed to load preview', unsupported: 'This file type cannot be previewed', excelHint: 'Preview limited to {rows} rows × {cols} cols. Download original for complex formatting.', converting: 'Generating preview PDF…', convertFailed: 'Failed to generate preview', complexFormatHint: 'For complex formatting, please download the original file.', translateFile: 'Translate full text', translateFileHint: 'AI translation is for understanding content; compare with the PDF above for layout.', translateTruncated: 'Document was truncated before translation due to length.', translateScannedHint: 'Scanned PDF was processed with OCR; some content may be missing.', noExtractableText: 'This file is mostly images/drawings and has no translatable text.', translateVisionHint: 'Image/drawing PDF was translated with AI vision. Results are for reference only; compare with the original.', translateVisionTruncated: 'Document has {total} pages; only the first {processed} pages were translated.', sourceTextLabel: 'Original', translatedTextLabel: 'Translation',
     },
     fileCategory: {
       label: 'File category', bom: 'BOM', purchase_order: 'Purchase order', defect_report: 'Defect report', sample_image: 'Sample image', report: 'Report', design: 'Design', other: 'Other',
@@ -797,6 +818,7 @@ const messages = {
     nav: {
       home: 'ホーム',
       manufacturingQuote: '製造見積',
+      detailedQuote: '詳細見積',
       postRequest: 'リクエスト投稿',
       findDemands: '需要を探す',
       partners: 'パートナー',
@@ -955,9 +977,15 @@ const messages = {
     workflow: {
       title: '製作プロセス', currentStage: '現在のステージ', stage: 'ステージ', unassignedFiles: '未割当ファイル',
       status: { pending: '待機', in_progress: '進行中', completed: '完了' },
+      projectWord: 'プロジェクト',
+      projectStatus: { pending: '待機', in_progress: '進行中', paused: '一時停止', completed: '完了', cancelled: 'キャンセル' },
+      stageNames: { 订单: '注文', 采购: '調達', 生产: '生産', 出库: '出荷', 物流: '物流' },
+      issueSeverity: { low: '低', medium: '中', high: '高' },
+      issueStatus: { open: '未解決', resolved: '解決済み' },
+      assignee: { customer: '顧客', supplier: 'サプライヤー', platform: 'プラットフォーム' },
     },
     filePreview: {
-      title: 'ファイルプレビュー', preview: 'プレビュー', download: '原本ダウンロード', loadFailed: 'プレビュー読込失敗', unsupported: 'この形式はプレビュー非対応です', excelHint: '最大 {rows} 行 × {cols} 列までプレビュー。複雑な書式は原本をダウンロードしてください。', converting: 'プレビュー PDF を生成中…', convertFailed: 'プレビュー生成に失敗しました', complexFormatHint: '複雑な書式は原本をダウンロードして確認してください。', translateFile: '全文翻訳', translateFileHint: 'AI 翻訳は内容理解用です。レイアウトは上の PDF と照合してください。', translateTruncated: '文書が長いため、一部のみ翻訳しました。', translateScannedHint: 'スキャン PDF は OCR で認識しました。内容が欠ける場合があります。',
+      title: 'ファイルプレビュー', preview: 'プレビュー', download: '原本ダウンロード', loadFailed: 'プレビュー読込失敗', unsupported: 'この形式はプレビュー非対応です', excelHint: '最大 {rows} 行 × {cols} 列までプレビュー。複雑な書式は原本をダウンロードしてください。', converting: 'プレビュー PDF を生成中…', convertFailed: 'プレビュー生成に失敗しました', complexFormatHint: '複雑な書式は原本をダウンロードして確認してください。', translateFile: '全文翻訳', translateFileHint: 'AI 翻訳は内容理解用です。レイアウトは上の PDF と照合してください。', translateTruncated: '文書が長いため、一部のみ翻訳しました。', translateScannedHint: 'スキャン PDF は OCR で認識しました。内容が欠ける場合があります。', noExtractableText: 'このファイルは画像・図面中心のため、翻訳可能なテキストがありません。', translateVisionHint: '画像・図面 PDF は AI 画像認識で翻訳しました。参考用のため原本と照合してください。', translateVisionTruncated: '文書は {total} ページあるため、先頭 {processed} ページのみ翻訳しました。', sourceTextLabel: '原文', translatedTextLabel: '訳文',
     },
     fileCategory: {
       label: 'ファイル分類', bom: 'BOM', purchase_order: '発注書', defect_report: '不良報告', sample_image: 'サンプル画像', report: '報告', design: '設計', other: 'その他',

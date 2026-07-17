@@ -30,9 +30,11 @@ from apps.project.services import get_current_stage, recalc_progress
 from apps.project.translation import (
     TranslationError,
     translate_project_file_text,
+    translate_project_pdf_file,
     translate_text,
 )
 from core.document_preview import (
+    PDF_EXT,
     PreviewError,
     cleanup_preview_cache,
     extract_text_from_file,
@@ -562,22 +564,39 @@ def _translate_project_file_response(request, project, file_id):
     ext = file_ext(pf.file_name or pf.file.name)
 
     try:
-        extracted = extract_text_from_file(pf.file.path, ext)
-        translated = translate_project_file_text(pf.id, extracted["text"], target_lang)
+        if ext == PDF_EXT:
+            result = translate_project_pdf_file(pf.id, pf.file.path, target_lang)
+        else:
+            extracted = extract_text_from_file(pf.file.path, ext)
+            translated = translate_project_file_text(pf.id, extracted["text"], target_lang)
+            result = {
+                "translated_text": translated,
+                "source_text": extracted.get("text", ""),
+                "truncated": extracted.get("truncated", False),
+                "extraction_method": extracted.get("extraction_method", ""),
+                "page_count": extracted.get("page_count", 0),
+                "processed_pages": extracted.get("page_count", 0),
+                "char_count": extracted.get("char_count", 0),
+            }
     except PreviewError as exc:
         return error_response(exc.code, exc.message, status=status.HTTP_400_BAD_REQUEST, request=request)
     except TranslationError as exc:
         status_code = 503 if exc.code == "TRANSLATE_NOT_CONFIGURED" else 400
         if exc.code == "TRANSLATE_FAILED":
             status_code = 502
+        if exc.code == "PREVIEW_EXTRACT_EMPTY":
+            status_code = 400
         return error_response(exc.code, exc.message, status=status_code, request=request)
 
     return success_response(
         {
-            "translated_text": translated,
-            "truncated": extracted.get("truncated", False),
-            "extraction_method": extracted.get("extraction_method", ""),
-            "char_count": extracted.get("char_count", 0),
+            "translated_text": result.get("translated_text", ""),
+            "source_text": result.get("source_text", ""),
+            "truncated": result.get("truncated", False),
+            "extraction_method": result.get("extraction_method", ""),
+            "page_count": result.get("page_count", 0),
+            "processed_pages": result.get("processed_pages", 0),
+            "char_count": result.get("char_count", 0),
         },
         request=request,
     )

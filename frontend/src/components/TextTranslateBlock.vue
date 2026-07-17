@@ -1,10 +1,21 @@
 <script setup>
 import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { translateMemberProjectText, translateSupplierProjectText } from '../api'
+import {
+  translateMemberProjectText,
+  translateMemberQuoteText,
+  translateMemberRfqText,
+  translateSupplierProjectText,
+  translateSupplierQuoteRequestText,
+  translateSupplierQuoteText,
+} from '../api'
 
 const props = defineProps({
-  projectId: { type: [Number, String], required: true },
+  // Legacy project API: projectId + role
+  projectId: { type: [Number, String], default: null },
+  // Generalized: contextType + contextId + role
+  contextType: { type: String, default: '' }, // 'project' | 'rfq' | 'quote' | 'quoteRequest'
+  contextId: { type: [Number, String], default: null },
   role: { type: String, required: true }, // 'member' | 'supplier'
   text: { type: String, default: '' },
 })
@@ -22,15 +33,32 @@ watch(
   },
 )
 
+const resolveTranslateApi = () => {
+  const type = props.contextType || (props.projectId != null ? 'project' : '')
+  const id = props.contextId ?? props.projectId
+  if (!type || id == null) return null
+  if (props.role === 'supplier') {
+    if (type === 'project') return (data) => translateSupplierProjectText(id, data)
+    if (type === 'quoteRequest') return (data) => translateSupplierQuoteRequestText(id, data)
+    if (type === 'quote') return (data) => translateSupplierQuoteText(id, data)
+    if (type === 'rfq') return (data) => translateSupplierQuoteRequestText(id, data)
+  } else {
+    if (type === 'project') return (data) => translateMemberProjectText(id, data)
+    if (type === 'rfq') return (data) => translateMemberRfqText(id, data)
+    if (type === 'quote') return (data) => translateMemberQuoteText(id, data)
+  }
+  return null
+}
+
 const onTranslate = async () => {
   const source = (props.text || '').trim()
   if (!source) return
+  const api = resolveTranslateApi()
+  if (!api) return
   loading.value = true
   error.value = ''
   try {
-    const api =
-      props.role === 'supplier' ? translateSupplierProjectText : translateMemberProjectText
-    const res = await api(props.projectId, {
+    const res = await api({
       text: source,
       target_lang: locale.value,
     })

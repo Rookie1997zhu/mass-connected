@@ -5,6 +5,8 @@ import { useI18n } from 'vue-i18n'
 import PageShell from '../../components/PageShell.vue'
 import QuoteDetailModal from '../../components/QuoteDetailModal.vue'
 import FulfillmentHub from '../../components/FulfillmentHub.vue'
+import FilePreviewModal from '../../components/FilePreviewModal.vue'
+import TextTranslateBlock from '../../components/TextTranslateBlock.vue'
 import {
   acceptQuote,
   downloadRfqQuotePdf,
@@ -14,6 +16,7 @@ import {
   updateMyRfq,
 } from '../../api'
 import { useLocaleCurrency } from '../../composables/useLocaleCurrency'
+import { downloadAuthedFile } from '../../utils/downloadAuthedFile'
 
 const { t } = useI18n()
 const { formatMoney } = useLocaleCurrency()
@@ -30,6 +33,8 @@ const detailLoading = ref(false)
 const detailError = ref('')
 const quoteDetail = ref(null)
 const activeTab = ref('specs')
+const previewFile = ref(null)
+const previewOpen = ref(false)
 const editForm = ref({
   quantity: 1,
   material: '',
@@ -114,6 +119,21 @@ const onSaveRfq = async () => {
   }
 }
 
+const openRfqPreview = (file) => {
+  previewFile.value = file
+  previewOpen.value = true
+}
+
+const downloadRfqFile = async (file) => {
+  const url = file?.file_url || file?.url
+  if (!url) return
+  try {
+    await downloadAuthedFile(url, file.file_name || 'file')
+  } catch (e) {
+    console.error(e)
+  }
+}
+
 const openDetail = async (quoteId) => {
   detailOpen.value = true
   detailLoading.value = true
@@ -186,7 +206,19 @@ const onAccept = async (quoteId) => {
           <div><dt>{{ t('rfq.tolerance') }}</dt><dd>{{ rfq.tolerance || '—' }}</dd></div>
           <div><dt>{{ t('rfq.surfaceFinish') }}</dt><dd>{{ rfq.surface_finish || '—' }}</dd></div>
           <div><dt>{{ t('rfq.targetDate') }}</dt><dd>{{ rfq.target_delivery_date || '—' }}</dd></div>
-          <div class="full"><dt>{{ t('rfq.remark') }}</dt><dd>{{ rfq.remark || '—' }}</dd></div>
+          <div class="full">
+            <dt>{{ t('rfq.remark') }}</dt>
+            <dd>
+              {{ rfq.remark || '—' }}
+              <TextTranslateBlock
+                v-if="rfq.remark"
+                context-type="rfq"
+                :context-id="rfq.id"
+                role="member"
+                :text="rfq.remark"
+              />
+            </dd>
+          </div>
         </dl>
 
         <section v-if="rfq.can_edit" class="edit-card">
@@ -209,7 +241,18 @@ const onAccept = async (quoteId) => {
         <p v-if="!rfq.attachments?.length" class="page-empty">—</p>
         <ul v-else class="att-list">
           <li v-for="a in rfq.attachments" :key="a.id">
-            <a :href="a.url" target="_blank" rel="noopener">{{ a.file_name }}</a>
+            <span>{{ a.file_name }}</span>
+            <button
+              v-if="a.is_previewable"
+              type="button"
+              class="btn btn-secondary btn-sm"
+              @click="openRfqPreview(a)"
+            >
+              {{ t('filePreview.preview') }}
+            </button>
+            <button type="button" class="btn btn-secondary btn-sm" @click="downloadRfqFile(a)">
+              {{ t('filePreview.download') }}
+            </button>
           </li>
         </ul>
       </div>
@@ -336,6 +379,14 @@ const onAccept = async (quoteId) => {
       @close="closeDetail"
       @accept="onAccept"
     />
+    <FilePreviewModal
+      :open="previewOpen"
+      :file="previewFile"
+      context-type="rfq"
+      :context-id="rfq?.id"
+      role="member"
+      @close="previewOpen = false"
+    />
   </PageShell>
 </template>
 
@@ -388,7 +439,14 @@ const onAccept = async (quoteId) => {
   input, textarea { padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); }
 }
 .section-sub { font-size: 1.125rem; margin: 0 0 var(--space-md); }
-.att-list { padding-left: 1.2rem; a { color: var(--color-steel); } }
+.att-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  li { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+}
 .plan-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--space-lg); }
 .plan-card {
   border: 1px solid var(--color-border);
