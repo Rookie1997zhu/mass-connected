@@ -25,6 +25,24 @@ const profile = computed(() => props.detail?.supplier_profile || null)
 const attachments = computed(() => props.detail?.attachments || [])
 const publicAttachments = computed(() => profile.value?.public_attachments || [])
 
+const companyNameText = computed(() => {
+  const p = profile.value
+  if (!p) return ''
+  const name = (p.company_name || '').trim()
+  const short = (p.short_name || '').trim()
+  if (name && short && short !== name) return `${name}（${short}）`
+  return name
+})
+
+const locationText = computed(() => {
+  const p = profile.value
+  if (!p) return ''
+  return [p.city, p.country].filter(Boolean).join(' · ')
+})
+
+const processNamesText = computed(() => (profile.value?.process_names || []).join(' / '))
+const tagsText = computed(() => (profile.value?.tags || []).join(' · '))
+
 watch(
   () => props.open,
   (isOpen) => {
@@ -110,9 +128,9 @@ const downloadFile = async (file) => {
               <li>{{ t('rfq.leadTime') }}: {{ detail.lead_time_days }}</li>
               <li>{{ t('rfq.validUntil') }}: {{ detail.valid_until || '—' }}</li>
               <li>
-                {{ t('myRfqs.paymentTerms') }}: {{ detail.payment_terms || '—' }}
+                {{ t('myRfqs.paymentTerms') }}: {{ detail.payment_terms || t('myRfqs.paymentTermsPlatform') }}
                 <TextTranslateBlock
-                  v-if="detail.payment_terms"
+                  v-if="detail.payment_terms && detail.payment_terms !== t('myRfqs.paymentTermsPlatform')"
                   context-type="quote"
                   :context-id="detail.id"
                   role="member"
@@ -137,54 +155,137 @@ const downloadFile = async (file) => {
           <section v-if="profile" class="block">
             <h4>{{ t('quoteDetail.supplierProfile') }}</h4>
             <dl class="meta-grid">
-              <div><dt>{{ t('mypage.companyName') }}</dt><dd>{{ profile.company_name || '—' }}</dd></div>
-              <div>
+              <div v-if="companyNameText" class="full">
+                <dt>{{ t('mypage.companyName') }}</dt>
+                <dd>
+                  {{ companyNameText }}
+                  <TextTranslateBlock
+                    context-type="quote"
+                    :context-id="detail.id"
+                    role="member"
+                    :text="companyNameText"
+                  />
+                </dd>
+              </div>
+              <div v-if="locationText">
                 <dt>{{ t('quoteDetail.location') }}</dt>
-                <dd>{{ [profile.region, profile.city, profile.country].filter(Boolean).join(' · ') || '—' }}</dd>
+                <dd>
+                  {{ locationText }}
+                  <TextTranslateBlock
+                    context-type="quote"
+                    :context-id="detail.id"
+                    role="member"
+                    :text="locationText"
+                  />
+                </dd>
               </div>
-              <div>
-                <dt>{{ t('quoteDetail.establishedYear') }}</dt>
-                <dd>{{ profile.established_year || '—' }}</dd>
-              </div>
-              <div>
-                <dt>{{ t('quoteDetail.employeeScale') }}</dt>
-                <dd>{{ profile.employee_scale || '—' }}</dd>
-              </div>
-              <div>
-                <dt>{{ t('quoteDetail.factoryArea') }}</dt>
-                <dd>{{ profile.factory_area_sqm ? `${profile.factory_area_sqm} m²` : '—' }}</dd>
-              </div>
-              <div>
+              <div v-if="profile.score != null && profile.score !== ''">
                 <dt>{{ t('quoteDetail.score') }}</dt>
-                <dd>{{ profile.score ?? '—' }}</dd>
+                <dd>{{ profile.score }}</dd>
               </div>
-              <div class="full">
-                <dt>{{ t('quoteDetail.mainProducts') }}</dt>
-                <dd>{{ profile.main_products || '—' }}</dd>
-              </div>
-              <div class="full">
-                <dt>{{ t('quoteDetail.monthlyCapacity') }}</dt>
-                <dd>{{ profile.monthly_capacity || '—' }}</dd>
-              </div>
-              <div class="full">
-                <dt>{{ t('quoteDetail.certifications') }}</dt>
-                <dd>{{ profile.quality_certifications || '—' }}</dd>
-              </div>
-              <div class="full">
-                <dt>{{ t('quoteDetail.equipment') }}</dt>
-                <dd>{{ profile.equipment_summary || '—' }}</dd>
-              </div>
-              <div class="full">
+              <div v-if="profile.intro" class="full">
                 <dt>{{ t('mypage.intro') }}</dt>
-                <dd>{{ profile.intro || '—' }}</dd>
+                <dd>
+                  {{ profile.intro }}
+                  <TextTranslateBlock
+                    context-type="quote"
+                    :context-id="detail.id"
+                    role="member"
+                    :text="profile.intro"
+                  />
+                </dd>
               </div>
-              <div class="full" v-if="profile.process_names?.length">
+              <div v-if="profile.main_products" class="full">
+                <dt>{{ t('quoteDetail.mainProducts') }}</dt>
+                <dd>
+                  {{ profile.main_products }}
+                  <TextTranslateBlock
+                    context-type="quote"
+                    :context-id="detail.id"
+                    role="member"
+                    :text="profile.main_products"
+                  />
+                </dd>
+              </div>
+              <div v-if="profile.established_year">
+                <dt>{{ t('quoteDetail.establishedYear') }}</dt>
+                <dd>{{ profile.established_year }}</dd>
+              </div>
+              <div v-if="profile.employee_scale">
+                <dt>{{ t('quoteDetail.employeeScale') }}</dt>
+                <dd>
+                  {{ profile.employee_scale }}
+                  <TextTranslateBlock
+                    context-type="quote"
+                    :context-id="detail.id"
+                    role="member"
+                    :text="profile.employee_scale"
+                  />
+                </dd>
+              </div>
+              <div v-if="profile.factory_area_sqm">
+                <dt>{{ t('quoteDetail.factoryArea') }}</dt>
+                <dd>{{ profile.factory_area_sqm }} m²</dd>
+              </div>
+              <div v-if="profile.monthly_capacity" class="full">
+                <dt>{{ t('quoteDetail.monthlyCapacity') }}</dt>
+                <dd>
+                  {{ profile.monthly_capacity }}
+                  <TextTranslateBlock
+                    context-type="quote"
+                    :context-id="detail.id"
+                    role="member"
+                    :text="profile.monthly_capacity"
+                  />
+                </dd>
+              </div>
+              <div v-if="profile.quality_certifications" class="full">
+                <dt>{{ t('quoteDetail.certifications') }}</dt>
+                <dd>
+                  {{ profile.quality_certifications }}
+                  <TextTranslateBlock
+                    context-type="quote"
+                    :context-id="detail.id"
+                    role="member"
+                    :text="profile.quality_certifications"
+                  />
+                </dd>
+              </div>
+              <div v-if="profile.equipment_summary" class="full">
+                <dt>{{ t('quoteDetail.equipment') }}</dt>
+                <dd>
+                  {{ profile.equipment_summary }}
+                  <TextTranslateBlock
+                    context-type="quote"
+                    :context-id="detail.id"
+                    role="member"
+                    :text="profile.equipment_summary"
+                  />
+                </dd>
+              </div>
+              <div v-if="processNamesText" class="full">
                 <dt>{{ t('quoteDetail.processes') }}</dt>
-                <dd>{{ profile.process_names.join(' / ') }}</dd>
+                <dd>
+                  {{ processNamesText }}
+                  <TextTranslateBlock
+                    context-type="quote"
+                    :context-id="detail.id"
+                    role="member"
+                    :text="processNamesText"
+                  />
+                </dd>
               </div>
-              <div class="full" v-if="profile.tags?.length">
+              <div v-if="tagsText" class="full">
                 <dt>{{ t('quoteDetail.tags') }}</dt>
-                <dd>{{ profile.tags.join(' · ') }}</dd>
+                <dd>
+                  {{ tagsText }}
+                  <TextTranslateBlock
+                    context-type="quote"
+                    :context-id="detail.id"
+                    role="member"
+                    :text="tagsText"
+                  />
+                </dd>
               </div>
             </dl>
           </section>

@@ -373,7 +373,7 @@ const messages = {
       publishPublic: '수요 홀 공개',
       publishPublicHint: '승인된 공장이 내 요청을 보고 견적할 수 있습니다',
     },
-    myRfqs: { title: '내 견적 요청', quotes: '견적', noQuotes: '아직 받은 견적이 없습니다.', accept: '수락', acceptSuccess: '견적을 수락했습니다', supplier: '공급처', factory: '공장', platform: '플랫폼', plans: '견적 방안', plan: '방안', noPlans: '아직 공개된 방안이 없습니다.', confirmPlan: '이 방안 확정', confirmed: '확정됨', unitPrice: '단가', moldFee: '금형비', sampleFee: '샘플비', moq: 'MOQ', paymentTerms: '결제 조건', downloadPdf: '견적 PDF 다운로드', leadTimeDays: '납기(일)', customerPriceHint: '플랫폼 가산 후 고객 가격', editRfq: '견적 요청 수정', rfqUpdated: '견적 요청이 수정되었습니다', rfqUpdateFailed: '견적 요청 수정 실패' },
+    myRfqs: { title: '내 견적 요청', quotes: '견적', noQuotes: '아직 받은 견적이 없습니다.', accept: '수락', acceptSuccess: '견적을 수락했습니다', supplier: '공급처', factory: '공장', platform: '플랫폼', plans: '견적 방안', plan: '방안', noPlans: '아직 공개된 방안이 없습니다.', confirmPlan: '이 방안 확정', confirmed: '확정됨', unitPrice: '단가', moldFee: '금형비', sampleFee: '샘플비', moq: 'MOQ', paymentTerms: '결제 조건', paymentTermsPlatform: '플랫폼 확인 기준', downloadPdf: '견적 PDF 다운로드', leadTimeDays: '납기(일)', customerPriceHint: '플랫폼 가산 후 고객 가격', editRfq: '견적 요청 수정', rfqUpdated: '견적 요청이 수정되었습니다', rfqUpdateFailed: '견적 요청 수정 실패' },
     quoteDetail: {
       title: '견적 상세', viewDetail: '상세 보기', loadFailed: '견적 상세를 불러오지 못했습니다', priceBreakdown: '가격 내역', deliveryTerms: '납기/조건', supplierProfile: '공급사 기업 정보', quoteAttachments: '견적 자료', companyAttachments: '기업 소개 자료', noAttachments: '첨부 없음', attachmentCount: '첨부 {n}개', location: '지역', establishedYear: '설립 연도', employeeScale: '직원 규모', factoryArea: '공장 면적', mainProducts: '주력 제품', monthlyCapacity: '월 생산능력', certifications: '품질 인증', equipment: '설비 개요', processes: '가능 공정', tags: '태그', score: '평가 점수',
     },
@@ -400,6 +400,16 @@ const messages = {
     mypage: {
       title: 'MY PAGE', dashboard: '대시보드', overview: '개요', simpleQuotes: '간편 견적', detailQuotes: '상세 견적', projects: '프로젝트', contracts: '계약', payments: '결제', points: '포인트', notifications: '알림', profile: '기업 정보', settings: '계정 설정', logout: '로그아웃',
       pointsBalance: '포인트 잔액', unread: '안읽음', pendingPayments: '결제 대기', viewAll: '전체 보기', empty: '데이터가 없습니다', save: '저장', saved: '저장되었습니다', createdAt: '생성일', amount: '금액', status: '상태', download: '다운로드', uploadProof: '증빙 업로드', proofUploaded: '증빙이 제출되었습니다', signContract: '계약 서명', contractSigned: '계약이 서명되었습니다', markAllRead: '모두 읽음', recharge: '충전', rechargeAmount: '충전 금액(KRW)', submitRecharge: '충전 신청', rechargeSubmitted: '충전 신청이 접수되었습니다', balance: '잔액', totalEarned: '총 획득', totalSpent: '총 사용', progress: '진행률', todos: '할 일', files: '파일', fileName: '파일명', source: '출처', uploadFile: '파일 업로드', companyName: '회사명', region: '지역', country: '국가', city: '도시', intro: '소개', contactPhone: '연락처', paymentTerms: '결제 조건', businessLicense: '사업자등록증', viewLicense: '등록증 보기', shortName: '약칭', publicProfileHint: '아래 기업 정보는 견적 수신 고객에게 공개됩니다(연락처/면허는 제외).', publicAttachments: '공개 기업 자료', public: '공개', private: '비공개', attachmentCategory: '자료 분류', uploadPublicAttachment: '공개 자료 업로드', companyAttachmentUploaded: '기업 자료가 업로드되었습니다', companyAttachmentRemoved: '기업 자료가 삭제되었습니다', catCompanyProfile: '회사 소개', catCertification: '인증', catEquipment: '설비', catCase: '사례', rechargeHistory: '충전 신청 내역', transactionHistory: '포인트 거래 내역', timeline: '타임라인', issues: '문제 목록',
+      contactPersonName: '담당자 이름', companyNameRequired: '회사명을 입력해 주세요',
+      profileSectionBasic: '기본 명함', profileSectionBasicHint: '구매자가 견적에서 가장 먼저 보는 정보입니다.',
+      profileSectionCapability: '역량 정보(선택)', profileSectionCapabilityHint: '모두 선택 사항입니다. 모를 때는 비워 두어도 됩니다.',
+      profileSectionAttachments: '공개 첨부', profileSectionAttachmentsHint: '문구를 다 채우기 어렵다면 인증서·설비·사례 파일을 올려 주세요.',
+      introPlaceholder: '예: 사출·CNC 전문, 소량 시제품 가능', mainProductsPlaceholder: '예: 가전 외장, 의료기기 부품',
+      recommended: '(권장)', factoryAreaHint: '약수㎡, 선택', monthlyCapacityHint: '자유롭게 서술, 선택', certEquipmentHint: '아래 첨부로도 가능',
+      employeeScaleEmpty: '선택 안 함', employeeScaleLt20: '20명 미만', employeeScale20to50: '20–50명', employeeScale50to100: '50–100명', employeeScale100to300: '100–300명', employeeScale300plus: '300명 이상',
+    },
+    projectActivity: {
+      itemCount: '총 {n}건',
     },
     aiTranslate: {
       translate: '번역',
@@ -551,7 +561,7 @@ const messages = {
       publishPublic: '公开到需求大厅',
       publishPublicHint: '审核通过的工厂可查看并报价',
     },
-    myRfqs: { title: '我的询价单', quotes: '报价', noQuotes: '暂未收到报价。', accept: '接受', acceptSuccess: '已接受报价', supplier: '报价方', factory: '工厂', platform: '平台', plans: '报价方案', plan: '方案', noPlans: '暂未公开可选方案。', confirmPlan: '确认此方案', confirmed: '已确认', unitPrice: '单价', moldFee: '模具费', sampleFee: '样品费', moq: 'MOQ', paymentTerms: '付款条件', downloadPdf: '下载报价 PDF', leadTimeDays: '交期(天)', customerPriceHint: '平台加价后的客户价', editRfq: '编辑询价', rfqUpdated: '询价已更新', rfqUpdateFailed: '询价更新失败' },
+    myRfqs: { title: '我的询价单', quotes: '报价', noQuotes: '暂未收到报价。', accept: '接受', acceptSuccess: '已接受报价', supplier: '报价方', factory: '工厂', platform: '平台', plans: '报价方案', plan: '方案', noPlans: '暂未公开可选方案。', confirmPlan: '确认此方案', confirmed: '已确认', unitPrice: '单价', moldFee: '模具费', sampleFee: '样品费', moq: 'MOQ', paymentTerms: '付款条件', paymentTermsPlatform: '按平台确认', downloadPdf: '下载报价 PDF', leadTimeDays: '交期(天)', customerPriceHint: '平台加价后的客户价', editRfq: '编辑询价', rfqUpdated: '询价已更新', rfqUpdateFailed: '询价更新失败' },
     quoteDetail: {
       title: '报价详情', viewDetail: '查看详情', loadFailed: '加载报价详情失败', priceBreakdown: '价格明细', deliveryTerms: '交期与条款', supplierProfile: '供应商企业资料', quoteAttachments: '报价资料', companyAttachments: '企业介绍资料', noAttachments: '暂无附件', attachmentCount: '附件 {n} 个', location: '所在地区', establishedYear: '成立年份', employeeScale: '员工规模', factoryArea: '厂房面积', mainProducts: '主营产品', monthlyCapacity: '月产能', certifications: '质量认证', equipment: '设备概况', processes: '擅长工艺', tags: '标签', score: '平台评分',
     },
@@ -578,6 +588,16 @@ const messages = {
     mypage: {
       title: '个人中心', dashboard: '概览', overview: '概览', simpleQuotes: '简单报价', nda: '保密协议', detailQuotes: '详细报价', projects: '我的项目', contracts: '合同', payments: '付款', points: '积分', notifications: '通知', profile: '企业资料', settings: '账户设置', logout: '退出登录',
       pointsBalance: '积分余额', unread: '未读', pendingPayments: '待付款', viewAll: '查看全部', empty: '暂无数据', save: '保存', saved: '已保存', createdAt: '创建时间', amount: '金额', status: '状态', download: '下载', uploadProof: '上传凭证', proofUploaded: '凭证已提交', signContract: '确认签署', contractSigned: '合同已签署', markAllRead: '全部已读', recharge: '充值', rechargeAmount: '充值金额(KRW)', submitRecharge: '提交充值', rechargeSubmitted: '充值申请已提交', balance: '余额', totalEarned: '累计获得', totalSpent: '累计消耗', progress: '进度', todos: '待办', files: '文件中心', fileName: '文件名', source: '来源', uploadFile: '上传文件', companyName: '公司名称', region: '地区', country: '国家', city: '城市', intro: '简介', contactPhone: '联系电话', paymentTerms: '付款条件', businessLicense: '营业执照', viewLicense: '查看执照', shortName: '简称', publicProfileHint: '以下企业资料将展示给收到您报价的买家（不含联系方式与营业执照）。', publicAttachments: '公开企业资料', public: '公开', private: '不公开', attachmentCategory: '资料分类', uploadPublicAttachment: '上传公开资料', companyAttachmentUploaded: '企业资料已上传', companyAttachmentRemoved: '企业资料已删除', catCompanyProfile: '公司介绍', catCertification: '认证', catEquipment: '设备', catCase: '案例', rechargeHistory: '充值申请记录', transactionHistory: '积分流水', timeline: '时间线', issues: '问题列表',
+      contactPersonName: '联系人姓名', companyNameRequired: '请填写公司名称',
+      profileSectionBasic: '基础名片', profileSectionBasicHint: '买家查看报价时最先看到的信息。',
+      profileSectionCapability: '能力信息（选填）', profileSectionCapabilityHint: '全部选填；不清楚可留空。',
+      profileSectionAttachments: '公开附件', profileSectionAttachmentsHint: '文字不好填时，可上传认证、设备或案例文件。',
+      introPlaceholder: '例：注塑/CNC 专长，支持小批量打样', mainProductsPlaceholder: '例：家电外观件、医疗器械零件',
+      recommended: '（建议填写）', factoryAreaHint: '约数㎡，可不填', monthlyCapacityHint: '按习惯描述即可，可不填', certEquipmentHint: '也可在下方上传附件',
+      employeeScaleEmpty: '不填写', employeeScaleLt20: '20人以下', employeeScale20to50: '20–50人', employeeScale50to100: '50–100人', employeeScale100to300: '100–300人', employeeScale300plus: '300人以上',
+    },
+    projectActivity: {
+      itemCount: '共 {n} 条',
     },
     aiTranslate: {
       translate: '翻译',
@@ -729,7 +749,7 @@ const messages = {
       publishPublic: 'Publish to demand hall',
       publishPublicHint: 'Approved factories can view and quote on your request',
     },
-    myRfqs: { title: 'My RFQs', quotes: 'Quotes', noQuotes: 'No quotes received yet.', accept: 'Accept', acceptSuccess: 'Quote accepted', supplier: 'Supplier', factory: 'Factory', platform: 'Platform', plans: 'Quote Plans', plan: 'Plan', noPlans: 'No plans available yet.', confirmPlan: 'Confirm this plan', confirmed: 'Confirmed', unitPrice: 'Unit Price', moldFee: 'Mold Fee', sampleFee: 'Sample Fee', moq: 'MOQ', paymentTerms: 'Payment Terms', downloadPdf: 'Download Quote PDF', leadTimeDays: 'Lead Time (days)', customerPriceHint: 'Customer price after platform markup', editRfq: 'Edit RFQ', rfqUpdated: 'RFQ updated', rfqUpdateFailed: 'Failed to update RFQ' },
+    myRfqs: { title: 'My RFQs', quotes: 'Quotes', noQuotes: 'No quotes received yet.', accept: 'Accept', acceptSuccess: 'Quote accepted', supplier: 'Supplier', factory: 'Factory', platform: 'Platform', plans: 'Quote Plans', plan: 'Plan', noPlans: 'No plans available yet.', confirmPlan: 'Confirm this plan', confirmed: 'Confirmed', unitPrice: 'Unit Price', moldFee: 'Mold Fee', sampleFee: 'Sample Fee', moq: 'MOQ', paymentTerms: 'Payment Terms', paymentTermsPlatform: 'Per platform confirmation', downloadPdf: 'Download Quote PDF', leadTimeDays: 'Lead Time (days)', customerPriceHint: 'Customer price after platform markup', editRfq: 'Edit RFQ', rfqUpdated: 'RFQ updated', rfqUpdateFailed: 'Failed to update RFQ' },
     quoteDetail: {
       title: 'Quote Detail', viewDetail: 'View details', loadFailed: 'Failed to load quote detail', priceBreakdown: 'Price breakdown', deliveryTerms: 'Delivery & terms', supplierProfile: 'Supplier company profile', quoteAttachments: 'Quote files', companyAttachments: 'Company materials', noAttachments: 'No attachments', attachmentCount: '{n} attachment(s)', location: 'Location', establishedYear: 'Year established', employeeScale: 'Headcount', factoryArea: 'Factory area', mainProducts: 'Main products', monthlyCapacity: 'Monthly capacity', certifications: 'Quality certifications', equipment: 'Equipment summary', processes: 'Processes', tags: 'Tags', score: 'Platform score',
     },
@@ -756,6 +776,16 @@ const messages = {
     mypage: {
       title: 'MY PAGE', dashboard: 'Dashboard', overview: 'Overview', simpleQuotes: 'Simple Quotes', detailQuotes: 'Detailed Quotes', projects: 'Projects', contracts: 'Contracts', payments: 'Payments', points: 'Points', notifications: 'Notifications', profile: 'Company Profile', settings: 'Account Settings', logout: 'Logout',
       pointsBalance: 'Points Balance', unread: 'Unread', pendingPayments: 'Pending Payments', viewAll: 'View all', empty: 'No data', save: 'Save', saved: 'Saved', createdAt: 'Created', amount: 'Amount', status: 'Status', download: 'Download', uploadProof: 'Upload Proof', proofUploaded: 'Proof submitted', signContract: 'Sign Contract', contractSigned: 'Contract signed', markAllRead: 'Mark all read', recharge: 'Recharge', rechargeAmount: 'Recharge Amount (KRW)', submitRecharge: 'Submit Recharge', rechargeSubmitted: 'Recharge request submitted', balance: 'Balance', totalEarned: 'Total Earned', totalSpent: 'Total Spent', progress: 'Progress', todos: 'To-dos', files: 'Files', fileName: 'File Name', source: 'Source', uploadFile: 'Upload File', companyName: 'Company Name', region: 'Region', country: 'Country', city: 'City', intro: 'Introduction', contactPhone: 'Contact Phone', paymentTerms: 'Payment Terms', businessLicense: 'Business License', viewLicense: 'View License', shortName: 'Short name', publicProfileHint: 'Company profile below is shown to buyers who receive your quotes (no contact or license).', publicAttachments: 'Public company materials', public: 'Public', private: 'Private', attachmentCategory: 'Category', uploadPublicAttachment: 'Upload public material', companyAttachmentUploaded: 'Company material uploaded', companyAttachmentRemoved: 'Company material removed', catCompanyProfile: 'Company profile', catCertification: 'Certification', catEquipment: 'Equipment', catCase: 'Case study', rechargeHistory: 'Recharge Requests', transactionHistory: 'Point Transactions', timeline: 'Timeline', issues: 'Issues',
+      contactPersonName: 'Contact name', companyNameRequired: 'Please enter the company name',
+      profileSectionBasic: 'Company card', profileSectionBasicHint: 'What buyers see first when reviewing your quote.',
+      profileSectionCapability: 'Capabilities (optional)', profileSectionCapabilityHint: 'All optional — leave blank if unsure.',
+      profileSectionAttachments: 'Public attachments', profileSectionAttachmentsHint: 'Prefer uploading certificates, equipment lists, or case files if text is hard to fill.',
+      introPlaceholder: 'e.g. Injection / CNC specialist, small-batch samples OK', mainProductsPlaceholder: 'e.g. Appliance housings, medical device parts',
+      recommended: '(recommended)', factoryAreaHint: 'Approx. m², optional', monthlyCapacityHint: 'Describe in your own words, optional', certEquipmentHint: 'Or upload files below',
+      employeeScaleEmpty: 'Not specified', employeeScaleLt20: 'Under 20', employeeScale20to50: '20–50', employeeScale50to100: '50–100', employeeScale100to300: '100–300', employeeScale300plus: '300+',
+    },
+    projectActivity: {
+      itemCount: '{n} items',
     },
     aiTranslate: {
       translate: 'Translate',
@@ -907,7 +937,7 @@ const messages = {
       publishPublic: '需要ホールに公開',
       publishPublicHint: '承認済み工場が閲覧・見積できます',
     },
-    myRfqs: { title: '見積履歴', quotes: '見積', noQuotes: 'まだ見積もりはありません。', accept: '承認', acceptSuccess: '見積を承認しました', supplier: '見積元', factory: '工場', platform: 'プラットフォーム', plans: '見積プラン', plan: 'プラン', noPlans: '公開されたプランはまだありません。', confirmPlan: 'このプランを確定', confirmed: '確定済み', unitPrice: '単価', moldFee: '金型費', sampleFee: 'サンプル費', moq: 'MOQ', paymentTerms: '支払条件', downloadPdf: '見積PDFダウンロード', leadTimeDays: '納期(日)', customerPriceHint: 'プラットフォーム加増後の顧客価格', editRfq: '見積依頼を編集', rfqUpdated: '見積依頼を更新しました', rfqUpdateFailed: '見積依頼の更新に失敗' },
+    myRfqs: { title: '見積履歴', quotes: '見積', noQuotes: 'まだ見積もりはありません。', accept: '承認', acceptSuccess: '見積を承認しました', supplier: '見積元', factory: '工場', platform: 'プラットフォーム', plans: '見積プラン', plan: 'プラン', noPlans: '公開されたプランはまだありません。', confirmPlan: 'このプランを確定', confirmed: '確定済み', unitPrice: '単価', moldFee: '金型費', sampleFee: 'サンプル費', moq: 'MOQ', paymentTerms: '支払条件', paymentTermsPlatform: 'プラットフォーム確認に準拠', downloadPdf: '見積PDFダウンロード', leadTimeDays: '納期(日)', customerPriceHint: 'プラットフォーム加増後の顧客価格', editRfq: '見積依頼を編集', rfqUpdated: '見積依頼を更新しました', rfqUpdateFailed: '見積依頼の更新に失敗' },
     quoteDetail: {
       title: '見積詳細', viewDetail: '詳細を見る', loadFailed: '見積詳細の読込に失敗', priceBreakdown: '価格内訳', deliveryTerms: '納期・条件', supplierProfile: 'サプライヤー企業情報', quoteAttachments: '見積資料', companyAttachments: '企業紹介資料', noAttachments: '添付なし', attachmentCount: '添付 {n} 件', location: '所在地', establishedYear: '設立年', employeeScale: '従業員規模', factoryArea: '工場面積', mainProducts: '主力製品', monthlyCapacity: '月産能力', certifications: '品質認証', equipment: '設備概要', processes: '対応工程', tags: 'タグ', score: '評価スコア',
     },
@@ -934,6 +964,16 @@ const messages = {
     mypage: {
       title: 'MY PAGE', dashboard: 'ダッシュボード', overview: '概要', simpleQuotes: '簡易見積', detailQuotes: '詳細見積', projects: 'プロジェクト', contracts: '契約', payments: '支払い', points: 'ポイント', notifications: '通知', profile: '企業情報', settings: 'アカウント設定', logout: 'ログアウト',
       pointsBalance: 'ポイント残高', unread: '未読', pendingPayments: '支払い待ち', viewAll: 'すべて表示', empty: 'データがありません', save: '保存', saved: '保存しました', createdAt: '作成日', amount: '金額', status: 'ステータス', download: 'ダウンロード', uploadProof: '証憑アップロード', proofUploaded: '証憑を提出しました', signContract: '契約に署名', contractSigned: '契約に署名しました', markAllRead: 'すべて既読', recharge: 'チャージ', rechargeAmount: 'チャージ金額(KRW)', submitRecharge: 'チャージ申請', rechargeSubmitted: 'チャージ申請を受け付けました', balance: '残高', totalEarned: '累計獲得', totalSpent: '累計使用', progress: '進捗', todos: 'タスク', files: 'ファイル', fileName: 'ファイル名', source: '出典', uploadFile: 'ファイルアップロード', companyName: '会社名', region: '地域', country: '国', city: '都市', intro: '紹介', contactPhone: '連絡先', paymentTerms: '支払条件', businessLicense: '営業許可証', viewLicense: '許可証を見る', shortName: '略称', publicProfileHint: '以下の企業情報は見積を受け取った顧客に公開されます（連絡先・許可証は除く）。', publicAttachments: '公開企業資料', public: '公開', private: '非公開', attachmentCategory: '資料分類', uploadPublicAttachment: '公開資料をアップロード', companyAttachmentUploaded: '企業資料をアップロードしました', companyAttachmentRemoved: '企業資料を削除しました', catCompanyProfile: '会社紹介', catCertification: '認証', catEquipment: '設備', catCase: '事例', rechargeHistory: 'チャージ申請履歴', transactionHistory: 'ポイント取引履歴', timeline: 'タイムライン', issues: '問題一覧',
+      contactPersonName: '担当者名', companyNameRequired: '会社名を入力してください',
+      profileSectionBasic: '基本プロフィール', profileSectionBasicHint: '見積確認時に購入者が最初に見る情報です。',
+      profileSectionCapability: '能力情報（任意）', profileSectionCapabilityHint: 'すべて任意です。不明な項目は空欄で構いません。',
+      profileSectionAttachments: '公開添付', profileSectionAttachmentsHint: '文章が難しい場合は認証・設備・事例ファイルをアップロードしてください。',
+      introPlaceholder: '例：射出・CNC 専門、少量試作対応', mainProductsPlaceholder: '例：家電筐体、医療機器部品',
+      recommended: '（推奨）', factoryAreaHint: 'おおよそ㎡、任意', monthlyCapacityHint: '自由記述、任意', certEquipmentHint: '下の添付でも可',
+      employeeScaleEmpty: '未記入', employeeScaleLt20: '20名未満', employeeScale20to50: '20–50名', employeeScale50to100: '50–100名', employeeScale100to300: '100–300名', employeeScale300plus: '300名以上',
+    },
+    projectActivity: {
+      itemCount: '全 {n} 件',
     },
     aiTranslate: {
       translate: '翻訳',

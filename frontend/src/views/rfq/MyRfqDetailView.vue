@@ -314,7 +314,7 @@ const onAccept = async (quoteId) => {
             </tr>
             <tr>
               <td>{{ t('myRfqs.paymentTerms') }}</td>
-              <td v-for="p in rfq.plans" :key="p.id">{{ p.payment_terms || '—' }}</td>
+              <td v-for="p in rfq.plans" :key="p.id">{{ p.payment_terms || t('myRfqs.paymentTermsPlatform') }}</td>
             </tr>
           </tbody>
         </table>
@@ -340,7 +340,7 @@ const onAccept = async (quoteId) => {
               <li>{{ t('rfq.leadTime') }}: {{ p.lead_time_days }}</li>
               <li>{{ t('rfq.validUntil') }}: {{ p.valid_until || '—' }}</li>
               <li v-if="p.moq">{{ t('myRfqs.moq') }}: {{ p.moq }}</li>
-              <li v-if="p.payment_terms">{{ t('myRfqs.paymentTerms') }}: {{ p.payment_terms }}</li>
+              <li>{{ t('myRfqs.paymentTerms') }}: {{ p.payment_terms || t('myRfqs.paymentTermsPlatform') }}</li>
               <li v-if="p.attachment_count">{{ t('quoteDetail.attachmentCount', { n: p.attachment_count }) }}</li>
             </ul>
             <div class="plan-actions" @click.stop>

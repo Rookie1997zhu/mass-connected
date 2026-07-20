@@ -44,7 +44,6 @@ const emptyQuote = () => ({
   mold_fee: null,
   sample_fee: null,
   moq: null,
-  payment_terms: '',
 })
 const quoteForm = ref(emptyQuote())
 
@@ -227,7 +226,7 @@ const onCancelQuoteRequest = async (qr) => {
             <el-input-number v-model="quoteForm.moq" :min="1" />
           </el-form-item>
           <el-form-item :label="t('rfqs.paymentTerms')">
-            <el-input v-model="quoteForm.payment_terms" style="width: 120px" />
+            <span class="platform-hint">{{ t('rfqs.paymentTermsPlatform') }}</span>
           </el-form-item>
           <el-form-item :label="t('rfqs.leadTime')">
             <el-input-number v-model="quoteForm.lead_time_days" :min="0" />
@@ -254,5 +253,6 @@ const onCancelQuoteRequest = async (qr) => {
 .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
 .att-list { padding-left: 1.2rem; }
 .muted { color: #909399; }
+.platform-hint { color: #606266; font-size: 0.9rem; }
 h4 { margin: 1rem 0 0.5rem; }
 </style>

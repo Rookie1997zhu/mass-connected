@@ -57,7 +57,8 @@ const submit = async () => {
 
 const saveEdit = async () => {
   try {
-    await updateSupplier(editForm.value.id, editForm.value)
+    const { payment_terms: _ignored, ...payload } = editForm.value
+    await updateSupplier(editForm.value.id, payload)
     ElMessage.success(t('common.success'))
     editDialog.value = false
     await load()
@@ -138,7 +139,6 @@ const onUploadAttachment = async (e) => {
         <el-form-item :label="t('common.region')"><el-input v-model="editForm.region" /></el-form-item>
         <el-form-item :label="t('suppliers.country')"><el-input v-model="editForm.country" /></el-form-item>
         <el-form-item :label="t('suppliers.city')"><el-input v-model="editForm.city" /></el-form-item>
-        <el-form-item :label="t('suppliers.paymentTerms')"><el-input v-model="editForm.payment_terms" /></el-form-item>
         <el-form-item :label="t('suppliers.establishedYear')"><el-input-number v-model="editForm.established_year" :min="1900" :max="2100" /></el-form-item>
         <el-form-item :label="t('suppliers.employeeScale')"><el-input v-model="editForm.employee_scale" /></el-form-item>
         <el-form-item :label="t('suppliers.factoryArea')"><el-input-number v-model="editForm.factory_area_sqm" :min="0" /></el-form-item>

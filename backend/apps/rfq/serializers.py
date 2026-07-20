@@ -370,12 +370,23 @@ class FactoryQuoteCreateSerializer(serializers.ModelSerializer):
             "mold_fee",
             "sample_fee",
             "moq",
-            "payment_terms",
             "currency",
             "lead_time_days",
             "valid_until",
             "note",
         ]
+
+    def create(self, validated_data):
+        from apps.rfq.constants import PLATFORM_PAYMENT_TERMS
+
+        validated_data["payment_terms"] = PLATFORM_PAYMENT_TERMS
+        return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        from apps.rfq.constants import PLATFORM_PAYMENT_TERMS
+
+        validated_data["payment_terms"] = PLATFORM_PAYMENT_TERMS
+        return super().update(instance, validated_data)
 
 
 class AdminQuoteCreateSerializer(serializers.ModelSerializer):
@@ -387,7 +398,6 @@ class AdminQuoteCreateSerializer(serializers.ModelSerializer):
             "mold_fee",
             "sample_fee",
             "moq",
-            "payment_terms",
             "currency",
             "lead_time_days",
             "valid_until",
@@ -395,6 +405,18 @@ class AdminQuoteCreateSerializer(serializers.ModelSerializer):
             "is_customer_visible",
             "plan_label",
         ]
+
+    def create(self, validated_data):
+        from apps.rfq.constants import PLATFORM_PAYMENT_TERMS
+
+        validated_data["payment_terms"] = PLATFORM_PAYMENT_TERMS
+        return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        from apps.rfq.constants import PLATFORM_PAYMENT_TERMS
+
+        validated_data["payment_terms"] = PLATFORM_PAYMENT_TERMS
+        return super().update(instance, validated_data)
 
 
 class QuoteRequestSerializer(serializers.ModelSerializer):

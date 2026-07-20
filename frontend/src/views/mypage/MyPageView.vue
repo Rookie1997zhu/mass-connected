@@ -91,7 +91,6 @@ const profileForm = ref({
   contact_phone: '',
   country: '',
   city: '',
-  payment_terms: '',
   established_year: '',
   employee_scale: '',
   factory_area_sqm: '',
@@ -104,6 +103,16 @@ const profileAttachments = ref([])
 const companyFile = ref(null)
 const companyFileCategory = ref('company_profile')
 const licenseFile = ref(null)
+const profileError = ref('')
+
+const employeeScaleOptions = [
+  { value: '', labelKey: 'mypage.employeeScaleEmpty' },
+  { value: '<20', labelKey: 'mypage.employeeScaleLt20' },
+  { value: '20-50', labelKey: 'mypage.employeeScale20to50' },
+  { value: '50-100', labelKey: 'mypage.employeeScale50to100' },
+  { value: '100-300', labelKey: 'mypage.employeeScale100to300' },
+  { value: '300+', labelKey: 'mypage.employeeScale300plus' },
+]
 
 const money = (v, c = 'KRW', quote = null) => {
   if (quote) {
@@ -195,7 +204,6 @@ const loadTab = async (tab) => {
         contact_phone: fp.contact_phone || '',
         country: fp.country || '',
         city: fp.city || '',
-        payment_terms: fp.payment_terms || '',
         established_year: fp.established_year || '',
         employee_scale: fp.employee_scale || '',
         factory_area_sqm: fp.factory_area_sqm || '',
@@ -205,6 +213,7 @@ const loadTab = async (tab) => {
         equipment_summary: fp.equipment_summary || '',
       }
       profileAttachments.value = fp.attachments || []
+      profileError.value = ''
     }
   } finally {
     loading.value = false
@@ -257,16 +266,21 @@ const onMarkAllRead = async () => {
 }
 
 const onSaveProfile = async () => {
+  profileError.value = ''
   if (activeTab.value === 'profile' && auth.isEnterprise) {
+    if (!String(profileForm.value.company_name || '').trim()) {
+      profileError.value = t('mypage.companyNameRequired')
+      return
+    }
+    const phone = profileForm.value.phone || ''
     const payload = {
-      company_name: profileForm.value.company_name,
+      company_name: profileForm.value.company_name.trim(),
       short_name: profileForm.value.short_name,
-      region: profileForm.value.region,
+      region: '',
       country: profileForm.value.country,
       city: profileForm.value.city,
       intro: profileForm.value.intro,
-      contact_phone: profileForm.value.contact_phone,
-      payment_terms: profileForm.value.payment_terms,
+      contact_phone: phone,
       established_year: profileForm.value.established_year || null,
       employee_scale: profileForm.value.employee_scale,
       factory_area_sqm: profileForm.value.factory_area_sqm || null,
@@ -279,7 +293,7 @@ const onSaveProfile = async () => {
       const res = await updateFactoryProfile({
         ...payload,
         name: profileForm.value.name,
-        phone: profileForm.value.phone,
+        phone,
       })
       auth.profile = res.data
       profileAttachments.value = res.data.attachments || []
@@ -287,7 +301,7 @@ const onSaveProfile = async () => {
     } else {
       const fd = new FormData()
       fd.append('name', profileForm.value.name || '')
-      fd.append('phone', profileForm.value.phone || '')
+      fd.append('phone', phone)
       Object.entries(payload).forEach(([k, v]) => fd.append(k, v ?? ''))
       if (licenseFile.value) fd.append('business_license', licenseFile.value)
       await updateProfileMultipart(fd)
@@ -575,26 +589,78 @@ const onLogout = () => {
 
       <!-- Profile / Settings -->
       <div v-else-if="activeTab === 'profile' || activeTab === 'settings'" class="form-box">
-        <label>{{ t('account.name') }}<input v-model="profileForm.name" type="text" /></label>
-        <label>{{ t('account.phone') }}<input v-model="profileForm.phone" type="text" /></label>
-        <template v-if="activeTab === 'profile' && auth.isEnterprise">
-          <label>{{ t('mypage.companyName') }}<input v-model="profileForm.company_name" type="text" /></label>
+        <template v-if="activeTab === 'settings'">
+          <label>{{ t('mypage.contactPersonName') }}<input v-model="profileForm.name" type="text" /></label>
+          <label>{{ t('account.phone') }}<input v-model="profileForm.phone" type="text" /></label>
+        </template>
+        <template v-else-if="activeTab === 'profile' && auth.isEnterprise">
+          <h3 class="form-section-title">{{ t('mypage.profileSectionBasic') }}</h3>
+          <p class="hint">{{ t('mypage.profileSectionBasicHint') }}</p>
+          <label>
+            {{ t('mypage.companyName') }}
+            <span class="req">*</span>
+            <input v-model="profileForm.company_name" type="text" required />
+          </label>
           <label>{{ t('mypage.shortName') }}<input v-model="profileForm.short_name" type="text" /></label>
-          <label>{{ t('mypage.region') }}<input v-model="profileForm.region" type="text" /></label>
           <label>{{ t('mypage.country') }}<input v-model="profileForm.country" type="text" /></label>
           <label>{{ t('mypage.city') }}<input v-model="profileForm.city" type="text" /></label>
-          <label>{{ t('mypage.intro') }}<textarea v-model="profileForm.intro" rows="3" /></label>
-          <label>{{ t('mypage.contactPhone') }}<input v-model="profileForm.contact_phone" type="text" /></label>
-          <label>{{ t('mypage.paymentTerms') }}<input v-model="profileForm.payment_terms" type="text" /></label>
-          <label>{{ t('quoteDetail.establishedYear') }}<input v-model="profileForm.established_year" type="number" min="1900" /></label>
-          <label>{{ t('quoteDetail.employeeScale') }}<input v-model="profileForm.employee_scale" type="text" /></label>
-          <label>{{ t('quoteDetail.factoryArea') }}<input v-model="profileForm.factory_area_sqm" type="number" min="0" /></label>
-          <label>{{ t('quoteDetail.mainProducts') }}<textarea v-model="profileForm.main_products" rows="2" /></label>
-          <label>{{ t('quoteDetail.monthlyCapacity') }}<input v-model="profileForm.monthly_capacity" type="text" /></label>
-          <label>{{ t('quoteDetail.certifications') }}<textarea v-model="profileForm.quality_certifications" rows="2" /></label>
-          <label>{{ t('quoteDetail.equipment') }}<textarea v-model="profileForm.equipment_summary" rows="2" /></label>
+          <label>
+            {{ t('mypage.intro') }}
+            <textarea
+              v-model="profileForm.intro"
+              rows="3"
+              :placeholder="t('mypage.introPlaceholder')"
+            />
+          </label>
+          <label>
+            {{ t('quoteDetail.mainProducts') }}
+            <span class="hint-inline">{{ t('mypage.recommended') }}</span>
+            <textarea
+              v-model="profileForm.main_products"
+              rows="2"
+              :placeholder="t('mypage.mainProductsPlaceholder')"
+            />
+          </label>
+
+          <h3 class="form-section-title">{{ t('mypage.profileSectionCapability') }}</h3>
+          <p class="hint">{{ t('mypage.profileSectionCapabilityHint') }}</p>
+          <label>
+            {{ t('quoteDetail.establishedYear') }}
+            <input v-model="profileForm.established_year" type="number" min="1900" />
+          </label>
+          <label>
+            {{ t('quoteDetail.employeeScale') }}
+            <select v-model="profileForm.employee_scale">
+              <option v-for="opt in employeeScaleOptions" :key="opt.value || 'empty'" :value="opt.value">
+                {{ t(opt.labelKey) }}
+              </option>
+            </select>
+          </label>
+          <label>
+            {{ t('quoteDetail.factoryArea') }}
+            <span class="hint-inline">{{ t('mypage.factoryAreaHint') }}</span>
+            <input v-model="profileForm.factory_area_sqm" type="number" min="0" />
+          </label>
+          <label>
+            {{ t('quoteDetail.monthlyCapacity') }}
+            <span class="hint-inline">{{ t('mypage.monthlyCapacityHint') }}</span>
+            <input v-model="profileForm.monthly_capacity" type="text" />
+          </label>
+          <label>
+            {{ t('quoteDetail.certifications') }}
+            <span class="hint-inline">{{ t('mypage.certEquipmentHint') }}</span>
+            <textarea v-model="profileForm.quality_certifications" rows="2" />
+          </label>
+          <label>
+            {{ t('quoteDetail.equipment') }}
+            <span class="hint-inline">{{ t('mypage.certEquipmentHint') }}</span>
+            <textarea v-model="profileForm.equipment_summary" rows="2" />
+          </label>
+
           <p class="hint">{{ t('mypage.publicProfileHint') }}</p>
           <template v-if="auth.isSupplier">
+            <h3 class="form-section-title">{{ t('mypage.profileSectionAttachments') }}</h3>
+            <p class="hint">{{ t('mypage.profileSectionAttachmentsHint') }}</p>
             <div class="company-att-box">
               <h3>{{ t('mypage.publicAttachments') }}</h3>
               <ul v-if="profileAttachments.length" class="att-mini">
@@ -628,6 +694,7 @@ const onLogout = () => {
         <p v-else-if="auth.isEnterprise && auth.factoryProfile" class="hint">
           {{ auth.factoryProfile.company_name }} · {{ auth.factoryProfile.status }}
         </p>
+        <p v-if="profileError" class="page-message page-message--error">{{ profileError }}</p>
         <button type="button" class="btn btn-primary btn-sm" @click="onSaveProfile">{{ t('mypage.save') }}</button>
       </div>
     </section>
@@ -665,7 +732,29 @@ const onLogout = () => {
 .neg { color: #b91c1c; } .pos { color: #15803d; }
 .notif-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--space-sm); li { border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-md); cursor: pointer; p { margin: 0.25rem 0; font-size: 0.875rem; opacity: 0.75; } } li.unread { border-left: 3px solid var(--color-steel); } }
 .notif-time { font-size: 0.72rem; opacity: 0.55; }
-.form-box { display: flex; flex-direction: column; gap: var(--space-md); max-width: 400px; label { display: flex; flex-direction: column; gap: 0.375rem; font-size: 0.875rem; } input { padding: 0.625rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); } .hint { font-size: 0.8rem; opacity: 0.7; margin: 0; } }
+.form-box {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  max-width: 480px;
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    font-size: 0.875rem;
+  }
+  input, select {
+    padding: 0.625rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font: inherit;
+  }
+  .hint { font-size: 0.8rem; opacity: 0.7; margin: 0; }
+}
+.form-section-title { margin: var(--space-md) 0 0; font-size: 1rem; font-weight: 600; }
+.form-section-title:first-child { margin-top: 0; }
+.req { color: #b91c1c; margin-left: 0.15rem; }
+.hint-inline { font-size: 0.72rem; opacity: 0.55; font-weight: 400; margin-left: 0.35rem; }
 .upload-label { color: var(--color-steel); cursor: pointer; font-size: 0.85rem; }
 .todo-list { list-style: none; padding: 0; margin: 0; li { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid var(--color-border); label { display: flex; align-items: center; gap: 0.5rem; } .done { text-decoration: line-through; opacity: 0.5; } } }
 .todo-meta { font-size: 0.75rem; opacity: 0.55; }

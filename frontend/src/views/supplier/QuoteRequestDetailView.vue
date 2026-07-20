@@ -38,7 +38,6 @@ const form = ref({
   mold_fee: '',
   sample_fee: '',
   moq: '',
-  payment_terms: '',
   lead_time_days: 7,
   valid_until: '',
   note: '',
@@ -69,7 +68,6 @@ const fillFromQuote = (quote) => {
     mold_fee: quote.mold_fee ?? '',
     sample_fee: quote.sample_fee ?? '',
     moq: quote.moq ?? '',
-    payment_terms: quote.payment_terms || '',
     lead_time_days: quote.lead_time_days || 7,
     valid_until: quote.valid_until || '',
     note: quote.note || '',
@@ -128,7 +126,6 @@ const buildQuoteFormData = () => {
   if (form.value.moq !== '' && form.value.moq != null) {
     fd.append('moq', String(Number(form.value.moq)))
   }
-  fd.append('payment_terms', form.value.payment_terms || '')
   fd.append('currency', displayCurrency.value || 'CNY')
   fd.append('lead_time_days', String(Number(form.value.lead_time_days) || 7))
   if (form.value.valid_until) fd.append('valid_until', form.value.valid_until)
@@ -295,14 +292,8 @@ const downloadFile = async (file) => {
           <p v-if="data.my_quote.revision_version">
             {{ t('quoteRequest.revision') }}: v{{ data.my_quote.revision_version }}
           </p>
-          <p v-if="data.my_quote.payment_terms">
-            {{ t('myRfqs.paymentTerms') }}: {{ data.my_quote.payment_terms }}
-            <TextTranslateBlock
-              context-type="quote"
-              :context-id="data.my_quote.id"
-              role="supplier"
-              :text="data.my_quote.payment_terms"
-            />
+          <p>
+            {{ t('myRfqs.paymentTerms') }}: {{ data.my_quote.payment_terms || t('myRfqs.paymentTermsPlatform') }}
           </p>
           <p v-if="data.my_quote.note">
             {{ t('rfq.note') }}: {{ data.my_quote.note }}
@@ -355,7 +346,7 @@ const downloadFile = async (file) => {
           <label>{{ t('myRfqs.moldFee') }}<input v-model="form.mold_fee" type="number" min="0" /></label>
           <label>{{ t('myRfqs.sampleFee') }}<input v-model="form.sample_fee" type="number" min="0" /></label>
           <label>{{ t('myRfqs.moq') }}<input v-model="form.moq" type="number" min="1" /></label>
-          <label>{{ t('myRfqs.paymentTerms') }}<input v-model="form.payment_terms" type="text" /></label>
+          <p class="hint">{{ t('myRfqs.paymentTerms') }}: {{ t('myRfqs.paymentTermsPlatform') }}</p>
           <label>{{ t('rfq.leadTime') }}<input v-model="form.lead_time_days" type="number" min="1" /></label>
           <label>{{ t('rfq.validUntil') }}<input v-model="form.valid_until" type="date" /></label>
           <label>{{ t('rfq.note') }}<textarea v-model="form.note" rows="3" /></label>

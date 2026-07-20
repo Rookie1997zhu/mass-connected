@@ -6,6 +6,7 @@ from rest_framework import status
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework.views import APIView
 
+from apps.rfq.constants import PLATFORM_PAYMENT_TERMS
 from apps.rfq.models import (
     ProductionOrder,
     QuoteAttachment,
@@ -627,6 +628,7 @@ class SupplierQuoteRequestQuoteView(APIView):
                     )
                 for field, value in serializer.validated_data.items():
                     setattr(existing, field, value)
+                existing.payment_terms = PLATFORM_PAYMENT_TERMS
                 existing.revision_version = (existing.revision_version or 1) + 1
                 existing.revised_at = timezone.now()
                 existing.status = "sent"
@@ -1291,7 +1293,7 @@ class MemberRFQQuotePdfView(APIView):
             ["样品费"] + [f"{apply_markup(q.sample_fee, markup):,}" if q.sample_fee else "—" for q in visible],
             ["MOQ"] + [str(q.moq or "—") for q in visible],
             ["交期(天)"] + [str(q.lead_time_days) for q in visible],
-            ["付款条件"] + [q.payment_terms or "—" for q in visible],
+            ["付款条件"] + [(q.payment_terms or PLATFORM_PAYMENT_TERMS) for q in visible],
         ]
         pdf_bytes = build_comparison_pdf(
             title="比较报价书",

@@ -4,7 +4,11 @@ import { RouterLink, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PageShell from '../../components/PageShell.vue'
 import FilePreviewModal from '../../components/FilePreviewModal.vue'
-import TextTranslateBlock from '../../components/TextTranslateBlock.vue'
+import ProjectActivityGrid from '../../components/project/ProjectActivityGrid.vue'
+import ProjectActivitySection from '../../components/project/ProjectActivitySection.vue'
+import ProjectTimeline from '../../components/project/ProjectTimeline.vue'
+import ProjectIssueList from '../../components/project/ProjectIssueList.vue'
+import ProjectFileCenter from '../../components/project/ProjectFileCenter.vue'
 import { fetchMyProject, toggleProjectTodo } from '../../api'
 
 const { t, te } = useI18n()
@@ -14,9 +18,6 @@ const route = useRoute()
 const trOr = (key, fallback) => (te(key) ? t(key) : fallback)
 const stageLabel = (name) => trOr(`workflow.stageNames.${name}`, name)
 const projectStatusLabel = (status) => trOr(`workflow.projectStatus.${status}`, status)
-const issueSeverityLabel = (v) => trOr(`workflow.issueSeverity.${v}`, v)
-const issueStatusLabel = (v) => trOr(`workflow.issueStatus.${v}`, v)
-const fileCategoryLabel = (v) => trOr(`fileCategory.${v}`, v)
 const project = ref(null)
 const loading = ref(true)
 const previewFile = ref(null)
@@ -49,16 +50,6 @@ const displayTitle = computed(() => {
   const raw = project.value?.title || ''
   const m = raw.match(/^项目\s*(.+)$/)
   return m ? `${t('workflow.projectWord')} ${m[1]}` : raw
-})
-
-const filesByStage = computed(() => {
-  const map = {}
-  for (const f of project.value?.files || []) {
-    const key = f.stage_id || 'none'
-    if (!map[key]) map[key] = []
-    map[key].push(f)
-  }
-  return map
 })
 
 const openPreview = (file) => {
@@ -115,68 +106,46 @@ const openPreview = (file) => {
         </li>
       </ul>
 
-      <h2 class="section-sub">{{ t('mypage.timeline') }}</h2>
-      <p v-if="!project.updates?.length" class="page-empty">{{ t('mypage.empty') }}</p>
-      <ul v-else class="timeline">
-        <li v-for="u in project.updates" :key="u.id">
-          <span class="tl-time">{{ (u.created_at || '').slice(0, 16).replace('T', ' ') }}</span>
-          <p>{{ u.content }}</p>
-          <TextTranslateBlock :project-id="project.id" role="member" :text="u.content" />
-        </li>
-      </ul>
-
-      <h2 class="section-sub">{{ t('mypage.issues') }}</h2>
-      <p v-if="!project.issues?.length" class="page-empty">{{ t('mypage.empty') }}</p>
-      <ul v-else class="issue-list">
-        <li v-for="issue in project.issues" :key="issue.id">
-          <strong>{{ issue.title }}</strong>
-          <span class="issue-meta">
-            {{ issueSeverityLabel(issue.severity) }} · {{ issueStatusLabel(issue.status) }}
-          </span>
-          <p v-if="issue.description">{{ issue.description }}</p>
-          <TextTranslateBlock
-            :project-id="project.id"
-            role="member"
-            :text="[issue.title, issue.description].filter(Boolean).join('\n')"
-          />
-        </li>
-      </ul>
-
-      <h2 class="section-sub">{{ t('mypage.files') }}</h2>
-      <template v-for="s in project.stages" :key="'files-' + s.id">
-        <h3 class="stage-file-title">{{ stageLabel(s.name) }}</h3>
-        <p v-if="!(filesByStage[s.id] || []).length" class="page-empty">—</p>
-        <ul v-else class="file-list">
-          <li v-for="f in filesByStage[s.id]" :key="f.id">
-            <span>{{ f.file_name }}</span>
-            <span class="file-meta">{{ fileCategoryLabel(f.file_category) }}</span>
-            <button
-              v-if="f.is_previewable"
-              type="button"
-              class="btn btn-secondary btn-sm"
-              @click="openPreview(f)"
-            >
-              {{ t('filePreview.preview') }}
-            </button>
-          </li>
-        </ul>
-      </template>
-      <template v-if="(filesByStage.none || []).length">
-        <h3 class="stage-file-title">{{ t('workflow.unassignedFiles') }}</h3>
-        <ul class="file-list">
-          <li v-for="f in filesByStage.none" :key="f.id">
-            <span>{{ f.file_name }}</span>
-            <button
-              v-if="f.is_previewable"
-              type="button"
-              class="btn btn-secondary btn-sm"
-              @click="openPreview(f)"
-            >
-              {{ t('filePreview.preview') }}
-            </button>
-          </li>
-        </ul>
-      </template>
+      <ProjectActivityGrid>
+        <template #main>
+          <ProjectActivitySection
+            :title="t('mypage.timeline')"
+            :count="project.updates?.length || 0"
+            :empty="!project.updates?.length"
+          >
+            <ProjectTimeline
+              :updates="project.updates"
+              :project-id="project.id"
+              role="member"
+            />
+          </ProjectActivitySection>
+        </template>
+        <template #side>
+          <ProjectActivitySection
+            :title="t('mypage.issues')"
+            :count="project.issues?.length || 0"
+            :empty="!project.issues?.length"
+          >
+            <ProjectIssueList
+              :issues="project.issues"
+              :project-id="project.id"
+              role="member"
+            />
+          </ProjectActivitySection>
+          <ProjectActivitySection
+            :title="t('mypage.files')"
+            :count="project.files?.length || 0"
+          >
+            <ProjectFileCenter
+              :files="project.files"
+              :stages="project.stages"
+              :current-stage-id="project.current_stage?.id"
+              role="member"
+              @preview="openPreview"
+            />
+          </ProjectActivitySection>
+        </template>
+      </ProjectActivityGrid>
 
       <FilePreviewModal
         :open="previewOpen"
@@ -250,37 +219,4 @@ const openPreview = (file) => {
   }
 }
 .todo-assignee { font-size: 0.72rem; opacity: 0.55; }
-.stage-file-title { font-size: 0.95rem; margin: var(--space-md) 0 var(--space-sm); }
-.file-list {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 var(--space-md);
-  li {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.5rem 0;
-    border-bottom: 1px solid var(--color-border);
-  }
-}
-.file-meta { font-size: 0.72rem; opacity: 0.55; margin-right: auto; }
-.timeline {
-  list-style: none;
-  padding-left: var(--space-md);
-  margin: 0;
-  border-left: 2px solid var(--color-border);
-  li { padding: 0 0 var(--space-md) var(--space-md); p { margin: 0.25rem 0 0; font-size: 0.9rem; } }
-}
-.tl-time { font-size: 0.72rem; opacity: 0.55; }
-.issue-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  li {
-    padding: 0.75rem 0;
-    border-bottom: 1px solid var(--color-border);
-    p { margin: 0.25rem 0 0; font-size: 0.85rem; opacity: 0.8; }
-  }
-}
-.issue-meta { font-size: 0.72rem; opacity: 0.55; margin-left: 0.5rem; }
 </style>
