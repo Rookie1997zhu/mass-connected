@@ -1,0 +1,450 @@
+{
+  "generatedAt": "2026-07-21T09:25:58.211229+00:00",
+  "priceVersion": "jlc-cn-pcb-v12-candidate",
+  "status": "failed",
+  "pass": false,
+  "fingerprint": {
+    "frozenAt": "2026-07-21T06:50:56.627Z",
+    "count": 144,
+    "hash": "fnvish_81cf1917",
+    "sampleKeysHead": [
+      "aluminum|1|141|195|150|1.6|绿色|无铅喷锡|1oz|页面默认|1",
+      "aluminum|1|146|202|30|1.6|绿色|无铅喷锡|1oz|页面默认|1",
+      "aluminum|1|147|161|50|1.6|绿色|无铅喷锡|1oz|页面默认|1",
+      "aluminum|1|153|212|50|1.6|绿色|无铅喷锡|1oz|页面默认|1",
+      "aluminum|1|157|219|200|1.6|绿色|无铅喷锡|1oz|页面默认|1"
+    ],
+    "oneShot": true,
+    "consumed": false
+  },
+  "modelFingerprint": {
+    "frozenAt": "2026-07-21T06:52:22.614Z",
+    "hash": "sha256_1b2a54d12575260721d7106ec478391d31c275375fe1bbd4cda709079f1d1609",
+    "candidatePath": "scripts/jlc-cn-pcb-v12-candidate-price-list.json",
+    "acceptanceFingerprint": "fnvish_81cf1917",
+    "runtimePreflight": {
+      "ok": true,
+      "targetCount": 144,
+      "failedCount": 0
+    },
+    "note": "Do not rebuild or retune after final acceptance sampling starts."
+  },
+  "fingerprintConsumed": true,
+  "quoteRangeRate": 0.1,
+  "gates": {
+    "independenceOk": true,
+    "runtimePreflightOk": true,
+    "fingerprintOk": true,
+    "modelFingerprintOk": true,
+    "modelRunnable": true,
+    "freshPerMaterialAtLeast40": true,
+    "overallCoverageAtLeast90": true,
+    "materialsCoverageAtLeast90": true,
+    "overallBandHitAtLeast95": false,
+    "materialsBandHitAtLeast95": false,
+    "overallHit20AtLeast95": false,
+    "overallMaxErrAtMost20": false,
+    "materialsHit20Ok": false,
+    "materialsMaxErrOk": false
+  },
+  "materialCounts": {
+    "aluminum": 45,
+    "fpc": 48,
+    "fr4": 45
+  },
+  "targets": 432,
+  "sampleRows": 432,
+  "freshUnique": 138,
+  "rejectedRepeatGroups": [
+    {
+      "baseSampleId": "JLC-CN-PCB-V12-ACC-ALUMINUM-006",
+      "rows": 3,
+      "freshRows": 0,
+      "cv": null,
+      "processOk": true
+    },
+    {
+      "baseSampleId": "JLC-CN-PCB-V12-ACC-ALUMINUM-008",
+      "rows": 3,
+      "freshRows": 0,
+      "cv": null,
+      "processOk": true
+    },
+    {
+      "baseSampleId": "JLC-CN-PCB-V12-ACC-ALUMINUM-009",
+      "rows": 3,
+      "freshRows": 0,
+      "cv": null,
+      "processOk": true
+    },
+    {
+      "baseSampleId": "JLC-CN-PCB-V12-ACC-FR4-007",
+      "rows": 3,
+      "freshRows": 0,
+      "cv": null,
+      "processOk": true
+    },
+    {
+      "baseSampleId": "JLC-CN-PCB-V12-ACC-FR4-008",
+      "rows": 3,
+      "freshRows": 0,
+      "cv": null,
+      "processOk": true
+    },
+    {
+      "baseSampleId": "JLC-CN-PCB-V12-ACC-FR4-009",
+      "rows": 3,
+      "freshRows": 0,
+      "cv": null,
+      "processOk": true
+    }
+  ],
+  "autoQuoted": 138,
+  "bandEvaluated": 138,
+  "manualReview": 0,
+  "autoQuoteCoverage": 1.0,
+  "autoQuoteCoverageByMaterial": {
+    "fr4": 1.0,
+    "fpc": 1.0,
+    "aluminum": 1.0
+  },
+  "bandHitRate": 0.6957,
+  "bandHitRateByMaterial": {
+    "fr4": 0.7333,
+    "fpc": 0.75,
+    "aluminum": 0.6
+  },
+  "manualReviewReasonCounts": {},
+  "segmentedDiagnostics": {
+    "aluminum|L1|large|high": {
+      "total": 22,
+      "autoQuoted": 22,
+      "coverage": 1.0,
+      "metrics": {
+        "n": 22,
+        "hitRate10": 0.3636,
+        "hitRate20": 0.7727,
+        "mape": 0.1296,
+        "maxRelativeError": 0.2187
+      },
+      "bandHitRate": 0.3636
+    },
+    "aluminum|L1|large|medium": {
+      "total": 17,
+      "autoQuoted": 17,
+      "coverage": 1.0,
+      "metrics": {
+        "n": 17,
+        "hitRate10": 0.9412,
+        "hitRate20": 1.0,
+        "mape": 0.0611,
+        "maxRelativeError": 0.1126
+      },
+      "bandHitRate": 0.7647
+    },
+    "aluminum|L1|small|high": {
+      "total": 3,
+      "autoQuoted": 3,
+      "coverage": 1.0,
+      "metrics": {
+        "n": 3,
+        "hitRate10": 1.0,
+        "hitRate20": 1.0,
+        "mape": 0.0102,
+        "maxRelativeError": 0.0178
+      },
+      "bandHitRate": 1.0
+    },
+    "aluminum|L1|small|medium": {
+      "total": 3,
+      "autoQuoted": 3,
+      "coverage": 1.0,
+      "metrics": {
+        "n": 3,
+        "hitRate10": 1.0,
+        "hitRate20": 1.0,
+        "mape": 0.032,
+        "maxRelativeError": 0.0392
+      },
+      "bandHitRate": 1.0
+    },
+    "fpc|L1|large|high": {
+      "total": 7,
+      "autoQuoted": 7,
+      "coverage": 1.0,
+      "metrics": {
+        "n": 7,
+        "hitRate10": 0.1429,
+        "hitRate20": 1.0,
+        "mape": 0.1183,
+        "maxRelativeError": 0.1666
+      },
+      "bandHitRate": 0.1429
+    },
+    "fpc|L1|large|medium": {
+      "total": 12,
+      "autoQuoted": 12,
+      "coverage": 1.0,
+      "metrics": {
+        "n": 12,
+        "hitRate10": 1.0,
+        "hitRate20": 1.0,
+        "mape": 0.0111,
+        "maxRelativeError": 0.0278
+      },
+      "bandHitRate": 1.0
+    },
+    "fpc|L1|medium|high": {
+      "total": 3,
+      "autoQuoted": 3,
+      "coverage": 1.0,
+      "metrics": {
+        "n": 3,
+        "hitRate10": 0.6667,
+        "hitRate20": 0.6667,
+        "mape": 0.131,
+        "maxRelativeError": 0.316
+      },
+      "bandHitRate": 0.6667
+    },
+    "fpc|L1|small|high": {
+      "total": 1,
+      "autoQuoted": 1,
+      "coverage": 1.0,
+      "metrics": {
+        "n": 1,
+        "hitRate10": 0.0,
+        "hitRate20": 0.0,
+        "mape": 0.4038,
+        "maxRelativeError": 0.4038
+      },
+      "bandHitRate": 0.0
+    },
+    "fpc|L1|small|medium": {
+      "total": 1,
+      "autoQuoted": 1,
+      "coverage": 1.0,
+      "metrics": {
+        "n": 1,
+        "hitRate10": 0.0,
+        "hitRate20": 0.0,
+        "mape": 0.2339,
+        "maxRelativeError": 0.2339
+      },
+      "bandHitRate": 0.0
+    },
+    "fpc|L2|large|high": {
+      "total": 10,
+      "autoQuoted": 10,
+      "coverage": 1.0,
+      "metrics": {
+        "n": 10,
+        "hitRate10": 1.0,
+        "hitRate20": 1.0,
+        "mape": 0.0247,
+        "maxRelativeError": 0.0605
+      },
+      "bandHitRate": 1.0
+    },
+    "fpc|L2|large|medium": {
+      "total": 8,
+      "autoQuoted": 8,
+      "coverage": 1.0,
+      "metrics": {
+        "n": 8,
+        "hitRate10": 1.0,
+        "hitRate20": 1.0,
+        "mape": 0.024,
+        "maxRelativeError": 0.0568
+      },
+      "bandHitRate": 1.0
+    },
+    "fpc|L2|medium|medium": {
+      "total": 2,
+      "autoQuoted": 2,
+      "coverage": 1.0,
+      "metrics": {
+        "n": 2,
+        "hitRate10": 1.0,
+        "hitRate20": 1.0,
+        "mape": 0.0174,
+        "maxRelativeError": 0.0177
+      },
+      "bandHitRate": 1.0
+    },
+    "fpc|L2|small|high": {
+      "total": 2,
+      "autoQuoted": 2,
+      "coverage": 1.0,
+      "metrics": {
+        "n": 2,
+        "hitRate10": 0.0,
+        "hitRate20": 0.5,
+        "mape": 0.2663,
+        "maxRelativeError": 0.3403
+      },
+      "bandHitRate": 0.0
+    },
+    "fpc|L2|small|medium": {
+      "total": 2,
+      "autoQuoted": 2,
+      "coverage": 1.0,
+      "metrics": {
+        "n": 2,
+        "hitRate10": 0.5,
+        "hitRate20": 1.0,
+        "mape": 0.089,
+        "maxRelativeError": 0.1198
+      },
+      "bandHitRate": 0.5
+    },
+    "fr4|L2|large|low": {
+      "total": 5,
+      "autoQuoted": 5,
+      "coverage": 1.0,
+      "metrics": {
+        "n": 5,
+        "hitRate10": 1.0,
+        "hitRate20": 1.0,
+        "mape": 0.0364,
+        "maxRelativeError": 0.0618
+      },
+      "bandHitRate": 1.0
+    },
+    "fr4|L2|large|medium": {
+      "total": 7,
+      "autoQuoted": 7,
+      "coverage": 1.0,
+      "metrics": {
+        "n": 7,
+        "hitRate10": 0.4286,
+        "hitRate20": 1.0,
+        "mape": 0.0998,
+        "maxRelativeError": 0.1509
+      },
+      "bandHitRate": 0.4286
+    },
+    "fr4|L2|medium|high": {
+      "total": 4,
+      "autoQuoted": 4,
+      "coverage": 1.0,
+      "metrics": {
+        "n": 4,
+        "hitRate10": 1.0,
+        "hitRate20": 1.0,
+        "mape": 0.0743,
+        "maxRelativeError": 0.0803
+      },
+      "bandHitRate": 1.0
+    },
+    "fr4|L2|medium|low": {
+      "total": 4,
+      "autoQuoted": 4,
+      "coverage": 1.0,
+      "metrics": {
+        "n": 4,
+        "hitRate10": 1.0,
+        "hitRate20": 1.0,
+        "mape": 0.0282,
+        "maxRelativeError": 0.0476
+      },
+      "bandHitRate": 1.0
+    },
+    "fr4|L2|medium|medium": {
+      "total": 2,
+      "autoQuoted": 2,
+      "coverage": 1.0,
+      "metrics": {
+        "n": 2,
+        "hitRate10": 0.5,
+        "hitRate20": 0.5,
+        "mape": 0.3915,
+        "maxRelativeError": 0.766
+      },
+      "bandHitRate": 0.5
+    },
+    "fr4|L4|large|high": {
+      "total": 11,
+      "autoQuoted": 11,
+      "coverage": 1.0,
+      "metrics": {
+        "n": 11,
+        "hitRate10": 0.9091,
+        "hitRate20": 1.0,
+        "mape": 0.0318,
+        "maxRelativeError": 0.1475
+      },
+      "bandHitRate": 0.9091
+    },
+    "fr4|L4|large|medium": {
+      "total": 6,
+      "autoQuoted": 6,
+      "coverage": 1.0,
+      "metrics": {
+        "n": 6,
+        "hitRate10": 0.5,
+        "hitRate20": 0.6667,
+        "mape": 0.1323,
+        "maxRelativeError": 0.2564
+      },
+      "bandHitRate": 0.5
+    },
+    "fr4|L4|medium|high": {
+      "total": 4,
+      "autoQuoted": 4,
+      "coverage": 1.0,
+      "metrics": {
+        "n": 4,
+        "hitRate10": 0.0,
+        "hitRate20": 1.0,
+        "mape": 0.1382,
+        "maxRelativeError": 0.1674
+      },
+      "bandHitRate": 0.25
+    },
+    "fr4|L4|medium|medium": {
+      "total": 2,
+      "autoQuoted": 2,
+      "coverage": 1.0,
+      "metrics": {
+        "n": 2,
+        "hitRate10": 1.0,
+        "hitRate20": 1.0,
+        "mape": 0.0529,
+        "maxRelativeError": 0.0797
+      },
+      "bandHitRate": 1.0
+    }
+  },
+  "overall": {
+    "n": 138,
+    "hitRate10": 0.7101,
+    "hitRate20": 0.913,
+    "mape": 0.0802,
+    "maxRelativeError": 0.766
+  },
+  "byMaterial": {
+    "fr4": {
+      "n": 45,
+      "hitRate10": 0.7111,
+      "hitRate20": 0.9333,
+      "mape": 0.0861,
+      "maxRelativeError": 0.766
+    },
+    "fpc": {
+      "n": 48,
+      "hitRate10": 0.75,
+      "hitRate20": 0.9167,
+      "mape": 0.0662,
+      "maxRelativeError": 0.4038
+    },
+    "aluminum": {
+      "n": 45,
+      "hitRate10": 0.6667,
+      "hitRate20": 0.8889,
+      "mape": 0.0893,
+      "maxRelativeError": 0.2187
+    }
+  },
+  "fallbackVersionIfFailed": "jlc-cn-pcb-v6-20260712"
+}

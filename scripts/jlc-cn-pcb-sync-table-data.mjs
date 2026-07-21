@@ -11,6 +11,9 @@ const V10_CONSUMPTION = 'scripts/jlc-cn-pcb-v10-acceptance-consumption.json'
 const V11_PRICE_LIST = 'scripts/jlc-cn-pcb-v11-candidate-price-list.json'
 const V11_ACCEPTANCE = 'scripts/jlc-cn-pcb-v11-acceptance-report.json'
 const V11_CONSUMPTION = 'scripts/jlc-cn-pcb-v11-acceptance-consumption.json'
+const V12_PRICE_LIST = 'scripts/jlc-cn-pcb-v12-candidate-price-list.json'
+const V12_ACCEPTANCE = 'scripts/jlc-cn-pcb-v12-acceptance-report.json'
+const V12_CONSUMPTION = 'scripts/jlc-cn-pcb-v12-acceptance-consumption.json'
 const TABLE_DATA = 'backend/apps/simplequote/table_data.py'
 const FALLBACK_VERSION = 'jlc-cn-pcb-v6-20260712'
 const ALLOW_UNACCEPTED = process.env.ALLOW_UNACCEPTED_PUBLISH === 'true'
@@ -45,6 +48,12 @@ async function readJson(path) {
 let v9Acceptance = null
 let v10Acceptance = null
 let v11Acceptance = null
+let v12Acceptance = null
+try {
+  v12Acceptance = await readJson(V12_ACCEPTANCE)
+} catch {
+  // v12 not generated yet; fall back to earlier hard gates.
+}
 try {
   v11Acceptance = await readJson(V11_ACCEPTANCE)
 } catch {
@@ -60,13 +69,15 @@ try {
 } catch {
   // v9 not generated yet; legacy hard gates still apply.
 }
-const isV11 = v11Acceptance?.status === 'passed'
-const isV10 = !isV11 && v10Acceptance?.status === 'passed'
-const isV9 = !isV11 && !isV10 && v9Acceptance?.status === 'passed'
+const isV12 = v12Acceptance?.status === 'passed'
+const isV11 = !isV12 && v11Acceptance?.status === 'passed'
+const isV10 = !isV12 && !isV11 && v10Acceptance?.status === 'passed'
+const isV9 = !isV12 && !isV11 && !isV10 && v9Acceptance?.status === 'passed'
 const priceList = await readJson(
-  isV11 ? V11_PRICE_LIST : (isV10 ? V10_PRICE_LIST : (isV9 ? V9_PRICE_LIST : LEGACY_PRICE_LIST)),
+  isV12 ? V12_PRICE_LIST
+    : (isV11 ? V11_PRICE_LIST : (isV10 ? V10_PRICE_LIST : (isV9 ? V9_PRICE_LIST : LEGACY_PRICE_LIST))),
 )
-const report = isV11 || isV10 || isV9
+const report = isV12 || isV11 || isV10 || isV9
   ? {
       pass: priceList.validationStatus === 'passed',
       status: priceList.validationStatus,
@@ -85,9 +96,10 @@ if (!requiredMaterials.every((material) => enabledMaterials.includes(material)))
   throw new Error(`refusing to publish incomplete material set: ${enabledMaterials.join(', ')}`)
 }
 
-// 发布前强制防泄漏证明（优先 v9）。
+// 发布前强制防泄漏证明（优先 v12）。
 let independence = null
 const independenceCandidates = [
+  ...(isV12 ? ['scripts/jlc-cn-pcb-v12-assert-split-report.json'] : []),
   ...(isV11 ? ['scripts/jlc-cn-pcb-v11-assert-split-report.json'] : []),
   ...(isV10 ? ['scripts/jlc-cn-pcb-v10-assert-split-report.json'] : []),
   ...(isV9 ? ['scripts/jlc-cn-pcb-v9-assert-split-report.json'] : []),
@@ -109,6 +121,7 @@ if (!independence?.ok) {
 let acceptanceStatus = 'pending_live_acceptance'
 let acceptanceReport = null
 const acceptanceCandidates = [
+  'scripts/jlc-cn-pcb-v12-acceptance-report.json',
   'scripts/jlc-cn-pcb-v11-acceptance-report.json',
   'scripts/jlc-cn-pcb-v10-acceptance-report.json',
   'scripts/jlc-cn-pcb-v9-acceptance-report.json',
@@ -135,11 +148,14 @@ if (!acceptancePassed && !ALLOW_UNACCEPTED) {
 let v9Consumption = null
 let v10Consumption = null
 let v11Consumption = null
-if (isV11 || isV10 || isV9) {
-  const consumptionPath = isV11 ? V11_CONSUMPTION : (isV10 ? V10_CONSUMPTION : V9_CONSUMPTION)
-  const versionLabel = isV11 ? 'v11' : (isV10 ? 'v10' : 'v9')
+let v12Consumption = null
+if (isV12 || isV11 || isV10 || isV9) {
+  const consumptionPath = isV12 ? V12_CONSUMPTION
+    : (isV11 ? V11_CONSUMPTION : (isV10 ? V10_CONSUMPTION : V9_CONSUMPTION))
+  const versionLabel = isV12 ? 'v12' : (isV11 ? 'v11' : (isV10 ? 'v10' : 'v9'))
   const versionConsumption = await readJson(consumptionPath)
-  if (isV11) v11Consumption = versionConsumption
+  if (isV12) v12Consumption = versionConsumption
+  else if (isV11) v11Consumption = versionConsumption
   else if (isV10) v10Consumption = versionConsumption
   else v9Consumption = versionConsumption
   const fingerprint = acceptanceReport?.fingerprint?.hash
@@ -156,7 +172,8 @@ if (isV11 || isV10 || isV9) {
 const rows = priceList.rows || []
 const sampledAt = (priceList.generatedAt || report.generatedAt || new Date().toISOString()).slice(0, 10)
 const versionPrefix = acceptancePassed
-  ? (isV11 ? 'jlc-cn-pcb-v11' : (isV10 ? 'jlc-cn-pcb-v10' : (isV9 ? 'jlc-cn-pcb-v9' : 'jlc-cn-pcb-v8')))
+  ? (isV12 ? 'jlc-cn-pcb-v12'
+    : (isV11 ? 'jlc-cn-pcb-v11' : (isV10 ? 'jlc-cn-pcb-v10' : (isV9 ? 'jlc-cn-pcb-v9' : 'jlc-cn-pcb-v8'))))
   : 'jlc-cn-pcb-staging'
 const version = `${versionPrefix}-${sampledAt.replace(/-/g, '')}`
 const activePriceVersion = acceptancePassed ? version : FALLBACK_VERSION
@@ -175,7 +192,7 @@ const estimatorGuards = priceList.estimatorGuards || estimator.guards || {
 
 const listBlock = [
   '# PCB 样板制造费精确查表（JLC 中文公开页 golden 采样，CNY，不含运费/税费/Gerber 附加费）。',
-  '# v11：仅当三材料独立验收、BandHit 与覆盖率门禁 passed 时原子切换；否则保持 fallback。',
+  '# v12：仅当三材料独立验收、BandHit 与覆盖率门禁 passed 时原子切换；否则保持 fallback。',
   'PCB_MANUFACTURING_PRICE_LIST = [',
   ...rows.map(pyRow),
   ']',
@@ -257,12 +274,14 @@ if (start < 0 || end < 0) {
   throw new Error('table_data.py markers not found')
 }
 tableData = `${tableData.slice(0, start)}${listBlock}\n\n${metaBlock}\n\n${tableData.slice(end)}`
-const tableTemp = `${TABLE_DATA}.${isV11 ? 'v11' : (isV10 ? 'v10' : 'v9')}.tmp`
+const tableTemp = `${TABLE_DATA}.${isV12 ? 'v12' : (isV11 ? 'v11' : (isV10 ? 'v10' : 'v9'))}.tmp`
 await fs.writeFile(tableTemp, tableData, 'utf8')
 await fs.rename(tableTemp, TABLE_DATA)
-if (isV11 || isV10 || isV9) {
-  const consumptionPath = isV11 ? V11_CONSUMPTION : (isV10 ? V10_CONSUMPTION : V9_CONSUMPTION)
-  const versionConsumption = isV11 ? v11Consumption : (isV10 ? v10Consumption : v9Consumption)
+if (isV12 || isV11 || isV10 || isV9) {
+  const consumptionPath = isV12 ? V12_CONSUMPTION
+    : (isV11 ? V11_CONSUMPTION : (isV10 ? V10_CONSUMPTION : V9_CONSUMPTION))
+  const versionConsumption = isV12 ? v12Consumption
+    : (isV11 ? v11Consumption : (isV10 ? v10Consumption : v9Consumption))
   const consumptionTemp = `${consumptionPath}.tmp`
   await fs.writeFile(consumptionTemp, `${JSON.stringify({
     ...versionConsumption,

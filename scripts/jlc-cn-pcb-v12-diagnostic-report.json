@@ -1,0 +1,146 @@
+{
+  "sourceFingerprint": "fnvish_a82311bc",
+  "diagnosticOnly": true,
+  "diagnosticReason": "v11_final_acceptance_do_not_train",
+  "materials": {
+    "fr4": {
+      "stable": 42,
+      "autoQuoted": 28,
+      "coverage": 0.6667,
+      "hitRate20": 0.9643,
+      "mape": 0.0642,
+      "maxRelativeError": 0.317,
+      "manualReviewReasonCounts": {
+        "规格命中风险分区：v11_honesty_fr4_L4_large_medium": 5,
+        "规格命中风险分区：v11_honesty_fr4_L2_medium_high_boot": 5,
+        "规格命中风险分区：v11_honesty_fr4_L4_medium_medium": 4
+      },
+      "highErrorIds": [
+        "JLC-CN-PCB-V11-ACC-FR4-020"
+      ],
+      "segments": {
+        "L2|large|medium": {
+          "total": 13,
+          "autoQuoted": 13,
+          "maxRelativeError": 0.08662534538122615
+        },
+        "L2|medium|high": {
+          "total": 5,
+          "autoQuoted": 0,
+          "maxRelativeError": null
+        },
+        "L2|medium|medium": {
+          "total": 2,
+          "autoQuoted": 2,
+          "maxRelativeError": 0.02579261577696626
+        },
+        "L4|large|high": {
+          "total": 9,
+          "autoQuoted": 9,
+          "maxRelativeError": 0.15375113028743115
+        },
+        "L4|large|medium": {
+          "total": 5,
+          "autoQuoted": 0,
+          "maxRelativeError": null
+        },
+        "L4|medium|high": {
+          "total": 4,
+          "autoQuoted": 4,
+          "maxRelativeError": 0.31702947722707786
+        },
+        "L4|medium|medium": {
+          "total": 4,
+          "autoQuoted": 0,
+          "maxRelativeError": null
+        }
+      }
+    },
+    "fpc": {
+      "stable": 40,
+      "autoQuoted": 30,
+      "coverage": 0.75,
+      "hitRate20": 1.0,
+      "mape": 0.0599,
+      "maxRelativeError": 0.1845,
+      "manualReviewReasonCounts": {
+        "规格命中风险分区：v11_honesty_fpc_L2_large_medium": 7,
+        "规格命中风险分区：v11_honesty_fpc_L2_medium_medium_boot": 3
+      },
+      "highErrorIds": [],
+      "segments": {
+        "L1|large|high": {
+          "total": 8,
+          "autoQuoted": 8,
+          "maxRelativeError": 0.16260882597381368
+        },
+        "L1|large|medium": {
+          "total": 10,
+          "autoQuoted": 10,
+          "maxRelativeError": 0.10073608507959764
+        },
+        "L1|medium|high": {
+          "total": 2,
+          "autoQuoted": 2,
+          "maxRelativeError": 0.1845213392406483
+        },
+        "L1|medium|medium": {
+          "total": 1,
+          "autoQuoted": 1,
+          "maxRelativeError": 0.04405197426516976
+        },
+        "L2|large|high": {
+          "total": 9,
+          "autoQuoted": 9,
+          "maxRelativeError": 0.12935724310304642
+        },
+        "L2|large|medium": {
+          "total": 7,
+          "autoQuoted": 0,
+          "maxRelativeError": null
+        },
+        "L2|medium|medium": {
+          "total": 3,
+          "autoQuoted": 0,
+          "maxRelativeError": null
+        }
+      }
+    },
+    "aluminum": {
+      "stable": 45,
+      "autoQuoted": 45,
+      "coverage": 1.0,
+      "hitRate20": 1.0,
+      "mape": 0.0702,
+      "maxRelativeError": 0.1738,
+      "manualReviewReasonCounts": {},
+      "highErrorIds": [],
+      "segments": {
+        "L1|large|high": {
+          "total": 21,
+          "autoQuoted": 21,
+          "maxRelativeError": 0.17375901010468622
+        },
+        "L1|large|medium": {
+          "total": 22,
+          "autoQuoted": 22,
+          "maxRelativeError": 0.1009369098023725
+        },
+        "L1|medium|high": {
+          "total": 1,
+          "autoQuoted": 1,
+          "maxRelativeError": 0.007782142253759086
+        },
+        "L1|medium|medium": {
+          "total": 1,
+          "autoQuoted": 1,
+          "maxRelativeError": 0.010169919777651349
+        }
+      }
+    }
+  },
+  "v11WeakSegmentsHint": [
+    "fr4|L4|medium|high",
+    "aluminum|L1|large|high"
+  ]
+}
