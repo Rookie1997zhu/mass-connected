@@ -1315,11 +1315,11 @@ def _match_pcb_risk_zone(spec, meta):
     return None
 
 
-PCB_QUOTE_RANGE_RATE = 0.10
+PCB_QUOTE_RANGE_RATE = 0.20
 
 
 def _pcb_quote_range(*, jlc_mid_cny, customer_mid_cny, customer_mid_krw, rate=None):
-    """由中位价展开 ±rate 区间（默认 ±10%）。"""
+    """由中位价展开 ±rate 区间（默认 ±20%）。"""
     range_rate = PCB_QUOTE_RANGE_RATE if rate is None else _to_number(rate, PCB_QUOTE_RANGE_RATE)
     jlc_mid = _to_number(jlc_mid_cny, 0)
     customer_cny = _to_number(customer_mid_cny, 0)

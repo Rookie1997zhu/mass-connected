@@ -1,0 +1,1014 @@
+{
+  "ok": true,
+  "failed": [],
+  "rows": [
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-001",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.3542
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-002",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 8,
+      "averageDistance": 0.3297
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-003",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.593
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-004",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 8,
+      "averageDistance": 0.2983
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-005",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.3112
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-006",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 8,
+      "averageDistance": 0.701
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-007",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.3731
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-008",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 8,
+      "averageDistance": 0.3378
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-009",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.4536
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-010",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 8,
+      "averageDistance": 0.6986
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-011",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.7537
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-012",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 3,
+      "averageDistance": 0.4293
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-013",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.2661
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-014",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 8,
+      "averageDistance": 0.3064
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-015",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.336
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-016",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 8,
+      "averageDistance": 0.3671
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-017",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.4117
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-018",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 8,
+      "averageDistance": 0.4625
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-019",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.3594
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-020",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 3,
+      "averageDistance": 0.6145
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-021",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.4093
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-022",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 8,
+      "averageDistance": 0.291
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-023",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.3708
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-024",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 8,
+      "averageDistance": 0.6221
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-025",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.6394
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-026",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 3,
+      "averageDistance": 0.5426
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-027",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.5087
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-028",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 8,
+      "averageDistance": 0.3996
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-029",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.3544
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-030",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 8,
+      "averageDistance": 0.3373
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-031",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.458
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-032",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 7,
+      "averageDistance": 0.7305
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-033",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.6569
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-034",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 8,
+      "averageDistance": 0.5798
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-035",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.7569
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-036",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 3,
+      "averageDistance": 0.7128
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-037",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.1728
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-038",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 8,
+      "averageDistance": 0.5831
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-039",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 4,
+      "averageDistance": 0.6179
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-040",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 7,
+      "averageDistance": 0.7334
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-041",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.6599
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-042",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 8,
+      "averageDistance": 0.3505
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-043",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.3079
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-044",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 3,
+      "averageDistance": 0.7153
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-045",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.2619
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-046",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 5,
+      "averageDistance": 0.7323
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-047",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.3906
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FR4-048",
+      "materialKey": "fr4",
+      "ok": true,
+      "localCoverage": 7,
+      "averageDistance": 0.6846
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-001",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 1,
+      "averageDistance": 0.6537
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-002",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.3741
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-003",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.7091
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-004",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.3153
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-005",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 2,
+      "averageDistance": 0.5127
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-006",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.1457
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-007",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.4313
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-008",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.1533
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-009",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 1,
+      "averageDistance": 0.6568
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-010",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 5,
+      "averageDistance": 0.5617
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-011",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 2,
+      "averageDistance": 0.7242
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-012",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.6826
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-013",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.7132
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-014",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 5,
+      "averageDistance": 0.559
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-015",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.6715
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-016",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.2547
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-017",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 3,
+      "averageDistance": 0.6412
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-018",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.3393
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-019",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 3,
+      "averageDistance": 0.5863
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-020",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.4045
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-021",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.4793
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-022",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.4858
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-023",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.4278
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-024",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.4334
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-025",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 1,
+      "averageDistance": 0.7583
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-026",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.3761
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-027",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 1,
+      "averageDistance": 0.7063
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-028",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 5,
+      "averageDistance": 0.6059
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-029",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 1,
+      "averageDistance": 0.7554
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-030",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.4892
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-031",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 2,
+      "averageDistance": 0.5518
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-032",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.5405
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-033",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.4796
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-034",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 4,
+      "averageDistance": 0.5954
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-035",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 5,
+      "averageDistance": 0.7306
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-036",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 4,
+      "averageDistance": 0.6379
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-037",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 5,
+      "averageDistance": 0.6894
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-038",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 4,
+      "averageDistance": 0.5928
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-039",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 1,
+      "averageDistance": 0.7083
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-040",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.5379
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-041",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 4,
+      "averageDistance": 0.743
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-042",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.1792
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-043",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 2,
+      "averageDistance": 0.6159
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-044",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.4009
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-045",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 4,
+      "averageDistance": 0.7463
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-046",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.4571
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-047",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.5263
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-FPC-048",
+      "materialKey": "fpc",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.4611
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-001",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.9645
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-002",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.6342
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-003",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 1.1549
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-004",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 1.2605
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-005",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.7007
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-006",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 1.0128
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-007",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.8347
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-008",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.9675
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-009",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 1.1912
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-010",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.8129
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-011",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.8113
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-012",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 1.1207
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-013",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.3706
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-014",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.6033
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-015",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 1.2279
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-016",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 1.0954
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-017",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.7545
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-018",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.9519
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-019",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 1.0629
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-020",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 1.2643
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-021",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.6652
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-022",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.9967
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-023",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.2761
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-024",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 1.1202
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-025",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.5865
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-026",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.6081
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-027",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.8076
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-028",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.678
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-029",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.757
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-030",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.8539
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-031",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.6829
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-032",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 1.2624
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-033",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.6859
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-034",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.742
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-035",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 1.179
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-036",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.4826
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-037",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.3669
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-038",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.7808
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-039",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.8108
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-040",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 1.0984
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-041",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.8695
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-042",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 1.0358
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-043",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 1.0661
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-044",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.9249
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-045",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 1.1261
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-046",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.4688
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-047",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 1.2163
+    },
+    {
+      "id": "JLC-CN-PCB-V13-ACC-ALUMINUM-048",
+      "materialKey": "aluminum",
+      "ok": true,
+      "localCoverage": 6,
+      "averageDistance": 0.3678
+    }
+  ]
+}

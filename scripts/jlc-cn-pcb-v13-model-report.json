@@ -1,0 +1,113 @@
+{
+  "generatedAt": "2026-07-22T02:50:40.188Z",
+  "status": "passed",
+  "fit": {
+    "accepted": 378,
+    "historicalAccepted": 142,
+    "v10FpcHistoricalAccepted": 61,
+    "newFr4Accepted": 64,
+    "newFr4TuningHoldout": 21,
+    "newFpcAccepted": 71,
+    "rejected": [
+      {
+        "baseSampleId": "JLC-CN-PCB-V9-FIT-FR4-001",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V9-FIT-FR4-002",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V10-FIT-FPC-049",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V10-FIT-FPC-050",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V10-FIT-FPC-051",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V13-BOOT-FR4-001",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V13-BOOT-FR4-048",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V13-BOOT-FR4-052",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      },
+      {
+        "baseSampleId": "JLC-CN-PCB-V13-BOOT-FR4-053",
+        "rows": 3,
+        "validRows": 0,
+        "cv": null
+      }
+    ]
+  },
+  "fpcTuning": {
+    "n": 30,
+    "coverage": 1,
+    "hitRate20": 1,
+    "mape": 0.0075,
+    "maxRelativeError": 0.0603,
+    "pass": true
+  },
+  "fr4Tuning": {
+    "n": 21,
+    "coverage": 1,
+    "hitRate20": 1,
+    "mape": 0.0135,
+    "maxRelativeError": 0.0638,
+    "pass": true
+  },
+  "regressionByMaterial": {
+    "fr4": {
+      "n": 5,
+      "coverage": 1,
+      "hitRate20": 1,
+      "mape": 0.0095,
+      "maxRelativeError": 0.0347,
+      "pass": true,
+      "noRegressionPass": true
+    },
+    "fpc": {
+      "n": 6,
+      "coverage": 1,
+      "hitRate20": 1,
+      "mape": 0.0037,
+      "maxRelativeError": 0.0072,
+      "pass": true,
+      "noRegressionPass": true
+    },
+    "aluminum": {
+      "n": 6,
+      "coverage": 1,
+      "hitRate20": 1,
+      "mape": 0.0229,
+      "maxRelativeError": 0.0861,
+      "pass": true,
+      "noRegressionPass": true
+    }
+  }
+}

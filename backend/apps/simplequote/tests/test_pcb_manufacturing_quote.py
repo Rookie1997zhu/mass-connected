@@ -1492,7 +1492,7 @@ def _tables_v11_fr4():
     tables["manufacturing_price_list"] = rows
     meta = tables["manufacturing_price_meta"][0]
     meta["acceptance_status"] = "passed"
-    meta["quote_range_rate"] = 0.10
+    meta["quote_range_rate"] = 0.20
     meta["risk_zones"] = []
     meta["estimator_enabled_materials"] = ["fr4"]
     band = {
@@ -1543,7 +1543,7 @@ def _tables_v11_fr4():
 
 
 class PcbManufacturingQuoteV11Tests(unittest.TestCase):
-    def test_auto_quote_exposes_plus_minus_10_percent_range(self):
+    def test_auto_quote_exposes_plus_minus_20_percent_range(self):
         row = _manufacturing_row("fr4", 2, 100, 100, 20)
         result = calc_pcb(
             {
@@ -1562,15 +1562,15 @@ class PcbManufacturingQuoteV11Tests(unittest.TestCase):
         mid_cny = round(row["jlc_price_cny"] * 1.1, 2)
         mid_krw = round(mid_cny * 232.4)
         self.assertEqual(mfg["pricing_display_mode"], "range")
-        self.assertEqual(mfg["quote_range_rate"], 0.10)
+        self.assertEqual(mfg["quote_range_rate"], 0.20)
         self.assertEqual(mfg["customer_quote_cny"], mid_cny)
-        self.assertEqual(mfg["customer_quote_cny_min"], round(mid_cny * 0.9, 2))
-        self.assertEqual(mfg["customer_quote_cny_max"], round(mid_cny * 1.1, 2))
-        self.assertEqual(mfg["customer_quote_krw_min"], round(mid_krw * 0.9))
-        self.assertEqual(mfg["customer_quote_krw_max"], round(mid_krw * 1.1))
+        self.assertEqual(mfg["customer_quote_cny_min"], round(mid_cny * 0.8, 2))
+        self.assertEqual(mfg["customer_quote_cny_max"], round(mid_cny * 1.2, 2))
+        self.assertEqual(mfg["customer_quote_krw_min"], round(mid_krw * 0.8))
+        self.assertEqual(mfg["customer_quote_krw_max"], round(mid_krw * 1.2))
         self.assertEqual(result["pcb_manufacturing_fee"], mid_krw)
-        self.assertEqual(result["pcb_manufacturing_fee_min"], round(mid_krw * 0.9))
-        self.assertEqual(result["pcb_manufacturing_fee_max"], round(mid_krw * 1.1))
+        self.assertEqual(result["pcb_manufacturing_fee_min"], round(mid_krw * 0.8))
+        self.assertEqual(result["pcb_manufacturing_fee_max"], round(mid_krw * 1.2))
         fixed = result["total"] - mid_krw
         self.assertEqual(result["total_min"], fixed + result["pcb_manufacturing_fee_min"])
         self.assertEqual(result["total_max"], fixed + result["pcb_manufacturing_fee_max"])
