@@ -32,7 +32,11 @@ const detailOpen = ref(false)
 const detailLoading = ref(false)
 const detailError = ref('')
 const quoteDetail = ref(null)
-const activeTab = ref('specs')
+const activeTab = ref(
+  ['specs', 'quotes', 'contract', 'payment', 'project', 'files'].includes(route.query.tab)
+    ? route.query.tab
+    : 'specs',
+)
 const previewFile = ref(null)
 const previewOpen = ref(false)
 const editForm = ref({

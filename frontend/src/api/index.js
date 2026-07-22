@@ -177,7 +177,10 @@ export const translateSupplierQuoteFile = (quoteId, fileId, data) =>
 
 // 合同 / 付款
 export const fetchMyContracts = (params) => http.get('/member/contracts', { params })
-export const signContract = (id) => http.post(`/member/contracts/${id}/sign`)
+export const signContract = (id, formData) =>
+  http.post(`/member/contracts/${id}/sign`, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  })
 export const fetchMyPayments = (params) => http.get('/member/payments', { params })
 export const fetchPayment = (id) => http.get(`/member/payments/${id}`)
 export const uploadPaymentProof = (id, formData) =>

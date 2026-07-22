@@ -9,6 +9,7 @@ from apps.contract.models import Contract, NdaSignature, NdaTemplate
 from apps.contract.serializers import (
     AdminContractSerializer,
     ContractSerializer,
+    ContractSignSerializer,
     NdaSignSerializer,
     NdaSignatureSerializer,
     NdaTemplateSerializer,
@@ -45,7 +46,7 @@ class MemberContractDetailView(APIView):
 
 
 class MemberContractSignView(APIView):
-    """会员确认签署合同。"""
+    """会员在线签署保密协议（必填签名图与主体信息）。"""
 
     permission_classes = [IsBuyerRole]
 
@@ -53,12 +54,82 @@ class MemberContractSignView(APIView):
         contract = get_object_or_404(Contract, pk=pk, buyer=request.user)
         if contract.status != "pending_sign":
             return error_response("CONTRACT_STATUS_INVALID", "当前状态不可签署", request=request)
+
+        serializer = ContractSignSerializer(data=request.data)
+        if not serializer.is_valid():
+            errors = serializer.errors
+            if "agree" in errors:
+                return error_response(
+                    "CONTRACT_AGREE_REQUIRED",
+                    "须同意保密协议条款",
+                    errors=errors,
+                    request=request,
+                )
+            if "signature_image" in errors:
+                detail = errors.get("signature_image")
+                detail_text = " ".join(str(x) for x in detail) if detail else ""
+                if "required" in detail_text.lower() or "必填" in detail_text or not request.FILES.get(
+                    "signature_image"
+                ):
+                    return error_response(
+                        "CONTRACT_SIGNATURE_REQUIRED",
+                        "请上传签名图片",
+                        errors=errors,
+                        request=request,
+                    )
+                return error_response(
+                    "CONTRACT_SIGNATURE_INVALID",
+                    "签名图片无效，请上传 JPG / PNG / WEBP",
+                    errors=errors,
+                    request=request,
+                )
+            return error_response(
+                "VALIDATION_ERROR",
+                "校验失败",
+                errors=errors,
+                request=request,
+            )
+
+        data = serializer.validated_data
+        from apps.contract.services import build_contract_context, render_contract_pdf, render_template_body
+
+        now = timezone.now()
+        contract.company_name = data["company_name"].strip()
+        contract.business_reg_no = data["business_reg_no"].strip()
+        contract.company_address = data["company_address"].strip()
+        contract.signer_name = data["signer_name"].strip()
+        contract.signature_image = data["signature_image"]
+        contract.agree_at = now
+        contract.signed_at = now
         contract.status = "signed"
-        contract.signed_at = timezone.now()
-        contract.save(update_fields=["status", "signed_at", "updated_at"])
+
+        template_body = contract.template.body if contract.template_id else None
+        if not template_body:
+            from apps.contract.services import DEFAULT_CONTRACT_BODY
+
+            template_body = DEFAULT_CONTRACT_BODY
+        contract.rendered_body = render_template_body(
+            template_body,
+            build_contract_context(
+                contract,
+                overrides={
+                    "company_name": contract.company_name,
+                    "business_reg_no": contract.business_reg_no,
+                    "company_address": contract.company_address,
+                    "signer_name": contract.signer_name,
+                },
+            ),
+        )
+        contract.terms = contract.rendered_body
+        contract.save()
+
+        signature_path = contract.signature_image.path if contract.signature_image else None
+        render_contract_pdf(contract, signature_path=signature_path)
+        contract.save(update_fields=["pdf", "updated_at"])
+
         return success_response(
             ContractSerializer(contract, context={"request": request}).data,
-            message="合同已签署",
+            message="保密协议已签署",
             request=request,
         )
 

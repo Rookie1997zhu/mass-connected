@@ -24,7 +24,6 @@ import {
   markAllSupplierNotificationsRead,
   markNotificationRead,
   markSupplierNotificationRead,
-  signContract,
   updateFactoryProfile,
   updateProfile,
   updateProfileMultipart,
@@ -345,12 +344,6 @@ const onToggleTodo = async (todo) => {
   await loadTab('todos')
 }
 
-const onSignContract = async (contract) => {
-  await signContract(contract.id)
-  feedback.value = t('mypage.contractSigned')
-  await loadTab('contracts')
-}
-
 const onLogout = () => {
   auth.logout()
   router.push('/login')
@@ -461,23 +454,28 @@ const onLogout = () => {
       <div v-else-if="activeTab === 'contracts'">
         <p v-if="!contracts.length" class="page-empty">{{ t('mypage.empty') }}</p>
         <table v-else class="data-table">
-          <thead><tr><th>No.</th><th>{{ t('mypage.amount') }}</th><th>{{ t('mypage.status') }}</th><th></th></tr></thead>
+          <thead><tr><th>No.</th><th>{{ t('mypage.status') }}</th><th></th></tr></thead>
           <tbody>
             <tr v-for="c in contracts" :key="c.id">
               <td>{{ c.contract_no }}</td>
-              <td>{{ money(c.amount, c.currency) }}</td>
               <td>{{ c.status }}</td>
               <td class="actions-cell">
-                <RouterLink v-if="c.rfq" :to="`/my/rfqs/${c.rfq}`" class="link">{{ t('fulfillment.viewDeal') }}</RouterLink>
-                <button
-                  v-if="c.status === 'pending_sign'"
-                  type="button"
-                  class="btn btn-sm btn-primary"
-                  @click="onSignContract(c)"
+                <RouterLink
+                  v-if="c.rfq"
+                  :to="`/my/rfqs/${c.rfq}?tab=contract`"
+                  class="link"
                 >
-                  {{ t('mypage.signContract') }}
-                </button>
-                <a v-if="c.pdf_url" :href="c.pdf_url" target="_blank" rel="noopener" class="link">{{ t('mypage.download') }}</a>
+                  {{ c.status === 'pending_sign' ? t('mypage.goSignContract') : t('fulfillment.viewDeal') }}
+                </RouterLink>
+                <a
+                  v-if="c.status === 'signed' && c.pdf_url"
+                  :href="c.pdf_url"
+                  target="_blank"
+                  rel="noopener"
+                  class="link"
+                >
+                  {{ t('mypage.viewSignedPdf') }}
+                </a>
               </td>
             </tr>
           </tbody>

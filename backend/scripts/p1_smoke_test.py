@@ -144,7 +144,28 @@ else:
 
         contract = Contract.objects.filter(buyer=buyer, status="pending_sign").first()
         if contract:
-            r = client.post(f"/api/member/contracts/{contract.id}/sign", HTTP_HOST="localhost")
+            from io import BytesIO
+
+            from django.core.files.uploadedfile import SimpleUploadedFile
+            from PIL import Image
+
+            buf = BytesIO()
+            Image.new("RGB", (8, 8), color=(20, 20, 20)).save(buf, format="PNG")
+            r = client.post(
+                f"/api/member/contracts/{contract.id}/sign",
+                {
+                    "company_name": "Smoke Test Co",
+                    "business_reg_no": "000-00-00000",
+                    "company_address": "Seoul",
+                    "signer_name": "Smoke Buyer",
+                    "agree": "true",
+                    "signature_image": SimpleUploadedFile(
+                        "sig.png", buf.getvalue(), content_type="image/png"
+                    ),
+                },
+                format="multipart",
+                HTTP_HOST="localhost",
+            )
             ok("member_contract_sign", r.json().get("code") == "OK", contract.contract_no)
         else:
             ok("member_contract_sign", True, "skipped — no pending_sign contract")

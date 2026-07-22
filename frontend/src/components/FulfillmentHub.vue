@@ -30,6 +30,16 @@ const actionMessage = ref('')
 const busy = ref(false)
 const previewOpen = ref(false)
 const previewFile = ref(null)
+const signForm = ref({
+  company_name: '',
+  business_reg_no: '',
+  company_address: '',
+  signer_name: '',
+  agree: false,
+})
+const signatureFile = ref(null)
+const signaturePreviewUrl = ref('')
+const signatureInputRef = ref(null)
 
 const isBuyer = computed(() => props.role === 'buyer')
 const order = computed(() => props.fulfillment?.production_order || null)
@@ -68,8 +78,61 @@ watch(
   () => {
     actionError.value = ''
     actionMessage.value = ''
+    const c = props.fulfillment?.contract
+    if (c) {
+      signForm.value = {
+        company_name: c.company_name || '',
+        business_reg_no: c.business_reg_no || '',
+        company_address: c.company_address || '',
+        signer_name: c.signer_name || '',
+        agree: false,
+      }
+    }
+    if (signaturePreviewUrl.value) {
+      URL.revokeObjectURL(signaturePreviewUrl.value)
+      signaturePreviewUrl.value = ''
+    }
+    signatureFile.value = null
   },
+  { immediate: true },
 )
+
+const canSign = computed(
+  () =>
+    isBuyer.value
+    && contract.value?.status === 'pending_sign'
+    && Boolean(signForm.value.company_name?.trim())
+    && Boolean(signForm.value.business_reg_no?.trim())
+    && Boolean(signForm.value.company_address?.trim())
+    && Boolean(signForm.value.signer_name?.trim())
+    && signForm.value.agree
+    && Boolean(signatureFile.value),
+)
+
+const onPickSignature = (event) => {
+  const file = event.target.files?.[0]
+  event.target.value = ''
+  if (!file) return
+  const allowed = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
+  if (file.type && !allowed.includes(file.type)) {
+    actionError.value = t('mypage.signatureTypeInvalid')
+    return
+  }
+  if (file.size > 2 * 1024 * 1024) {
+    actionError.value = t('mypage.signatureTooLarge')
+    return
+  }
+  if (signaturePreviewUrl.value) URL.revokeObjectURL(signaturePreviewUrl.value)
+  signatureFile.value = file
+  signaturePreviewUrl.value = URL.createObjectURL(file)
+  actionError.value = ''
+}
+
+const clearSignature = () => {
+  if (signaturePreviewUrl.value) URL.revokeObjectURL(signaturePreviewUrl.value)
+  signaturePreviewUrl.value = ''
+  signatureFile.value = null
+}
 
 const money = (amount, currency) => formatMoney({ amount, currency: currency || 'CNY' })
 
@@ -88,12 +151,20 @@ const downloadFile = async (file) => {
 }
 
 const onSign = async () => {
-  if (!contract.value?.id) return
+  if (!contract.value?.id || !canSign.value) return
   busy.value = true
   actionError.value = ''
   try {
-    await signContract(contract.value.id)
+    const fd = new FormData()
+    fd.append('company_name', signForm.value.company_name.trim())
+    fd.append('business_reg_no', signForm.value.business_reg_no.trim())
+    fd.append('company_address', signForm.value.company_address.trim())
+    fd.append('signer_name', signForm.value.signer_name.trim())
+    fd.append('agree', 'true')
+    fd.append('signature_image', signatureFile.value)
+    await signContract(contract.value.id, fd)
     actionMessage.value = t('mypage.contractSigned')
+    clearSignature()
     emit('refresh')
   } catch (e) {
     actionError.value = e.message || t('fulfillment.actionFailed')
@@ -223,25 +294,94 @@ const sourceLabel = (source) => {
           <dl class="meta">
             <div><dt>No.</dt><dd>{{ contract.contract_no }}</dd></div>
             <div><dt>{{ t('mypage.status') }}</dt><dd>{{ statusLabel(contract.status) }}</dd></div>
-            <div>
-              <dt>{{ t('mypage.amount') }}</dt>
-              <dd>{{ money(contract.amount, contract.currency) }}</dd>
-            </div>
           </dl>
-          <div class="actions">
-            <button
-              v-if="isBuyer && contract.status === 'pending_sign'"
-              type="button"
-              class="btn btn-primary btn-sm"
-              :disabled="busy"
-              @click="onSign"
+          <pre v-if="contract.rendered_body" class="nda-body">{{ contract.rendered_body }}</pre>
+          <template v-if="isBuyer && contract.status === 'pending_sign'">
+            <div class="sign-form">
+              <label>
+                {{ t('mypage.companyName') }}
+                <input v-model="signForm.company_name" type="text" autocomplete="organization" />
+              </label>
+              <label>
+                {{ t('mypage.businessRegNo') }}
+                <input v-model="signForm.business_reg_no" type="text" />
+              </label>
+              <label>
+                {{ t('mypage.companyAddress') }}
+                <input v-model="signForm.company_address" type="text" autocomplete="street-address" />
+              </label>
+              <label>
+                {{ t('mypage.signerName') }}
+                <input v-model="signForm.signer_name" type="text" autocomplete="name" />
+              </label>
+              <div class="sign-upload">
+                <label class="btn btn-secondary btn-sm upload-btn">
+                  {{ t('mypage.uploadSignature') }}
+                  <input
+                    ref="signatureInputRef"
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    hidden
+                    :disabled="busy"
+                    @change="onPickSignature"
+                  />
+                </label>
+                <button
+                  v-if="signatureFile"
+                  type="button"
+                  class="btn btn-secondary btn-sm"
+                  :disabled="busy"
+                  @click="clearSignature"
+                >
+                  {{ t('mypage.clearSignature') }}
+                </button>
+              </div>
+              <img
+                v-if="signaturePreviewUrl"
+                :src="signaturePreviewUrl"
+                class="signature-preview"
+                :alt="t('mypage.uploadSignature')"
+              />
+              <label class="checkbox">
+                <input v-model="signForm.agree" type="checkbox" />
+                {{ t('mypage.agreeNda') }}
+              </label>
+              <div class="actions">
+                <button
+                  type="button"
+                  class="btn btn-primary btn-sm"
+                  :disabled="busy || !canSign"
+                  @click="onSign"
+                >
+                  {{ t('mypage.signContract') }}
+                </button>
+              </div>
+            </div>
+          </template>
+          <template v-else-if="contract.status === 'signed'">
+            <dl v-if="contract.company_name" class="meta">
+              <div><dt>{{ t('mypage.companyName') }}</dt><dd>{{ contract.company_name }}</dd></div>
+              <div v-if="contract.signer_name">
+                <dt>{{ t('mypage.signerName') }}</dt>
+                <dd>{{ contract.signer_name }}</dd>
+              </div>
+            </dl>
+            <img
+              v-if="contract.signature_image_url"
+              :src="contract.signature_image_url"
+              class="signature-preview"
+              :alt="t('mypage.uploadSignature')"
+            />
+            <a
+              v-if="contract.pdf_url"
+              :href="contract.pdf_url"
+              target="_blank"
+              rel="noopener"
+              class="link"
             >
-              {{ t('mypage.signContract') }}
-            </button>
-            <a v-if="contract.pdf_url" :href="contract.pdf_url" target="_blank" rel="noopener" class="link">
-              {{ t('mypage.download') }}
+              {{ t('mypage.viewSignedPdf') }}
             </a>
-          </div>
+          </template>
         </template>
         <p v-else class="hint">{{ t('fulfillment.contractEmpty') }}</p>
       </div>
@@ -386,6 +526,43 @@ const sourceLabel = (source) => {
 .hint { margin: 0; font-size: 0.875rem; opacity: 0.7; }
 .link { color: var(--color-steel); font-size: 0.9rem; }
 .upload-btn { display: inline-flex; cursor: pointer; }
+.nda-body {
+  white-space: pre-wrap;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  max-height: 360px;
+  overflow: auto;
+  padding: var(--space-md);
+  margin: 0 0 var(--space-md);
+  background: var(--color-surface-muted, #f8f9fa);
+  border-radius: var(--radius-sm);
+}
+.sign-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    font-size: 0.875rem;
+  }
+  label.checkbox { flex-direction: row; align-items: center; }
+  input[type='text'] {
+    padding: 0.625rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+  }
+}
+.sign-upload { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+.signature-preview {
+  max-width: 220px;
+  max-height: 90px;
+  object-fit: contain;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
 .progress-bar {
   height: 8px;
   background: var(--color-border);

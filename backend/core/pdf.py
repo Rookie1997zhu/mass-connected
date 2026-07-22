@@ -12,6 +12,7 @@ from reportlab.lib.units import mm
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.cidfonts import UnicodeCIDFont
 from reportlab.platypus import (
+    Image as RLImage,
     Paragraph,
     SimpleDocTemplate,
     Spacer,
@@ -330,8 +331,19 @@ def build_injection_quotation_pdf(*, quote_no, product_name, inputs, result, val
     return pdf
 
 
-def build_nda_pdf(*, title, version, company_name, body, signed_at):
-    """保密协议 PDF。"""
+def build_nda_pdf(
+    *,
+    title,
+    version,
+    company_name,
+    body,
+    signed_at,
+    business_reg_no="",
+    company_address="",
+    signer_name="",
+    signature_image_path=None,
+):
+    """保密协议 PDF；签署后可附带客户签名图。"""
     buffer = io.BytesIO()
     doc = SimpleDocTemplate(
         buffer,
@@ -342,7 +354,7 @@ def build_nda_pdf(*, title, version, company_name, body, signed_at):
         bottomMargin=18 * mm,
     )
     styles = _styles()
-    font = _ensure_cjk_font()
+    _ensure_cjk_font()
     story = []
 
     story.append(Paragraph(f"<b>{BRAND}</b>", styles["Title"]))
@@ -355,12 +367,36 @@ def build_nda_pdf(*, title, version, company_name, body, signed_at):
     for paragraph in (body or "").split("\n"):
         text = paragraph.strip()
         if text:
-            story.append(Paragraph(text, styles["Normal"]))
+            story.append(Paragraph(text.replace("<", "&lt;").replace(">", "&gt;"), styles["Normal"]))
             story.append(Spacer(1, 4))
 
     story.append(Spacer(1, 16))
     story.append(Paragraph("供方 / CONNECTED: 커넥티드（CONNECTED）", styles["Normal"]))
+    story.append(Paragraph("事业者登记号: 652-18-02371", styles["Normal"]))
+    story.append(
+        Paragraph(
+            "地址: 首尔特别市 衿川区 数码路10街 37，16层 1607号（加山洞，Ask Tower）",
+            styles["Normal"],
+        )
+    )
+    story.append(Paragraph("代表: 홍승범", styles["Normal"]))
+    story.append(Spacer(1, 10))
     story.append(Paragraph(f"客户 / Client: {company_name}", styles["Normal"]))
+    if business_reg_no:
+        story.append(Paragraph(f"事业者登记号: {business_reg_no}", styles["Normal"]))
+    if company_address:
+        story.append(Paragraph(f"地址: {company_address}", styles["Normal"]))
+    if signer_name:
+        story.append(Paragraph(f"签署人: {signer_name}", styles["Normal"]))
+
+    if signature_image_path:
+        try:
+            img = RLImage(signature_image_path, width=50 * mm, height=20 * mm)
+            story.append(Spacer(1, 8))
+            story.append(Paragraph("客户签名 / Signature:", styles["Normal"]))
+            story.append(img)
+        except Exception:
+            pass
 
     doc.build(story)
     pdf = buffer.getvalue()
@@ -739,7 +775,7 @@ def build_pcb_dev_quotation_pdf(*, quote_no, product_name, inputs, result, valid
     ]
     if manufacturing.get("pricing_display_mode") == "range":
         notes.append(
-            "PCB样板制造费与总价展示为 ±10% 参考区间（相对中位价），实际下单价格可能落在区间外。"
+            "PCB样板制造费与总价展示为 ±20% 参考区间（相对中位价），实际下单价格可能落在区间外。"
         )
     if result.get("ad_consent"):
         notes.append("광고 동의: 예 / 广告同意: 是")
