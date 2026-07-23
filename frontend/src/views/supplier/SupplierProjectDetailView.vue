@@ -36,6 +36,10 @@ const deletingFileId = ref(null)
 const previewFile = ref(null)
 const previewOpen = ref(false)
 
+const openPlatformChat = (quoteRequestId) => {
+  window.__openPlatformChat?.(quoteRequestId)
+}
+
 const updateForm = ref({ content: '', is_customer_visible: true })
 const issueForm = ref({ title: '', description: '', severity: 'medium' })
 const uploadForm = ref({
@@ -222,6 +226,13 @@ const onDeleteFile = async (fileId) => {
         <RouterLink :to="`/supplier/quote-requests/${project.quote_request_id}`">
           {{ t('fulfillment.viewDeal') }}
         </RouterLink>
+        <button
+          type="button"
+          class="btn btn-secondary btn-sm"
+          @click="openPlatformChat(project.quote_request_id)"
+        >
+          {{ t('chat.openChat') }}
+        </button>
       </p>
 
       <h2 class="section-sub">{{ t('workflow.title') }}</h2>

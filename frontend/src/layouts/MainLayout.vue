@@ -3,7 +3,9 @@ import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RouterLink, RouterView } from 'vue-router'
 import NavDropdown from '../components/NavDropdown.vue'
+import ChatPanel from '../components/ChatPanel.vue'
 import {
+  fetchChatUnreadCount,
   fetchNavigation,
   fetchSupplierUnreadCount,
   fetchUnreadCount,
@@ -15,6 +17,21 @@ const auth = useAuthStore()
 const menuOpen = ref(false)
 const apiNavGroups = ref(null)
 const unreadCount = ref(0)
+const chatUnread = ref(0)
+const chatOpen = ref(false)
+const chatQuoteRequestId = ref(null)
+
+const openChat = (quoteRequestId = null) => {
+  chatQuoteRequestId.value = quoteRequestId
+  chatOpen.value = true
+}
+
+const closeChat = () => {
+  chatOpen.value = false
+  chatQuoteRequestId.value = null
+}
+
+defineExpose({ openChat })
 
 const setLocale = (value) => {
   locale.value = value
@@ -101,10 +118,30 @@ const loadUnreadCount = async () => {
   }
 }
 
-onMounted(async () => {
-  await loadNavigation()
-  await loadUnreadCount()
+const loadChatUnread = async () => {
+  if (!auth.isLoggedIn || !(auth.isBuyer || auth.isSupplier)) {
+    chatUnread.value = 0
+    return
+  }
+  try {
+    const role = auth.isSupplier ? 'supplier' : 'member'
+    const res = await fetchChatUnreadCount(role)
+    chatUnread.value = res.data?.count ?? 0
+  } catch {
+    chatUnread.value = 0
+  }
+}
+
+onMounted(() => {
+  loadNavigation()
+  loadUnreadCount()
+  loadChatUnread()
 })
+
+// provide openChat for child pages via window event
+if (typeof window !== 'undefined') {
+  window.__openPlatformChat = openChat
+}
 </script>
 
 <template>
@@ -157,6 +194,10 @@ onMounted(async () => {
               <RouterLink to="/supplier/orders" class="btn btn-sm btn-secondary nav-auth">
                 {{ t('nav.supplierOrders') }}
               </RouterLink>
+              <button type="button" class="btn btn-sm btn-secondary nav-auth nav-mypage" @click="openChat()">
+                {{ t('chat.nav') }}
+                <span v-if="chatUnread > 0" class="nav-badge">{{ chatUnread > 99 ? '99+' : chatUnread }}</span>
+              </button>
               <RouterLink to="/my?tab=notifications" class="btn btn-sm btn-secondary nav-auth nav-mypage">
                 {{ t('mypage.notifications') }}
                 <span v-if="unreadCount > 0" class="nav-badge">{{ unreadCount > 99 ? '99+' : unreadCount }}</span>
@@ -166,6 +207,15 @@ onMounted(async () => {
             <RouterLink to="/shop/cart" class="btn btn-sm btn-secondary nav-auth">
               {{ t('nav.cart') }}
             </RouterLink>
+            <button
+              v-if="!auth.isSupplier"
+              type="button"
+              class="btn btn-sm btn-secondary nav-auth nav-mypage"
+              @click="openChat()"
+            >
+              {{ t('chat.nav') }}
+              <span v-if="chatUnread > 0" class="nav-badge">{{ chatUnread > 99 ? '99+' : chatUnread }}</span>
+            </button>
             <RouterLink to="/my" class="btn btn-sm btn-primary nav-auth nav-mypage">
               {{ t('mypage.title') }}
               <span v-if="unreadCount > 0" class="nav-badge">{{ unreadCount > 99 ? '99+' : unreadCount }}</span>
@@ -276,6 +326,12 @@ onMounted(async () => {
         <p>{{ t('footer.copyright', { year: currentYear }) }}</p>
       </div>
     </footer>
+    <ChatPanel
+      :open="chatOpen"
+      :quote-request-id="chatQuoteRequestId"
+      @close="closeChat"
+      @unread-change="(n) => (chatUnread = n)"
+    />
   </div>
 </template>
 

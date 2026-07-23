@@ -32,6 +32,11 @@ const previewOpen = ref(false)
 const previewContextType = ref('quote')
 const previewContextId = ref(null)
 const activeTab = ref('specs')
+
+const openPlatformChat = (quoteRequestId) => {
+  window.__openPlatformChat?.(quoteRequestId)
+}
+
 const form = ref({
   price_amount: '',
   unit_price: '',
@@ -209,6 +214,11 @@ const downloadFile = async (file) => {
     <template v-else-if="data">
       <h1 class="page-title">{{ data.request_no }}</h1>
       <p class="page-lead">{{ data.rfq_no }} · {{ data.service_category_name }}</p>
+      <p class="chat-entry">
+        <button type="button" class="btn btn-secondary btn-sm" @click="openPlatformChat(data.id)">
+          {{ t('chat.openChat') }}
+        </button>
+      </p>
 
       <nav class="deal-tabs" role="tablist">
         <button

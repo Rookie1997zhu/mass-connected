@@ -95,6 +95,7 @@ onMounted(loadUnreadCount)
         <el-menu-item index="/contracts">{{ t('nav.contracts') }}</el-menu-item>
         <el-menu-item index="/payments">{{ t('nav.payments') }}</el-menu-item>
         <el-menu-item index="/production-orders">{{ t('nav.productionOrders') }}</el-menu-item>
+        <el-menu-item index="/chat-disputes">{{ t('nav.chatDisputes') }}</el-menu-item>
         <el-menu-item index="/categories">{{ t('nav.categories') }}</el-menu-item>
         <el-menu-item index="/products">{{ t('nav.products') }}</el-menu-item>
         <el-menu-item index="/orders">{{ t('nav.orders') }}</el-menu-item>

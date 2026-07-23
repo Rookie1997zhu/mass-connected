@@ -212,6 +212,24 @@ export const fetchSupplierUnreadCount = () => http.get('/supplier/notifications/
 export const markSupplierNotificationRead = (id) => http.post(`/supplier/notifications/${id}/read`)
 export const markAllSupplierNotificationsRead = () => http.post('/supplier/notifications/read-all')
 
+// 聊天
+const chatBase = (role) => (role === 'supplier' ? '/supplier/chat' : '/member/chat')
+export const fetchChatConversations = (role, params) =>
+  http.get(`${chatBase(role)}/conversations`, { params })
+export const openChatConversation = (role, quoteRequestId) =>
+  http.post(`${chatBase(role)}/conversations`, { quote_request_id: quoteRequestId })
+export const fetchChatMessages = (role, conversationId, params) =>
+  http.get(`${chatBase(role)}/conversations/${conversationId}/messages`, { params })
+export const sendChatMessage = (role, conversationId, body) =>
+  http.post(`${chatBase(role)}/conversations/${conversationId}/messages`, { body })
+export const markChatConversationRead = (role, conversationId) =>
+  http.post(`${chatBase(role)}/conversations/${conversationId}/read`)
+export const openChatDispute = (role, conversationId, reason = '') =>
+  http.post(`${chatBase(role)}/conversations/${conversationId}/dispute/open`, { reason })
+export const resolveChatDispute = (role, conversationId) =>
+  http.post(`${chatBase(role)}/conversations/${conversationId}/dispute/resolve`)
+export const fetchChatUnreadCount = (role) => http.get(`${chatBase(role)}/unread-count`)
+
 export const fetchCart = () => http.get('/member/cart')
 export const addToCart = (data) => http.post('/member/cart/items', data)
 export const updateCartItem = (id, data) => http.patch(`/member/cart/items/${id}`, data)

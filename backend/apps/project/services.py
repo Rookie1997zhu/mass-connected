@@ -72,6 +72,25 @@ def create_project_from_production_order(production_order, title=None):
             status="in_progress" if idx == 0 else "pending",
             started_at=timezone.now() if idx == 0 else None,
         )
+    quote_request_id = None
+    if production_order.quote_id:
+        quote_request_id = getattr(production_order.quote, "quote_request_id", None)
+        if quote_request_id is None:
+            from apps.rfq.models import Quote
+
+            quote_request_id = (
+                Quote.objects.filter(pk=production_order.quote_id)
+                .values_list("quote_request_id", flat=True)
+                .first()
+            )
+    if quote_request_id:
+        from apps.chat.services import link_conversation_to_order
+
+        link_conversation_to_order(
+            quote_request_id,
+            production_order=production_order,
+            project=project,
+        )
     notify(
         project.buyer,
         "project",

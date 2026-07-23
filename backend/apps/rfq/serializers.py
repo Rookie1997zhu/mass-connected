@@ -273,6 +273,7 @@ class CustomerPlanSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "plan_label",
+            "quote_request_id",
             "supplier_name",
             "price_amount",
             "unit_price",

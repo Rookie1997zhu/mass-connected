@@ -385,6 +385,12 @@ class MemberQuoteAcceptView(APIView):
                 lead_time_days=quote.lead_time_days,
                 status="pending_confirm",
             )
+            from apps.chat.services import link_conversation_to_order
+
+            if quote.quote_request_id:
+                link_conversation_to_order(
+                    quote.quote_request_id, production_order=production_order
+                )
             from apps.contract.services import create_contract_for_order
             from apps.payment.models import Payment
 

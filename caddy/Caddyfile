@@ -1,5 +1,11 @@
 # 监听所有网卡；局域网设备可通过本机 IP 访问（如 http://192.168.x.x/）
 :80 {
+	handle /ws/* {
+		reverse_proxy chat-ws:8001 {
+			header_up Host localhost
+		}
+	}
+
 	handle /api/* {
 		reverse_proxy backend:8000 {
 			# 统一 Host，避免局域网 IP 访问时 Django ALLOWED_HOSTS 校验失败
@@ -10,6 +16,10 @@
 # 媒体：默认仍由静态服务；项目履约文件请走鉴权下载接口 /api/*/projects/*/files/*/download
 # 保留 /media 以兼容简单报价 PDF 等非敏感公开资源
 handle /media/project/* {
+	respond "Use authenticated download API" 403
+}
+
+handle /media/chat/* {
 	respond "Use authenticated download API" 403
 }
 

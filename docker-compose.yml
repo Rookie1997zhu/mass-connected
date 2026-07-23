@@ -23,12 +23,15 @@ services:
       retries: 5
 
   backend:
+    image: oemco-backend
     build: ./backend
     env_file: .env
     environment:
       REDIS_URL: ${REDIS_URL:-redis://redis:6379/0}
-      CELERY_BROKER_URL: ${CELERY_BROKER_URL:-redis://redis:6379/0}
-      CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND:-redis://redis:6379/0}
+      REDIS_CELERY_URL: ${REDIS_CELERY_URL:-redis://redis:6379/1}
+      REDIS_CHANNELS_URL: ${REDIS_CHANNELS_URL:-redis://redis:6379/2}
+      CELERY_BROKER_URL: ${CELERY_BROKER_URL:-redis://redis:6379/1}
+      CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND:-redis://redis:6379/1}
       PRUSA_SLICER_PATH: ${PRUSA_SLICER_PATH:-/usr/local/bin/prusa-slicer}
     volumes:
       - ./backend:/app
@@ -38,7 +41,41 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-    command: sh -c "python manage.py migrate && python manage.py create_default_admin && python manage.py seed_demo_data && python manage.py seed_quote_tables && python manage.py runserver 0.0.0.0:8000"
+    # HTTP API；海量 WebSocket 由 chat-ws 承担，便于水平扩展
+    command: ["sh", "/app/scripts/start_api.sh"]
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
+
+  # 聊天 WebSocket 专用进程；生产可 docker compose up --scale chat-ws=N
+  chat-ws:
+    image: oemco-backend
+    build: ./backend
+    env_file: .env
+    environment:
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379/0}
+      REDIS_CELERY_URL: ${REDIS_CELERY_URL:-redis://redis:6379/1}
+      REDIS_CHANNELS_URL: ${REDIS_CHANNELS_URL:-redis://redis:6379/2}
+      CELERY_BROKER_URL: ${CELERY_BROKER_URL:-redis://redis:6379/1}
+      CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND:-redis://redis:6379/1}
+    volumes:
+      - ./backend:/app
+      - media_data:/app/media
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      backend:
+        condition: service_started
+    command: ["sh", "/app/scripts/start_chat_ws.sh"]
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
+    expose:
+      - "8001"
 
   # PrusaSlicer 切片 Worker（AGPL）；与 backend 共享 media 卷
   slicer-worker:
@@ -48,8 +85,10 @@ services:
     env_file: .env
     environment:
       REDIS_URL: ${REDIS_URL:-redis://redis:6379/0}
-      CELERY_BROKER_URL: ${CELERY_BROKER_URL:-redis://redis:6379/0}
-      CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND:-redis://redis:6379/0}
+      REDIS_CELERY_URL: ${REDIS_CELERY_URL:-redis://redis:6379/1}
+      REDIS_CHANNELS_URL: ${REDIS_CHANNELS_URL:-redis://redis:6379/2}
+      CELERY_BROKER_URL: ${CELERY_BROKER_URL:-redis://redis:6379/1}
+      CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND:-redis://redis:6379/1}
       PRUSA_SLICER_PATH: /usr/local/bin/prusa-slicer
       DB_HOST: mysql
     volumes:
@@ -95,6 +134,7 @@ services:
       - caddy_config:/config
     depends_on:
       - backend
+      - chat-ws
       - frontend
       - admin
 

@@ -23,6 +23,10 @@ const loading = ref(true)
 const previewFile = ref(null)
 const previewOpen = ref(false)
 
+const openPlatformChat = (quoteRequestId) => {
+  window.__openPlatformChat?.(quoteRequestId)
+}
+
 const load = async () => {
   const res = await fetchMyProject(route.params.id)
   project.value = res.data
@@ -74,6 +78,14 @@ const openPreview = (file) => {
       </p>
       <p v-if="project.rfq" class="deal-link">
         <RouterLink :to="`/my/rfqs/${project.rfq}`">{{ t('fulfillment.viewDeal') }}</RouterLink>
+        <button
+          v-if="project.quote_request_id"
+          type="button"
+          class="btn btn-secondary btn-sm"
+          @click="openPlatformChat(project.quote_request_id)"
+        >
+          {{ t('chat.openChat') }}
+        </button>
       </p>
 
       <h2 class="section-sub">{{ t('workflow.title') }}</h2>

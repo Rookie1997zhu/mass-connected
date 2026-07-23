@@ -22,6 +22,10 @@ const { t } = useI18n()
 const { formatMoney } = useLocaleCurrency()
 const route = useRoute()
 const rfq = ref(null)
+
+const windowOpenChat = (quoteRequestId) => {
+  window.__openPlatformChat?.(quoteRequestId)
+}
 const fulfillment = ref(null)
 const fulfillmentLoading = ref(false)
 const loading = ref(true)
@@ -350,6 +354,14 @@ const onAccept = async (quoteId) => {
             <div class="plan-actions" @click.stop>
               <button type="button" class="btn btn-secondary btn-sm" @click="openDetail(p.id)">
                 {{ t('quoteDetail.viewDetail') }}
+              </button>
+              <button
+                v-if="p.quote_request_id"
+                type="button"
+                class="btn btn-secondary btn-sm"
+                @click="windowOpenChat(p.quote_request_id)"
+              >
+                {{ t('chat.openChat') }}
               </button>
               <button
                 v-if="p.status === 'sent'"

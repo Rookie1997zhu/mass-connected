@@ -9,9 +9,10 @@ class Notification(models.Model):
         ("contract", "Contract"),
         ("production_order", "Production Order"),
         ("quote_request", "Quote Request"),
-        ("point", "Point"),
-        ("system", "System"),
-    ]
+            ("point", "Point"),
+            ("system", "System"),
+            ("chat", "Chat"),
+        ]
 
     user = models.ForeignKey(
         "accounts.User", on_delete=models.CASCADE, related_name="notifications"

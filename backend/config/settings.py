@@ -13,6 +13,7 @@ ALLOWED_HOSTS = [
 ]
 
 INSTALLED_APPS = [
+    "daphne",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -21,6 +22,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "rest_framework",
     "rest_framework_simplejwt",
+    "channels",
     "core",
     "apps.accounts",
     "apps.i18n",
@@ -35,6 +37,7 @@ INSTALLED_APPS = [
     "apps.project",
     "apps.contract",
     "apps.payment",
+    "apps.chat",
 ]
 
 MIDDLEWARE = [
@@ -51,6 +54,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "config.urls"
 WSGI_APPLICATION = "config.wsgi.application"
+ASGI_APPLICATION = "config.asgi.application"
 
 TEMPLATES = [
     {
@@ -115,7 +119,10 @@ CORS_ALLOWED_ORIGINS = [
 ]
 CORS_ALLOW_CREDENTIALS = True
 
+# Redis 分库：DB0 cache、DB1 Celery、DB2 Channels
 REDIS_URL = os.environ.get("REDIS_URL", "redis://redis:6379/0")
+REDIS_CELERY_URL = os.environ.get("REDIS_CELERY_URL", "redis://redis:6379/1")
+REDIS_CHANNELS_URL = os.environ.get("REDIS_CHANNELS_URL", "redis://redis:6379/2")
 
 CACHES = {
     "default": {
@@ -125,9 +132,24 @@ CACHES = {
     }
 }
 
-# Celery（print3d 切片 Worker）；与缓存共用 Redis，使用独立 DB 编号避免键冲突
-CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", REDIS_URL)
-CELERY_RESULT_BACKEND = os.environ.get("CELERY_RESULT_BACKEND", REDIS_URL)
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [REDIS_CHANNELS_URL],
+            "capacity": 1500,
+            "expiry": 60,
+        },
+    }
+}
+
+# Celery（print3d 切片 Worker）；独立 DB1，避免与 cache/channels 键冲突
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", REDIS_CELERY_URL)
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_RESULT_BACKEND", REDIS_CELERY_URL)
+
+CHAT_RATE_LIMIT_PER_MINUTE = int(os.environ.get("CHAT_RATE_LIMIT_PER_MINUTE", "30"))
+CHAT_MESSAGE_MAX_LENGTH = int(os.environ.get("CHAT_MESSAGE_MAX_LENGTH", "4000"))
+CHAT_ONLINE_TTL_SECONDS = int(os.environ.get("CHAT_ONLINE_TTL_SECONDS", "60"))
 CELERY_TASK_TRACK_STARTED = True
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"

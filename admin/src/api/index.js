@@ -172,3 +172,13 @@ export const createProjectTodo = (id, data) => http.post(`/admin/projects/${id}/
 export const fetchContracts = (params) => http.get('/admin/contracts', { params })
 export const fetchPayments = (params) => http.get('/admin/payments', { params })
 export const confirmPayment = (id) => http.post(`/admin/payments/${id}/confirm`)
+
+// 聊天纠纷介入
+export const fetchAdminChatDisputes = (params) => http.get('/admin/chat/disputes', { params })
+export const fetchAdminChatMessages = (id, params) =>
+  http.get(`/admin/chat/conversations/${id}/messages`, { params })
+export const sendAdminChatMessage = (id, body) =>
+  http.post(`/admin/chat/conversations/${id}/messages`, { body })
+export const resolveAdminChatDispute = (id) =>
+  http.post(`/admin/chat/conversations/${id}/dispute/resolve`)
+
