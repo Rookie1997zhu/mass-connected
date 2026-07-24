@@ -11,6 +11,7 @@ import {
   resolveChatDispute,
   sendChatMessage,
 } from '../api'
+import TextTranslateBlock from './TextTranslateBlock.vue'
 import { createChatSocket } from '../utils/chatWs'
 import { useAuthStore } from '../stores/auth'
 
@@ -46,6 +47,21 @@ let lastMsgId = 0
 const activeConversation = computed(() =>
   conversations.value.find((c) => c.id === activeId.value) || null
 )
+
+const peerInitial = computed(() => {
+  const name = (activeConversation.value?.peer_display_name || '').trim()
+  return name ? name.slice(0, 1).toUpperCase() : '?'
+})
+
+const formatMsgTime = (iso) => {
+  const s = (iso || '').slice(0, 16).replace('T', ' ')
+  return s.length > 11 ? s.slice(11) : s
+}
+
+const convInitial = (c) => {
+  const name = (c?.peer_display_name || c?.quote_request_no || '').trim()
+  return name ? name.slice(0, 1).toUpperCase() : '?'
+}
 
 const loadConversations = async () => {
   loadingList.value = true
@@ -235,15 +251,22 @@ defineExpose({ openByQuoteRequest, selectConversation, loadConversations })
   <div v-if="open" class="chat-overlay" @click.self="emit('close')">
     <div class="chat-panel" role="dialog" aria-modal="true">
       <header class="chat-head">
-        <strong>{{ t('chat.title') }}</strong>
-        <span class="ws-dot" :class="wsStatus" :title="wsStatus" />
-        <button type="button" class="chat-close" @click="emit('close')">×</button>
+        <div class="chat-head-title">
+          <strong>{{ t('chat.title') }}</strong>
+          <span class="ws-pill">
+            <span class="ws-dot" :class="wsStatus" />
+            <span class="ws-label">{{ wsStatus === 'open' ? 'Online' : wsStatus }}</span>
+          </span>
+        </div>
+        <button type="button" class="chat-close" :aria-label="t('common.close')" @click="emit('close')">
+          ×
+        </button>
       </header>
       <p class="chat-safety">{{ t('chat.safetyTip') }}</p>
       <div class="chat-body">
         <aside class="chat-list">
-          <p v-if="loadingList" class="muted">{{ t('common.loading') }}</p>
-          <p v-else-if="!conversations.length" class="muted">{{ t('chat.empty') }}</p>
+          <p v-if="loadingList" class="muted pad-sm">{{ t('common.loading') }}</p>
+          <p v-else-if="!conversations.length" class="muted pad-sm">{{ t('chat.empty') }}</p>
           <button
             v-for="c in conversations"
             :key="c.id"
@@ -252,30 +275,43 @@ defineExpose({ openByQuoteRequest, selectConversation, loadConversations })
             :class="{ active: c.id === activeId }"
             @click="selectConversation(c.id)"
           >
-            <span class="conv-name">{{ c.peer_display_name || c.quote_request_no }}</span>
-            <span class="conv-preview">{{ c.last_message_preview || c.quote_request_no }}</span>
+            <span class="conv-avatar" aria-hidden="true">{{ convInitial(c) }}</span>
+            <span class="conv-text">
+              <span class="conv-name">{{ c.peer_display_name || c.quote_request_no }}</span>
+              <span class="conv-preview">{{ c.last_message_preview || c.quote_request_no }}</span>
+            </span>
             <span v-if="c.unread" class="conv-unread">{{ c.unread > 99 ? '99+' : c.unread }}</span>
           </button>
         </aside>
         <section class="chat-main">
-          <div v-if="!activeId" class="muted pad">{{ t('chat.selectConversation') }}</div>
+          <div v-if="!activeId" class="empty-thread">
+            <p class="muted">{{ t('chat.selectConversation') }}</p>
+          </div>
           <template v-else>
             <div class="chat-toolbar">
-              <span>{{ activeConversation?.peer_display_name }}</span>
-              <template v-if="activeConversation?.dispute_status === 'open'">
-                <span class="dispute-badge">{{ t('chat.disputeOpen') }}</span>
-                <button type="button" class="btn btn-sm btn-secondary" @click="onResolveDispute">
-                  {{ t('chat.resolveDispute') }}
+              <span class="peer-avatar" aria-hidden="true">{{ peerInitial }}</span>
+              <div class="peer-meta">
+                <span class="peer-name">{{ activeConversation?.peer_display_name }}</span>
+                <span v-if="activeConversation?.quote_request_no" class="peer-sub">
+                  {{ activeConversation.quote_request_no }}
+                </span>
+              </div>
+              <div class="toolbar-actions">
+                <template v-if="activeConversation?.dispute_status === 'open'">
+                  <span class="dispute-badge">{{ t('chat.disputeOpen') }}</span>
+                  <button type="button" class="btn-ghost" @click="onResolveDispute">
+                    {{ t('chat.resolveDispute') }}
+                  </button>
+                </template>
+                <button
+                  v-else
+                  type="button"
+                  class="btn-ghost"
+                  @click="showDisputeForm = !showDisputeForm"
+                >
+                  {{ t('chat.requestIntervention') }}
                 </button>
-              </template>
-              <button
-                v-else
-                type="button"
-                class="btn btn-sm btn-secondary"
-                @click="showDisputeForm = !showDisputeForm"
-              >
-                {{ t('chat.requestIntervention') }}
-              </button>
+              </div>
             </div>
             <div v-if="showDisputeForm" class="dispute-form">
               <textarea v-model="disputeReason" rows="2" :placeholder="t('chat.disputeReason')" />
@@ -284,7 +320,7 @@ defineExpose({ openByQuoteRequest, selectConversation, loadConversations })
               </button>
             </div>
             <div ref="listEl" class="msg-list">
-              <p v-if="loadingMessages" class="muted">{{ t('common.loading') }}</p>
+              <p v-if="loadingMessages" class="muted center">{{ t('common.loading') }}</p>
               <div
                 v-for="m in messages"
                 :key="m.id"
@@ -296,7 +332,17 @@ defineExpose({ openByQuoteRequest, selectConversation, loadConversations })
               >
                 <p class="msg-body">{{ m.body }}</p>
                 <small v-if="m.has_contact_hint" class="hint">{{ t('chat.contactMasked') }}</small>
-                <small class="msg-time">{{ (m.created_at || '').slice(0, 16).replace('T', ' ') }}</small>
+                <div class="msg-foot">
+                  <TextTranslateBlock
+                    context-type="chat"
+                    compact
+                    :role="role"
+                    :conversation-id="activeId"
+                    :message-id="m.id"
+                    :text="m.body"
+                  />
+                  <time class="msg-time">{{ formatMsgTime(m.created_at) }}</time>
+                </div>
               </div>
             </div>
             <form class="composer" @submit.prevent="onSend">
@@ -307,7 +353,7 @@ defineExpose({ openByQuoteRequest, selectConversation, loadConversations })
                 :placeholder="t('chat.placeholder')"
                 @keydown.enter.exact.prevent="onSend"
               />
-              <button type="submit" class="btn btn-primary btn-sm" :disabled="sending">
+              <button type="submit" class="send-btn" :disabled="sending || !draft.trim()">
                 {{ t('chat.send') }}
               </button>
             </form>
@@ -323,175 +369,412 @@ defineExpose({ openByQuoteRequest, selectConversation, loadConversations })
 .chat-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(15, 23, 42, 0.35);
+  background: rgba(15, 23, 42, 0.42);
+  backdrop-filter: blur(2px);
   z-index: 1200;
   display: flex;
   justify-content: flex-end;
   align-items: stretch;
+  animation: chat-fade-in 0.18s ease-out;
 }
+
+@keyframes chat-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 .chat-panel {
-  width: min(920px, 100%);
-  background: #f8fafc;
+  width: min(940px, 100%);
+  background: #f4f6f8;
   display: flex;
   flex-direction: column;
-  border-left: 1px solid #e2e8f0;
+  border-left: 1px solid #d8dee6;
+  box-shadow: -12px 0 40px rgba(15, 23, 42, 0.12);
+  animation: chat-slide-in 0.22s ease-out;
 }
+
+@keyframes chat-slide-in {
+  from { transform: translateX(18px); opacity: 0.85; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
 .chat-head {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.85rem 1rem;
-  background: #0f172a;
+  padding: 0.9rem 1.1rem;
+  background:
+    linear-gradient(135deg, #0f172a 0%, #1e293b 55%, #334155 100%);
   color: #fff;
 }
+
+.chat-head-title {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-width: 0;
+
+  strong {
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+  }
+}
+
+.ws-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  font-size: 0.68rem;
+  color: #cbd5e1;
+  text-transform: capitalize;
+}
+
 .chat-close {
   margin-left: auto;
-  background: transparent;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
   border: 0;
   color: #fff;
-  font-size: 1.5rem;
+  font-size: 1.35rem;
+  line-height: 1;
   cursor: pointer;
+  transition: background 0.15s ease;
+
+  &:hover { background: rgba(255, 255, 255, 0.18); }
 }
+
 .ws-dot {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background: #94a3b8;
+  flex-shrink: 0;
 }
-.ws-dot.open { background: #22c55e; }
-.ws-dot.connecting { background: #eab308; }
+.ws-dot.open { background: #4ade80; box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.2); }
+.ws-dot.connecting { background: #facc15; }
 .ws-dot.error, .ws-dot.closed { background: #f87171; }
+
 .chat-safety {
   margin: 0;
-  padding: 0.65rem 1rem;
-  font-size: 0.8rem;
+  padding: 0.55rem 1.1rem;
+  font-size: 0.75rem;
   line-height: 1.45;
-  background: #fff7ed;
+  background: linear-gradient(90deg, #fff7ed, #ffedd5);
   color: #9a3412;
-  border-bottom: 1px solid #fed7aa;
+  border-bottom: 1px solid #fdba74;
 }
+
 .chat-body {
   flex: 1;
   min-height: 0;
   display: grid;
-  grid-template-columns: 240px 1fr;
+  grid-template-columns: 260px 1fr;
 }
+
 .chat-list {
   border-right: 1px solid #e2e8f0;
   overflow: auto;
-  background: #fff;
+  background: #fafbfc;
 }
+
 .conv-item {
   display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 0.15rem 0.5rem;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.55rem;
+  align-items: center;
   width: 100%;
   text-align: left;
-  padding: 0.75rem;
+  padding: 0.7rem 0.85rem;
   border: 0;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid #eef2f6;
   background: transparent;
   cursor: pointer;
+  transition: background 0.15s ease;
+
+  &:hover { background: #f1f5f9; }
+  &.active {
+    background: #e8eef5;
+    box-shadow: inset 3px 0 0 var(--color-steel, #475569);
+  }
 }
-.conv-item.active { background: #e2e8f0; }
-.conv-name { font-weight: 600; font-size: 0.9rem; grid-column: 1; }
+
+.conv-avatar,
+.peer-avatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #334155;
+  background: linear-gradient(145deg, #e2e8f0, #cbd5e1);
+  flex-shrink: 0;
+}
+
+.conv-text {
+  min-width: 0;
+  display: grid;
+  gap: 0.12rem;
+}
+
+.conv-name {
+  font-weight: 600;
+  font-size: 0.86rem;
+  color: #0f172a;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .conv-preview {
-  grid-column: 1;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   color: #64748b;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
 .conv-unread {
-  grid-row: 1 / span 2;
-  align-self: center;
   background: #dc2626;
   color: #fff;
   border-radius: 999px;
-  min-width: 1.25rem;
+  min-width: 1.15rem;
   text-align: center;
-  font-size: 0.7rem;
-  padding: 0.1rem 0.35rem;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 0.12rem 0.32rem;
 }
+
 .chat-main {
   display: flex;
   flex-direction: column;
   min-height: 0;
+  background: #eef2f6;
 }
+
+.empty-thread {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+}
+
 .chat-toolbar {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 0.75rem;
+  gap: 0.65rem;
+  padding: 0.65rem 0.9rem;
   border-bottom: 1px solid #e2e8f0;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(6px);
 }
+
+.peer-meta {
+  min-width: 0;
+  display: grid;
+  gap: 0.05rem;
+  flex: 1;
+}
+
+.peer-name {
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: #0f172a;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.peer-sub {
+  font-size: 0.7rem;
+  color: #64748b;
+}
+
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.btn-ghost {
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  color: #334155;
+  font-size: 0.72rem;
+  padding: 0.28rem 0.55rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+
+  &:hover {
+    background: #f8fafc;
+    border-color: #94a3b8;
+  }
+}
+
 .dispute-badge {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: #b45309;
   background: #fef3c7;
-  padding: 0.15rem 0.45rem;
-  border-radius: 4px;
+  padding: 0.18rem 0.45rem;
+  border-radius: 6px;
+  font-weight: 600;
 }
+
 .dispute-form {
-  padding: 0.5rem 0.75rem;
+  padding: 0.65rem 0.9rem;
   display: grid;
   gap: 0.5rem;
   background: #fffbeb;
+  border-bottom: 1px solid #fde68a;
+
+  textarea {
+    width: 100%;
+    border: 1px solid #fcd34d;
+    border-radius: 8px;
+    padding: 0.5rem 0.65rem;
+    font: inherit;
+    resize: vertical;
+  }
 }
+
 .msg-list {
   flex: 1;
   overflow: auto;
-  padding: 0.75rem;
+  padding: 1rem 0.9rem 1.15rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.65rem;
+  background:
+    radial-gradient(ellipse at top left, rgba(148, 163, 184, 0.12), transparent 45%),
+    linear-gradient(180deg, #eef2f6 0%, #e8edf3 100%);
 }
+
 .msg {
-  max-width: 80%;
+  max-width: min(78%, 420px);
   align-self: flex-start;
   background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  padding: 0.5rem 0.65rem;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  border-radius: 14px 14px 14px 4px;
+  padding: 0.55rem 0.7rem 0.45rem;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
 }
+
 .msg.mine {
   align-self: flex-end;
-  background: #dbeafe;
+  background: linear-gradient(160deg, #dbeafe 0%, #bfdbfe 100%);
   border-color: #93c5fd;
+  border-radius: 14px 14px 4px 14px;
 }
+
 .msg.platform {
   align-self: center;
-  background: #f1f5f9;
+  max-width: 88%;
+  background: #f8fafc;
+  border-style: dashed;
   font-style: italic;
+  color: #475569;
+  border-radius: 10px;
 }
-.msg-body { margin: 0; white-space: pre-wrap; word-break: break-word; }
-.hint { display: block; color: #c2410c; margin-top: 0.25rem; }
-.msg-time { color: #94a3b8; }
+
+.msg-body {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: #0f172a;
+}
+
+.hint {
+  display: block;
+  color: #c2410c;
+  margin-top: 0.3rem;
+  font-size: 0.7rem;
+}
+
+.msg-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 0.15rem;
+  min-height: 1rem;
+}
+
+.msg-time {
+  color: #94a3b8;
+  font-size: 0.65rem;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
 .composer {
   display: flex;
-  gap: 0.5rem;
-  padding: 0.75rem;
+  gap: 0.55rem;
+  padding: 0.75rem 0.9rem 0.9rem;
   border-top: 1px solid #e2e8f0;
   background: #fff;
 }
+
 .composer input {
   flex: 1;
   border: 1px solid #cbd5e1;
-  border-radius: 6px;
-  padding: 0.5rem 0.65rem;
+  border-radius: 999px;
+  padding: 0.6rem 0.95rem;
+  font: inherit;
+  background: #f8fafc;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+
+  &:focus {
+    outline: none;
+    border-color: var(--color-steel, #64748b);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(100, 116, 139, 0.15);
+  }
 }
+
+.send-btn {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.55rem 1.05rem;
+  background: #0f172a;
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, opacity 0.15s ease;
+
+  &:hover:not(:disabled) { background: #1e293b; }
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+}
+
 .chat-error {
   margin: 0;
   padding: 0.5rem 1rem;
   color: #b91c1c;
   background: #fef2f2;
+  font-size: 0.82rem;
 }
+
 .muted { color: #64748b; font-size: 0.875rem; }
-.pad { padding: 1rem; }
+.pad-sm { padding: 0.85rem; }
+.center { text-align: center; margin: 1rem 0; }
+
 @media (max-width: 720px) {
   .chat-body { grid-template-columns: 1fr; }
-  .chat-list { max-height: 30vh; }
+  .chat-list { max-height: 28vh; }
+  .msg { max-width: 88%; }
+  .ws-label { display: none; }
 }
 </style>

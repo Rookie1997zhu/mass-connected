@@ -1,3 +1,4 @@
+from django.core.cache import cache
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
@@ -23,10 +24,13 @@ from apps.chat.services import (
     send_message,
     user_can_access_conversation,
 )
+from apps.project.translation import TranslationError, translate_text
 from apps.rfq.models import QuoteRequest
 from core.pagination import StandardPagination
 from core.permissions import IsAdminRole, IsBuyerRole, IsSupplierRole
 from core.responses import error_response, success_response
+
+CHAT_TRANSLATE_CACHE_TTL = 3600
 
 
 def _conversation_queryset_for_user(user):
@@ -39,6 +43,28 @@ def _conversation_queryset_for_user(user):
 
 def _get_participant_conversation(user, pk):
     return get_object_or_404(_conversation_queryset_for_user(user), pk=pk)
+
+
+def _message_translate_response(request, conversation, message_id):
+    message = get_object_or_404(Message, pk=message_id, conversation=conversation)
+    text = (message.body or "").strip()
+    if not text:
+        return error_response("VALIDATION_ERROR", "消息内容为空", request=request)
+    target_lang = request.data.get("target_lang", "")
+    cache_key = f"chat:msg_tr:{message.id}:{str(target_lang or '').strip().lower()}"
+    cached = cache.get(cache_key)
+    if cached:
+        return success_response({"translated_text": cached}, request=request)
+    try:
+        translated = translate_text(text, target_lang)
+    except TranslationError as exc:
+        status_code = 503 if exc.code == "TRANSLATE_NOT_CONFIGURED" else 400
+        if exc.code == "TRANSLATE_FAILED":
+            status_code = 502
+        return error_response(exc.code, exc.message, status=status_code, request=request)
+    if translated:
+        cache.set(cache_key, translated, CHAT_TRANSLATE_CACHE_TTL)
+    return success_response({"translated_text": translated}, request=request)
 
 
 class MemberConversationListCreateView(APIView):
@@ -364,3 +390,58 @@ class AdminDisputeResolveView(APIView):
             ConversationSerializer(conversation, context={"request": request}).data,
             request=request,
         )
+
+
+class _BaseMessageTranslateView(APIView):
+    role_gate = None  # "buyer" | "supplier" | None
+
+    def post(self, request, pk, message_id):
+        conversation = _get_participant_conversation(request.user, pk)
+        role = participant_role(conversation, request.user)
+        if role is None:
+            return error_response(
+                "CHAT_NOT_PARTICIPANT",
+                "无权访问该会话",
+                status=403,
+                request=request,
+            )
+        if self.role_gate == "buyer" and role != Message.ROLE_BUYER:
+            return error_response(
+                "CHAT_NOT_PARTICIPANT",
+                "无权访问该会话",
+                status=403,
+                request=request,
+            )
+        if self.role_gate == "supplier" and role != Message.ROLE_SUPPLIER:
+            return error_response(
+                "CHAT_NOT_PARTICIPANT",
+                "无权访问该会话",
+                status=403,
+                request=request,
+            )
+        return _message_translate_response(request, conversation, message_id)
+
+
+class MemberMessageTranslateView(_BaseMessageTranslateView):
+    permission_classes = [IsBuyerRole]
+    role_gate = "buyer"
+
+
+class SupplierMessageTranslateView(_BaseMessageTranslateView):
+    permission_classes = [IsSupplierRole]
+    role_gate = "supplier"
+
+
+class AdminMessageTranslateView(APIView):
+    permission_classes = [IsAdminRole]
+
+    def post(self, request, pk, message_id):
+        conversation = get_object_or_404(Conversation, pk=pk)
+        if not user_can_access_conversation(request.user, conversation, for_admin=True):
+            return error_response(
+                "CHAT_DISPUTE_REQUIRED",
+                "仅纠纷中的会话可供管理员翻译",
+                status=403,
+                request=request,
+            )
+        return _message_translate_response(request, conversation, message_id)

@@ -292,6 +292,12 @@ const messages = {
       sendFailed: '전송 실패',
       resolveFailed: '종료 실패',
     },
+    aiTranslate: {
+      translate: '번역',
+      translating: '번역 중...',
+      translateFailed: '번역에 실패했습니다',
+      notConfigured: '번역 서비스가 설정되지 않았습니다',
+    },
     quoteParams: {
       pageHint: '이 페이지는 간단 견적의 수치 파라미터입니다. 계단/테이블 데이터는 「견적 테이블」에서 관리하세요.',
       searchPlaceholder: 'param_key / 설명 검색',
@@ -655,6 +661,12 @@ const messages = {
       loadFailed: '加载失败',
       sendFailed: '发送失败',
       resolveFailed: '结束失败',
+    },
+    aiTranslate: {
+      translate: '翻译',
+      translating: '翻译中...',
+      translateFailed: '翻译失败',
+      notConfigured: '翻译服务未配置',
     },
     quoteParams: {
       pageHint: '本页维护简单报价的数值参数；阶梯费率与表格数据请到「报价表格」中配置。',
@@ -1025,6 +1037,12 @@ const messages = {
       loadFailed: 'Failed to load',
       sendFailed: 'Failed to send',
       resolveFailed: 'Failed to resolve',
+    },
+    aiTranslate: {
+      translate: 'Translate',
+      translating: 'Translating...',
+      translateFailed: 'Translation failed',
+      notConfigured: 'Translation service is not configured',
     },
     quoteParams: {
       pageHint: 'Numeric params for simple quotes. Ladder rates and table data are managed under Quote Tables.',

@@ -1,7 +1,8 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
+  translateChatMessage,
   translateMemberProjectText,
   translateMemberQuoteText,
   translateMemberRfqText,
@@ -14,10 +15,14 @@ const props = defineProps({
   // Legacy project API: projectId + role
   projectId: { type: [Number, String], default: null },
   // Generalized: contextType + contextId + role
-  contextType: { type: String, default: '' }, // 'project' | 'rfq' | 'quote' | 'quoteRequest'
+  contextType: { type: String, default: '' }, // 'project' | 'rfq' | 'quote' | 'quoteRequest' | 'chat'
   contextId: { type: [Number, String], default: null },
+  conversationId: { type: [Number, String], default: null },
+  messageId: { type: [Number, String], default: null },
   role: { type: String, required: true }, // 'member' | 'supplier'
   text: { type: String, default: '' },
+  /** 聊天等紧凑场景：文字链样式，避免大按钮 */
+  compact: { type: Boolean, default: false },
 })
 
 const { t, locale } = useI18n()
@@ -25,8 +30,10 @@ const loading = ref(false)
 const error = ref('')
 const translated = ref('')
 
+const isCompact = computed(() => props.compact || props.contextType === 'chat')
+
 watch(
-  () => props.text,
+  () => [props.text, props.messageId],
   () => {
     translated.value = ''
     error.value = ''
@@ -35,6 +42,10 @@ watch(
 
 const resolveTranslateApi = () => {
   const type = props.contextType || (props.projectId != null ? 'project' : '')
+  if (type === 'chat') {
+    if (props.conversationId == null || props.messageId == null) return null
+    return (data) => translateChatMessage(props.role, props.conversationId, props.messageId, data)
+  }
   const id = props.contextId ?? props.projectId
   if (!type || id == null) return null
   if (props.role === 'supplier') {
@@ -58,10 +69,11 @@ const onTranslate = async () => {
   loading.value = true
   error.value = ''
   try {
-    const res = await api({
-      text: source,
-      target_lang: locale.value,
-    })
+    const payload =
+      props.contextType === 'chat'
+        ? { target_lang: locale.value }
+        : { text: source, target_lang: locale.value }
+    const res = await api(payload)
     translated.value = res.data?.translated_text || ''
     if (!translated.value) {
       error.value = t('aiTranslate.translateFailed')
@@ -80,10 +92,10 @@ const onTranslate = async () => {
 </script>
 
 <template>
-  <div v-if="(text || '').trim()" class="translate-block">
+  <div v-if="(text || '').trim()" class="translate-block" :class="{ compact: isCompact }">
     <button
       type="button"
-      class="btn btn-secondary btn-sm"
+      :class="isCompact ? 'translate-link' : 'btn btn-secondary btn-sm'"
       :disabled="loading"
       @click="onTranslate"
     >
@@ -97,7 +109,45 @@ const onTranslate = async () => {
 <style scoped lang="scss">
 .translate-block {
   margin-top: 0.35rem;
+
+  &.compact {
+    margin-top: 0;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.15rem;
+    min-width: 0;
+    flex: 1;
+  }
 }
+
+.translate-link {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-steel, #475569);
+  font-size: 0.7rem;
+  line-height: 1.2;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-color: color-mix(in srgb, var(--color-steel, #475569) 35%, transparent);
+
+  &:hover:not(:disabled) {
+    color: var(--color-ink, #0f172a);
+    text-decoration-color: currentColor;
+  }
+
+  &:disabled {
+    opacity: 0.55;
+    cursor: wait;
+  }
+}
+
 .translate-result {
   margin: 0.35rem 0 0;
   font-size: 0.85rem;
@@ -106,10 +156,26 @@ const onTranslate = async () => {
   padding: 0.4rem 0.5rem;
   background: var(--color-steel-muted, rgba(0, 0, 0, 0.04));
   border-radius: 4px;
+
+  .compact & {
+    margin-top: 0.25rem;
+    font-size: 0.78rem;
+    line-height: 1.45;
+    padding: 0.3rem 0.4rem;
+    border-radius: 6px;
+    border-left: 2px solid color-mix(in srgb, var(--color-steel, #64748b) 45%, transparent);
+    background: rgba(15, 23, 42, 0.04);
+  }
 }
+
 .translate-error {
   margin: 0.35rem 0 0;
   font-size: 0.78rem;
   color: #b91c1c;
+
+  .compact & {
+    margin-top: 0.2rem;
+    font-size: 0.68rem;
+  }
 }
 </style>

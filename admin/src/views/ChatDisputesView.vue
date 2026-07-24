@@ -7,6 +7,7 @@ import {
   resolveAdminChatDispute,
   sendAdminChatMessage,
 } from '../api'
+import TextTranslateBlock from '../components/TextTranslateBlock.vue'
 
 const { t } = useI18n()
 const loading = ref(false)
@@ -113,6 +114,12 @@ onMounted(loadDisputes)
           >
             <div class="meta">{{ m.sender_role }} · {{ (m.created_at || '').slice(0, 16).replace('T', ' ') }}</div>
             <div>{{ m.body }}</div>
+            <TextTranslateBlock
+              v-if="active"
+              :conversation-id="active.id"
+              :message-id="m.id"
+              :text="m.body"
+            />
             <div v-if="m.body_original && m.body_original !== m.body" class="original">
               {{ t('chat.original') }}: {{ m.body_original }}
             </div>

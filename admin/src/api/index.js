@@ -181,4 +181,10 @@ export const sendAdminChatMessage = (id, body) =>
   http.post(`/admin/chat/conversations/${id}/messages`, { body })
 export const resolveAdminChatDispute = (id) =>
   http.post(`/admin/chat/conversations/${id}/dispute/resolve`)
+export const translateAdminChatMessage = (conversationId, messageId, data) =>
+  http.post(
+    `/admin/chat/conversations/${conversationId}/messages/${messageId}/translate`,
+    data,
+    { timeout: 45000 },
+  )
 

@@ -229,6 +229,12 @@ export const openChatDispute = (role, conversationId, reason = '') =>
 export const resolveChatDispute = (role, conversationId) =>
   http.post(`${chatBase(role)}/conversations/${conversationId}/dispute/resolve`)
 export const fetchChatUnreadCount = (role) => http.get(`${chatBase(role)}/unread-count`)
+export const translateChatMessage = (role, conversationId, messageId, data) =>
+  http.post(
+    `${chatBase(role)}/conversations/${conversationId}/messages/${messageId}/translate`,
+    data,
+    { timeout: 45000 },
+  )
 
 export const fetchCart = () => http.get('/member/cart')
 export const addToCart = (data) => http.post('/member/cart/items', data)
