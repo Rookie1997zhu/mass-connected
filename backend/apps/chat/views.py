@@ -1,7 +1,9 @@
 from django.core.cache import cache
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
+from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.throttling import ScopedRateThrottle
 from rest_framework.views import APIView
 
 from apps.chat.models import Conversation, Message
@@ -11,6 +13,7 @@ from apps.chat.serializers import (
     DisputeOpenSerializer,
     MessageCreateSerializer,
     MessageSerializer,
+    OrderReminderCreateSerializer,
 )
 from apps.chat.services import (
     after_message_sent,
@@ -18,19 +21,39 @@ from apps.chat.services import (
     clear_conversation_unread,
     get_or_create_conversation_for_quote_request,
     get_unread_count,
+    issue_ws_ticket,
+    list_remindable_orders,
+    notify_order_reminder,
     open_dispute,
     participant_role,
     resolve_dispute,
     send_message,
+    send_order_reminder,
     user_can_access_conversation,
+    WS_TICKET_TTL_SECONDS,
 )
-from apps.project.translation import TranslationError, translate_text
 from apps.rfq.models import QuoteRequest
+from core.async_jobs import JOB_TTL_SECONDS, create_job, get_job
 from core.pagination import StandardPagination
 from core.permissions import IsAdminRole, IsBuyerRole, IsSupplierRole
 from core.responses import error_response, success_response
 
 CHAT_TRANSLATE_CACHE_TTL = 3600
+
+
+class ChatWsTicketView(APIView):
+    """签发短时一次性 WS 握手 ticket（member / supplier / admin 共用逻辑）。"""
+
+    permission_classes = [IsAuthenticated]
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = "ws_ticket"
+
+    def post(self, request):
+        ticket = issue_ws_ticket(request.user.id)
+        return success_response(
+            {"ticket": ticket, "expires_in": WS_TICKET_TTL_SECONDS},
+            request=request,
+        )
 
 
 def _conversation_queryset_for_user(user):
@@ -46,25 +69,85 @@ def _get_participant_conversation(user, pk):
 
 
 def _message_translate_response(request, conversation, message_id):
+    """缓存命中直接同步返回；未命中入队 heavy 任务并返回 job_id 供短轮询。"""
     message = get_object_or_404(Message, pk=message_id, conversation=conversation)
     text = (message.body or "").strip()
     if not text:
         return error_response("VALIDATION_ERROR", "消息内容为空", request=request)
     target_lang = request.data.get("target_lang", "")
-    cache_key = f"chat:msg_tr:{message.id}:{str(target_lang or '').strip().lower()}"
+    lang = str(target_lang or "").strip().lower()
+    cache_key = f"chat:msg_tr:{message.id}:{lang}"
     cached = cache.get(cache_key)
     if cached:
-        return success_response({"translated_text": cached}, request=request)
-    try:
-        translated = translate_text(text, target_lang)
-    except TranslationError as exc:
-        status_code = 503 if exc.code == "TRANSLATE_NOT_CONFIGURED" else 400
-        if exc.code == "TRANSLATE_FAILED":
-            status_code = 502
-        return error_response(exc.code, exc.message, status=status_code, request=request)
-    if translated:
-        cache.set(cache_key, translated, CHAT_TRANSLATE_CACHE_TTL)
-    return success_response({"translated_text": translated}, request=request)
+        return success_response(
+            {"translated_text": cached, "status": "done"}, request=request
+        )
+
+    from apps.chat.heavy_tasks import run_message_translate
+
+    job_id = create_job(
+        "chat_msg_translate",
+        request.user.id,
+        meta={"message_id": message.id, "target_lang": lang},
+    )
+    run_message_translate.delay(job_id, message.id, target_lang)
+    return success_response(
+        {
+            "job_id": job_id,
+            "status": "pending",
+            "expires_in": JOB_TTL_SECONDS,
+        },
+        message="翻译任务已提交",
+        status=status.HTTP_202_ACCEPTED,
+        request=request,
+    )
+
+
+class _BaseTranslateJobDetailView(APIView):
+    """短轮询聊天消息翻译任务状态（仅任务所有者可读），字段与 P2 解析任务对齐。"""
+
+    def get(self, request, job_id):
+        job = get_job(job_id)
+        if not job:
+            return error_response(
+                "TRANSLATE_JOB_NOT_FOUND",
+                "任务不存在或已过期",
+                status=status.HTTP_404_NOT_FOUND,
+                request=request,
+            )
+        if job.get("user_id") != request.user.id:
+            return error_response(
+                "TRANSLATE_JOB_FORBIDDEN",
+                "无权访问该任务",
+                status=status.HTTP_403_FORBIDDEN,
+                request=request,
+            )
+        status_value = job.get("status") or "pending"
+        payload = {
+            "job_id": job.get("job_id") or job_id,
+            "kind": job.get("kind"),
+            "status": status_value,
+            "result": job.get("result"),
+            "error_code": job.get("error_code"),
+            "error_message": job.get("error_message"),
+            "expires_in": JOB_TTL_SECONDS,
+        }
+        http_status = (
+            status.HTTP_202_ACCEPTED if status_value in {"pending", "running"} else 200
+        )
+        return success_response(payload, message="OK", status=http_status, request=request)
+
+
+class MemberTranslateJobDetailView(_BaseTranslateJobDetailView):
+    permission_classes = [IsBuyerRole]
+
+
+class SupplierTranslateJobDetailView(_BaseTranslateJobDetailView):
+    permission_classes = [IsSupplierRole]
+
+
+class AdminTranslateJobDetailView(_BaseTranslateJobDetailView):
+    permission_classes = [IsAdminRole]
 
 
 class MemberConversationListCreateView(APIView):
@@ -232,6 +315,121 @@ class SupplierMessageListCreateView(_BaseMessageListCreateView):
     role_gate = "supplier"
 
 
+class _BaseRemindableOrdersView(APIView):
+    role_gate = None
+    pagination_class = StandardPagination
+
+    def get(self, request, pk):
+        conversation = _get_participant_conversation(request.user, pk)
+        role = participant_role(conversation, request.user)
+        if role is None:
+            return error_response("CHAT_NOT_PARTICIPANT", "无权访问该会话", status=403, request=request)
+        if self.role_gate == "buyer" and role != Message.ROLE_BUYER:
+            return error_response("CHAT_NOT_PARTICIPANT", "无权访问该会话", status=403, request=request)
+        if self.role_gate == "supplier" and role != Message.ROLE_SUPPLIER:
+            return error_response("CHAT_NOT_PARTICIPANT", "无权访问该会话", status=403, request=request)
+
+        q = request.query_params.get("q", "")
+        status = request.query_params.get("status", "")
+        items = list_remindable_orders(conversation, q=q, status=status)
+
+        try:
+            page = max(1, int(request.query_params.get("page", 1)))
+        except (TypeError, ValueError):
+            page = 1
+        try:
+            page_size = int(request.query_params.get("page_size", 20))
+        except (TypeError, ValueError):
+            page_size = 20
+        page_size = min(max(page_size, 1), 100)
+        total = len(items)
+        total_pages = max(1, (total + page_size - 1) // page_size) if total else 1
+        start = (page - 1) * page_size
+        page_items = items[start : start + page_size]
+        return success_response(
+            {
+                "items": page_items,
+                "pagination": {
+                    "page": page,
+                    "page_size": page_size,
+                    "total": total,
+                    "total_pages": total_pages,
+                },
+            },
+            request=request,
+        )
+
+
+class MemberRemindableOrdersView(_BaseRemindableOrdersView):
+    permission_classes = [IsBuyerRole]
+    role_gate = "buyer"
+
+
+class SupplierRemindableOrdersView(_BaseRemindableOrdersView):
+    permission_classes = [IsSupplierRole]
+    role_gate = "supplier"
+
+
+class _BaseOrderReminderCreateView(APIView):
+    role_gate = None
+
+    def post(self, request, pk):
+        conversation = _get_participant_conversation(request.user, pk)
+        role = participant_role(conversation, request.user)
+        if role is None:
+            return error_response("CHAT_NOT_PARTICIPANT", "无权访问该会话", status=403, request=request)
+        if self.role_gate == "buyer" and role != Message.ROLE_BUYER:
+            return error_response("CHAT_NOT_PARTICIPANT", "无权访问该会话", status=403, request=request)
+        if self.role_gate == "supplier" and role != Message.ROLE_SUPPLIER:
+            return error_response("CHAT_NOT_PARTICIPANT", "无权访问该会话", status=403, request=request)
+        if not check_rate_limit(request.user.id):
+            return error_response(
+                "CHAT_RATE_LIMITED",
+                "发送过于频繁，请稍后再试",
+                status=429,
+                request=request,
+            )
+        ser = OrderReminderCreateSerializer(data=request.data)
+        ser.is_valid(raise_exception=True)
+        try:
+            message = send_order_reminder(
+                conversation=conversation,
+                sender=request.user,
+                sender_role=role,
+                production_order_id=ser.validated_data["production_order_id"],
+                note=ser.validated_data.get("note") or "",
+            )
+        except ValueError as exc:
+            code = str(exc)
+            if code == "ORDER_NOT_FOUND":
+                return error_response("ORDER_NOT_FOUND", "生产单不存在", status=404, request=request)
+            if code == "ORDER_NOT_ALLOWED":
+                return error_response(
+                    "ORDER_NOT_ALLOWED",
+                    "只能提醒双方共同的生产单",
+                    status=403,
+                    request=request,
+                )
+            return error_response(code or "VALIDATION_ERROR", "发送失败", request=request)
+        after_message_sent(message)
+        notify_order_reminder(message)
+        return success_response(
+            MessageSerializer(message, context={"request": request}).data,
+            status=201,
+            request=request,
+        )
+
+
+class MemberOrderReminderCreateView(_BaseOrderReminderCreateView):
+    permission_classes = [IsBuyerRole]
+    role_gate = "buyer"
+
+
+class SupplierOrderReminderCreateView(_BaseOrderReminderCreateView):
+    permission_classes = [IsSupplierRole]
+    role_gate = "supplier"
+
+
 class _BaseConversationReadView(APIView):
     role_gate = None
 
@@ -332,9 +530,17 @@ class AdminConversationMessagesView(APIView):
                 status=403,
                 request=request,
             )
-        qs = conversation.messages.select_related("sender").prefetch_related("attachments").order_by("-id")
+        qs = conversation.messages.select_related("sender").prefetch_related("attachments")
+        before_id = request.query_params.get("before_id")
+        if before_id:
+            try:
+                qs = qs.filter(id__lt=int(before_id))
+            except (TypeError, ValueError):
+                return error_response("VALIDATION_ERROR", "before_id 无效", request=request)
+        qs = qs.order_by("-id")
         paginator = self.pagination_class()
         page = paginator.paginate_queryset(qs, request)
+        # 返回时间正序便于聊天窗渲染
         page = list(reversed(page))
         data = MessageSerializer(
             page, many=True, context={"request": request, "include_original": True}
@@ -394,6 +600,8 @@ class AdminDisputeResolveView(APIView):
 
 class _BaseMessageTranslateView(APIView):
     role_gate = None  # "buyer" | "supplier" | None
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = "ai_translate"
 
     def post(self, request, pk, message_id):
         conversation = _get_participant_conversation(request.user, pk)
@@ -434,6 +642,8 @@ class SupplierMessageTranslateView(_BaseMessageTranslateView):
 
 class AdminMessageTranslateView(APIView):
     permission_classes = [IsAdminRole]
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = "ai_translate"
 
     def post(self, request, pk, message_id):
         conversation = get_object_or_404(Conversation, pk=pk)

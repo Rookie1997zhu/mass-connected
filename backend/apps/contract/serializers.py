@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from apps.contract.models import Contract, NdaSignature, NdaTemplate
+from core.media_urls import api_absolute_uri
 
 SIGNATURE_MAX_BYTES = 2 * 1024 * 1024
 SIGNATURE_ALLOWED_TYPES = {
@@ -44,17 +45,27 @@ class ContractSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = fields
 
+    def _role_prefix(self):
+        """根据序列化器子类决定下载路径前缀。"""
+        return "member"
+
     def get_pdf_url(self, obj):
-        request = self.context.get("request")
-        if obj.pdf and request:
-            return request.build_absolute_uri(obj.pdf.url)
-        return obj.pdf.url if obj.pdf else ""
+        if not obj.pdf:
+            return ""
+        prefix = self._role_prefix()
+        return api_absolute_uri(
+            self.context.get("request"),
+            f"/api/{prefix}/contracts/{obj.id}/pdf/download",
+        )
 
     def get_signature_image_url(self, obj):
-        request = self.context.get("request")
-        if obj.signature_image and request:
-            return request.build_absolute_uri(obj.signature_image.url)
-        return obj.signature_image.url if obj.signature_image else ""
+        if not obj.signature_image:
+            return ""
+        prefix = self._role_prefix()
+        return api_absolute_uri(
+            self.context.get("request"),
+            f"/api/{prefix}/contracts/{obj.id}/signature/download",
+        )
 
     def get_supplier_name(self, obj):
         if not obj.supplier_id:
@@ -77,6 +88,14 @@ class AdminContractSerializer(ContractSerializer):
     class Meta(ContractSerializer.Meta):
         fields = ContractSerializer.Meta.fields + ["buyer", "buyer_email"]
         read_only_fields = fields
+
+    def _role_prefix(self):
+        return "admin"
+
+
+class SupplierContractSerializer(ContractSerializer):
+    def _role_prefix(self):
+        return "supplier"
 
 
 class ContractSignSerializer(serializers.Serializer):
@@ -129,10 +148,12 @@ class NdaSignatureSerializer(serializers.ModelSerializer):
         read_only_fields = fields
 
     def get_pdf_url(self, obj):
-        request = self.context.get("request")
-        if obj.pdf and request:
-            return request.build_absolute_uri(obj.pdf.url)
-        return obj.pdf.url if obj.pdf else ""
+        if not obj.pdf:
+            return ""
+        return api_absolute_uri(
+            self.context.get("request"),
+            f"/api/member/nda/{obj.id}/pdf/download",
+        )
 
 
 class NdaSignSerializer(serializers.Serializer):

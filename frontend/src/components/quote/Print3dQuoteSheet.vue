@@ -12,6 +12,9 @@ import {
   previewSimpleQuote,
   stpParse,
 } from '../../api'
+import http from '../../api/http'
+import { toApiPath } from '../../utils/downloadAuthedFile'
+import { pollParseJob } from '../../utils/pollJob'
 
 const productName = defineModel('productName', { type: String, default: '' })
 const props = defineProps({
@@ -120,6 +123,19 @@ const refreshPreview = async () => {
   }
 }
 
+const loadPreviewFromUrl = async (previewUrl) => {
+  if (!previewUrl || previewMesh.value?.buffer || previewMesh.value?.data) return
+  try {
+    const path = toApiPath(previewUrl)
+    const blob = await http.get(path, { responseType: 'blob' })
+    const fileBlob = blob instanceof Blob ? blob : new Blob([blob])
+    const buffer = await fileBlob.arrayBuffer()
+    previewMesh.value = { format: 'stl', encoding: 'arraybuffer', buffer }
+  } catch {
+    /* 预览失败不阻断报价 */
+  }
+}
+
 const pollJob = async (id) => {
   stopPoll()
   slicing.value = true
@@ -127,8 +143,7 @@ const pollJob = async (id) => {
     try {
       const res = await fetchPrint3dSliceJob(id)
       job.value = res.data
-      // 本地已有预览时不用轮询结果反复覆盖（每次都是数 MB 的 base64）
-      if (!previewMesh.value?.data && res.data.preview_mesh?.data) previewMesh.value = res.data.preview_mesh
+      if (res.data.preview_url) await loadPreviewFromUrl(res.data.preview_url)
       if (res.data.status === 'done') {
         stopPoll()
         slicing.value = false
@@ -165,8 +180,9 @@ const onFileSelected = async (event) => {
     } else if (name.endsWith('.stp') || name.endsWith('.step')) {
       const fd = new FormData()
       fd.append('file', file)
-      const res = await stpParse(fd)
-      previewMesh.value = res.data?.geometry?.preview_mesh || null
+      const enqueued = await stpParse(fd)
+      const job = await pollParseJob(enqueued.data?.job_id)
+      previewMesh.value = job.result?.geometry?.preview_mesh || null
     } else {
       error.value = t('simpleQuote.print3dFileTypes')
       return

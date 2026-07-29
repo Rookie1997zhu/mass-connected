@@ -1,0 +1,18 @@
+# 开发 profile：Vite 热更新；公共片段见 snippets/common.caddy
+import snippets/common.caddy
+
+:80 {
+	encode gzip zstd
+	import security_headers
+	import api_ws
+	import sensitive_media
+	import public_media
+
+	handle /admin* {
+		reverse_proxy admin-dev:5174
+	}
+
+	handle {
+		reverse_proxy frontend-dev:5173
+	}
+}

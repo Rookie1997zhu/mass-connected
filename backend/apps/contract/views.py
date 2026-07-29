@@ -1,4 +1,5 @@
 from django.core.files.base import ContentFile
+from django.http import FileResponse
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from datetime import timedelta
@@ -13,11 +14,19 @@ from apps.contract.serializers import (
     NdaSignSerializer,
     NdaSignatureSerializer,
     NdaTemplateSerializer,
+    SupplierContractSerializer,
 )
 from core.pagination import StandardPagination
 from core.pdf import build_nda_pdf
 from core.permissions import IsAdminRole, IsBuyerRole, IsSupplierRole
 from core.responses import error_response, success_response
+
+
+def _contract_file_response(field_file, default_name):
+    if not field_file:
+        return error_response("CONTRACT_FILE_MISSING", "文件不存在")
+    name = (field_file.name or "").rsplit("/", 1)[-1] or default_name
+    return FileResponse(field_file.open("rb"), as_attachment=False, filename=name)
 
 
 class MemberContractListView(APIView):
@@ -145,7 +154,7 @@ class SupplierContractListView(APIView):
         paginator = self.pagination_class()
         page = paginator.paginate_queryset(qs, request)
         return paginator.get_paginated_response(
-            ContractSerializer(page, many=True, context={"request": request}).data
+            SupplierContractSerializer(page, many=True, context={"request": request}).data
         )
 
 
@@ -155,7 +164,7 @@ class SupplierContractDetailView(APIView):
     def get(self, request, pk):
         contract = get_object_or_404(Contract, pk=pk, supplier=request.user)
         return success_response(
-            ContractSerializer(contract, context={"request": request}).data, request=request
+            SupplierContractSerializer(contract, context={"request": request}).data, request=request
         )
 
 
@@ -256,3 +265,59 @@ class MemberNdaSignView(APIView):
             status=status.HTTP_201_CREATED,
             request=request,
         )
+
+
+class MemberContractPdfDownloadView(APIView):
+    permission_classes = [IsBuyerRole]
+
+    def get(self, request, pk):
+        contract = get_object_or_404(Contract, pk=pk, buyer=request.user)
+        return _contract_file_response(contract.pdf, "contract.pdf")
+
+
+class MemberContractSignatureDownloadView(APIView):
+    permission_classes = [IsBuyerRole]
+
+    def get(self, request, pk):
+        contract = get_object_or_404(Contract, pk=pk, buyer=request.user)
+        return _contract_file_response(contract.signature_image, "signature.png")
+
+
+class SupplierContractPdfDownloadView(APIView):
+    permission_classes = [IsSupplierRole]
+
+    def get(self, request, pk):
+        contract = get_object_or_404(Contract, pk=pk, supplier=request.user)
+        return _contract_file_response(contract.pdf, "contract.pdf")
+
+
+class SupplierContractSignatureDownloadView(APIView):
+    permission_classes = [IsSupplierRole]
+
+    def get(self, request, pk):
+        contract = get_object_or_404(Contract, pk=pk, supplier=request.user)
+        return _contract_file_response(contract.signature_image, "signature.png")
+
+
+class AdminContractPdfDownloadView(APIView):
+    permission_classes = [IsAdminRole]
+
+    def get(self, request, pk):
+        contract = get_object_or_404(Contract, pk=pk)
+        return _contract_file_response(contract.pdf, "contract.pdf")
+
+
+class AdminContractSignatureDownloadView(APIView):
+    permission_classes = [IsAdminRole]
+
+    def get(self, request, pk):
+        contract = get_object_or_404(Contract, pk=pk)
+        return _contract_file_response(contract.signature_image, "signature.png")
+
+
+class MemberNdaPdfDownloadView(APIView):
+    permission_classes = [IsBuyerRole]
+
+    def get(self, request, pk):
+        signature = get_object_or_404(NdaSignature, pk=pk, buyer=request.user)
+        return _contract_file_response(signature.pdf, "nda.pdf")

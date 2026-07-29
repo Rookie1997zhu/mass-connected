@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
-import { memberLogin, memberRegister } from '../api'
+import { memberLogin, memberLogout, memberRegister } from '../api'
 
 const AUTH_STORAGE_KEY = 'oem_member_auth'
 
@@ -9,31 +9,33 @@ function readStoredAuth() {
     const raw = localStorage.getItem(AUTH_STORAGE_KEY)
     if (!raw) return null
     const data = JSON.parse(raw)
-    return data?.accessToken ? data : null
+    // 仅恢复非敏感用户摘要；忽略历史 access/refresh
+    if (!data?.user) return null
+    return { user: data.user, profile: data.profile ?? null }
   } catch {
     return null
   }
 }
 
 function writeStoredAuth(data) {
-  if (!data?.accessToken) {
+  if (!data?.user) {
     localStorage.removeItem(AUTH_STORAGE_KEY)
     return
   }
-  localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(data))
+  localStorage.setItem(
+    AUTH_STORAGE_KEY,
+    JSON.stringify({ user: data.user, profile: data.profile ?? null }),
+  )
 }
 
 const stored = readStoredAuth()
-if (stored?.accessToken) {
-  window.__memberAccessToken = stored.accessToken
-}
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     user: stored?.user ?? null,
-    accessToken: stored?.accessToken ?? null,
-    refreshToken: stored?.refreshToken ?? null,
+    accessToken: null,
     profile: stored?.profile ?? null,
+    bootstrapped: false,
   }),
   getters: {
     isLoggedIn: (state) => Boolean(state.accessToken),
@@ -68,24 +70,22 @@ export const useAuthStore = defineStore('auth', {
   },
   actions: {
     persist() {
-      if (!this.accessToken) {
-        writeStoredAuth(null)
-        window.__memberAccessToken = null
-        return
-      }
-      writeStoredAuth({
-        user: this.user,
-        accessToken: this.accessToken,
-        refreshToken: this.refreshToken,
-        profile: this.profile,
-      })
-      window.__memberAccessToken = this.accessToken
+      writeStoredAuth(
+        this.accessToken && this.user
+          ? { user: this.user, profile: this.profile }
+          : null,
+      )
     },
     setSession(user, tokens, profile = null) {
       this.user = user
       this.accessToken = tokens?.access || null
-      this.refreshToken = tokens?.refresh || null
       this.profile = profile || user?.factory_profile || null
+      this.persist()
+    },
+    clearLocal() {
+      this.user = null
+      this.accessToken = null
+      this.profile = null
       this.persist()
     },
     async login(payload) {
@@ -99,30 +99,38 @@ export const useAuthStore = defineStore('auth', {
       return res
     },
     async refreshAccessToken() {
-      if (!this.refreshToken) {
-        throw new Error('No refresh token')
-      }
       const baseURL = import.meta.env.VITE_API_BASE_URL || '/api'
-      const res = await axios.post(`${baseURL}/member/auth/refresh`, {
-        refresh: this.refreshToken,
-      })
+      const res = await axios.post(
+        `${baseURL}/member/auth/refresh`,
+        {},
+        { withCredentials: true },
+      )
       const body = res.data
       const access = body.access ?? body.data?.access
-      const refresh = body.refresh ?? body.data?.refresh
       if (!access) {
         throw new Error('Refresh failed')
       }
       this.accessToken = access
-      if (refresh) this.refreshToken = refresh
       this.persist()
       return this.accessToken
     },
-    logout() {
-      this.user = null
-      this.accessToken = null
-      this.refreshToken = null
-      this.profile = null
-      this.persist()
+    async bootstrapSession() {
+      if (this.bootstrapped) return
+      this.bootstrapped = true
+      if (!this.user) return
+      try {
+        await this.refreshAccessToken()
+      } catch {
+        this.clearLocal()
+      }
+    },
+    async logout() {
+      try {
+        await memberLogout()
+      } catch {
+        /* 仍清本地态 */
+      }
+      this.clearLocal()
     },
   },
 })

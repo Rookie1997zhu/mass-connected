@@ -4,8 +4,8 @@ Monorepo for OEM company website, Shop member commerce, and Vue admin panel.
 
 ## Stack
 
-- `frontend` — Vue 3 public site (default locale: `ko`)
-- `admin` — Vue 3 + Element Plus management UI
+- `frontend` — Vue 3 public site (default locale: `ko`)，默认以 **生产静态构建**（nginx）交付
+- `admin` — Vue 3 + Element Plus management UI，同上
 - `backend` — Django REST Framework API (no Django Admin)
 - `mysql`, `redis`, `caddy`
 
@@ -17,7 +17,13 @@ Monorepo for OEM company website, Shop member commerce, and Vue admin panel.
 cp .env.example .env
 ```
 
-2. Start all services:
+本地联调请在 `.env` 中设置：
+
+- `DJANGO_DEBUG=true`（示例默认为 `false`）
+- 生产必须使用强随机 `DJANGO_SECRET_KEY`；`DJANGO_DEBUG=false` 时若仍为弱默认值，后端将拒绝启动
+- 仅在反向代理已终止 TLS 时设置 `DJANGO_SECURE_SSL=true`
+
+2. Start all services（默认静态前端，无 Vite 热更新）:
 
 ```bash
 docker compose up --build
@@ -28,6 +34,22 @@ docker compose up --build
 - Website: http://localhost/
 - Admin: http://localhost/admin/
 - API health: http://localhost/api/health
+
+### 前端开发热更新（Vite）
+
+默认 `frontend` / `admin` / `caddy` 为静态产物。需要热更新时：
+
+```bash
+docker compose --profile dev up --build --scale frontend=0 --scale admin=0 --scale caddy=0
+```
+
+将启动 `frontend-dev` / `admin-dev` / `caddy-dev`（见 `caddy/Caddyfile.dev`）。
+
+修改前端业务代码后，若走静态模式，需重建对应镜像：
+
+```bash
+docker compose up -d --build frontend admin caddy
+```
 
 ### 局域网访问（同 WiFi / 同网段设备）
 

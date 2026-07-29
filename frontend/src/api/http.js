@@ -4,14 +4,15 @@ import { useAuthStore } from '../stores/auth'
 const http = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
   timeout: 15000,
+  withCredentials: true,
 })
 
 let refreshPromise = null
 
 http.interceptors.request.use((config) => {
-  const token = window.__memberAccessToken
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`
+  const auth = useAuthStore()
+  if (auth.accessToken) {
+    config.headers.Authorization = `Bearer ${auth.accessToken}`
   }
   const locale = localStorage.getItem('locale') || 'ko'
   config.headers['Accept-Language'] = locale
@@ -32,9 +33,16 @@ http.interceptors.response.use(
   async (error) => {
     const original = error.config
     const status = error.response?.status
-    if (status === 401 && original && !original._retry && !original.url?.includes('/auth/refresh')) {
+    if (
+      status === 401 &&
+      original &&
+      !original._retry &&
+      !original.url?.includes('/auth/refresh') &&
+      !original.url?.includes('/auth/logout') &&
+      !original.url?.includes('/auth/login')
+    ) {
       const auth = useAuthStore()
-      if (auth.refreshToken) {
+      if (auth.accessToken || auth.user) {
         original._retry = true
         try {
           if (!refreshPromise) {
@@ -43,15 +51,15 @@ http.interceptors.response.use(
             })
           }
           await refreshPromise
-          original.headers.Authorization = `Bearer ${window.__memberAccessToken}`
+          original.headers.Authorization = `Bearer ${auth.accessToken}`
           return http(original)
         } catch {
-          auth.logout()
+          await auth.logout()
         }
       }
     }
     return Promise.reject(error.response?.data || error)
-  }
+  },
 )
 
 export default http

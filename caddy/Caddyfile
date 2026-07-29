@@ -1,39 +1,18 @@
-# 监听所有网卡；局域网设备可通过本机 IP 访问（如 http://192.168.x.x/）
+# 生产 / 默认：静态前端；公共片段见 snippets/common.caddy
+import snippets/common.caddy
+
 :80 {
-	handle /ws/* {
-		reverse_proxy chat-ws:8001 {
-			header_up Host localhost
-		}
-	}
-
-	handle /api/* {
-		reverse_proxy backend:8000 {
-			# 统一 Host，避免局域网 IP 访问时 Django ALLOWED_HOSTS 校验失败
-			header_up Host localhost
-		}
-	}
-
-# 媒体：默认仍由静态服务；项目履约文件请走鉴权下载接口 /api/*/projects/*/files/*/download
-# 保留 /media 以兼容简单报价 PDF 等非敏感公开资源
-handle /media/project/* {
-	respond "Use authenticated download API" 403
-}
-
-handle /media/chat/* {
-	respond "Use authenticated download API" 403
-}
-
-# handle_path 去掉 /media 前缀，避免解析成 /media/media/...
-handle_path /media/* {
-	root * /media
-	file_server
-}
+	encode gzip zstd
+	import security_headers
+	import api_ws
+	import sensitive_media
+	import public_media
 
 	handle /admin* {
-		reverse_proxy admin:5174
+		reverse_proxy admin:80
 	}
 
 	handle {
-		reverse_proxy frontend:5173
+		reverse_proxy frontend:80
 	}
 }

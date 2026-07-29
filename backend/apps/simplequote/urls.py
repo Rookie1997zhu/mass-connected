@@ -6,6 +6,7 @@ from apps.simplequote.print3d_views import (
     Print3dOptionsView,
     Print3dSliceJobDetailView,
     Print3dSliceJobListCreateView,
+    Print3dSliceJobPreviewView,
 )
 from apps.simplequote.views import (
     AdminDielineCategoryDetailView,
@@ -24,6 +25,7 @@ from apps.simplequote.views import (
     MemberSimpleQuoteDetailView,
     MemberSimpleQuoteListCreateView,
     DrawingParseView,
+    ParseJobDetailView,
     ShippingEstimateView,
     SimpleQuotePreviewView,
     StpParseView,
@@ -36,11 +38,16 @@ urlpatterns = [
     path("member/simple-quotes/preview", SimpleQuotePreviewView.as_view()),
     path("member/simple-quotes/parse-stp", StpParseView.as_view()),
     path("member/simple-quotes/parse-drawing", DrawingParseView.as_view()),
+    path("member/simple-quotes/parse-jobs/<str:job_id>", ParseJobDetailView.as_view()),
     path("member/simple-quotes/print3d/options", Print3dOptionsView.as_view()),
     path("member/simple-quotes/print3d/slice-jobs", Print3dSliceJobListCreateView.as_view()),
     path(
         "member/simple-quotes/print3d/slice-jobs/<int:pk>",
         Print3dSliceJobDetailView.as_view(),
+    ),
+    path(
+        "member/simple-quotes/print3d/slice-jobs/<int:pk>/preview",
+        Print3dSliceJobPreviewView.as_view(),
     ),
     path("member/simple-quotes/<int:pk>", MemberSimpleQuoteDetailView.as_view()),
     path("member/simple-quotes/<int:pk>/convert", MemberSimpleQuoteConvertView.as_view()),

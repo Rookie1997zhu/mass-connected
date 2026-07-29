@@ -3,29 +3,30 @@ from urllib.parse import parse_qs
 from channels.db import database_sync_to_async
 from channels.middleware import BaseMiddleware
 from django.contrib.auth.models import AnonymousUser
-from rest_framework_simplejwt.tokens import AccessToken
 
 
 @database_sync_to_async
-def _user_from_token(token: str):
+def _user_from_ticket(ticket: str):
     from apps.accounts.models import User
+    from apps.chat.services import redeem_ws_ticket
 
+    user_id = redeem_ws_ticket(ticket)
+    if not user_id:
+        return AnonymousUser()
     try:
-        access = AccessToken(token)
-        user_id = access.get("user_id")
         return User.objects.get(pk=user_id, is_active=True)
-    except Exception:  # noqa: BLE001
+    except User.DoesNotExist:
         return AnonymousUser()
 
 
 class JwtAuthMiddleware(BaseMiddleware):
-    """WebSocket JWT：仅接受短期 access token（query ?token=）。"""
+    """WebSocket 鉴权：仅接受一次性 ?ticket=，拒绝长期 JWT query。"""
 
     async def __call__(self, scope, receive, send):
         query = parse_qs(scope.get("query_string", b"").decode())
-        token = (query.get("token") or [None])[0]
-        if token:
-            scope["user"] = await _user_from_token(token)
+        ticket = (query.get("ticket") or [None])[0]
+        if ticket:
+            scope["user"] = await _user_from_ticket(ticket)
         else:
             scope["user"] = AnonymousUser()
         return await super().__call__(scope, receive, send)

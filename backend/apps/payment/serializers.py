@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from apps.payment.models import Payment
+from core.media_urls import api_absolute_uri
 
 PREVIEWABLE_PROOF_EXTS = {"jpg", "jpeg", "png", "gif", "webp", "pdf"}
 
@@ -57,10 +58,12 @@ class PaymentSerializer(serializers.ModelSerializer):
         read_only_fields = fields
 
     def get_proof_url(self, obj):
-        request = self.context.get("request")
-        if obj.proof and request:
-            return request.build_absolute_uri(obj.proof.url)
-        return obj.proof.url if obj.proof else ""
+        if not obj.proof:
+            return ""
+        return api_absolute_uri(
+            self.context.get("request"),
+            f"/api/member/payments/{obj.id}/proof/download",
+        )
 
     def get_proof_file_name(self, obj):
         return proof_file_meta(obj)["proof_file_name"]
@@ -99,3 +102,11 @@ class AdminPaymentSerializer(PaymentSerializer):
     class Meta(PaymentSerializer.Meta):
         fields = PaymentSerializer.Meta.fields + ["buyer", "buyer_email"]
         read_only_fields = fields
+
+    def get_proof_url(self, obj):
+        if not obj.proof:
+            return ""
+        return api_absolute_uri(
+            self.context.get("request"),
+            f"/api/admin/payments/{obj.id}/proof/download",
+        )

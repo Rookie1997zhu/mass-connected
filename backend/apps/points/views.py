@@ -1,3 +1,4 @@
+from django.http import FileResponse
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework import status
@@ -20,6 +21,13 @@ from core.permissions import IsAdminRole, IsBuyerRole
 from core.responses import error_response, success_response
 
 VAT_RATE = 10
+
+
+def _recharge_proof_response(order):
+    if not order.proof:
+        return error_response("RECHARGE_PROOF_MISSING", "充值凭证不存在")
+    name = (order.proof.name or "").rsplit("/", 1)[-1] or "proof"
+    return FileResponse(order.proof.open("rb"), as_attachment=False, filename=name)
 
 
 class MemberPointWalletView(APIView):
@@ -190,3 +198,19 @@ class AdminRechargeOrderConfirmView(APIView):
             AdminRechargeOrderSerializer(order, context={"request": request}).data,
             request=request,
         )
+
+
+class MemberRechargeProofDownloadView(APIView):
+    permission_classes = [IsBuyerRole]
+
+    def get(self, request, pk):
+        order = get_object_or_404(RechargeOrder, pk=pk, user=request.user)
+        return _recharge_proof_response(order)
+
+
+class AdminRechargeProofDownloadView(APIView):
+    permission_classes = [IsAdminRole]
+
+    def get(self, request, pk):
+        order = get_object_or_404(RechargeOrder, pk=pk)
+        return _recharge_proof_response(order)

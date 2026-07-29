@@ -1,3 +1,4 @@
+from django.http import FileResponse
 from django.shortcuts import get_object_or_404
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.views import APIView
@@ -6,9 +7,17 @@ from apps.notification.services import notify_staff
 from apps.payment.models import Payment
 from apps.payment.serializers import AdminPaymentSerializer, PaymentSerializer
 from apps.payment.services import PaymentConfirmError, confirm_payment
+from core.file_validation import validate_upload_file
 from core.pagination import StandardPagination
 from core.permissions import IsAdminRole, IsBuyerRole, IsSupplierRole
 from core.responses import error_response, success_response
+
+
+def _proof_file_response(payment):
+    if not payment.proof:
+        return error_response("PAYMENT_PROOF_MISSING", "付款凭证不存在")
+    name = (payment.proof.name or "").rsplit("/", 1)[-1] or "proof"
+    return FileResponse(payment.proof.open("rb"), as_attachment=False, filename=name)
 
 
 class MemberPaymentListView(APIView):
@@ -52,6 +61,20 @@ class MemberPaymentProofView(APIView):
             return error_response("PAYMENT_ALREADY_CONFIRMED", "该付款已确认", request=request)
         proof = request.FILES.get("proof")
         if proof:
+            err_code, err_or_ext = validate_upload_file(proof)
+            if err_code:
+                return error_response(
+                    "PAYMENT_PROOF_INVALID",
+                    err_or_ext,
+                    request=request,
+                )
+            # 付款凭证仅允许图片与 PDF
+            if err_or_ext not in {"jpg", "jpeg", "png", "gif", "webp", "pdf"}:
+                return error_response(
+                    "PAYMENT_PROOF_INVALID",
+                    "付款凭证仅支持图片或 PDF",
+                    request=request,
+                )
             payment.proof = proof
         payment.method = request.data.get("method", payment.method)
         payment.note = request.data.get("note", payment.note)
@@ -71,6 +94,14 @@ class MemberPaymentProofView(APIView):
         )
 
 
+class MemberPaymentProofDownloadView(APIView):
+    permission_classes = [IsBuyerRole]
+
+    def get(self, request, pk):
+        payment = get_object_or_404(Payment, pk=pk, buyer=request.user)
+        return _proof_file_response(payment)
+
+
 class AdminPaymentListView(APIView):
     permission_classes = [IsAdminRole]
     pagination_class = StandardPagination
@@ -85,6 +116,14 @@ class AdminPaymentListView(APIView):
         return paginator.get_paginated_response(
             AdminPaymentSerializer(page, many=True, context={"request": request}).data
         )
+
+
+class AdminPaymentProofDownloadView(APIView):
+    permission_classes = [IsAdminRole]
+
+    def get(self, request, pk):
+        payment = get_object_or_404(Payment, pk=pk)
+        return _proof_file_response(payment)
 
 
 class AdminPaymentConfirmView(APIView):
@@ -141,3 +180,15 @@ class SupplierPaymentConfirmView(APIView):
             data["project_no"] = project.project_no
         message = "付款已确认，项目已启动" if not already else "付款此前已确认"
         return success_response(data, message=message, request=request)
+
+
+class SupplierPaymentProofDownloadView(APIView):
+    permission_classes = [IsSupplierRole]
+
+    def get(self, request, pk):
+        payment = get_object_or_404(
+            Payment.objects.select_related("contract"),
+            pk=pk,
+            contract__supplier=request.user,
+        )
+        return _proof_file_response(payment)

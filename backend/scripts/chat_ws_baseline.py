@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """轻量 WebSocket 并发基线脚本（本地/压测机运行）。
 
-用法示例（需有效 JWT access token）:
-  python scripts/chat_ws_baseline.py --url ws://localhost/ws/chat/ --token TOKEN --connections 100
+用法示例（需有效一次性 ticket）:
+  python scripts/chat_ws_baseline.py --url ws://localhost/ws/chat/ --ticket TICKET --connections 100
 
 容量公式（文档）:
   目标在线 N ≈ 单副本舒适连接数 C × 副本数 R
@@ -17,13 +17,13 @@ import sys
 import time
 
 
-async def one_connection(url: str, token: str, hold_seconds: float, results: list):
+async def one_connection(url: str, ticket: str, hold_seconds: float, results: list):
     try:
         import websockets
     except ImportError:
         results.append(("error", "websockets package missing"))
         return
-    full = f"{url}?token={token}"
+    full = f"{url}?ticket={ticket}"
     t0 = time.perf_counter()
     try:
         async with websockets.connect(full, open_timeout=10) as ws:
@@ -46,14 +46,14 @@ async def one_connection(url: str, token: str, hold_seconds: float, results: lis
 async def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--url", default="ws://localhost/ws/chat/")
-    parser.add_argument("--token", required=True)
+    parser.add_argument("--ticket", required=True)
     parser.add_argument("--connections", type=int, default=50)
     parser.add_argument("--hold", type=float, default=3.0)
     args = parser.parse_args()
 
     results: list = []
     tasks = [
-        one_connection(args.url, args.token, args.hold, results)
+        one_connection(args.url, args.ticket, args.hold, results)
         for _ in range(args.connections)
     ]
     t0 = time.perf_counter()

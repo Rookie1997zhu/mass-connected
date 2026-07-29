@@ -10,6 +10,7 @@
     "test:packaging": "tsx src/lib/packaging/runDielineAssertions.ts"
   },
   "dependencies": {
+    "@tanstack/vue-virtual": "^3.13.34",
     "axios": "^1.18.1",
     "dompurify": "^3.4.11",
     "jspdf": "^4.2.1",

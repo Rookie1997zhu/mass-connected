@@ -3,6 +3,7 @@ import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import PageShell from '../../components/PageShell.vue'
 import { fetchNdaList, fetchNdaTemplate, signNda } from '../../api'
+import { downloadAuthedFile } from '../../utils/downloadAuthedFile'
 
 const { t } = useI18n()
 const loading = ref(true)
@@ -73,7 +74,14 @@ onMounted(load)
           <li v-for="r in records" :key="r.id">
             <span>{{ r.company_name }} · {{ r.template_version }}</span>
             <span>{{ r.signed_at?.slice(0, 10) }}</span>
-            <a v-if="r.pdf_url" :href="r.pdf_url" target="_blank" rel="noopener">PDF</a>
+            <button
+              v-if="r.pdf_url"
+              type="button"
+              class="link"
+              @click="downloadAuthedFile(r.pdf_url, 'nda.pdf')"
+            >
+              PDF
+            </button>
           </li>
         </ul>
       </section>

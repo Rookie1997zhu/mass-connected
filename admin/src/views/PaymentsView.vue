@@ -3,6 +3,7 @@ import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { ElMessage } from 'element-plus'
 import { confirmPayment, fetchPayments } from '../api'
+import { openAuthedFile } from '../utils/downloadAuthedFile'
 
 const { t } = useI18n()
 const items = ref([])
@@ -18,6 +19,14 @@ const onConfirm = async (row) => {
   ElMessage.success(t('common.success'))
   await load()
 }
+
+const onOpenProof = async (row) => {
+  try {
+    await openAuthedFile(row.proof_url)
+  } catch {
+    ElMessage.error(t('common.failed') || 'Failed')
+  }
+}
 </script>
 
 <template>
@@ -31,7 +40,12 @@ const onConfirm = async (row) => {
       <el-table-column prop="status" :label="t('common.status')" width="120" />
       <el-table-column :label="t('common.proof')" width="110">
         <template #default="{ row }">
-          <el-link v-if="row.proof_url" :href="row.proof_url" target="_blank" type="primary">{{ t('common.proof') }}</el-link>
+          <el-button
+            v-if="row.proof_url"
+            link
+            type="primary"
+            @click="onOpenProof(row)"
+          >{{ t('common.proof') }}</el-button>
           <span v-else>-</span>
         </template>
       </el-table-column>

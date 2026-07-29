@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.views import APIView
 
+from apps.catalog.models import Product
 from apps.order.models import CartItem, Order, OrderItem
 from apps.order.serializers import (
     CartItemCreateSerializer,
@@ -90,11 +91,24 @@ class MemberOrderListCreateView(APIView):
 
     @transaction.atomic
     def post(self, request):
-        cart_items = CartItem.objects.filter(member=request.user).select_related("product")
-        if not cart_items.exists():
+        cart_items = list(
+            CartItem.objects.filter(member=request.user).select_related("product")
+        )
+        if not cart_items:
             return error_response("CART_EMPTY", "购物车为空", request=request)
         serializer = OrderCreateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+
+        product_ids = sorted({item.product_id for item in cart_items})
+        locked = {
+            p.id: p
+            for p in Product.objects.select_for_update().filter(id__in=product_ids).order_by("id")
+        }
+        for item in cart_items:
+            product = locked.get(item.product_id)
+            if product is None or product.stock < item.quantity:
+                return error_response("PRODUCT_STOCK_INSUFFICIENT", "库存不足", request=request)
+
         total = sum(item.unit_price_amount * item.quantity for item in cart_items)
         order = Order.objects.create(
             member=request.user,
@@ -104,17 +118,18 @@ class MemberOrderListCreateView(APIView):
             **serializer.validated_data,
         )
         for item in cart_items:
+            product = locked[item.product_id]
             OrderItem.objects.create(
                 order=order,
-                product=item.product,
-                product_name=item.product.name,
+                product=product,
+                product_name=product.name,
                 quantity=item.quantity,
                 unit_price_amount=item.unit_price_amount,
                 line_total_amount=item.unit_price_amount * item.quantity,
             )
-            item.product.stock = max(0, item.product.stock - item.quantity)
-            item.product.save(update_fields=["stock", "updated_at"])
-        cart_items.delete()
+            product.stock = product.stock - item.quantity
+            product.save(update_fields=["stock", "updated_at"])
+        CartItem.objects.filter(member=request.user).delete()
         notify_staff(
             "order",
             "新商城订单",

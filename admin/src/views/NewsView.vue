@@ -1,10 +1,11 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { ElMessageBox } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import MultiLangInput from '../components/MultiLangInput.vue'
 import RichTextI18n from '../components/RichTextI18n.vue'
 import { deleteNews, fetchNews, saveNews, updateNews } from '../api'
+import { downloadAuthedFile } from '../utils/downloadAuthedFile'
 import { emptyI18n, normalizeI18n } from '../utils/i18nField'
 
 const { t } = useI18n()
@@ -51,6 +52,20 @@ const submit = async () => {
   await load()
 }
 
+const exporting = ref(false)
+const onExport = async () => {
+  if (exporting.value) return
+  exporting.value = true
+  try {
+    const date = new Date().toISOString().slice(0, 10).replace(/-/g, '')
+    await downloadAuthedFile('/api/admin/news/export', `news_${date}.csv`)
+  } catch (e) {
+    ElMessage.error(e?.message || t('common.exportFailed'))
+  } finally {
+    exporting.value = false
+  }
+}
+
 const remove = async (row) => {
   await ElMessageBox.confirm(t('common.deleteConfirm'), t('common.delete'), {
     type: 'warning',
@@ -66,7 +81,10 @@ const remove = async (row) => {
   <div>
     <div class="toolbar">
       <h2>{{ t('news.title') }}</h2>
-      <el-button type="primary" @click="openCreate">{{ t('common.create') }}</el-button>
+      <div class="toolbar-actions">
+        <el-button :loading="exporting" @click="onExport">{{ t('common.export') }}</el-button>
+        <el-button type="primary" @click="openCreate">{{ t('common.create') }}</el-button>
+      </div>
     </div>
     <el-table :data="items">
       <el-table-column prop="id" label="ID" width="80" />
@@ -102,4 +120,7 @@ const remove = async (row) => {
   </div>
 </template>
 
-<style scoped>.toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }</style>
+<style scoped>
+.toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+.toolbar-actions { display: flex; gap: 0.5rem; }
+</style>

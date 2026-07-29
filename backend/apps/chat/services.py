@@ -1,4 +1,5 @@
 import logging
+import secrets
 
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
@@ -6,6 +7,8 @@ from django.conf import settings
 from django.core.cache import cache
 from django.db import transaction
 from django.utils import timezone
+
+from django.db.models import Q
 
 from apps.chat.masking import mask_contact_info
 from apps.chat.models import Conversation, Message
@@ -16,10 +19,38 @@ ONLINE_KEY = "chat:online:{user_id}"
 UNREAD_KEY = "chat:unread:{user_id}"
 CONN_KEY = "chat:conn:{user_id}"
 RATE_KEY = "chat:rate:{user_id}"
+WS_TICKET_KEY = "chat:ws_ticket:{ticket_id}"
+WS_TICKET_TTL_SECONDS = 45
 
 
 def user_group_name(user_id: int) -> str:
     return f"chat.user.{user_id}"
+
+
+def issue_ws_ticket(user_id: int) -> str:
+    """签发短时一次性 WebSocket 握手 ticket。"""
+    ticket_id = secrets.token_urlsafe(32)
+    cache.set(
+        WS_TICKET_KEY.format(ticket_id=ticket_id),
+        int(user_id),
+        WS_TICKET_TTL_SECONDS,
+    )
+    return ticket_id
+
+
+def redeem_ws_ticket(ticket_id: str) -> int | None:
+    """核销 ticket：成功返回 user_id，失败或已用返回 None。"""
+    if not ticket_id:
+        return None
+    key = WS_TICKET_KEY.format(ticket_id=ticket_id)
+    user_id = cache.get(key)
+    if user_id is None:
+        return None
+    cache.delete(key)
+    try:
+        return int(user_id)
+    except (TypeError, ValueError):
+        return None
 
 
 def is_user_online(user_id: int) -> bool:
@@ -168,6 +199,8 @@ def serialize_message_brief(message: Message) -> dict:
         "conversation_id": message.conversation_id,
         "sender_id": message.sender_id,
         "sender_role": message.sender_role,
+        "message_type": getattr(message, "message_type", None) or Message.TYPE_TEXT,
+        "payload": getattr(message, "payload", None),
         "body": message.body,
         "has_contact_hint": message.has_contact_hint,
         "created_at": message.created_at.isoformat() if message.created_at else None,
@@ -175,19 +208,31 @@ def serialize_message_brief(message: Message) -> dict:
 
 
 @transaction.atomic
-def send_message(*, conversation: Conversation, sender, sender_role: str, body: str) -> Message:
+def send_message(
+    *,
+    conversation: Conversation,
+    sender,
+    sender_role: str,
+    body: str,
+    message_type: str = Message.TYPE_TEXT,
+    payload: dict | None = None,
+) -> Message:
     max_len = getattr(settings, "CHAT_MESSAGE_MAX_LENGTH", 4000)
     text = (body or "").strip()
     if not text:
         raise ValueError("EMPTY_BODY")
     if len(text) > max_len:
         raise ValueError("BODY_TOO_LONG")
+    if message_type not in {Message.TYPE_TEXT, Message.TYPE_ORDER_CARD}:
+        raise ValueError("INVALID_MESSAGE_TYPE")
 
     masked, hinted = mask_contact_info(text)
     message = Message.objects.create(
         conversation=conversation,
         sender=sender,
         sender_role=sender_role,
+        message_type=message_type,
+        payload=payload,
         body=masked,
         body_original=text,
         has_contact_hint=hinted,
@@ -196,6 +241,157 @@ def send_message(*, conversation: Conversation, sender, sender_role: str, body: 
     conversation.save(update_fields=["last_message_at", "updated_at"])
     return message
 
+
+def _production_order_quote_request_id(order) -> int | None:
+    quote = getattr(order, "quote", None)
+    if quote is None:
+        return None
+    return quote.quote_request_id
+
+
+def build_order_card_payload(order) -> dict:
+    project = getattr(order, "project", None)
+    quote = getattr(order, "quote", None)
+    qr = getattr(quote, "quote_request", None) if quote else None
+    return {
+        "production_order_id": order.id,
+        "order_no": order.order_no,
+        "status": order.status,
+        "project_id": project.id if project else None,
+        "project_title": (project.title if project else "") or "",
+        "quote_request_id": qr.id if qr else _production_order_quote_request_id(order),
+        "quote_request_no": (qr.request_no if qr else "") or "",
+    }
+
+
+def list_remindable_orders(conversation: Conversation, *, q: str = "", status: str = ""):
+    from apps.rfq.models import ProductionOrder
+
+    qs = (
+        ProductionOrder.objects.filter(
+            buyer_id=conversation.buyer_id,
+            supplier_id=conversation.supplier_id,
+        )
+        .select_related("quote__quote_request", "project")
+        .order_by("-updated_at", "-id")
+    )
+    status = (status or "").strip()
+    if status:
+        qs = qs.filter(status=status)
+    q = (q or "").strip()
+    if q:
+        qs = qs.filter(
+            Q(order_no__icontains=q)
+            | Q(project__title__icontains=q)
+            | Q(project__project_no__icontains=q)
+            | Q(quote__quote_request__request_no__icontains=q)
+        )
+
+    current_po_id = conversation.production_order_id
+    current_qr_id = conversation.quote_request_id
+    items = []
+    for order in qs:
+        payload = build_order_card_payload(order)
+        is_current = False
+        if current_po_id and order.id == current_po_id:
+            is_current = True
+        elif current_qr_id and payload.get("quote_request_id") == current_qr_id:
+            is_current = True
+        items.append({**payload, "is_current": is_current})
+
+    items.sort(key=lambda row: (0 if row["is_current"] else 1, -int(row["production_order_id"])))
+    return items
+
+
+@transaction.atomic
+def send_order_reminder(
+    *,
+    conversation: Conversation,
+    sender,
+    sender_role: str,
+    production_order_id: int,
+    note: str = "",
+) -> Message:
+    from apps.rfq.models import ProductionOrder
+
+    try:
+        order = (
+            ProductionOrder.objects.select_related("quote__quote_request", "project")
+            .get(pk=production_order_id)
+        )
+    except ProductionOrder.DoesNotExist as exc:
+        raise ValueError("ORDER_NOT_FOUND") from exc
+
+    if order.buyer_id != conversation.buyer_id or order.supplier_id != conversation.supplier_id:
+        raise ValueError("ORDER_NOT_ALLOWED")
+
+    payload = build_order_card_payload(order)
+    note_text = (note or "").strip()
+    if note_text:
+        body = note_text
+    else:
+        body = f"提醒关注订单 {order.order_no}"
+
+    message = send_message(
+        conversation=conversation,
+        sender=sender,
+        sender_role=sender_role,
+        body=body,
+        message_type=Message.TYPE_ORDER_CARD,
+        payload=payload,
+    )
+    return message
+
+
+def notify_order_reminder(message: Message):
+    """站内通知对方关注订单卡片。失败不影响主流程。"""
+    conversation = message.conversation
+    payload = message.payload or {}
+    recipients = {conversation.buyer_id, conversation.supplier_id}
+    if message.sender_id:
+        recipients.discard(message.sender_id)
+    order_no = payload.get("order_no") or ""
+    project_id = payload.get("project_id")
+    production_order_id = payload.get("production_order_id")
+    title = f"订单提醒：{order_no}" if order_no else "订单提醒"
+    content = (message.body or "")[:500]
+    try:
+        from apps.accounts.models import User
+        from apps.notification.services import notify
+
+        for uid in recipients:
+            user = User.objects.filter(pk=uid).first()
+            if not user:
+                continue
+            if project_id:
+                notify(
+                    user,
+                    "project",
+                    title,
+                    content=content,
+                    related_type="project",
+                    related_id=project_id,
+                )
+            elif production_order_id:
+                notify(
+                    user,
+                    "production_order",
+                    title,
+                    content=content,
+                    related_type="production_order",
+                    related_id=production_order_id,
+                )
+            else:
+                notify(
+                    user,
+                    "chat",
+                    title,
+                    content=content,
+                    related_type="conversation",
+                    related_id=conversation.id,
+                )
+    except Exception:  # noqa: BLE001
+        logger.exception("order reminder notify failed message_id=%s", message.id)
 
 def after_message_sent(message: Message, *, notify_offline=True):
     conversation = message.conversation

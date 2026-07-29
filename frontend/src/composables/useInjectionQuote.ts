@@ -2,6 +2,7 @@ import { computed, onMounted, ref, watch, type Ref } from 'vue'
 import type { Router } from 'vue-router'
 import type { Composer } from 'vue-i18n'
 import { createSimpleQuote, drawingParse, previewSimpleQuote, stpParse } from '../api'
+import { pollParseJob } from '../utils/pollJob'
 
 export const INJECTION_MATERIALS = ['ABS', 'ABS+Gf', 'PC', 'PA66', 'PP'] as const
 export const MOLD_MATERIALS = ['P20', '718', 'NAK80', 'S136', 'H13'] as const
@@ -171,11 +172,14 @@ export function useInjectionQuote({ productName, router, t }: UseInjectionQuoteO
     try {
       const form = new FormData()
       form.append('file', file)
-      const res = await stpParse(form)
-      geometry.value = res.data.geometry
-      densities.value = res.data.densities || {}
-      undercut.value = res.data.geometry?.undercut || null
-      materialSuggestion.value = res.data.geometry?.material_suggestion || null
+      const enqueued = await stpParse(form)
+      const jobId = enqueued.data?.job_id
+      const job = await pollParseJob(jobId)
+      const result = job.result || {}
+      geometry.value = result.geometry
+      densities.value = result.densities || {}
+      undercut.value = result.geometry?.undercut || null
+      materialSuggestion.value = result.geometry?.material_suggestion || null
       injection.value.file_name = file.name
       injection.value.parts.forEach(applyWeightFromGeometry)
       applyStpSuggestions()
@@ -213,8 +217,10 @@ export function useInjectionQuote({ productName, router, t }: UseInjectionQuoteO
     try {
       const form = new FormData()
       form.append('file', file)
-      const res = await drawingParse(form)
-      ocr.value = res.data.ocr
+      const enqueued = await drawingParse(form)
+      const jobId = enqueued.data?.job_id
+      const job = await pollParseJob(jobId)
+      ocr.value = job.result?.ocr
       applyOcrSuggestions()
       schedulePreview()
     } catch (err) {

@@ -1,7 +1,7 @@
 import logging
 
 from rest_framework import status
-from rest_framework.exceptions import APIException, ValidationError
+from rest_framework.exceptions import APIException, Throttled, ValidationError
 from rest_framework.views import exception_handler
 
 from core.responses import error_response
@@ -12,6 +12,7 @@ HTTP_STATUS_TO_CODE = {
     status.HTTP_401_UNAUTHORIZED: "AUTH_TOKEN_INVALID",
     status.HTTP_403_FORBIDDEN: "AUTH_PERMISSION_DENIED",
     status.HTTP_404_NOT_FOUND: "COMMON_NOT_FOUND",
+    status.HTTP_429_TOO_MANY_REQUESTS: "RATE_LIMIT_EXCEEDED",
     status.HTTP_500_INTERNAL_SERVER_ERROR: "COMMON_INTERNAL_ERROR",
 }
 
@@ -34,7 +35,9 @@ def custom_exception_handler(exc, context):
         code = getattr(exc, "default_code", None) or HTTP_STATUS_TO_CODE.get(
             response.status_code, "COMMON_VALIDATION_ERROR"
         )
-        if isinstance(exc, ValidationError):
+        if isinstance(exc, Throttled):
+            code = "RATE_LIMIT_EXCEEDED"
+        elif isinstance(exc, ValidationError):
             code = "COMMON_VALIDATION_ERROR"
         errors = getattr(exc, "errors", None)
         detail = getattr(exc, "detail", None)

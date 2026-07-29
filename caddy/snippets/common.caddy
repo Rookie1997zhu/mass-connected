@@ -1,0 +1,68 @@
+# Shared Caddy snippets for prod + dev (no HTTPS / no CSP — P3 2A)
+
+(security_headers) {
+	header {
+		X-Content-Type-Options nosniff
+		X-Frame-Options SAMEORIGIN
+		Referrer-Policy strict-origin-when-cross-origin
+		Permissions-Policy "geolocation=(), microphone=(), camera=()"
+		-Server
+	}
+}
+
+(api_ws) {
+	handle /ws/* {
+		reverse_proxy chat-ws:8001 {
+			header_up Host localhost
+		}
+	}
+
+	handle /api/* {
+		reverse_proxy backend:8000 {
+			header_up Host localhost
+		}
+	}
+}
+
+(sensitive_media) {
+	handle /media/project/* {
+		respond "Use authenticated download API" 403
+	}
+	handle /media/chat/* {
+		respond "Use authenticated download API" 403
+	}
+	handle /media/payment/* {
+		respond "Use authenticated download API" 403
+	}
+	handle /media/contract/* {
+		respond "Use authenticated download API" 403
+	}
+	handle /media/nda/* {
+		respond "Use authenticated download API" 403
+	}
+	handle /media/supplier/* {
+		respond "Use authenticated download API" 403
+	}
+	handle /media/recharge/* {
+		respond "Use authenticated download API" 403
+	}
+	handle /media/rfq/* {
+		respond "Use authenticated download API" 403
+	}
+	handle /media/quote/* {
+		respond "Use authenticated download API" 403
+	}
+	handle /media/print3d/* {
+		respond "Use authenticated download API" 403
+	}
+	handle /media/print3d_slice/* {
+		respond "Use authenticated download API" 403
+	}
+}
+
+(public_media) {
+	handle_path /media/* {
+		root * /media
+		file_server
+	}
+}

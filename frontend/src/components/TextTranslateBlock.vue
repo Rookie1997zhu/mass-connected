@@ -10,6 +10,7 @@ import {
   translateSupplierQuoteRequestText,
   translateSupplierQuoteText,
 } from '../api'
+import { pollChatTranslateJob } from '../utils/pollJob'
 
 const props = defineProps({
   // Legacy project API: projectId + role
@@ -74,7 +75,13 @@ const onTranslate = async () => {
         ? { target_lang: locale.value }
         : { text: source, target_lang: locale.value }
     const res = await api(payload)
-    translated.value = res.data?.translated_text || ''
+    const data = res.data || {}
+    if (props.contextType === 'chat' && !data.translated_text && data.job_id) {
+      const jobData = await pollChatTranslateJob(props.role, data.job_id)
+      translated.value = jobData.result?.translated_text || ''
+    } else {
+      translated.value = data.translated_text || ''
+    }
     if (!translated.value) {
       error.value = t('aiTranslate.translateFailed')
     }

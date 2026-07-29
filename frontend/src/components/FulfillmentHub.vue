@@ -3,7 +3,7 @@ import { computed, ref, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import FilePreviewModal from './FilePreviewModal.vue'
-import { downloadAuthedFile } from '../utils/downloadAuthedFile'
+import { downloadAuthedFile, fetchAuthedBlobUrl } from '../utils/downloadAuthedFile'
 import { useLocaleCurrency } from '../composables/useLocaleCurrency'
 import {
   confirmProductionOrder,
@@ -40,6 +40,7 @@ const signForm = ref({
 const signatureFile = ref(null)
 const signaturePreviewUrl = ref('')
 const signatureInputRef = ref(null)
+const signatureDisplayUrl = ref('')
 
 const isBuyer = computed(() => props.role === 'buyer')
 const order = computed(() => props.fulfillment?.production_order || null)
@@ -96,6 +97,32 @@ watch(
   },
   { immediate: true },
 )
+
+watch(
+  () => contract.value?.signature_image_url,
+  async (url) => {
+    if (signatureDisplayUrl.value) {
+      URL.revokeObjectURL(signatureDisplayUrl.value)
+      signatureDisplayUrl.value = ''
+    }
+    if (!url) return
+    try {
+      signatureDisplayUrl.value = await fetchAuthedBlobUrl(url)
+    } catch {
+      signatureDisplayUrl.value = ''
+    }
+  },
+  { immediate: true },
+)
+
+const onOpenContractPdf = async () => {
+  if (!contract.value?.pdf_url) return
+  try {
+    await downloadAuthedFile(contract.value.pdf_url, 'contract.pdf')
+  } catch {
+    actionError.value = t('common.failed') || 'Failed'
+  }
+}
 
 const canSign = computed(
   () =>
@@ -367,20 +394,19 @@ const sourceLabel = (source) => {
               </div>
             </dl>
             <img
-              v-if="contract.signature_image_url"
-              :src="contract.signature_image_url"
+              v-if="signatureDisplayUrl"
+              :src="signatureDisplayUrl"
               class="signature-preview"
               :alt="t('mypage.uploadSignature')"
             />
-            <a
+            <button
               v-if="contract.pdf_url"
-              :href="contract.pdf_url"
-              target="_blank"
-              rel="noopener"
+              type="button"
               class="link"
+              @click="onOpenContractPdf"
             >
               {{ t('mypage.viewSignedPdf') }}
-            </a>
+            </button>
           </template>
         </template>
         <p v-else class="hint">{{ t('fulfillment.contractEmpty') }}</p>

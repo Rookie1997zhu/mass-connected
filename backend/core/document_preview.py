@@ -125,6 +125,26 @@ def convert_to_pdf(source_path: str, out_dir: str) -> Path:
     return out_path
 
 
+def peek_cached_preview_pdf(
+    source_path: str,
+    file_id: int,
+    ext: str,
+    cache_ns: str = "project",
+) -> Path | None:
+    """Return cached/direct PDF path without converting; None on cache miss."""
+    ext = (ext or "").lower()
+    if ext == PDF_EXT:
+        path = Path(source_path)
+        return path if path.is_file() else None
+    if ext not in CONVERT_TO_PDF_EXTS:
+        return None
+    if not os.path.isfile(source_path):
+        return None
+    fingerprint = _source_fingerprint(source_path)
+    cached = preview_cache_dir(file_id, cache_ns=cache_ns) / f"{fingerprint}.pdf"
+    return cached if cached.is_file() else None
+
+
 def get_or_create_preview_pdf(
     source_path: str,
     file_id: int,

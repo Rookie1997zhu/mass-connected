@@ -1,5 +1,4 @@
 from django.urls import path
-from rest_framework_simplejwt.views import TokenRefreshView
 
 from apps.accounts.views import (
     AdminFactoryDetailView,
@@ -12,7 +11,9 @@ from apps.accounts.views import (
     AdminSupplierAttachmentView,
     AdminSupplierAttachmentDownloadView,
     AdminSupplierTagView,
+    AdminSupplierLicenseDownloadView,
     AdminUserListCreateView,
+    CookieTokenRefreshView,
     FactoryProfileView,
     FactoryRegisterView,
     LogoutView,
@@ -21,6 +22,7 @@ from apps.accounts.views import (
     MemberProfileView,
     MemberRegisterView,
     PublicPartnerListView,
+    SupplierLicenseDownloadView,
     SupplierProfileAttachmentDownloadView,
     SupplierProfileAttachmentView,
 )
@@ -30,18 +32,19 @@ urlpatterns = [
     path("member/auth/register", MemberRegisterView.as_view()),
     path("factory/auth/register", FactoryRegisterView.as_view()),
     path("member/auth/login", MemberLoginView.as_view()),
-    path("member/auth/refresh", TokenRefreshView.as_view()),
+    path("member/auth/refresh", CookieTokenRefreshView.as_view()),
     path("member/auth/logout", LogoutView.as_view()),
     path("member/profile", MemberProfileView.as_view()),
     path("member/dashboard", MemberDashboardView.as_view()),
     path("factory/profile", FactoryProfileView.as_view()),
+    path("factory/profile/license/download", SupplierLicenseDownloadView.as_view()),
     path("supplier/profile/attachments", SupplierProfileAttachmentView.as_view()),
     path(
         "supplier/profile/attachments/<int:file_id>/download",
         SupplierProfileAttachmentDownloadView.as_view(),
     ),
     path("admin/auth/login", AdminLoginView.as_view()),
-    path("admin/auth/refresh", TokenRefreshView.as_view()),
+    path("admin/auth/refresh", CookieTokenRefreshView.as_view()),
     path("admin/auth/logout", LogoutView.as_view()),
     path("admin/admin-users", AdminUserListCreateView.as_view()),
     path("admin/factories", AdminFactoryListView.as_view()),
@@ -49,6 +52,10 @@ urlpatterns = [
     path("admin/suppliers", AdminSupplierListCreateView.as_view()),
     path("admin/suppliers/<int:pk>", AdminSupplierDetailView.as_view()),
     path("admin/suppliers/<int:pk>/tags", AdminSupplierTagView.as_view()),
+    path(
+        "admin/suppliers/<int:pk>/license/download",
+        AdminSupplierLicenseDownloadView.as_view(),
+    ),
     path("admin/suppliers/<int:pk>/attachments", AdminSupplierAttachmentView.as_view()),
     path(
         "admin/suppliers/<int:pk>/attachments/<int:file_id>/download",

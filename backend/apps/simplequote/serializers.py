@@ -82,6 +82,8 @@ class SimpleQuoteCreateSerializer(serializers.Serializer):
 
 
 class Print3dSliceJobSerializer(serializers.ModelSerializer):
+    preview_url = serializers.SerializerMethodField()
+
     class Meta:
         model = Print3dSliceJob
         fields = [
@@ -91,7 +93,7 @@ class Print3dSliceJobSerializer(serializers.ModelSerializer):
             "file_ext",
             "inputs",
             "result",
-            "preview_mesh",
+            "preview_url",
             "error_code",
             "error_message",
             "expires_at",
@@ -99,6 +101,11 @@ class Print3dSliceJobSerializer(serializers.ModelSerializer):
             "updated_at",
         ]
         read_only_fields = fields
+
+    def get_preview_url(self, obj):
+        if not obj.preview_file:
+            return None
+        return f"/api/member/simple-quotes/print3d/slice-jobs/{obj.pk}/preview"
 
 
 class Print3dSliceJobCreateSerializer(serializers.Serializer):

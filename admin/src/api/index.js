@@ -4,18 +4,22 @@ import { useAuthStore } from '../stores/auth'
 const http = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
   timeout: 15000,
+  withCredentials: true,
 })
 
 let refreshPromise = null
 
 http.interceptors.request.use((config) => {
-  const token = window.__adminAccessToken
-  if (token) config.headers.Authorization = `Bearer ${token}`
+  const auth = useAuthStore()
+  if (auth.accessToken) config.headers.Authorization = `Bearer ${auth.accessToken}`
   return config
 })
 
 http.interceptors.response.use(
   (response) => {
+    if (response.config.responseType === 'blob') {
+      return response.data
+    }
     const payload = response.data
     if (payload?.code && payload.code !== 'OK') return Promise.reject(payload)
     return payload
@@ -23,9 +27,16 @@ http.interceptors.response.use(
   async (error) => {
     const original = error.config
     const status = error.response?.status
-    if (status === 401 && original && !original._retry && !original.url?.includes('/auth/refresh')) {
+    if (
+      status === 401 &&
+      original &&
+      !original._retry &&
+      !original.url?.includes('/auth/refresh') &&
+      !original.url?.includes('/auth/logout') &&
+      !original.url?.includes('/auth/login')
+    ) {
       const auth = useAuthStore()
-      if (auth.refreshToken) {
+      if (auth.accessToken || auth.user) {
         original._retry = true
         try {
           if (!refreshPromise) {
@@ -34,10 +45,10 @@ http.interceptors.response.use(
             })
           }
           await refreshPromise
-          original.headers.Authorization = `Bearer ${window.__adminAccessToken}`
+          original.headers.Authorization = `Bearer ${auth.accessToken}`
           return http(original)
         } catch {
-          auth.logout()
+          await auth.logout()
         }
       }
     }
@@ -48,6 +59,7 @@ http.interceptors.response.use(
 export default http
 
 export const adminLogin = (data) => http.post('/admin/auth/login', data)
+export const adminLogout = () => http.post('/admin/auth/logout', {})
 export const fetchAdminStats = () => http.get('/admin/stats')
 export const fetchServiceCategories = () => http.get('/admin/service-categories')
 export const saveServiceCategory = (data) => http.post('/admin/service-categories', data)
@@ -64,17 +76,17 @@ export const fetchCases = () => http.get('/admin/cases')
 export const saveCase = (data) => http.post('/admin/cases', data)
 export const updateCase = (id, data) => http.patch(`/admin/cases/${id}`, data)
 export const deleteCase = (id) => http.delete(`/admin/cases/${id}`)
-export const fetchNews = () => http.get('/admin/news')
+export const fetchNews = (params) => http.get('/admin/news', { params: { page_size: 100, ...params } })
 export const saveNews = (data) => http.post('/admin/news', data)
 export const updateNews = (id, data) => http.patch(`/admin/news/${id}`, data)
 export const deleteNews = (id) => http.delete(`/admin/news/${id}`)
-export const fetchFaqs = () => http.get('/admin/faqs')
+export const fetchFaqs = (params) => http.get('/admin/faqs', { params: { page_size: 100, ...params } })
 export const saveFaq = (data) => http.post('/admin/faqs', data)
 export const updateFaq = (id, data) => http.patch(`/admin/faqs/${id}`, data)
 export const deleteFaq = (id) => http.delete(`/admin/faqs/${id}`)
-export const fetchDownloads = () => http.get('/admin/downloads')
+export const fetchDownloads = (params) => http.get('/admin/downloads', { params: { page_size: 100, ...params } })
 export const saveDownload = (data) => http.post('/admin/downloads', data, { headers: { 'Content-Type': 'multipart/form-data' } })
-export const fetchContentPages = () => http.get('/admin/content-pages')
+export const fetchContentPages = (params) => http.get('/admin/content-pages', { params: { page_size: 100, ...params } })
 export const saveContentPage = (data) => http.post('/admin/content-pages', data)
 export const updateContentPage = (id, data) => http.patch(`/admin/content-pages/${id}`, data)
 export const fetchNavigation = () => http.get('/admin/navigation')

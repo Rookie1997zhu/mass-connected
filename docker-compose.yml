@@ -1,6 +1,10 @@
 services:
   mysql:
     image: mysql:8.4
+    restart: unless-stopped
+    # ~1g：本地联调够用；生产可按数据量调大
+    mem_limit: 1g
+    cpus: 1.0
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpass}
       MYSQL_DATABASE: ${MYSQL_DATABASE:-oem_db}
@@ -16,6 +20,9 @@ services:
 
   redis:
     image: redis:7-alpine
+    restart: unless-stopped
+    mem_limit: 256m
+    cpus: 0.5
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
@@ -25,6 +32,9 @@ services:
   backend:
     image: oemco-backend
     build: ./backend
+    restart: unless-stopped
+    mem_limit: 1g
+    cpus: 1.5
     env_file: .env
     environment:
       REDIS_URL: ${REDIS_URL:-redis://redis:6379/0}
@@ -41,17 +51,30 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-    # HTTP API；海量 WebSocket 由 chat-ws 承担，便于水平扩展
     command: ["sh", "/app/scripts/start_api.sh"]
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=3)",
+        ]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
     ulimits:
       nofile:
         soft: 65535
         hard: 65535
 
-  # 聊天 WebSocket 专用进程；生产可 docker compose up --scale chat-ws=N
   chat-ws:
     image: oemco-backend
     build: ./backend
+    restart: unless-stopped
+    mem_limit: 512m
+    cpus: 1.0
     env_file: .env
     environment:
       REDIS_URL: ${REDIS_URL:-redis://redis:6379/0}
@@ -70,6 +93,19 @@ services:
       backend:
         condition: service_started
     command: ["sh", "/app/scripts/start_chat_ws.sh"]
+    # Daphne WS 无独立 HTTP health：TCP 探测 8001 端口存活
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import socket; s=socket.create_connection(('127.0.0.1',8001),2); s.close()",
+        ]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     ulimits:
       nofile:
         soft: 65535
@@ -77,11 +113,14 @@ services:
     expose:
       - "8001"
 
-  # PrusaSlicer 切片 Worker（AGPL）；与 backend 共享 media 卷
   slicer-worker:
     build:
       context: .
       dockerfile: backend/Dockerfile.slicer-worker
+    restart: unless-stopped
+    # 切片峰值内存偏高
+    mem_limit: 2g
+    cpus: 2.0
     env_file: .env
     environment:
       REDIS_URL: ${REDIS_URL:-redis://redis:6379/0}
@@ -102,9 +141,133 @@ services:
       backend:
         condition: service_started
     command: celery -A config worker -l info -c 1
+    # 降级探针：确认 celery worker 进程存活（inspect ping 单 worker 下偶发慢/误杀）
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "python -c \"import subprocess,sys; r=subprocess.run(['ps','ax'],capture_output=True,text=True); sys.exit(0 if 'celery' in r.stdout else 1)\"",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 90s
 
+  heavy-worker:
+    image: oemco-backend
+    build: ./backend
+    restart: unless-stopped
+    # LibreOffice / OCR 峰值
+    mem_limit: 1.5g
+    cpus: 2.0
+    env_file: .env
+    environment:
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379/0}
+      REDIS_CELERY_URL: ${REDIS_CELERY_URL:-redis://redis:6379/1}
+      REDIS_CHANNELS_URL: ${REDIS_CHANNELS_URL:-redis://redis:6379/2}
+      CELERY_BROKER_URL: ${CELERY_BROKER_URL:-redis://redis:6379/1}
+      CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND:-redis://redis:6379/1}
+      DB_HOST: mysql
+    volumes:
+      - ./backend:/app
+      - media_data:/app/media
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      backend:
+        condition: service_started
+    command: celery -A config worker -l info -Q heavy -c 2
+    # 降级探针：确认 celery worker 进程存活
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "python -c \"import subprocess,sys; r=subprocess.run(['ps','ax'],capture_output=True,text=True); sys.exit(0 if 'celery' in r.stdout else 1)\"",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  translate-worker:
+    image: oemco-backend
+    build: ./backend
+    restart: unless-stopped
+    # 翻译任务轻量：调用 Gemini，内存占用低
+    mem_limit: 1g
+    cpus: 1.0
+    env_file: .env
+    environment:
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379/0}
+      REDIS_CELERY_URL: ${REDIS_CELERY_URL:-redis://redis:6379/1}
+      REDIS_CHANNELS_URL: ${REDIS_CHANNELS_URL:-redis://redis:6379/2}
+      CELERY_BROKER_URL: ${CELERY_BROKER_URL:-redis://redis:6379/1}
+      CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND:-redis://redis:6379/1}
+      DB_HOST: mysql
+    volumes:
+      - ./backend:/app
+      - media_data:/app/media
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      backend:
+        condition: service_started
+    command: celery -A config worker -l info -Q translate -c 2
+    # 降级探针：确认 celery worker 进程存活
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "python -c \"import subprocess,sys; r=subprocess.run(['ps','ax'],capture_output=True,text=True); sys.exit(0 if 'celery' in r.stdout else 1)\"",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # 默认：生产静态构建（nginx 托管 dist）
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-/api}
+    restart: unless-stopped
+    mem_limit: 256m
+    cpus: 0.5
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/ >/dev/null || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  admin:
+    build:
+      context: ./admin
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-/api}
+        VITE_ADMIN_BASE_PATH: ${VITE_ADMIN_BASE_PATH:-/admin/}
+    restart: unless-stopped
+    mem_limit: 256m
+    cpus: 0.5
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/admin/ >/dev/null || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  # 开发热更新：docker compose --profile dev up --scale frontend=0 --scale admin=0 --scale caddy=0
+  frontend-dev:
+    profiles: ["dev"]
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    restart: unless-stopped
     volumes:
       - ./frontend:/app
       - /app/node_modules
@@ -112,8 +275,12 @@ services:
       VITE_API_BASE_URL: ${VITE_API_BASE_URL:-/api}
     command: npm run dev -- --host 0.0.0.0 --port 5173
 
-  admin:
-    build: ./admin
+  admin-dev:
+    profiles: ["dev"]
+    build:
+      context: ./admin
+      dockerfile: Dockerfile.dev
+    restart: unless-stopped
     volumes:
       - ./admin:/app
       - /app/node_modules
@@ -124,19 +291,57 @@ services:
 
   caddy:
     image: caddy:2-alpine
+    restart: unless-stopped
+    mem_limit: 256m
+    cpus: 0.5
     ports:
       - "0.0.0.0:80:80"
-      - "0.0.0.0:443:443"
     volumes:
-      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./caddy/snippets:/etc/caddy/snippets:ro
       - media_data:/media
       - caddy_data:/data
       - caddy_config:/config
     depends_on:
-      - backend
-      - chat-ws
-      - frontend
-      - admin
+      backend:
+        condition: service_healthy
+      chat-ws:
+        condition: service_healthy
+      frontend:
+        condition: service_healthy
+      admin:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/api/health >/dev/null || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # 开发反代：与 frontend-dev/admin-dev 一起用
+  caddy-dev:
+    profiles: ["dev"]
+    image: caddy:2-alpine
+    restart: unless-stopped
+    mem_limit: 256m
+    cpus: 0.5
+    ports:
+      - "0.0.0.0:80:80"
+    volumes:
+      - ./caddy/Caddyfile.dev:/etc/caddy/Caddyfile:ro
+      - ./caddy/snippets:/etc/caddy/snippets:ro
+      - media_data:/media
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      backend:
+        condition: service_healthy
+      chat-ws:
+        condition: service_healthy
+      frontend-dev:
+        condition: service_started
+      admin-dev:
+        condition: service_started
 
 volumes:
   mysql_data:

@@ -2,6 +2,9 @@ from celery import shared_task
 
 from apps.notification.services import notify, notify_staff
 
+# Register heavy-queue tasks for Celery autodiscovery (tasks.py only).
+from apps.chat import heavy_tasks as _heavy_tasks  # noqa: F401
+
 
 @shared_task(ignore_result=True)
 def notify_chat_message_async(user_id: int, conversation_id: int, message_id: int):

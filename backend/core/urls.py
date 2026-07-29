@@ -7,9 +7,12 @@ from rest_framework.views import APIView
 from core.responses import success_response
 
 
+from rest_framework.permissions import AllowAny
+
+
 class HealthView(APIView):
     authentication_classes = []
-    permission_classes = []
+    permission_classes = [AllowAny]
 
     def get(self, request):
         db_ok = "ok"

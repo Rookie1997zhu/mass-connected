@@ -4,13 +4,38 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+_INSECURE_SECRET_KEYS = frozenset(
+    {
+        "",
+        "dev-insecure-change-me",
+        "change-me-in-production",
+    }
+)
+
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "dev-insecure-change-me")
-DEBUG = os.environ.get("DJANGO_DEBUG", "true").lower() == "true"
+DEBUG = os.environ.get("DJANGO_DEBUG", "false").lower() == "true"
+
+if not DEBUG and SECRET_KEY in _INSECURE_SECRET_KEYS:
+    raise RuntimeError(
+        "DJANGO_SECRET_KEY must be set to a strong unique value when DJANGO_DEBUG=false"
+    )
+
 ALLOWED_HOSTS = [
     h.strip()
     for h in os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1,backend").split(",")
     if h.strip()
 ]
+
+# 仅当反向代理终止 TLS 且 DJANGO_SECURE_SSL=true 时启用（本地/局域网 HTTP 保持关闭）
+SECURE_SSL = os.environ.get("DJANGO_SECURE_SSL", "false").lower() == "true"
+if SECURE_SSL:
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = int(os.environ.get("DJANGO_SECURE_HSTS_SECONDS", "31536000"))
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 INSTALLED_APPS = [
     "daphne",
@@ -22,6 +47,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "rest_framework",
     "rest_framework_simplejwt",
+    "rest_framework_simplejwt.token_blacklist",
     "channels",
     "core",
     "apps.accounts",
@@ -158,16 +184,44 @@ CELERY_TIMEZONE = TIME_ZONE
 CELERY_WORKER_PREFETCH_MULTIPLIER = 1
 CELERY_TASK_ACKS_LATE = True
 CELERY_TASK_ALWAYS_EAGER = os.environ.get("CELERY_TASK_ALWAYS_EAGER", "false").lower() == "true"
+CELERY_TASK_ROUTES = {
+    "simplequote.run_stp_parse": {"queue": "heavy"},
+    "simplequote.run_drawing_parse": {"queue": "heavy"},
+    "simplequote.run_preview_convert": {"queue": "heavy"},
+    "simplequote.send_notification_email": {"queue": "heavy"},
+    "chat.run_message_translate": {"queue": "translate"},
+}
 PRUSA_SLICER_PATH = os.environ.get("PRUSA_SLICER_PATH", "prusa-slicer")
 PRINT3D_SLICE_JOB_TTL_HOURS = int(os.environ.get("PRINT3D_SLICE_JOB_TTL_HOURS", "24"))
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
 
+THROTTLE_ANON = os.environ.get("THROTTLE_ANON", "120/min")
+THROTTLE_USER = os.environ.get("THROTTLE_USER", "600/min")
+THROTTLE_LOGIN = os.environ.get("THROTTLE_LOGIN", "10/min")
+THROTTLE_REGISTER = os.environ.get("THROTTLE_REGISTER", "5/min")
+THROTTLE_INQUIRY = os.environ.get("THROTTLE_INQUIRY", "10/min")
+THROTTLE_AI_TRANSLATE = os.environ.get("THROTTLE_AI_TRANSLATE", "20/min")
+THROTTLE_WS_TICKET = os.environ.get("THROTTLE_WS_TICKET", "30/min")
+
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
-    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.AllowAny",),
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_THROTTLE_CLASSES": (
+        "rest_framework.throttling.AnonRateThrottle",
+        "rest_framework.throttling.UserRateThrottle",
+    ),
+    "DEFAULT_THROTTLE_RATES": {
+        "anon": THROTTLE_ANON,
+        "user": THROTTLE_USER,
+        "login": THROTTLE_LOGIN,
+        "register": THROTTLE_REGISTER,
+        "inquiry": THROTTLE_INQUIRY,
+        "ai_translate": THROTTLE_AI_TRANSLATE,
+        "ws_ticket": THROTTLE_WS_TICKET,
+    },
     "DEFAULT_PAGINATION_CLASS": "core.pagination.StandardPagination",
     "PAGE_SIZE": 20,
     "EXCEPTION_HANDLER": "core.exceptions.custom_exception_handler",
@@ -182,6 +236,7 @@ SIMPLE_JWT = {
         days=int(os.environ.get("JWT_REFRESH_TOKEN_LIFETIME_DAYS", "7"))
     ),
     "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
 

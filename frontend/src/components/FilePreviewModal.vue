@@ -11,6 +11,7 @@ import {
   translateSupplierRfqFile,
 } from '../api'
 import { toApiPath } from '../utils/downloadAuthedFile'
+import { pollParseJob } from '../utils/pollJob'
 
 const props = defineProps({
   file: { type: Object, default: null },
@@ -108,13 +109,50 @@ const close = () => {
 
 const fetchBlobFromUrl = async (fileUrl, timeout = 60000) => {
   const path = toApiPath(fileUrl)
-  if (path.startsWith('/media/')) {
-    const res = await fetch(path)
-    if (!res.ok) throw new Error(`load failed: ${res.status}`)
-    return res.blob()
-  }
   const data = await http.get(path, { responseType: 'blob', timeout })
   return data instanceof Blob ? data : new Blob([data])
+}
+
+/** 预览 PDF：缓存命中直接拿 blob；首次转换遇 PREVIEW_JOB_PENDING 则轮询后再重试。 */
+const fetchPreviewPdfBlob = async (fileUrl, timeout = 90000) => {
+  const path = toApiPath(fileUrl)
+  const deadline = Date.now() + timeout
+  while (Date.now() < deadline) {
+    try {
+      const data = await http.get(path, { responseType: 'blob', timeout: Math.min(30000, deadline - Date.now()) })
+      const blob = data instanceof Blob ? data : new Blob([data])
+      const buf = await blob.arrayBuffer()
+      const head = new TextDecoder().decode(buf.slice(0, 1))
+      if (head === '{' || head === '[') {
+        let json
+        try {
+          json = JSON.parse(new TextDecoder().decode(buf))
+        } catch {
+          return new Blob([buf], { type: 'application/pdf' })
+        }
+        if (json.code === 'PREVIEW_JOB_PENDING') {
+          const jobId = json.errors?.job_id || json.data?.job_id
+          if (!jobId) throw json
+          await pollParseJob(jobId, { timeout: Math.max(1000, deadline - Date.now()) })
+          continue
+        }
+        if (json.code && json.code !== 'OK') throw json
+        return new Blob([buf], { type: 'application/pdf' })
+      }
+      return new Blob([buf], { type: blob.type || 'application/pdf' })
+    } catch (e) {
+      if (e?.code === 'PREVIEW_JOB_PENDING') {
+        const jobId = e.errors?.job_id || e.data?.job_id
+        if (!jobId) throw e
+        await pollParseJob(jobId, { timeout: Math.max(1000, deadline - Date.now()) })
+        continue
+      }
+      throw e
+    }
+  }
+  const err = new Error('preview convert timeout')
+  err.code = 'PREVIEW_JOB_TIMEOUT'
+  throw err
 }
 
 const fetchBlob = async () => fetchBlobFromUrl(props.file.file_url)
@@ -160,7 +198,7 @@ const load = async () => {
       if (props.file.preview_mode === 'pdf_convert') {
         loadingHint.value = t('filePreview.converting')
       }
-      const blob = await fetchBlobFromUrl(props.file.preview_pdf_url, 90000)
+      const blob = await fetchPreviewPdfBlob(props.file.preview_pdf_url, 90000)
       previewKind.value = 'pdf'
       objectUrl.value = URL.createObjectURL(blob)
     } else if (ext === 'pdf') {

@@ -4,6 +4,7 @@ from __future__ import annotations
 import logging
 from datetime import timedelta
 
+from django.http import FileResponse
 from django.conf import settings
 from django.utils import timezone
 from rest_framework import status
@@ -120,6 +121,24 @@ class Print3dSliceJobDetailView(APIView):
                 request=request,
             )
         return success_response(Print3dSliceJobSerializer(job).data, request=request)
+
+
+class Print3dSliceJobPreviewView(APIView):
+    """鉴权下载切片预览 STL（不经裸 /media）。"""
+
+    permission_classes = [IsBuyerRole]
+
+    def get(self, request, pk):
+        job = Print3dSliceJob.objects.filter(pk=pk, buyer=request.user).first()
+        if not job or not job.preview_file:
+            return error_response(
+                "PRINT3D_PREVIEW_MISSING",
+                "预览文件不存在",
+                status=status.HTTP_404_NOT_FOUND,
+                request=request,
+            )
+        name = (job.preview_file.name or "").rsplit("/", 1)[-1] or "preview.stl"
+        return FileResponse(job.preview_file.open("rb"), as_attachment=False, filename=name)
 
 
 class AdminPrint3dConfigView(APIView):

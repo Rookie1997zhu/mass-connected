@@ -1,7 +1,9 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.parsers import FormParser, MultiPartParser
+from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
+import logging
 
 from apps.catalog.models import Category, Product, ProductImage
 from apps.catalog.serializers import (
@@ -14,18 +16,26 @@ from core.pagination import StandardPagination
 from core.permissions import IsAdminRole
 from core.responses import success_response
 
+logger = logging.getLogger(__name__)
+
 
 def get_lang(request):
     return request.query_params.get("lang") or request.headers.get("Accept-Language", "ko")[:2]
 
 
 class PublicCategoryListView(APIView):
+    permission_classes = [AllowAny]
+
     def get(self, request):
         qs = Category.objects.filter(is_active=True).order_by("sort_order", "id")
+        count = qs.count()
+        if count > 500:
+            logger.warning("full_list_large label=public_categories count=%s", count)
         return success_response({"items": CategorySerializer(qs, many=True).data}, request=request)
 
 
 class PublicProductListView(APIView):
+    permission_classes = [AllowAny]
     pagination_class = StandardPagination
 
     def get(self, request):
@@ -40,6 +50,8 @@ class PublicProductListView(APIView):
 
 
 class PublicProductDetailView(APIView):
+    permission_classes = [AllowAny]
+
     def get(self, request, pk):
         product = get_object_or_404(
             Product.objects.filter(is_active=True, is_shop_visible=True)

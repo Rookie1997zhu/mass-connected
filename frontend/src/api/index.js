@@ -17,6 +17,7 @@ export const submitInquiry = (data) => http.post('/public/inquiries', data)
 export const memberRegister = (data) => http.post('/member/auth/register', data)
 export const factoryRegister = (data) => http.post('/factory/auth/register', data)
 export const memberLogin = (data) => http.post('/member/auth/login', data)
+export const memberLogout = () => http.post('/member/auth/logout', {})
 export const fetchProfile = () => http.get('/member/profile')
 export const fetchFactoryProfile = () => http.get('/factory/profile')
 export const fetchPartners = (params) => http.get('/public/partners', { params })
@@ -118,17 +119,19 @@ export const createPrint3dSliceJob = (formData) =>
   })
 export const fetchPrint3dSliceJob = (id) =>
   http.get(`/member/simple-quotes/print3d/slice-jobs/${id}`)
-// 几何/OCR 解析为同步计算，耗时可达数十秒，需覆盖后端解析超时（STP 20s / OCR 25s）
+// 解析提交仅入队，短超时即可；结果经 fetchParseJob 轮询
 export const stpParse = (formData) =>
   http.post('/member/simple-quotes/parse-stp', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
-    timeout: 60000,
+    timeout: 30000,
   })
 export const drawingParse = (formData) =>
   http.post('/member/simple-quotes/parse-drawing', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
-    timeout: 60000,
+    timeout: 30000,
   })
+export const fetchParseJob = (id) =>
+  http.get(`/member/simple-quotes/parse-jobs/${id}`, { timeout: 15000 })
 export const shippingEstimate = (data) => http.post('/member/simple-quotes/shipping-estimate', data)
 
 export const fetchNdaTemplate = () => http.get('/member/nda/template')
@@ -229,12 +232,20 @@ export const openChatDispute = (role, conversationId, reason = '') =>
 export const resolveChatDispute = (role, conversationId) =>
   http.post(`${chatBase(role)}/conversations/${conversationId}/dispute/resolve`)
 export const fetchChatUnreadCount = (role) => http.get(`${chatBase(role)}/unread-count`)
+export const createChatWsTicket = (role) => http.post(`${chatBase(role)}/ws-ticket`, {})
 export const translateChatMessage = (role, conversationId, messageId, data) =>
   http.post(
     `${chatBase(role)}/conversations/${conversationId}/messages/${messageId}/translate`,
     data,
     { timeout: 45000 },
   )
+// 翻译任务短轮询：缓存未命中时由 translateChatMessage 返回 job_id
+export const fetchChatTranslateJob = (role, jobId) =>
+  http.get(`${chatBase(role)}/translate-jobs/${jobId}`, { timeout: 15000 })
+export const fetchRemindableOrders = (role, conversationId, params) =>
+  http.get(`${chatBase(role)}/conversations/${conversationId}/remindable-orders`, { params })
+export const sendChatOrderReminder = (role, conversationId, data) =>
+  http.post(`${chatBase(role)}/conversations/${conversationId}/messages/order-reminder`, data)
 
 export const fetchCart = () => http.get('/member/cart')
 export const addToCart = (data) => http.post('/member/cart/items', data)

@@ -1,7 +1,8 @@
 <script setup>
-import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
+  createChatWsTicket,
   fetchChatConversations,
   fetchChatMessages,
   fetchChatUnreadCount,
@@ -11,7 +12,9 @@ import {
   resolveChatDispute,
   sendChatMessage,
 } from '../api'
-import TextTranslateBlock from './TextTranslateBlock.vue'
+import ChatMessageList from './chat/ChatMessageList.vue'
+import ChatComposer from './chat/ChatComposer.vue'
+import OrderPickerSheet from './OrderPickerSheet.vue'
 import { createChatSocket } from '../utils/chatWs'
 import { useAuthStore } from '../stores/auth'
 
@@ -31,15 +34,18 @@ const role = computed(() => (auth.user?.role === 'factory' || auth.isSupplier ? 
 const conversations = ref([])
 const activeId = ref(null)
 const messages = ref([])
-const draft = ref('')
 const loadingList = ref(false)
 const loadingMessages = ref(false)
+const loadingOlder = ref(false)
+const hasMoreOlder = ref(true)
 const sending = ref(false)
 const error = ref('')
 const wsStatus = ref('closed')
 const disputeReason = ref('')
 const showDisputeForm = ref(false)
-const listEl = ref(null)
+const showOrderPicker = ref(false)
+const messageListRef = ref(null)
+const composerRef = ref(null)
 
 let socket = null
 let lastMsgId = 0
@@ -53,14 +59,30 @@ const peerInitial = computed(() => {
   return name ? name.slice(0, 1).toUpperCase() : '?'
 })
 
-const formatMsgTime = (iso) => {
-  const s = (iso || '').slice(0, 16).replace('T', ' ')
-  return s.length > 11 ? s.slice(11) : s
-}
-
 const convInitial = (c) => {
   const name = (c?.peer_display_name || c?.quote_request_no || '').trim()
   return name ? name.slice(0, 1).toUpperCase() : '?'
+}
+
+const previewFromMessage = (msg) => {
+  if (msg?.message_type === 'order_card') {
+    const orderNo = msg?.payload?.order_no || ''
+    return orderNo ? `[订单] ${orderNo}` : '[订单]'
+  }
+  return String(msg?.body || '').slice(0, 120)
+}
+
+const bumpConversationLocal = (conversationId, msg, { incrementUnread = false, clearUnread = false } = {}) => {
+  const idx = conversations.value.findIndex((c) => c.id === conversationId)
+  if (idx < 0) return
+  const conv = { ...conversations.value[idx] }
+  if (msg) conv.last_message_preview = previewFromMessage(msg)
+  if (clearUnread) conv.unread = 0
+  else if (incrementUnread) conv.unread = (conv.unread || 0) + 1
+  const next = conversations.value.slice()
+  next.splice(idx, 1)
+  next.unshift(conv)
+  conversations.value = next
 }
 
 const loadConversations = async () => {
@@ -75,40 +97,77 @@ const loadConversations = async () => {
   }
 }
 
-const loadMessages = async (conversationId, { afterId } = {}) => {
+const loadMessages = async (conversationId, { afterId, beforeId } = {}) => {
   if (!conversationId) return
-  loadingMessages.value = !afterId
+  if (beforeId) {
+    if (loadingOlder.value || !hasMoreOlder.value) return
+    loadingOlder.value = true
+  } else {
+    loadingMessages.value = !afterId
+  }
   try {
-    const params = afterId ? { after_id: afterId } : { page_size: 50 }
+    const params = afterId
+      ? { after_id: afterId }
+      : beforeId
+        ? { before_id: beforeId, page_size: 50 }
+        : { page_size: 50 }
     const res = await fetchChatMessages(role.value, conversationId, params)
     const items = res.data?.items || []
-    if (afterId) {
+    if (beforeId) {
+      if (!items.length) {
+        hasMoreOlder.value = false
+        return
+      }
+      if (items.length < 50) hasMoreOlder.value = false
+      const known = new Set(messages.value.map((m) => m.id))
+      const older = items.filter((m) => !known.has(m.id))
+      if (!older.length) {
+        hasMoreOlder.value = false
+        return
+      }
+      const anchor = messageListRef.value?.getScrollAnchor()
+      messages.value = [...older, ...messages.value]
+      await messageListRef.value?.restoreScrollAnchor(anchor)
+    } else if (afterId) {
       const known = new Set(messages.value.map((m) => m.id))
       items.forEach((m) => {
         if (!known.has(m.id)) messages.value.push(m)
       })
+      if (messages.value.length) {
+        lastMsgId = messages.value[messages.value.length - 1].id
+      }
+      if (items.length) await messageListRef.value?.scrollToBottom()
     } else {
       messages.value = items
+      hasMoreOlder.value = items.length >= 50
+      if (messages.value.length) {
+        lastMsgId = messages.value[messages.value.length - 1].id
+      }
+      await markChatConversationRead(role.value, conversationId)
+      const unreadRes = await fetchChatUnreadCount(role.value)
+      emit('unread-change', unreadRes.data?.count ?? 0)
+      bumpConversationLocal(conversationId, null, { clearUnread: true })
+      await messageListRef.value?.scrollToBottom()
     }
-    if (messages.value.length) {
-      lastMsgId = messages.value[messages.value.length - 1].id
-    }
-    await markChatConversationRead(role.value, conversationId)
-    const unreadRes = await fetchChatUnreadCount(role.value)
-    emit('unread-change', unreadRes.data?.count ?? 0)
-    await nextTick()
-    if (listEl.value) listEl.value.scrollTop = listEl.value.scrollHeight
   } catch (e) {
     error.value = e?.message || t('chat.loadFailed')
   } finally {
     loadingMessages.value = false
+    loadingOlder.value = false
   }
+}
+
+const onLoadMore = (minId) => {
+  if (!activeId.value) return
+  loadMessages(activeId.value, { beforeId: minId })
 }
 
 const selectConversation = async (id) => {
   activeId.value = id
   messages.value = []
   lastMsgId = 0
+  hasMoreOlder.value = true
+  showOrderPicker.value = false
   await loadMessages(id)
 }
 
@@ -124,8 +183,7 @@ const openByQuoteRequest = async (qrId) => {
   }
 }
 
-const onSend = async () => {
-  const body = draft.value.trim()
+const onSend = async (body) => {
   if (!body || !activeId.value || sending.value) return
   sending.value = true
   error.value = ''
@@ -136,10 +194,9 @@ const onSend = async () => {
       messages.value.push(msg)
       lastMsgId = msg.id
     }
-    draft.value = ''
-    await loadConversations()
-    await nextTick()
-    if (listEl.value) listEl.value.scrollTop = listEl.value.scrollHeight
+    composerRef.value?.clearDraft()
+    if (msg) bumpConversationLocal(activeId.value, msg, { clearUnread: true })
+    await messageListRef.value?.scrollToBottom()
   } catch (e) {
     error.value = e?.message || e?.code || t('chat.sendFailed')
   } finally {
@@ -169,6 +226,19 @@ const onResolveDispute = async () => {
   }
 }
 
+const onOrderReminderSent = async (msg) => {
+  if (msg && !messages.value.some((m) => m.id === msg.id)) {
+    messages.value.push(msg)
+    lastMsgId = msg.id
+  }
+  if (msg) bumpConversationLocal(activeId.value, msg, { clearUnread: true })
+  await messageListRef.value?.scrollToBottom()
+}
+
+const onCardNavigate = () => {
+  emit('close')
+}
+
 const handleWsEvent = async (data) => {
   const event = data?.event
   const payload = data?.payload || {}
@@ -178,11 +248,11 @@ const handleWsEvent = async (data) => {
         messages.value.push(payload)
         lastMsgId = payload.id
         await markChatConversationRead(role.value, activeId.value)
-        await nextTick()
-        if (listEl.value) listEl.value.scrollTop = listEl.value.scrollHeight
+        bumpConversationLocal(payload.conversation_id, payload, { clearUnread: true })
+        await messageListRef.value?.scrollToBottom()
       }
-    } else {
-      await loadConversations()
+    } else if (payload.conversation_id) {
+      bumpConversationLocal(payload.conversation_id, payload, { incrementUnread: true })
     }
     if (payload.unread_total != null) emit('unread-change', payload.unread_total)
   }
@@ -195,11 +265,13 @@ const handleWsEvent = async (data) => {
 }
 
 const connectWs = () => {
-  const token = window.__memberAccessToken
-  if (!token || !auth.isLoggedIn) return
+  if (!auth.isLoggedIn) return
   socket?.close()
   socket = createChatSocket({
-    token,
+    fetchTicket: async () => {
+      const res = await createChatWsTicket(role.value)
+      return res?.data?.ticket || null
+    },
     onEvent: handleWsEvent,
     onStatus: (s) => {
       wsStatus.value = s
@@ -297,6 +369,9 @@ defineExpose({ openByQuoteRequest, selectConversation, loadConversations })
                 </span>
               </div>
               <div class="toolbar-actions">
+                <button type="button" class="btn-ghost" @click="showOrderPicker = true">
+                  {{ t('chat.remindOrder') }}
+                </button>
                 <template v-if="activeConversation?.dispute_status === 'open'">
                   <span class="dispute-badge">{{ t('chat.disputeOpen') }}</span>
                   <button type="button" class="btn-ghost" @click="onResolveDispute">
@@ -319,44 +394,29 @@ defineExpose({ openByQuoteRequest, selectConversation, loadConversations })
                 {{ t('chat.submitDispute') }}
               </button>
             </div>
-            <div ref="listEl" class="msg-list">
-              <p v-if="loadingMessages" class="muted center">{{ t('common.loading') }}</p>
-              <div
-                v-for="m in messages"
-                :key="m.id"
-                class="msg"
-                :class="{
-                  mine: m.sender_id === auth.user?.id,
-                  platform: m.sender_role === 'platform',
-                }"
-              >
-                <p class="msg-body">{{ m.body }}</p>
-                <small v-if="m.has_contact_hint" class="hint">{{ t('chat.contactMasked') }}</small>
-                <div class="msg-foot">
-                  <TextTranslateBlock
-                    context-type="chat"
-                    compact
-                    :role="role"
-                    :conversation-id="activeId"
-                    :message-id="m.id"
-                    :text="m.body"
-                  />
-                  <time class="msg-time">{{ formatMsgTime(m.created_at) }}</time>
-                </div>
-              </div>
-            </div>
-            <form class="composer" @submit.prevent="onSend">
-              <input
-                v-model="draft"
-                type="text"
-                maxlength="4000"
-                :placeholder="t('chat.placeholder')"
-                @keydown.enter.exact.prevent="onSend"
+            <div class="thread-wrap">
+              <ChatMessageList
+                ref="messageListRef"
+                :messages="messages"
+                :role="role"
+                :conversation-id="activeId"
+                :current-user-id="auth.user?.id"
+                :loading-messages="loadingMessages"
+                :loading-older="loadingOlder"
+                :has-more-older="hasMoreOlder"
+                @load-more="onLoadMore"
+                @card-navigate="onCardNavigate"
               />
-              <button type="submit" class="send-btn" :disabled="sending || !draft.trim()">
-                {{ t('chat.send') }}
-              </button>
-            </form>
+              <OrderPickerSheet
+                :open="showOrderPicker"
+                :role="role"
+                :conversation-id="activeId"
+                @close="showOrderPicker = false"
+                @sent="onOrderReminderSent"
+                @error="(msg) => (error = msg)"
+              />
+            </div>
+            <ChatComposer ref="composerRef" :sending="sending" @send="onSend" />
           </template>
         </section>
       </div>
@@ -556,6 +616,15 @@ defineExpose({ openByQuoteRequest, selectConversation, loadConversations })
   flex-direction: column;
   min-height: 0;
   background: #eef2f6;
+  position: relative;
+}
+
+.thread-wrap {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .empty-thread {
@@ -645,120 +714,6 @@ defineExpose({ openByQuoteRequest, selectConversation, loadConversations })
   }
 }
 
-.msg-list {
-  flex: 1;
-  overflow: auto;
-  padding: 1rem 0.9rem 1.15rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.65rem;
-  background:
-    radial-gradient(ellipse at top left, rgba(148, 163, 184, 0.12), transparent 45%),
-    linear-gradient(180deg, #eef2f6 0%, #e8edf3 100%);
-}
-
-.msg {
-  max-width: min(78%, 420px);
-  align-self: flex-start;
-  background: #fff;
-  border: 1px solid rgba(226, 232, 240, 0.95);
-  border-radius: 14px 14px 14px 4px;
-  padding: 0.55rem 0.7rem 0.45rem;
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
-}
-
-.msg.mine {
-  align-self: flex-end;
-  background: linear-gradient(160deg, #dbeafe 0%, #bfdbfe 100%);
-  border-color: #93c5fd;
-  border-radius: 14px 14px 4px 14px;
-}
-
-.msg.platform {
-  align-self: center;
-  max-width: 88%;
-  background: #f8fafc;
-  border-style: dashed;
-  font-style: italic;
-  color: #475569;
-  border-radius: 10px;
-}
-
-.msg-body {
-  margin: 0;
-  white-space: pre-wrap;
-  word-break: break-word;
-  font-size: 0.9rem;
-  line-height: 1.45;
-  color: #0f172a;
-}
-
-.hint {
-  display: block;
-  color: #c2410c;
-  margin-top: 0.3rem;
-  font-size: 0.7rem;
-}
-
-.msg-foot {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  margin-top: 0.15rem;
-  min-height: 1rem;
-}
-
-.msg-time {
-  color: #94a3b8;
-  font-size: 0.65rem;
-  flex-shrink: 0;
-  margin-left: auto;
-}
-
-.composer {
-  display: flex;
-  gap: 0.55rem;
-  padding: 0.75rem 0.9rem 0.9rem;
-  border-top: 1px solid #e2e8f0;
-  background: #fff;
-}
-
-.composer input {
-  flex: 1;
-  border: 1px solid #cbd5e1;
-  border-radius: 999px;
-  padding: 0.6rem 0.95rem;
-  font: inherit;
-  background: #f8fafc;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
-
-  &:focus {
-    outline: none;
-    border-color: var(--color-steel, #64748b);
-    background: #fff;
-    box-shadow: 0 0 0 3px rgba(100, 116, 139, 0.15);
-  }
-}
-
-.send-btn {
-  border: 0;
-  border-radius: 999px;
-  padding: 0.55rem 1.05rem;
-  background: #0f172a;
-  color: #fff;
-  font-size: 0.82rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.15s ease, opacity 0.15s ease;
-
-  &:hover:not(:disabled) { background: #1e293b; }
-  &:disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
-  }
-}
-
 .chat-error {
   margin: 0;
   padding: 0.5rem 1rem;
@@ -769,12 +724,10 @@ defineExpose({ openByQuoteRequest, selectConversation, loadConversations })
 
 .muted { color: #64748b; font-size: 0.875rem; }
 .pad-sm { padding: 0.85rem; }
-.center { text-align: center; margin: 1rem 0; }
 
 @media (max-width: 720px) {
   .chat-body { grid-template-columns: 1fr; }
   .chat-list { max-height: 28vh; }
-  .msg { max-width: 88%; }
   .ws-label { display: none; }
 }
 </style>

@@ -1,5 +1,7 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import status
+from rest_framework.permissions import AllowAny
+from rest_framework.throttling import ScopedRateThrottle
 from rest_framework.views import APIView
 
 from apps.inquiry.models import Inquiry
@@ -11,6 +13,10 @@ from core.responses import success_response
 
 
 class PublicInquiryCreateView(APIView):
+    permission_classes = [AllowAny]
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = "inquiry"
+
     def post(self, request):
         serializer = InquirySerializer(data=request.data)
         serializer.is_valid(raise_exception=True)

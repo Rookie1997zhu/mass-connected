@@ -1,5 +1,6 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, ref } from 'vue'
+import { useVirtualizer } from '@tanstack/vue-virtual'
 import { useI18n } from 'vue-i18n'
 import {
   fetchAdminChatDisputes,
@@ -17,6 +18,36 @@ const messages = ref([])
 const draft = ref('')
 const error = ref('')
 const sending = ref(false)
+const loadingOlder = ref(false)
+const hasMoreOlder = ref(false)
+
+const MESSAGE_PAGE_SIZE = 50
+
+const listEl = ref(null)
+
+const virtualizer = useVirtualizer(
+  computed(() => ({
+    count: messages.value.length,
+    getScrollElement: () => listEl.value,
+    estimateSize: () => 96,
+    overscan: 8,
+    getItemKey: (index) => messages.value[index]?.id ?? index,
+  }))
+)
+const virtualRows = computed(() => virtualizer.value.getVirtualItems())
+const totalSize = computed(() => virtualizer.value.getTotalSize())
+
+const measureElement = (el) => {
+  if (el) virtualizer.value.measureElement(el)
+}
+
+const formatMsgTime = (iso) => (iso || '').slice(0, 16).replace('T', ' ')
+
+const scrollToBottom = async () => {
+  await nextTick()
+  const last = messages.value.length - 1
+  if (last >= 0) virtualizer.value.scrollToIndex(last, { align: 'end' })
+}
 
 const loadDisputes = async () => {
   loading.value = true
@@ -34,12 +65,46 @@ const loadDisputes = async () => {
 const openDispute = async (row) => {
   active.value = row
   messages.value = []
+  hasMoreOlder.value = false
   try {
-    const res = await fetchAdminChatMessages(row.id, { page_size: 100 })
+    const res = await fetchAdminChatMessages(row.id, { page_size: MESSAGE_PAGE_SIZE })
     messages.value = res.data?.items || []
+    hasMoreOlder.value = (res.data?.pagination?.total_pages || 1) > 1
+    await scrollToBottom()
   } catch (e) {
     error.value = e?.message || t('chat.loadFailed')
   }
+}
+
+/** 滚动到顶部时加载更早消息：使用 before_id 游标，prepend 后按锚点还原滚动位置。 */
+const loadOlder = async () => {
+  if (!active.value || loadingOlder.value || !hasMoreOlder.value) return
+  const minId = messages.value[0]?.id
+  if (!minId) return
+  loadingOlder.value = true
+  const el = listEl.value
+  const anchor = { scrollHeight: el?.scrollHeight ?? 0, scrollTop: el?.scrollTop ?? 0 }
+  try {
+    const res = await fetchAdminChatMessages(active.value.id, {
+      page_size: MESSAGE_PAGE_SIZE,
+      before_id: minId,
+    })
+    const older = res.data?.items || []
+    if (older.length) messages.value = [...older, ...messages.value]
+    hasMoreOlder.value = (res.data?.pagination?.total_pages || 1) > 1
+    await nextTick()
+    if (el) el.scrollTop = anchor.scrollTop + (el.scrollHeight - anchor.scrollHeight)
+  } catch (e) {
+    error.value = e?.message || t('chat.loadFailed')
+  } finally {
+    loadingOlder.value = false
+  }
+}
+
+const onMsgScroll = () => {
+  const el = listEl.value
+  if (!el || loadingOlder.value || !hasMoreOlder.value) return
+  if (el.scrollTop <= 64) loadOlder()
 }
 
 const onSend = async () => {
@@ -47,7 +112,10 @@ const onSend = async () => {
   sending.value = true
   try {
     const res = await sendAdminChatMessage(active.value.id, draft.value.trim())
-    if (res.data) messages.value.push(res.data)
+    if (res.data) {
+      messages.value.push(res.data)
+      await scrollToBottom()
+    }
     draft.value = ''
   } catch (e) {
     error.value = e?.message || t('chat.sendFailed')
@@ -62,6 +130,7 @@ const onResolve = async () => {
     await resolveAdminChatDispute(active.value.id)
     active.value = null
     messages.value = []
+    hasMoreOlder.value = false
     await loadDisputes()
   } catch (e) {
     error.value = e?.message || t('chat.resolveFailed')
@@ -105,26 +174,55 @@ onMounted(loadDisputes)
             </el-button>
           </div>
         </template>
-        <div v-if="active" class="msgs">
-          <div
-            v-for="m in messages"
-            :key="m.id"
-            class="msg"
-            :class="m.sender_role"
-          >
-            <div class="meta">{{ m.sender_role }} · {{ (m.created_at || '').slice(0, 16).replace('T', ' ') }}</div>
-            <div>{{ m.body }}</div>
-            <TextTranslateBlock
-              v-if="active"
-              :conversation-id="active.id"
-              :message-id="m.id"
-              :text="m.body"
-            />
-            <div v-if="m.body_original && m.body_original !== m.body" class="original">
-              {{ t('chat.original') }}: {{ m.body_original }}
+        <template v-if="active">
+          <p v-if="loadingOlder" class="load-older">{{ t('common.loading') }}</p>
+          <div ref="listEl" class="msgs" @scroll.passive="onMsgScroll">
+            <div
+              v-if="messages.length"
+              class="msg-spacer"
+              :style="{ height: `${totalSize}px` }"
+            >
+              <div
+                v-for="vr in virtualRows"
+                :key="messages[vr.index].id"
+                :data-index="vr.index"
+                :ref="measureElement"
+                class="msg-virt"
+                :style="{ transform: `translateY(${vr.start}px)` }"
+              >
+                <div class="msg" :class="messages[vr.index].sender_role">
+                  <div class="meta">
+                    {{ messages[vr.index].sender_role }} · {{ formatMsgTime(messages[vr.index].created_at) }}
+                  </div>
+                  <div v-if="messages[vr.index].message_type === 'order_card'" class="order-card-readonly">
+                    <div class="order-tag">{{ t('chat.orderCardTag') }}</div>
+                    <div class="order-no">{{ messages[vr.index].payload?.order_no || '—' }}</div>
+                    <div v-if="messages[vr.index].payload?.status" class="order-status">
+                      {{ messages[vr.index].payload.status }}
+                    </div>
+                    <div v-if="messages[vr.index].payload?.project_title">
+                      {{ messages[vr.index].payload.project_title }}
+                    </div>
+                    <div v-if="messages[vr.index].body" class="order-note">{{ messages[vr.index].body }}</div>
+                  </div>
+                  <div v-else>{{ messages[vr.index].body }}</div>
+                  <TextTranslateBlock
+                    v-if="messages[vr.index].message_type !== 'order_card'"
+                    :conversation-id="active.id"
+                    :message-id="messages[vr.index].id"
+                    :text="messages[vr.index].body"
+                  />
+                  <div
+                    v-if="messages[vr.index].body_original && messages[vr.index].body_original !== messages[vr.index].body"
+                    class="original"
+                  >
+                    {{ t('chat.original') }}: {{ messages[vr.index].body_original }}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        </template>
         <div v-if="active" class="composer">
           <el-input
             v-model="draft"
@@ -152,10 +250,18 @@ onMounted(loadDisputes)
 .msgs {
   max-height: 480px;
   overflow: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  position: relative;
   margin-bottom: 0.75rem;
+}
+.load-older { text-align: center; color: #6b7280; font-size: 12px; margin: 0 0 0.25rem; }
+.msg-spacer { position: relative; width: 100%; }
+.msg-virt {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding-bottom: 0.75rem;
+  box-sizing: border-box;
 }
 .msg {
   padding: 0.65rem 0.75rem;
@@ -166,6 +272,16 @@ onMounted(loadDisputes)
 .msg.platform { background: #eff6ff; border-color: #bfdbfe; }
 .meta { font-size: 12px; color: #6b7280; margin-bottom: 0.25rem; }
 .original { margin-top: 0.35rem; font-size: 12px; color: #b45309; }
+.order-card-readonly {
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 0.5rem 0.65rem;
+  background: #fff;
+}
+.order-tag { font-size: 12px; font-weight: 600; color: #334155; }
+.order-no { font-weight: 700; margin-top: 0.15rem; }
+.order-status { font-size: 12px; color: #b45309; margin-top: 0.15rem; }
+.order-note { margin-top: 0.35rem; font-size: 13px; white-space: pre-wrap; }
 .composer { display: grid; gap: 0.5rem; }
 @media (max-width: 960px) {
   .layout-grid { grid-template-columns: 1fr; }

@@ -3,6 +3,7 @@ import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { ElMessage } from 'element-plus'
 import { fetchDownloads, saveDownload } from '../api'
+import { downloadAuthedFile } from '../utils/downloadAuthedFile'
 
 const { t } = useI18n()
 const items = ref([])
@@ -39,6 +40,20 @@ const onFile = (e) => {
   form.value.file = e.target.files?.[0] || null
 }
 
+const exporting = ref(false)
+const onExport = async () => {
+  if (exporting.value) return
+  exporting.value = true
+  try {
+    const date = new Date().toISOString().slice(0, 10).replace(/-/g, '')
+    await downloadAuthedFile('/api/admin/downloads/export', `downloads_${date}.csv`)
+  } catch (e) {
+    ElMessage.error(e?.message || t('common.exportFailed'))
+  } finally {
+    exporting.value = false
+  }
+}
+
 const submit = async () => {
   if (!form.value.title.ko?.trim()) {
     ElMessage.warning(t('downloads.titleRequired'))
@@ -71,7 +86,10 @@ const submit = async () => {
   <div>
     <div class="toolbar">
       <h2>{{ t('downloads.title') }}</h2>
-      <el-button type="primary" @click="openCreate">{{ t('common.create') }}</el-button>
+      <div class="toolbar-actions">
+        <el-button :loading="exporting" @click="onExport">{{ t('common.export') }}</el-button>
+        <el-button type="primary" @click="openCreate">{{ t('common.create') }}</el-button>
+      </div>
     </div>
     <el-table :data="items">
       <el-table-column prop="id" label="ID" width="70" />
@@ -129,4 +147,5 @@ const submit = async () => {
 
 <style scoped>
 .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+.toolbar-actions { display: flex; gap: 0.5rem; }
 </style>

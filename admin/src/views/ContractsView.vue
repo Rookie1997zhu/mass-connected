@@ -1,7 +1,9 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { ElMessage } from 'element-plus'
 import { fetchContracts } from '../api'
+import { openAuthedFile } from '../utils/downloadAuthedFile'
 
 const { t } = useI18n()
 const items = ref([])
@@ -11,6 +13,14 @@ const load = async () => {
   items.value = res.data.items || []
 }
 onMounted(load)
+
+const onOpenPdf = async (row) => {
+  try {
+    await openAuthedFile(row.pdf_url)
+  } catch {
+    ElMessage.error(t('common.failed') || 'Failed')
+  }
+}
 </script>
 
 <template>
@@ -23,7 +33,12 @@ onMounted(load)
       <el-table-column prop="status" :label="t('common.status')" width="130" />
       <el-table-column :label="t('common.download')" width="120">
         <template #default="{ row }">
-          <el-link v-if="row.pdf_url" :href="row.pdf_url" target="_blank" type="primary">{{ t('common.download') }}</el-link>
+          <el-button
+            v-if="row.pdf_url"
+            link
+            type="primary"
+            @click="onOpenPdf(row)"
+          >{{ t('common.download') }}</el-button>
           <span v-else>-</span>
         </template>
       </el-table-column>

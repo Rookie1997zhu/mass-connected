@@ -45,8 +45,23 @@ const fitCamera = (object, cam, ctrl) => {
   }
 }
 
+const hasMeshPayload = (mesh) =>
+  Boolean(mesh?.buffer || mesh?.data)
+
+const resolveStlBuffer = (mesh) => {
+  if (mesh?.buffer instanceof ArrayBuffer) return mesh.buffer
+  if (mesh?.data) {
+    const binary = atob(mesh.data)
+    const buffer = new ArrayBuffer(binary.length)
+    const view = new Uint8Array(buffer)
+    for (let i = 0; i < binary.length; i += 1) view[i] = binary.charCodeAt(i)
+    return buffer
+  }
+  return null
+}
+
 const loadMesh = async () => {
-  if (!containerRef.value || !props.previewMesh?.data) return
+  if (!containerRef.value || !hasMeshPayload(props.previewMesh)) return
 
   try {
     const [THREE, { STLLoader }, { OrbitControls }] = await Promise.all([
@@ -95,10 +110,9 @@ const loadMesh = async () => {
     const old = scene.getObjectByName('stp-mesh')
     if (old) disposeObject(old)
 
-    const binary = atob(props.previewMesh.data)
-    const buffer = new ArrayBuffer(binary.length)
+    const buffer = resolveStlBuffer(props.previewMesh)
+    if (!buffer) return
     const view = new Uint8Array(buffer)
-    for (let i = 0; i < binary.length; i += 1) view[i] = binary.charCodeAt(i)
 
     const loader = new STLLoader()
     const head = new TextDecoder().decode(view.slice(0, Math.min(80, view.length))).trimStart().toLowerCase()
@@ -117,16 +131,19 @@ const loadMesh = async () => {
 }
 
 const initScene = async () => {
-  if (props.previewMesh?.data) await loadMesh()
+  if (hasMeshPayload(props.previewMesh)) await loadMesh()
 }
 
-watch(() => props.previewMesh?.data, () => {
-  if (props.previewMesh?.data) loadMesh()
-  else {
-    const old = scene?.getObjectByName('stp-mesh')
-    if (old) disposeObject(old)
-  }
-})
+watch(
+  () => [props.previewMesh?.data, props.previewMesh?.buffer],
+  () => {
+    if (hasMeshPayload(props.previewMesh)) loadMesh()
+    else {
+      const old = scene?.getObjectByName('stp-mesh')
+      if (old) disposeObject(old)
+    }
+  },
+)
 
 onMounted(() => {
   initScene()
@@ -166,7 +183,7 @@ onUnmounted(() => {
   <div class="stp-viewer">
     <div ref="containerRef" class="stp-viewer__canvas" />
     <div v-if="loading" class="stp-viewer__overlay">{{ t('injectionQuote.viewerLoading') }}</div>
-    <div v-else-if="!previewMesh?.data" class="stp-viewer__overlay stp-viewer__overlay--hint">
+    <div v-else-if="!previewMesh?.data && !previewMesh?.buffer" class="stp-viewer__overlay stp-viewer__overlay--hint">
       <p>{{ t('injectionQuote.viewerPlaceholder') }}</p>
     </div>
   </div>

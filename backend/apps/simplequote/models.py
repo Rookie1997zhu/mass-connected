@@ -220,7 +220,11 @@ class Print3dSliceJob(models.Model):
     inputs = models.JSONField(default=dict, blank=True)
     config_snapshot = models.JSONField(default=dict, blank=True)
     result = models.JSONField(default=dict, blank=True)
+    # deprecated: 新任务写入 preview_file，不再填充大 JSON
     preview_mesh = models.JSONField(null=True, blank=True)
+    preview_file = models.FileField(
+        upload_to="print3d/preview/%Y/%m/", null=True, blank=True
+    )
     error_code = models.CharField(max_length=64, blank=True)
     error_message = models.CharField(max_length=500, blank=True)
     celery_task_id = models.CharField(max_length=64, blank=True)

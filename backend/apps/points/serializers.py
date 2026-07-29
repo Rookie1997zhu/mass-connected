@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from apps.points.models import PointRule, PointTransaction, PointWallet, RechargeOrder
+from core.media_urls import api_absolute_uri
 
 
 class PointWalletSerializer(serializers.ModelSerializer):
@@ -71,10 +72,12 @@ class RechargeOrderSerializer(serializers.ModelSerializer):
         read_only_fields = fields
 
     def get_proof_url(self, obj):
-        request = self.context.get("request")
-        if obj.proof and request:
-            return request.build_absolute_uri(obj.proof.url)
-        return obj.proof.url if obj.proof else ""
+        if not obj.proof:
+            return ""
+        return api_absolute_uri(
+            self.context.get("request"),
+            f"/api/member/points/recharges/{obj.id}/proof/download",
+        )
 
 
 class AdminRechargeOrderSerializer(RechargeOrderSerializer):
@@ -83,3 +86,11 @@ class AdminRechargeOrderSerializer(RechargeOrderSerializer):
     class Meta(RechargeOrderSerializer.Meta):
         fields = RechargeOrderSerializer.Meta.fields + ["user", "user_email"]
         read_only_fields = fields
+
+    def get_proof_url(self, obj):
+        if not obj.proof:
+            return ""
+        return api_absolute_uri(
+            self.context.get("request"),
+            f"/api/admin/points/recharges/{obj.id}/proof/download",
+        )

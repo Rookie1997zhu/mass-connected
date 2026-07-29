@@ -1,8 +1,5 @@
 import logging
 
-from django.conf import settings
-from django.core.mail import send_mail
-
 logger = logging.getLogger(__name__)
 
 VALID_TYPES = {
@@ -45,15 +42,15 @@ def notify(user, ntype, title, content="", related_type="", related_id=None, sen
 
     if send_email and user.email:
         try:
-            send_mail(
-                subject=f"[MASS CONNECTED] {title}",
-                message=content or title,
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[user.email],
-                fail_silently=False,
+            from apps.simplequote.heavy_tasks import send_notification_email
+
+            send_notification_email.delay(
+                f"[MASS CONNECTED] {title}",
+                content or title,
+                user.email,
             )
         except Exception:  # noqa: BLE001
-            logger.exception("send email notification failed user=%s", user.email)
+            logger.exception("enqueue email notification failed user=%s", user.email)
 
     return notification
 

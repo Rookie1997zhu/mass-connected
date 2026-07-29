@@ -79,6 +79,13 @@ class Message(models.Model):
         (ROLE_PLATFORM, "Platform"),
     ]
 
+    TYPE_TEXT = "text"
+    TYPE_ORDER_CARD = "order_card"
+    MESSAGE_TYPE_CHOICES = [
+        (TYPE_TEXT, "Text"),
+        (TYPE_ORDER_CARD, "Order Card"),
+    ]
+
     conversation = models.ForeignKey(
         Conversation, on_delete=models.CASCADE, related_name="messages"
     )
@@ -90,6 +97,10 @@ class Message(models.Model):
         related_name="chat_messages",
     )
     sender_role = models.CharField(max_length=16, choices=SENDER_ROLE_CHOICES)
+    message_type = models.CharField(
+        max_length=32, choices=MESSAGE_TYPE_CHOICES, default=TYPE_TEXT, db_index=True
+    )
+    payload = models.JSONField(null=True, blank=True)
     body = models.TextField()
     body_original = models.TextField(blank=True)
     has_contact_hint = models.BooleanField(default=False)

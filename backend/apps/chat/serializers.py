@@ -20,6 +20,8 @@ class MessageSerializer(serializers.ModelSerializer):
             "conversation_id",
             "sender_id",
             "sender_role",
+            "message_type",
+            "payload",
             "body",
             "body_original",
             "has_contact_hint",
@@ -88,11 +90,21 @@ class ConversationSerializer(serializers.ModelSerializer):
         last = obj.messages.order_by("-id").first()
         if not last:
             return ""
+        if last.message_type == Message.TYPE_ORDER_CARD:
+            order_no = ""
+            if isinstance(last.payload, dict):
+                order_no = last.payload.get("order_no") or ""
+            return f"[订单] {order_no}".strip() if order_no else "[订单]"
         return (last.body or "")[:120]
 
 
 class MessageCreateSerializer(serializers.Serializer):
     body = serializers.CharField(max_length=4000, allow_blank=False)
+
+
+class OrderReminderCreateSerializer(serializers.Serializer):
+    production_order_id = serializers.IntegerField()
+    note = serializers.CharField(required=False, allow_blank=True, max_length=2000)
 
 
 class DisputeOpenSerializer(serializers.Serializer):

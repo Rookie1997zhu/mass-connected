@@ -7,6 +7,7 @@ from pathlib import Path
 from django.http import FileResponse
 from django.shortcuts import get_object_or_404
 from rest_framework import status
+from rest_framework.throttling import ScopedRateThrottle
 from rest_framework.views import APIView
 
 from apps.project.translation import TranslationError, translate_file_by_path, translate_text
@@ -23,6 +24,9 @@ from core.responses import error_response, success_response
 
 RFQ_ATT_CACHE_NS = "rfq_att"
 QUOTE_ATT_CACHE_NS = "quote_att"
+
+_AI_TRANSLATE_THROTTLE = [ScopedRateThrottle]
+_AI_TRANSLATE_SCOPE = "ai_translate"
 
 
 def _text_translate_response(request):
@@ -115,6 +119,8 @@ def _member_visible_quote(request, quote_id):
 
 class MemberRfqTranslateView(APIView):
     permission_classes = [IsBuyerRole]
+    throttle_classes = _AI_TRANSLATE_THROTTLE
+    throttle_scope = _AI_TRANSLATE_SCOPE
 
     def post(self, request, pk):
         get_object_or_404(RFQ, pk=pk, buyer=request.user)
@@ -123,6 +129,8 @@ class MemberRfqTranslateView(APIView):
 
 class SupplierQuoteRequestTranslateView(APIView):
     permission_classes = [IsSupplierRole]
+    throttle_classes = _AI_TRANSLATE_THROTTLE
+    throttle_scope = _AI_TRANSLATE_SCOPE
 
     def post(self, request, pk):
         get_object_or_404(QuoteRequest, pk=pk, supplier=request.user)
@@ -131,6 +139,8 @@ class SupplierQuoteRequestTranslateView(APIView):
 
 class MemberQuoteTranslateView(APIView):
     permission_classes = [IsBuyerRole]
+    throttle_classes = _AI_TRANSLATE_THROTTLE
+    throttle_scope = _AI_TRANSLATE_SCOPE
 
     def post(self, request, quote_id):
         _member_visible_quote(request, quote_id)
@@ -139,6 +149,8 @@ class MemberQuoteTranslateView(APIView):
 
 class SupplierQuoteTranslateView(APIView):
     permission_classes = [IsSupplierRole]
+    throttle_classes = _AI_TRANSLATE_THROTTLE
+    throttle_scope = _AI_TRANSLATE_SCOPE
 
     def post(self, request, quote_id):
         get_object_or_404(Quote, pk=quote_id, supplier=request.user)
@@ -172,6 +184,8 @@ class MemberRfqAttachmentPreviewPdfView(APIView):
 
 class MemberRfqAttachmentTranslateView(APIView):
     permission_classes = [IsBuyerRole]
+    throttle_classes = _AI_TRANSLATE_THROTTLE
+    throttle_scope = _AI_TRANSLATE_SCOPE
 
     def post(self, request, pk, file_id):
         rfq = get_object_or_404(RFQ, pk=pk, buyer=request.user)
@@ -216,6 +230,8 @@ class SupplierRfqAttachmentPreviewPdfView(APIView):
 
 class SupplierRfqAttachmentTranslateView(APIView):
     permission_classes = [IsSupplierRole]
+    throttle_classes = _AI_TRANSLATE_THROTTLE
+    throttle_scope = _AI_TRANSLATE_SCOPE
 
     def post(self, request, pk, file_id):
         qr = get_object_or_404(
@@ -247,6 +263,8 @@ class MemberQuoteAttachmentPreviewPdfView(APIView):
 
 class MemberQuoteAttachmentTranslateView(APIView):
     permission_classes = [IsBuyerRole]
+    throttle_classes = _AI_TRANSLATE_THROTTLE
+    throttle_scope = _AI_TRANSLATE_SCOPE
 
     def post(self, request, quote_id, file_id):
         quote = _member_visible_quote(request, quote_id)
@@ -271,6 +289,8 @@ class SupplierQuoteAttachmentPreviewPdfView(APIView):
 
 class SupplierQuoteAttachmentTranslateView(APIView):
     permission_classes = [IsSupplierRole]
+    throttle_classes = _AI_TRANSLATE_THROTTLE
+    throttle_scope = _AI_TRANSLATE_SCOPE
 
     def post(self, request, quote_id, file_id):
         quote = get_object_or_404(Quote, pk=quote_id, supplier=request.user)

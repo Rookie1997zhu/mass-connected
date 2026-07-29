@@ -19,8 +19,8 @@ const notifications = ref([])
 const notifOpen = ref(false)
 const notifLoading = ref(false)
 
-const logout = () => {
-  auth.logout()
+const logout = async () => {
+  await auth.logout()
   router.push('/login')
 }
 

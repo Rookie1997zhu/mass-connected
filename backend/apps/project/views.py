@@ -5,6 +5,7 @@ import logging
 from rest_framework import status
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import BasePermission
+from rest_framework.throttling import ScopedRateThrottle
 from rest_framework.views import APIView
 
 from apps.notification.services import notify
@@ -33,13 +34,14 @@ from apps.project.translation import (
     translate_project_pdf_file,
     translate_text,
 )
+from core.async_jobs import create_job
 from core.document_preview import (
     PDF_EXT,
     PreviewError,
     cleanup_preview_cache,
     extract_text_from_file,
     file_ext,
-    get_or_create_preview_pdf,
+    peek_cached_preview_pdf,
     preview_mode_for_ext,
 )
 from core.file_validation import validate_upload_file
@@ -109,6 +111,8 @@ class MemberProjectDetailView(APIView):
 
 class MemberProjectTranslateView(APIView):
     permission_classes = [IsBuyerRole]
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = "ai_translate"
 
     def post(self, request, pk):
         project = get_object_or_404(Project, pk=pk, buyer=request.user)
@@ -160,6 +164,8 @@ class SupplierProjectDetailView(APIView):
 
 class SupplierProjectTranslateView(APIView):
     permission_classes = [IsSupplierRole]
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = "ai_translate"
 
     def post(self, request, pk):
         project = get_object_or_404(Project, pk=pk, supplier=request.user)
@@ -480,7 +486,7 @@ def _create_project_file(request, project, default_visibility="all", *, fallback
 
 def _user_can_access_project_file(user, project, pf):
     role = getattr(user, "role", "")
-    if role == "admin":
+    if role in {"super_admin", "operator", "sales"}:
         return True
     if project.buyer_id == user.id:
         return pf.visibility == "all"
@@ -502,6 +508,8 @@ def _preview_error_response(exc: PreviewError, request):
 
 def _preview_project_file_pdf(request, project, file_id):
     from django.http import FileResponse
+
+    from apps.simplequote.heavy_tasks import run_preview_convert
 
     pf = get_object_or_404(ProjectFile, pk=file_id, project=project)
     if not _user_can_access_project_file(request.user, project, pf):
@@ -526,7 +534,31 @@ def _preview_project_file_pdf(request, project, file_id):
 
     try:
         source_path = pf.file.path
-        pdf_path = get_or_create_preview_pdf(source_path, pf.id, ext)
+        cached = peek_cached_preview_pdf(source_path, pf.id, ext)
+        if cached is not None:
+            response = FileResponse(
+                cached.open("rb"),
+                content_type="application/pdf",
+                as_attachment=False,
+                filename=f"{Path(pf.file_name or 'preview').stem}.pdf",
+            )
+            response["Content-Disposition"] = 'inline; filename="preview.pdf"'
+            return response
+
+        # LibreOffice 首次转换：离开请求线程
+        job_id = create_job(
+            "preview_convert",
+            request.user.id,
+            meta={"file_id": pf.id, "ext": ext, "cache_ns": "project"},
+        )
+        run_preview_convert.delay(job_id, source_path, pf.id, ext, "project")
+        return error_response(
+            "PREVIEW_JOB_PENDING",
+            "预览转换中，请稍后重试",
+            errors={"job_id": job_id, "status": "pending"},
+            status=status.HTTP_202_ACCEPTED,
+            request=request,
+        )
     except PreviewError as exc:
         return _preview_error_response(exc, request)
     except Exception:
@@ -537,15 +569,6 @@ def _preview_project_file_pdf(request, project, file_id):
             status=status.HTTP_502_BAD_GATEWAY,
             request=request,
         )
-
-    response = FileResponse(
-        pdf_path.open("rb"),
-        content_type="application/pdf",
-        as_attachment=False,
-        filename=f"{Path(pf.file_name or 'preview').stem}.pdf",
-    )
-    response["Content-Disposition"] = 'inline; filename="preview.pdf"'
-    return response
 
 
 def _translate_project_file_response(request, project, file_id):
@@ -648,6 +671,8 @@ class MemberProjectFilePreviewPdfView(APIView):
 
 class MemberProjectFileTranslateView(APIView):
     permission_classes = [IsBuyerRole]
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = "ai_translate"
 
     def post(self, request, pk, file_id):
         project = get_object_or_404(Project, pk=pk, buyer=request.user)
@@ -701,6 +726,8 @@ class SupplierProjectFilePreviewPdfView(APIView):
 
 class SupplierProjectFileTranslateView(APIView):
     permission_classes = [IsSupplierRole]
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = "ai_translate"
 
     def post(self, request, pk, file_id):
         project = get_object_or_404(Project, pk=pk, supplier=request.user)

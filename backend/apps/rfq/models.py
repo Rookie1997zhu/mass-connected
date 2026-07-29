@@ -73,6 +73,10 @@ class RFQ(models.Model):
 
     class Meta:
         ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=["buyer", "-created_at"], name="rfq_buyer_created_idx"),
+            models.Index(fields=["status", "scope", "-created_at"], name="rfq_status_scope_idx"),
+        ]
 
 
 class RFQAttachment(models.Model):
@@ -123,6 +127,10 @@ class QuoteRequest(models.Model):
     class Meta:
         ordering = ["-created_at"]
         unique_together = [("rfq", "supplier")]
+        indexes = [
+            models.Index(fields=["supplier", "status", "-created_at"], name="qr_supplier_status_idx"),
+            models.Index(fields=["rfq", "status"], name="qr_rfq_status_idx"),
+        ]
 
 
 class Quote(models.Model):
