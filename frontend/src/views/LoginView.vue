@@ -14,7 +14,15 @@ const onSubmit = async () => {
   error.value = ''
   try {
     await auth.login(form.value)
-    router.push(route.query.redirect || '/my/rfqs')
+    if (route.query.redirect) {
+      router.push(route.query.redirect)
+    } else if (auth.isSupplier) {
+      router.push('/supplier')
+    } else if (auth.isBuyer) {
+      router.push('/buyer')
+    } else {
+      router.push('/my/rfqs')
+    }
   } catch (e) {
     error.value = e.message || 'Login failed'
   }

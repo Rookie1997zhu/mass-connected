@@ -21,6 +21,12 @@ const routes = [
       { path: 'register', name: 'register', component: () => import('../views/RegisterView.vue') },
       { path: 'partners', name: 'partners', component: () => import('../views/factory/PartnerApplyView.vue') },
       {
+        path: 'buyer',
+        name: 'buyer-workbench',
+        component: () => import('../views/buyer/BuyerWorkbenchView.vue'),
+        meta: { requiresAuth: true, requiresBuyer: true },
+      },
+      {
         path: 'my',
         name: 'my-page',
         component: () => import('../views/mypage/MyPageView.vue'),
@@ -100,6 +106,12 @@ const routes = [
         path: 'factory/quotes',
         name: 'factory-quotes',
         component: () => import('../views/factory/MyQuotesView.vue'),
+        meta: { requiresAuth: true, requiresSupplier: true },
+      },
+      {
+        path: 'supplier',
+        name: 'supplier-workbench',
+        component: () => import('../views/supplier/SupplierWorkbenchView.vue'),
         meta: { requiresAuth: true, requiresSupplier: true },
       },
       {

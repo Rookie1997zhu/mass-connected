@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.contrib.auth import authenticate
 from rest_framework import status
 from rest_framework.parsers import FormParser, MultiPartParser
@@ -16,8 +18,11 @@ from apps.accounts.views._helpers import (
     user_login_payload,
 )
 from core.file_validation import validate_upload_file
-from core.permissions import IsBuyerRole
+from core.permissions import IsBuyerRole, IsMemberOrFactoryRole
 from core.responses import error_response, success_response
+
+ACTION_RFQ_STATUSES = ("quoted", "comparing", "customer_confirming", "negotiating")
+PROJECT_TERMINAL_STATUSES = ("completed", "cancelled")
 
 
 class MemberRegisterView(APIView):
@@ -192,4 +197,137 @@ class MemberDashboardView(APIView):
             ).count()
         except Exception:  # noqa: BLE001
             pass
+        return success_response(data, request=request)
+
+
+class BuyerWorkbenchView(APIView):
+    """买家工作台聚合：身份信息、待办计数、临近截止、最近通知。"""
+
+    permission_classes = [IsMemberOrFactoryRole]
+
+    def get(self, request):
+        user = request.user
+        today = date.today()
+
+        company_name = ""
+        factory_profile = getattr(user, "factory_profile", None)
+        if factory_profile:
+            company_name = factory_profile.company_name or ""
+
+        profile = {
+            "display_name": user.name or "",
+            "email": user.email or "",
+            "member_type": user.member_type or "",
+            "company_name": company_name,
+        }
+
+        action_rfqs = 0
+        pending_payments = 0
+        active_projects = 0
+        unread_notifications = 0
+        upcoming_deadlines = []
+        recent_notifications = []
+
+        try:
+            from apps.rfq.models import RFQ
+            from apps.i18n.fields import resolve_i18n
+
+            action_rfqs = RFQ.objects.filter(
+                buyer=user,
+                status__in=ACTION_RFQ_STATUSES,
+            ).count()
+
+            lang = (request.headers.get("Accept-Language") or "ko").split(",")[0].strip()
+            lang = lang.split("-")[0].strip()[:2] or "ko"
+
+            rfq_rows = (
+                RFQ.objects.filter(
+                    buyer=user,
+                    target_delivery_date__isnull=False,
+                    target_delivery_date__gte=today,
+                )
+                .select_related("service_category")
+                .order_by("target_delivery_date")[:20]
+            )
+            for rfq in rfq_rows:
+                cat = getattr(rfq, "service_category", None)
+                subtitle = resolve_i18n(cat.name, lang) if cat else ""
+                upcoming_deadlines.append(
+                    {
+                        "kind": "rfq",
+                        "id": rfq.id,
+                        "title": rfq.rfq_no or f"RFQ-{rfq.id}",
+                        "subtitle": subtitle,
+                        "deadline": rfq.target_delivery_date.isoformat(),
+                        "status": rfq.status,
+                    }
+                )
+        except Exception:  # noqa: BLE001
+            pass
+
+        try:
+            from apps.payment.models import Payment
+
+            pending_payments = Payment.objects.filter(
+                buyer=user, status__in=["unpaid", "pending_confirm"]
+            ).count()
+        except Exception:  # noqa: BLE001
+            pass
+
+        try:
+            from apps.project.models import Project
+
+            active_projects = (
+                Project.objects.filter(buyer=user)
+                .exclude(status__in=PROJECT_TERMINAL_STATUSES)
+                .count()
+            )
+            project_rows = (
+                Project.objects.filter(
+                    buyer=user,
+                    expected_delivery_date__isnull=False,
+                    expected_delivery_date__gte=today,
+                )
+                .order_by("expected_delivery_date")[:20]
+            )
+            for prj in project_rows:
+                upcoming_deadlines.append(
+                    {
+                        "kind": "project",
+                        "id": prj.id,
+                        "title": prj.project_no or prj.title or f"PRJ-{prj.id}",
+                        "subtitle": prj.title or "",
+                        "deadline": prj.expected_delivery_date.isoformat(),
+                        "status": prj.status,
+                    }
+                )
+        except Exception:  # noqa: BLE001
+            pass
+
+        upcoming_deadlines.sort(key=lambda x: x["deadline"])
+        upcoming_deadlines = upcoming_deadlines[:8]
+
+        try:
+            from apps.notification.models import Notification
+            from apps.notification.serializers import NotificationSerializer
+
+            unread_notifications = Notification.objects.filter(
+                user=user, is_read=False
+            ).count()
+            recent_qs = Notification.objects.filter(user=user).order_by("-created_at")[:5]
+            recent_notifications = NotificationSerializer(recent_qs, many=True).data
+        except Exception:  # noqa: BLE001
+            pass
+
+        data = {
+            "profile": profile,
+            "counts": {
+                "action_rfqs": action_rfqs,
+                "pending_payments": pending_payments,
+                "active_projects": active_projects,
+                "unread_notifications": unread_notifications,
+            },
+            "upcoming_deadlines": upcoming_deadlines,
+            "recent_notifications": recent_notifications,
+        }
         return success_response(data, request=request)

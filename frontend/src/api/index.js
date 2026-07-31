@@ -85,6 +85,8 @@ export const rejectProductionOrder = (id) => http.post(`/supplier/production-ord
 
 // MY PAGE 概览
 export const fetchMemberDashboard = () => http.get('/member/dashboard')
+export const fetchBuyerWorkbench = () => http.get('/member/workbench')
+export const fetchSupplierDashboard = () => http.get('/supplier/dashboard')
 export const updateProfile = (data) => http.patch('/member/profile', data)
 export const updateProfileMultipart = (formData) =>
   http.patch('/member/profile', formData, { headers: { 'Content-Type': 'multipart/form-data' } })

@@ -1,7 +1,7 @@
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink, RouterView, useRoute } from 'vue-router'
 import NavDropdown from '../components/NavDropdown.vue'
 import ChatPanel from '../components/ChatPanel.vue'
 import {
@@ -14,12 +14,64 @@ import { useAuthStore } from '../stores/auth'
 
 const { t, locale } = useI18n()
 const auth = useAuthStore()
+const route = useRoute()
 const menuOpen = ref(false)
+const supplierMenuOpen = ref(false)
+const supplierMenuRef = ref(null)
+const buyerMenuOpen = ref(false)
+const buyerMenuRef = ref(null)
 const apiNavGroups = ref(null)
 const unreadCount = ref(0)
 const chatUnread = ref(0)
 const chatOpen = ref(false)
 const chatQuoteRequestId = ref(null)
+
+const supplierMenuItems = computed(() => [
+  { path: '/supplier/quote-requests', label: t('quoteRequest.title') },
+  { path: '/supplier/projects', label: t('nav.supplierProjects') },
+  { path: '/supplier/orders', label: t('nav.supplierOrders') },
+])
+
+const buyerMenuItems = computed(() => [
+  { path: '/simple-quote', label: t('simpleQuote.title') },
+  { path: '/rfq/new', label: t('nav.detailedQuote') },
+  { path: '/my/rfqs', label: t('nav.myRfqs') },
+  { path: '/my/production-orders', label: t('nav.productionOrders') },
+  { path: '/packaging', label: t('packaging.title') },
+])
+
+const toggleSupplierMenu = () => {
+  buyerMenuOpen.value = false
+  supplierMenuOpen.value = !supplierMenuOpen.value
+}
+
+const closeSupplierMenu = () => {
+  supplierMenuOpen.value = false
+}
+
+const toggleBuyerMenu = () => {
+  supplierMenuOpen.value = false
+  buyerMenuOpen.value = !buyerMenuOpen.value
+}
+
+const closeBuyerMenu = () => {
+  buyerMenuOpen.value = false
+}
+
+const onDocumentClick = (event) => {
+  if (supplierMenuOpen.value) {
+    const el = supplierMenuRef.value
+    if (el && !el.contains(event.target)) {
+      supplierMenuOpen.value = false
+    }
+  }
+  if (buyerMenuOpen.value) {
+    const el = buyerMenuRef.value
+    if (el && !el.contains(event.target)) {
+      buyerMenuOpen.value = false
+    }
+  }
+}
 
 const openChat = (quoteRequestId = null) => {
   chatQuoteRequestId.value = quoteRequestId
@@ -132,10 +184,23 @@ const loadChatUnread = async () => {
   }
 }
 
+watch(
+  () => route.fullPath,
+  () => {
+    closeSupplierMenu()
+    closeBuyerMenu()
+  },
+)
+
 onMounted(() => {
   loadNavigation()
   loadUnreadCount()
   loadChatUnread()
+  document.addEventListener('click', onDocumentClick)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('click', onDocumentClick)
 })
 
 // provide openChat for child pages via window event
@@ -175,25 +240,61 @@ if (typeof window !== 'undefined') {
           </select>
 
           <template v-if="auth.isLoggedIn && auth.isBuyer">
-            <RouterLink to="/simple-quote" class="btn btn-sm btn-secondary nav-auth">
-              {{ t('simpleQuote.title') }}
-            </RouterLink>
-            <RouterLink to="/rfq/new" class="btn btn-sm btn-secondary nav-auth">
-              {{ t('nav.detailedQuote') }}
-            </RouterLink>
-            <RouterLink to="/packaging" class="btn btn-sm btn-secondary nav-auth">
-              {{ t('packaging.title') }}
-            </RouterLink>
+            <div ref="buyerMenuRef" class="nav-role-menu nav-auth">
+              <RouterLink to="/buyer" class="btn btn-sm btn-primary nav-role-main" @click="closeBuyerMenu">
+                {{ t('nav.buyerWorkbench') }}
+              </RouterLink>
+              <button
+                type="button"
+                class="btn btn-sm btn-primary nav-role-caret"
+                :aria-expanded="buyerMenuOpen"
+                aria-haspopup="true"
+                :aria-label="t('nav.buyerMenuOpen')"
+                @click.stop="toggleBuyerMenu"
+              >
+                ▾
+              </button>
+              <div v-show="buyerMenuOpen" class="nav-role-dropdown" role="menu">
+                <RouterLink
+                  v-for="item in buyerMenuItems"
+                  :key="item.path"
+                  :to="item.path"
+                  class="nav-role-item"
+                  role="menuitem"
+                  @click="closeBuyerMenu"
+                >
+                  {{ item.label }}
+                </RouterLink>
+              </div>
+            </div>
             <template v-if="auth.isSupplier">
-              <RouterLink to="/supplier/quote-requests" class="btn btn-sm btn-secondary nav-auth">
-                {{ t('quoteRequest.title') }}
-              </RouterLink>
-              <RouterLink to="/supplier/projects" class="btn btn-sm btn-secondary nav-auth">
-                {{ t('nav.supplierProjects') }}
-              </RouterLink>
-              <RouterLink to="/supplier/orders" class="btn btn-sm btn-secondary nav-auth">
-                {{ t('nav.supplierOrders') }}
-              </RouterLink>
+              <div ref="supplierMenuRef" class="nav-role-menu nav-auth">
+                <RouterLink to="/supplier" class="btn btn-sm btn-primary nav-role-main" @click="closeSupplierMenu">
+                  {{ t('nav.supplierWorkbench') }}
+                </RouterLink>
+                <button
+                  type="button"
+                  class="btn btn-sm btn-primary nav-role-caret"
+                  :aria-expanded="supplierMenuOpen"
+                  aria-haspopup="true"
+                  :aria-label="t('nav.supplierMenuOpen')"
+                  @click.stop="toggleSupplierMenu"
+                >
+                  ▾
+                </button>
+                <div v-show="supplierMenuOpen" class="nav-role-dropdown" role="menu">
+                  <RouterLink
+                    v-for="item in supplierMenuItems"
+                    :key="item.path"
+                    :to="item.path"
+                    class="nav-role-item"
+                    role="menuitem"
+                    @click="closeSupplierMenu"
+                  >
+                    {{ item.label }}
+                  </RouterLink>
+                </div>
+              </div>
               <button type="button" class="btn btn-sm btn-secondary nav-auth nav-mypage" @click="openChat()">
                 {{ t('chat.nav') }}
                 <span v-if="chatUnread > 0" class="nav-badge">{{ chatUnread > 99 ? '99+' : chatUnread }}</span>
@@ -216,7 +317,7 @@ if (typeof window !== 'undefined') {
               {{ t('chat.nav') }}
               <span v-if="chatUnread > 0" class="nav-badge">{{ chatUnread > 99 ? '99+' : chatUnread }}</span>
             </button>
-            <RouterLink to="/my" class="btn btn-sm btn-primary nav-auth nav-mypage">
+            <RouterLink to="/my" class="btn btn-sm btn-secondary nav-auth nav-mypage">
               {{ t('mypage.title') }}
               <span v-if="unreadCount > 0" class="nav-badge">{{ unreadCount > 99 ? '99+' : unreadCount }}</span>
             </RouterLink>
@@ -269,16 +370,22 @@ if (typeof window !== 'undefined') {
           </template>
           <div class="nav-mobile-auth">
             <template v-if="auth.isLoggedIn && auth.isBuyer">
-              <RouterLink to="/my" @click="closeMenu">{{ t('mypage.title') }}</RouterLink>
+              <p class="nav-mobile-group">{{ t('nav.buyerWorkbench') }}</p>
+              <RouterLink to="/buyer" @click="closeMenu">{{ t('buyerWorkbench.title') }}</RouterLink>
               <RouterLink to="/simple-quote" @click="closeMenu">{{ t('simpleQuote.title') }}</RouterLink>
               <RouterLink to="/rfq/new" @click="closeMenu">{{ t('nav.detailedQuote') }}</RouterLink>
+              <RouterLink to="/my/rfqs" @click="closeMenu">{{ t('nav.myRfqs') }}</RouterLink>
+              <RouterLink to="/my/production-orders" @click="closeMenu">{{ t('nav.productionOrders') }}</RouterLink>
               <RouterLink to="/packaging" @click="closeMenu">{{ t('packaging.title') }}</RouterLink>
               <RouterLink to="/demand-hall" @click="closeMenu">{{ t('nav.demandHall') }}</RouterLink>
               <template v-if="auth.isSupplier">
+                <p class="nav-mobile-group">{{ t('nav.supplierWorkbench') }}</p>
+                <RouterLink to="/supplier" @click="closeMenu">{{ t('supplierWorkbench.title') }}</RouterLink>
                 <RouterLink to="/supplier/quote-requests" @click="closeMenu">{{ t('quoteRequest.title') }}</RouterLink>
                 <RouterLink to="/supplier/projects" @click="closeMenu">{{ t('nav.supplierProjects') }}</RouterLink>
                 <RouterLink to="/supplier/orders" @click="closeMenu">{{ t('nav.supplierOrders') }}</RouterLink>
               </template>
+              <RouterLink to="/my" @click="closeMenu">{{ t('mypage.title') }}</RouterLink>
               <RouterLink to="/my/orders" @click="closeMenu">{{ t('nav.myOrders') }}</RouterLink>
               <RouterLink to="/shop/cart" @click="closeMenu">{{ t('nav.cart') }}</RouterLink>
             </template>
@@ -547,6 +654,49 @@ if (typeof window !== 'undefined') {
     color: rgba(255, 255, 255, 0.45);
     margin: 0;
   }
+}
+
+.nav-role-menu {
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+}
+.nav-role-main {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  padding-inline-end: 0.65rem;
+}
+.nav-role-caret {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-left: 1px solid rgba(255, 255, 255, 0.28);
+  padding-inline: 0.45rem;
+  min-width: 1.75rem;
+}
+.nav-role-dropdown {
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  left: 0;
+  min-width: 11rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  padding: 0.375rem;
+  z-index: 220;
+}
+.nav-role-item {
+  display: block;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  color: var(--color-text);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+}
+.nav-role-item:hover,
+.nav-role-item.router-link-active {
+  background: var(--color-steel-muted);
+  color: var(--color-steel);
 }
 
 .nav-mypage { position: relative; }

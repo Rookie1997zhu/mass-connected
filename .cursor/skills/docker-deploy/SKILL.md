@@ -43,22 +43,26 @@ description: 通用 Docker / Docker Compose 部署与运维。用户说修改完
 
 ## 前端更新部署（可执行）
 
-当用户表示**前端代码已改完、需要更新部署**时，按顺序执行：
+当用户表示**前端代码已改完、需要更新部署**时，先判断静态服务如何拿到构建产物：
 
-1. 进入项目**前端目录**（常见为 `frontend`，以当前项目为准；无则询问或查 compose/README）。
-2. 执行构建：`yarn build` 或 `npm run build`（以项目为准）。
-3. 回到项目根目录，执行：`<compose_cmd> restart <static_service>`。
-4. 可选提示：若页面未更新，请浏览器 Ctrl+F5 强刷。
+- **A 类：dist 通过 volume 挂载进容器** → 本地构建后 `restart` 即可生效。
+- **B 类：dist 在 Dockerfile 里 `COPY --from=build` 打进镜像**（compose 中该服务只有 `build:`、没有挂载 dist 的 volume）→ **必须重建镜像**，`restart` 不会更新任何文件。
 
-**通用模板命令：**
+判断方法：看 `docker-compose.yml` 中静态服务是否有指向前端产物目录的 `volumes`。
+
+**A 类命令：**
 ```bash
 cd <frontend_dir> && <build_cmd> && cd .. && <compose_cmd> restart <static_service>
 ```
 
-**占位示例**（将 `frontend`、`nginx`、`docker compose` 换成当前项目探测结果）：
+**B 类命令（本项目 `frontend`、`admin` 均属此类）：**
 ```bash
-cd frontend && yarn build && cd .. && docker compose restart nginx
+<compose_cmd> up -d --build <static_service>
 ```
+
+完成后可校验容器内实际产物：`<compose_cmd> exec <static_service> cat /usr/share/nginx/html/index.html`，确认引用的 JS 文件名与本次构建输出一致。
+
+最后提示用户浏览器 Ctrl+F5 强刷。
 
 ---
 

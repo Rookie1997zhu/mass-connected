@@ -24,6 +24,7 @@ from apps.accounts.views.auth import (
     LogoutView,
 )
 from apps.accounts.views.member import (
+    BuyerWorkbenchView,
     FactoryRegisterView,
     MemberDashboardView,
     MemberLoginView,
@@ -33,6 +34,7 @@ from apps.accounts.views.member import (
 from apps.accounts.views.public import PublicPartnerListView
 from apps.accounts.views.supplier import (
     FactoryProfileView,
+    SupplierDashboardView,
     SupplierLicenseDownloadView,
     SupplierProfileAttachmentDownloadView,
     SupplierProfileAttachmentView,
@@ -51,7 +53,9 @@ __all__ = [
     "MemberLoginView",
     "MemberProfileView",
     "MemberDashboardView",
+    "BuyerWorkbenchView",
     "FactoryProfileView",
+    "SupplierDashboardView",
     "SupplierLicenseDownloadView",
     "SupplierProfileAttachmentView",
     "SupplierProfileAttachmentDownloadView",

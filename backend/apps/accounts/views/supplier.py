@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.http import FileResponse
 from django.shortcuts import get_object_or_404
 from rest_framework import status
@@ -14,6 +16,9 @@ from apps.accounts.serializers import (
 from core.file_validation import validate_upload_file
 from core.permissions import IsSupplierRole
 from core.responses import error_response, success_response
+
+PROJECT_TERMINAL_STATUSES = ("completed", "cancelled")
+PENDING_QUOTE_REQUEST_STATUSES = ("assigned", "viewed", "needs_revision")
 
 
 class FactoryProfileView(APIView):
@@ -136,3 +141,141 @@ class SupplierProfileAttachmentDownloadView(APIView):
         if not att.file:
             return error_response("SUPPLIER_ATTACHMENT_MISSING", "文件不存在", request=request)
         return FileResponse(att.file.open("rb"), as_attachment=False, filename=att.file_name)
+
+
+class SupplierDashboardView(APIView):
+    """供应商工作台聚合：企业信息、待办计数、临近截止、最近通知。"""
+
+    permission_classes = [IsSupplierRole]
+
+    def get(self, request):
+        user = request.user
+        today = date.today()
+
+        company = {
+            "company_name": "",
+            "short_name": "",
+            "city": "",
+            "country": "",
+            "score": None,
+            "status": "",
+        }
+        try:
+            profile = FactoryProfile.objects.get(user=user)
+            company = {
+                "company_name": profile.company_name or "",
+                "short_name": profile.short_name or "",
+                "city": profile.city or "",
+                "country": profile.country or "",
+                "score": profile.score,
+                "status": profile.status or "",
+            }
+        except FactoryProfile.DoesNotExist:
+            pass
+
+        pending_quote_requests = 0
+        pending_production_orders = 0
+        active_projects = 0
+        unread_notifications = 0
+        upcoming_deadlines = []
+        recent_notifications = []
+
+        try:
+            from apps.rfq.models import ProductionOrder, QuoteRequest
+
+            pending_quote_requests = QuoteRequest.objects.filter(
+                supplier=user,
+                status__in=PENDING_QUOTE_REQUEST_STATUSES,
+            ).count()
+            pending_production_orders = ProductionOrder.objects.filter(
+                supplier=user,
+                status="pending_confirm",
+            ).count()
+
+            qr_rows = (
+                QuoteRequest.objects.filter(
+                    supplier=user,
+                    deadline__isnull=False,
+                    deadline__gte=today,
+                )
+                .select_related("rfq__service_category")
+                .order_by("deadline")[:20]
+            )
+            from apps.i18n.fields import resolve_i18n
+
+            lang = (request.headers.get("Accept-Language") or "ko").split(",")[0].strip()
+            lang = lang.split("-")[0].strip()[:2] or "ko"
+
+            for qr in qr_rows:
+                cat = getattr(qr.rfq, "service_category", None) if qr.rfq_id else None
+                subtitle = resolve_i18n(cat.name, lang) if cat else ""
+                upcoming_deadlines.append(
+                    {
+                        "kind": "quote_request",
+                        "id": qr.id,
+                        "title": qr.request_no or f"QR-{qr.id}",
+                        "subtitle": subtitle,
+                        "deadline": qr.deadline.isoformat(),
+                        "status": qr.status,
+                    }
+                )
+        except Exception:  # noqa: BLE001
+            pass
+
+        try:
+            from apps.project.models import Project
+
+            active_projects = (
+                Project.objects.filter(supplier=user)
+                .exclude(status__in=PROJECT_TERMINAL_STATUSES)
+                .count()
+            )
+            project_rows = (
+                Project.objects.filter(
+                    supplier=user,
+                    expected_delivery_date__isnull=False,
+                    expected_delivery_date__gte=today,
+                )
+                .order_by("expected_delivery_date")[:20]
+            )
+            for prj in project_rows:
+                upcoming_deadlines.append(
+                    {
+                        "kind": "project",
+                        "id": prj.id,
+                        "title": prj.project_no or prj.title or f"PRJ-{prj.id}",
+                        "subtitle": prj.title or "",
+                        "deadline": prj.expected_delivery_date.isoformat(),
+                        "status": prj.status,
+                    }
+                )
+        except Exception:  # noqa: BLE001
+            pass
+
+        upcoming_deadlines.sort(key=lambda x: x["deadline"])
+        upcoming_deadlines = upcoming_deadlines[:8]
+
+        try:
+            from apps.notification.models import Notification
+            from apps.notification.serializers import NotificationSerializer
+
+            unread_notifications = Notification.objects.filter(
+                user=user, is_read=False
+            ).count()
+            recent_qs = Notification.objects.filter(user=user).order_by("-created_at")[:5]
+            recent_notifications = NotificationSerializer(recent_qs, many=True).data
+        except Exception:  # noqa: BLE001
+            pass
+
+        data = {
+            "company": company,
+            "counts": {
+                "pending_quote_requests": pending_quote_requests,
+                "pending_production_orders": pending_production_orders,
+                "active_projects": active_projects,
+                "unread_notifications": unread_notifications,
+            },
+            "upcoming_deadlines": upcoming_deadlines,
+            "recent_notifications": recent_notifications,
+        }
+        return success_response(data, request=request)
