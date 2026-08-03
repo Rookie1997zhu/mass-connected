@@ -196,6 +196,13 @@ PRINT3D_SLICE_JOB_TTL_HOURS = int(os.environ.get("PRINT3D_SLICE_JOB_TTL_HOURS", 
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
 
+# 工作台参考汇率（exchangerate.host）；密钥仅环境变量，不进仓库
+EXCHANGERATE_HOST_ACCESS_KEY = os.environ.get("EXCHANGERATE_HOST_ACCESS_KEY", "")
+EXCHANGERATE_HOST_BASE_URL = os.environ.get(
+    "EXCHANGERATE_HOST_BASE_URL", "https://api.exchangerate.host"
+).rstrip("/")
+EXCHANGERATE_CACHE_TTL_SECONDS = int(os.environ.get("EXCHANGERATE_CACHE_TTL_SECONDS", "86400"))
+
 THROTTLE_ANON = os.environ.get("THROTTLE_ANON", "120/min")
 THROTTLE_USER = os.environ.get("THROTTLE_USER", "600/min")
 THROTTLE_LOGIN = os.environ.get("THROTTLE_LOGIN", "10/min")

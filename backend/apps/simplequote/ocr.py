@@ -125,7 +125,14 @@ def parse_drawing(path, kind, timeout=OCR_TIMEOUT_SEC):
     """OCR 解析工程图。独立进程 + 超时。
 
     parse_status: ok / error / timeout / unavailable。调用方据此映射错误码。
+
+    Celery prefork 子进程是 daemon，无法再 spawn；此时同步执行，超时由任务 time limit 兜底。
     """
+    if bool(getattr(mp.current_process(), "daemon", False)):
+        result = _parse_drawing_sync(path, kind)
+        result["parsed_at"] = _now_iso()
+        return result
+
     ctx = mp.get_context("fork")
     queue = ctx.Queue()
     proc = ctx.Process(target=_worker, args=(path, kind, queue), daemon=True)

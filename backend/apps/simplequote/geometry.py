@@ -568,7 +568,17 @@ def parse_step(path, timeout=PARSE_TIMEOUT_SEC):
 
     必须先 queue.get 再 proc.join：大结果（含 preview_mesh）超过管道缓冲区时，
     若先 join 会导致子进程无法退出并误报 timeout。
+
+    Celery prefork 子进程本身是 daemon，无法再 spawn 子进程；此时改为同步解析，
+    超时由任务 soft_time_limit / time_limit 兜底。
     """
+    # Celery prefork 子进程是 daemon，无法再 spawn
+    if bool(getattr(mp.current_process(), "daemon", False)):
+        result = _parse_step_sync(path)
+        result.setdefault("engine", "ocp")
+        result["parsed_at"] = _now_iso()
+        return result
+
     ctx = mp.get_context("fork")
     queue = ctx.Queue()
     proc = ctx.Process(target=_worker, args=(path, queue), daemon=True)

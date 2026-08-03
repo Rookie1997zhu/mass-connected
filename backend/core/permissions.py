@@ -22,7 +22,19 @@ class IsBuyerRole(BasePermission):
     message = "需要会员登录"
 
     def has_permission(self, request, view):
-        return _is_active_member(request.user)
+        user = request.user
+        allowed = _is_active_member(user)
+        # 已登录但非买家：避免误报「需要会员登录」
+        if (
+            not allowed
+            and user
+            and getattr(user, "is_authenticated", False)
+            and getattr(user, "role", None) == "factory"
+        ):
+            self.message = "该功能仅限买家会员使用，当前为企业账号"
+        elif not allowed:
+            self.message = "需要会员登录"
+        return allowed
 
 
 class IsMemberRole(IsBuyerRole):

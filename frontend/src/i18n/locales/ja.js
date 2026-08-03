@@ -52,6 +52,11 @@ export default {
       copyright: '© {year} MASS CONNECTED. All rights reserved.',
     },
     common: { loading: '読み込み中...', empty: 'データなし', submit: '送信', cancel: 'キャンセル', status: 'ステータス', view: '表示', close: '閉じる', save: '保存' },
+    fx: {
+      cardLabel: '参考レート',
+      cnyKrw: '1 CNY ≈ {rate} KRW',
+      referenceHint: '約1日1回更新 · リアルタイム相場ではない · 決済根拠ではない',
+    },
     chat: {
       title: 'チャット',
       nav: 'チャット',
@@ -179,8 +184,7 @@ export default {
       notConfigured: '翻訳サービスが設定されていません',
     },
     simpleQuote: {
-      title: '簡易見積', desc: '標準工程の概算見積を即時取得しPDFを生成します（ポイント消費）。', type: '見積タイプ', injection: '射出成形', print3d: '3Dプリント', pcba: 'PCBA加工', pcbDev: 'PCB開発', pcb: 'PCB', software: 'ソフトウェア', ic: 'IC設計', productName: '製品名', generate: '見積作成', result: '見積結果', total: '合計', unitPrice: '単価', moldFee: '金型費', convert: '詳細見積へ変換', converted: '詳細見積へ変換しました', myQuotes: '簡易見積履歴', material: '材料', weight: '重量(g)', cavity: 'キャビティ数', quantity: '数量', pcbQty: 'PCB数量', arrayCount: 'ARRAY数', components: '部品一覧', package: 'パッケージ', tech: '工程', addComponent: '部品追加', moldType: '金型グレード', packaging: '梱包を含む', printHours: '造形時間(h)', uploadModel: '3Dファイルをアップロード', print3dFileTypes: '対応: STL, STP/STEP', printer: 'プリンタ', quality: '品質', infill: '充填率(%)', support: 'サポート', rush: '特急', sliceStatus: 'スライス状態', sliceFailed: 'スライス失敗', sliceTrustedHint: '重量と時間はサーバーのスライス結果で、手動変更できません。', print3dResultHint: 'スライス完了後に見積プレビューが表示されます。', print3dOptionsFailed: '3Dオプションの読み込みに失敗しました', previewFailed: '試算失敗', previewing: '計算中...', generating: '生成中...', print3dStage: { pending: '待機', converting: 'STEP変換', slicing: 'スライス中', done: '完了', failed: '失敗' }, postProcess: '後処理', failed: '見積作成に失敗しました', color: '色', colorNormal: '一般', colorTransparent: '透明', colorSemi: '半透明', colorPantone: 'PANTONE指定', moldMaterial: '金型材質', sliderCount: 'スライド数', precision: '精度 ≤0.2mm', fileName: 'ファイル名(.stp)', family: 'FAMILY(多品目1金型)', addPart: '部品追加', removePart: '削除', part: '部品', productTotal: '製品単価合計', moq: 'MOQ', moqHint: 'PANTONE未指定時 MOQ {kg}KG', familyMaterialHint: 'FAMILY見積は全部品の材料が同一である必要があります。', krwConverted: 'KRW換算', uploadStp: 'STPアップロード自動認識', uploadStpHint: '.stp / .step ファイルをアップロードすると体積・寸法を自動算出し、材料選択後に重量を自動入力します（編集可）。', parsing: '解析中...', volume: '体積', dimensions: '寸法(mm)', estimateNote: '自動推定値、参考用で編集可能です。', parseFailed: 'ファイル解析に失敗しました。手動で入力してください。', parseTimeout: '解析がタイムアウトしました。手動で入力してください。', drawDirection: '抜き方向', sliderSuggest: 'スライド推奨', needReview: '推奨値・要確認', materialSuggest: '材料推奨', uploadDrawing: '図面アップロード(OCR)', ocrParsing: 'OCR解析中...', precisionSuggest: '精度推奨', confidence: '信頼度', confidenceHigh: '高', confidenceLow: '低', confidenceMedium: '中', undercutDownsampled: '複雑モデルはダウンサンプリング推定', ocrFailed: '図面解析に失敗しました。手動で入力してください。', ocrUnavailable: 'OCR利用不可、手動で入力してください。',       ocrColors: '色推奨', paper_box: '段ボール箱',
-    },
+      title: '簡易見積', desc: '標準工程の概算見積を即時取得しPDFを生成します（ポイント消費）。', type: '見積タイプ', injection: '射出成形', print3d: '3Dプリント', pcba: 'PCBA加工', pcbDev: 'PCB開発', pcb: 'PCB', software: 'ソフトウェア', ic: 'IC設計', productName: '製品名', generate: '見積作成', result: '見積結果', total: '合計', unitPrice: '単価', moldFee: '金型費', convert: '詳細見積へ変換', converted: '詳細見積へ変換しました', myQuotes: '簡易見積履歴', material: '材料', weight: '重量(g)', cavity: 'キャビティ数', quantity: '数量', pcbQty: 'PCB数量', arrayCount: 'ARRAY数', components: '部品一覧', package: 'パッケージ', tech: '工程', addComponent: '部品追加', moldType: '金型グレード', packaging: '梱包を含む', printHours: '造形時間(h)', uploadModel: '3Dファイルをアップロード', print3dFileTypes: '対応: STL, STP/STEP', printer: 'プリンタ', quality: '品質', infill: '充填率(%)', support: 'サポート', rush: '特急', sliceStatus: 'スライス状態', sliceFailed: 'スライス失敗', sliceTrustedHint: '重量と時間はサーバーのスライス結果で、手動変更できません。', print3dResultHint: 'スライス完了後に見積プレビューが表示されます。', print3dOptionsFailed: '3Dオプションの読み込みに失敗しました', previewFailed: '試算失敗', previewing: '計算中...', generating: '生成中...', print3dStage: { pending: '待機', converting: 'STEP変換', slicing: 'スライス中', done: '完了', failed: '失敗' }, postProcess: '後処理', failed: '見積作成に失敗しました', color: '色', colorNormal: '一般', colorTransparent: '透明', colorSemi: '半透明', colorPantone: 'PANTONE指定', moldMaterial: '金型材質', sliderCount: 'スライド数', precision: '精度 ≤0.2mm', fileName: 'ファイル名(.stp)', family: 'FAMILY(多品目1金型)', addPart: '部品追加', removePart: '削除', part: '部品', productTotal: '製品単価合計', moq: 'MOQ', moqHint: 'PANTONE未指定時 MOQ {kg}KG', familyMaterialHint: 'FAMILY見積は全部品の材料が同一である必要があります。', krwConverted: 'KRW換算', uploadStp: 'STPアップロード自動認識', uploadStpHint: '.stp / .step ファイルをアップロードすると体積・寸法を自動算出し、材料選択後に重量を自動入力します（編集可）。', parsing: '解析中...', volume: '体積', dimensions: '寸法(mm)', estimateNote: '自動推定値、参考用で編集可能です。', parseFailed: 'ファイル解析に失敗しました。手動で入力してください。', parseTimeout: '解析がタイムアウトしました。手動で入力してください。', drawDirection: '抜き方向', sliderSuggest: 'スライド推奨', needReview: '推奨値・要確認', materialSuggest: '材料推奨', uploadDrawing: '図面アップロード(OCR)', ocrParsing: 'OCR解析中...', precisionSuggest: '精度推奨', confidence: '信頼度', confidenceHigh: '高', confidenceLow: '低', confidenceMedium: '中', undercutDownsampled: '複雑モデルはダウンサンプリング推定', ocrFailed: '図面解析に失敗しました。手動で入力してください。', ocrUnavailable: 'OCR利用不可、手動で入力してください。',       ocrColors: '色推奨', paper_box: '段ボール箱', fxHint: '金額は人民元と韓国ウォンを併記します（参考レート、決済根拠ではありません）',    },
     injectionQuote: {
       sheetTitle: '射出金型見積', subtitleEn: 'Injection Mold Quotation', autoQuotation: 'AUTO QUOTATION',
       quoteNo: '見積番号', customer: '顧客社', contact: '担当', materialWeight: '材料重量',
@@ -217,6 +221,10 @@ export default {
       pendingOrders: '受注確認待ち',
       activeProjects: '進行中プロジェクト',
       unreadNotifications: '未読通知',
+      actionItems: '対応待ち',
+      noActionItems: '対応待ちはありません',
+      unreadChats: '未読チャット',
+      noUnreadChats: '未読チャットはありません',
       upcomingDeadlines: '直近の締切',
       noDeadlines: '直近の締切はありません',
       recentNotifications: '最近の通知',
@@ -227,6 +235,11 @@ export default {
       notificationFallback: '通知',
       loadFailed: '作業台の読み込みに失敗しました',
       status: { approved: '承認済み', pending: '審査中', rejected: '却下' },
+      actionKind: {
+        quote_request: '見積待ち',
+        production_order: '受注確認待ち',
+        project_issue: 'プロジェクト課題',
+      },
     },
     buyerWorkbench: {
       title: 'バイヤー作業台',
@@ -239,6 +252,10 @@ export default {
       pendingPayments: '支払い待ち',
       activeProjects: '進行中プロジェクト',
       unreadNotifications: '未読通知',
+      actionItems: '対応待ち',
+      noActionItems: '対応待ちはありません',
+      unreadChats: '未読チャット',
+      noUnreadChats: '未読チャットはありません',
       upcomingDeadlines: '直近の締切',
       noDeadlines: '直近の締切はありません',
       recentNotifications: '最近の通知',
@@ -249,6 +266,13 @@ export default {
       notificationFallback: '通知',
       loadFailed: '作業台の読み込みに失敗しました',
       memberType: { individual: '個人会員', enterprise: '企業会員' },
+      actionKind: {
+        rfq_action: '対応待ち見積',
+        payment_unpaid: '支払い待ち',
+        payment_pending_confirm: '支払確認中',
+        nda_pending: 'NDA署名待ち',
+        contract_pending_sign: '契約署名待ち',
+      },
     },
     quoteRequest: {
       title: '見積依頼', desc: '管理者から割り当てられた見積依頼のみ表示されます。', requestNo: '依頼番号', deadline: '締切', submitQuote: '見積提出', updateQuote: '見積修正', submitted: '見積を提出しました', updated: '見積を更新しました', quoted: '見積済み', assigned: '見積待ち', empty: '割り当てられた見積依頼はありません', adminNote: '依頼メモ', revision: '改訂', locked: 'プラン確定後は見積を変更できません', attachments: '見積資料添付', attachmentsHint: 'PDF/図面/Excel等、1ファイル最大20MB、最大10件', uploadAttachment: '添付アップロード', attachmentUploaded: '添付をアップロードしました', attachmentUploadFailed: '添付アップロード失敗', attachmentRemoved: '添付を削除しました', removeAttachment: '削除',

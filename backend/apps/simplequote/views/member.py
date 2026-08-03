@@ -30,6 +30,7 @@ from core.responses import error_response, success_response
 
 from apps.simplequote.views._helpers import (
     TYPE_LABELS,
+    attach_live_fx,
     merged_pcb_params,
     param_overrides,
     render_pdf,
@@ -155,6 +156,8 @@ class MemberSimpleQuoteListCreateView(APIView):
         else:
             currency = "KRW"
             valid_days = 30
+
+        result = attach_live_fx(result, currency)
 
         cost = get_rule_amount("SIMPLE_QUOTE")
         with transaction.atomic():
@@ -284,6 +287,9 @@ class SimpleQuotePreviewView(APIView):
             return error_response("SIMPLE_QUOTE_INPUT_INVALID", str(exc), request=request)
         except ValueError:
             return error_response("SIMPLE_QUOTE_TYPE_INVALID", "暂不支持该报价类型", request=request)
+        currency = "CNY" if quote_type == "injection" else "KRW"
+        result = attach_live_fx(result, currency)
+        result["currency"] = currency
         return success_response(result, message="试算完成", request=request)
 
 

@@ -52,6 +52,11 @@ export default {
       copyright: '© {year} MASS CONNECTED. All rights reserved.',
     },
     common: { loading: '加载中...', empty: '暂无数据', submit: '提交', cancel: '取消', status: '状态', view: '查看', close: '关闭', save: '保存' },
+    fx: {
+      cardLabel: '参考汇率',
+      cnyKrw: '1 CNY ≈ {rate} KRW',
+      referenceHint: '约每日更新 · 非实时市价 · 非结算依据',
+    },
     chat: {
       title: '聊天',
       nav: '聊天',
@@ -179,8 +184,7 @@ export default {
       notConfigured: '翻译服务未配置',
     },
     simpleQuote: {
-      title: '简单报价', desc: '针对标准制造工艺即时获得预估报价并生成 PDF（将消耗积分）。', type: '报价类型', injection: '注塑模具', print3d: '3D 打印', pcba: 'PCBA 加工', pcbDev: 'PCB 开发', pcb: 'PCB', software: '软件开发', ic: 'IC 设计', productName: '产品名称', generate: '生成报价', result: '报价结果', total: '合计', unitPrice: '单价', moldFee: '模具费', convert: '转为详细报价', converted: '已转为详细报价', myQuotes: '我的简单报价', material: '材料', weight: '重量(g)', cavity: '型腔数', quantity: '数量', pcbQty: 'PCB 订单数量', arrayCount: 'ARRAY 数量', components: '元件列表', package: '封装', tech: '工艺', addComponent: '添加元件', moldType: '模具等级', packaging: '含包装', printHours: '打印时长(h)', uploadModel: '上传 3D 文件', print3dFileTypes: '支持：STL、STP/STEP', printer: '打印机', quality: '打印质量', infill: '填充率(%)', support: '支撑', rush: '加急', sliceStatus: '切片状态', sliceFailed: '切片失败', sliceTrustedHint: '重量与时长来自服务端切片结果，不可手改。', print3dResultHint: '切片完成后将显示报价预览。', print3dOptionsFailed: '无法加载 3D 打印选项', previewFailed: '试算失败', previewing: '报价计算中...', generating: '生成中...', print3dStage: { pending: '排队中', converting: 'STEP 转换', slicing: '切片中', done: '完成', failed: '失败' }, postProcess: '后处理', failed: '报价生成失败', color: '颜色', colorNormal: '普通', colorTransparent: '透明', colorSemi: '半透明', colorPantone: '指定 PANTONE', moldMaterial: '模具材质', sliderCount: '滑块数', precision: '精密度 ≤0.2mm', fileName: '文件名(.stp)', family: 'FAMILY(多件一模)', addPart: '添加零件', removePart: '删除', part: '零件', productTotal: '制品单价合计', moq: 'MOQ', moqHint: '未指定 PANTONE 时 MOQ {kg}KG', familyMaterialHint: 'FAMILY 报价要求所有零件材料一致。', krwConverted: 'KRW 换算', uploadStp: '上传 STP 自动识别', uploadStpHint: '上传 .stp / .step 文件后自动计算体积与尺寸，选择材料后按密度自动填入重量（可手动修改）。', parsing: '解析中...', volume: '体积', dimensions: '尺寸(mm)', estimateNote: '自动估算，仅供参考，可手动修改。', parseFailed: '文件解析失败，请改为手动填写。', parseTimeout: '解析超时，请改为手动填写。', drawDirection: '拔模方向', sliderSuggest: '滑块建议', needReview: '建议值·需人工确认', materialSuggest: '材料建议', uploadDrawing: '上传图纸(OCR)', ocrParsing: 'OCR 解析中...', precisionSuggest: '精密度建议', confidence: '置信度', confidenceHigh: '高', confidenceLow: '低', confidenceMedium: '中', undercutDownsampled: '复杂模型已降采样估算', ocrFailed: '图纸解析失败，请改为手动填写。', ocrUnavailable: 'OCR 不可用，请改为手动填写。',       ocrColors: '颜色建议', paper_box: '纸盒包装',
-    },
+      title: '简单报价', desc: '针对标准制造工艺即时获得预估报价并生成 PDF（将消耗积分）。', type: '报价类型', injection: '注塑模具', print3d: '3D 打印', pcba: 'PCBA 加工', pcbDev: 'PCB 开发', pcb: 'PCB', software: '软件开发', ic: 'IC 设计', productName: '产品名称', generate: '生成报价', result: '报价结果', total: '合计', unitPrice: '单价', moldFee: '模具费', convert: '转为详细报价', converted: '已转为详细报价', myQuotes: '我的简单报价', material: '材料', weight: '重量(g)', cavity: '型腔数', quantity: '数量', pcbQty: 'PCB 订单数量', arrayCount: 'ARRAY 数量', components: '元件列表', package: '封装', tech: '工艺', addComponent: '添加元件', moldType: '模具等级', packaging: '含包装', printHours: '打印时长(h)', uploadModel: '上传 3D 文件', print3dFileTypes: '支持：STL、STP/STEP', printer: '打印机', quality: '打印质量', infill: '填充率(%)', support: '支撑', rush: '加急', sliceStatus: '切片状态', sliceFailed: '切片失败', sliceTrustedHint: '重量与时长来自服务端切片结果，不可手改。', print3dResultHint: '切片完成后将显示报价预览。', print3dOptionsFailed: '无法加载 3D 打印选项', previewFailed: '试算失败', previewing: '报价计算中...', generating: '生成中...', print3dStage: { pending: '排队中', converting: 'STEP 转换', slicing: '切片中', done: '完成', failed: '失败' }, postProcess: '后处理', failed: '报价生成失败', color: '颜色', colorNormal: '普通', colorTransparent: '透明', colorSemi: '半透明', colorPantone: '指定 PANTONE', moldMaterial: '模具材质', sliderCount: '滑块数', precision: '精密度 ≤0.2mm', fileName: '文件名(.stp)', family: 'FAMILY(多件一模)', addPart: '添加零件', removePart: '删除', part: '零件', productTotal: '制品单价合计', moq: 'MOQ', moqHint: '未指定 PANTONE 时 MOQ {kg}KG', familyMaterialHint: 'FAMILY 报价要求所有零件材料一致。', krwConverted: 'KRW 换算', uploadStp: '上传 STP 自动识别', uploadStpHint: '上传 .stp / .step 文件后自动计算体积与尺寸，选择材料后按密度自动填入重量（可手动修改）。', parsing: '解析中...', volume: '体积', dimensions: '尺寸(mm)', estimateNote: '自动估算，仅供参考，可手动修改。', parseFailed: '文件解析失败，请改为手动填写。', parseTimeout: '解析超时，请改为手动填写。', drawDirection: '拔模方向', sliderSuggest: '滑块建议', needReview: '建议值·需人工确认', materialSuggest: '材料建议', uploadDrawing: '上传图纸(OCR)', ocrParsing: 'OCR 解析中...', precisionSuggest: '精密度建议', confidence: '置信度', confidenceHigh: '高', confidenceLow: '低', confidenceMedium: '中', undercutDownsampled: '复杂模型已降采样估算', ocrFailed: '图纸解析失败，请改为手动填写。', ocrUnavailable: 'OCR 不可用，请改为手动填写。',       ocrColors: '颜色建议', paper_box: '纸盒包装', fxHint: '金额同时显示人民币与韩元（参考汇率，非结算依据）',    },
     injectionQuote: {
       sheetTitle: '注塑模具报价', subtitleEn: 'Injection Mold Quotation', autoQuotation: 'AUTO QUOTATION',
       quoteNo: '报价编号', customer: '客户公司', contact: '负责人', materialWeight: '材料重量',
@@ -217,6 +221,10 @@ export default {
       pendingOrders: '待接单',
       activeProjects: '进行中项目',
       unreadNotifications: '未读通知',
+      actionItems: '待办动作',
+      noActionItems: '暂无待办',
+      unreadChats: '未读聊天',
+      noUnreadChats: '暂无未读聊天',
       upcomingDeadlines: '临近截止',
       noDeadlines: '暂无临近截止事项',
       recentNotifications: '最近通知',
@@ -227,6 +235,11 @@ export default {
       notificationFallback: '通知',
       loadFailed: '工作台加载失败',
       status: { approved: '已通过', pending: '审核中', rejected: '已拒绝' },
+      actionKind: {
+        quote_request: '待报价',
+        production_order: '待接单',
+        project_issue: '项目问题',
+      },
     },
     buyerWorkbench: {
       title: '买家工作台',
@@ -239,6 +252,10 @@ export default {
       pendingPayments: '待付款',
       activeProjects: '进行中项目',
       unreadNotifications: '未读通知',
+      actionItems: '待办动作',
+      noActionItems: '暂无待办',
+      unreadChats: '未读聊天',
+      noUnreadChats: '暂无未读聊天',
       upcomingDeadlines: '临近截止',
       noDeadlines: '暂无临近截止事项',
       recentNotifications: '最近通知',
@@ -249,6 +266,13 @@ export default {
       notificationFallback: '通知',
       loadFailed: '工作台加载失败',
       memberType: { individual: '个人会员', enterprise: '企业会员' },
+      actionKind: {
+        rfq_action: '待处理询价',
+        payment_unpaid: '待付款',
+        payment_pending_confirm: '付款确认中',
+        nda_pending: '待签保密协议',
+        contract_pending_sign: '待签合同',
+      },
     },
     quoteRequest: {
       title: '报价请求', desc: '仅显示管理员指派给您的报价请求。', requestNo: '请求编号', deadline: '截止日期', submitQuote: '提交报价', updateQuote: '修改报价', submitted: '报价已提交', updated: '报价已更新', quoted: '已报价', assigned: '待报价', empty: '暂无指派的报价请求', adminNote: '请求备注', revision: '修订版本', locked: '方案确认后不可再修改报价', attachments: '报价资料附件', attachmentsHint: '支持 PDF/图纸/Excel 等，单文件最大 20MB，最多 10 个', uploadAttachment: '上传附件', attachmentUploaded: '附件已上传', attachmentUploadFailed: '附件上传失败', attachmentRemoved: '附件已删除', removeAttachment: '删除附件',

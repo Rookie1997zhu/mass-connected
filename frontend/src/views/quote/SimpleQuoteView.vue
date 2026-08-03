@@ -9,7 +9,7 @@ import { useLocaleCurrency } from '../../composables/useLocaleCurrency'
 import { convertSimpleQuote, createSimpleQuote, fetchSimpleQuote, shippingEstimate } from '../../api'
 
 const { t } = useI18n()
-const { formatMoney, fromQuote } = useLocaleCurrency()
+const { formatMoney, fromQuote, dualMoney, quoteResultRate } = useLocaleCurrency()
 const route = useRoute()
 const router = useRouter()
 
@@ -18,6 +18,20 @@ const productName = ref('')
 const error = ref('')
 const result = ref(null)
 const submitting = ref(false)
+
+const fmtLine = (item) => fromQuote(item.amount, result.value, 0, item)
+const fmtMfgDual = (cny, krw) => dualMoney({
+  amount: cny,
+  currency: 'CNY',
+  amountCny: cny,
+  amountKrw: krw,
+  rmbToKrw: quoteResultRate(result.value?.result),
+})
+const fxHintText = computed(() => {
+  const rate = quoteResultRate(result.value?.result)
+  if (!result.value) return ''
+  return `${t('fx.cnyKrw', { rate })} · ${t('simpleQuote.fxHint')}`
+})
 
 const generic = ref({ layers: 2, module_count: 3 })
 
@@ -469,17 +483,18 @@ watch(() => route.query.id, (id) => { if (id) loadExisting(id); else result.valu
         <template v-if="result.quote_type === 'pcba'">
           <ul class="sq-breakdown">
             <li v-for="(item, i) in result.result?.breakdown || []" :key="i">
-              <span>{{ item.label }}</span><span>{{ fromQuote(item.amount, result) }}</span>
+              <span>{{ item.label }}</span><span>{{ fmtLine(item) }}</span>
             </li>
           </ul>
           <p v-if="result.result?.warnings?.length" class="sq-stp-hint">{{ result.result.warnings.join('; ') }}</p>
           <p class="sq-total">{{ t('simpleQuote.total') }}: <strong>{{ fromQuote(result.total_amount, result) }}</strong></p>
+          <p class="sq-stp-hint">{{ fxHintText }}</p>
         </template>
 
         <template v-else-if="result.quote_type === 'pcb'">
           <ul class="sq-breakdown">
             <li v-for="(item, i) in result.result?.breakdown || []" :key="i">
-              <span>{{ item.label }}</span><span>{{ fromQuote(item.amount, result) }}</span>
+              <span>{{ item.label }}</span><span>{{ fmtLine(item) }}</span>
             </li>
           </ul>
           <div v-if="result.result?.pcb_manufacturing?.enabled" class="sq-manufacturing">
@@ -487,18 +502,12 @@ watch(() => route.query.id, (id) => { if (id) loadExisting(id); else result.valu
             <p v-if="!result.result.pcb_manufacturing.requires_manual_review">
               {{ t('pcbDev.mfgAutoQuoted') }}:
               <template v-if="result.result.pcb_manufacturing.pricing_display_mode === 'range'">
-                CNY {{ fmt(result.result.pcb_manufacturing.customer_quote_cny_min, 2) }}
+                {{ fmtMfgDual(result.result.pcb_manufacturing.customer_quote_cny_min, result.result.pcb_manufacturing.customer_quote_krw_min) }}
                 ~
-                {{ fmt(result.result.pcb_manufacturing.customer_quote_cny_max, 2) }}
-                /
-                KRW {{ fmt(result.result.pcb_manufacturing.customer_quote_krw_min) }}
-                ~
-                {{ fmt(result.result.pcb_manufacturing.customer_quote_krw_max) }}
+                {{ fmtMfgDual(result.result.pcb_manufacturing.customer_quote_cny_max, result.result.pcb_manufacturing.customer_quote_krw_max) }}
               </template>
               <template v-else>
-                CNY {{ fmt(result.result.pcb_manufacturing.customer_quote_cny, 2) }}
-                /
-                KRW {{ fmt(result.result.pcb_manufacturing.customer_quote_krw) }}
+                {{ fmtMfgDual(result.result.pcb_manufacturing.customer_quote_cny, result.result.pcb_manufacturing.customer_quote_krw) }}
               </template>
             </p>
             <p
@@ -571,15 +580,17 @@ watch(() => route.query.id, (id) => { if (id) loadExisting(id); else result.valu
           </p>
           <p class="sq-total">{{ t('simpleQuote.total') }}: <strong>{{ fromQuote(result.total_amount, result) }}</strong></p>
           <p class="sq-stp-hint">{{ t('pcbDev.vatExcluded') }}</p>
+          <p class="sq-stp-hint">{{ fxHintText }}</p>
         </template>
 
         <template v-else>
           <ul class="sq-breakdown">
             <li v-for="(item, i) in result.result?.breakdown || []" :key="i">
-              <span>{{ item.label }}</span><span>{{ fromQuote(item.amount, result) }}</span>
+              <span>{{ item.label }}</span><span>{{ fmtLine(item) }}</span>
             </li>
           </ul>
           <p class="sq-total">{{ t('simpleQuote.total') }}: <strong>{{ fromQuote(result.total_amount, result) }}</strong></p>
+          <p class="sq-stp-hint">{{ fxHintText }}</p>
         </template>
 
         <div class="sq-actions">

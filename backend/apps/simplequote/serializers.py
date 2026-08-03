@@ -54,6 +54,18 @@ class SimpleQuoteSerializer(serializers.ModelSerializer):
             return request.build_absolute_uri(obj.pdf.url)
         return obj.pdf.url if obj.pdf else ""
 
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        result = data.get("result")
+        if isinstance(result, dict):
+            from apps.simplequote.views._helpers import ensure_live_fx
+
+            enriched = ensure_live_fx(result, instance.currency or "KRW")
+            data["result"] = enriched
+            if enriched.get("total") is not None:
+                data["total_amount"] = enriched["total"]
+        return data
+
 
 class SimpleQuoteListSerializer(serializers.ModelSerializer):
     class Meta:

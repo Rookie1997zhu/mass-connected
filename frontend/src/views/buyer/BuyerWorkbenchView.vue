@@ -14,6 +14,14 @@ const profile = computed(() => data.value?.profile || {})
 const counts = computed(() => data.value?.counts || {})
 const deadlines = computed(() => data.value?.upcoming_deadlines || [])
 const notifications = computed(() => data.value?.recent_notifications || [])
+const actionItems = computed(() => data.value?.action_items || [])
+const unreadChats = computed(() => data.value?.unread_chats || [])
+const fx = computed(() => data.value?.fx || null)
+const fxRateText = computed(() => {
+  const rate = Number(fx.value?.cny_to_krw)
+  if (!Number.isFinite(rate) || rate <= 0) return ''
+  return rate.toFixed(2)
+})
 
 const displayTitle = computed(() => {
   return (
@@ -43,6 +51,16 @@ const deadlineKindLabel = (kind) => {
 
 const notificationTitle = (row) => row.title || t('buyerWorkbench.notificationFallback')
 
+const actionKindLabel = (kind) => {
+  const key = `buyerWorkbench.actionKind.${kind}`
+  return te(key) ? t(key) : kind
+}
+
+const openChat = (quoteRequestId) => {
+  if (!quoteRequestId) return
+  window.__openPlatformChat?.(quoteRequestId)
+}
+
 onMounted(async () => {
   loading.value = true
   error.value = ''
@@ -64,6 +82,11 @@ onMounted(async () => {
         <div>
           <h1 class="page-title">{{ t('buyerWorkbench.title') }}</h1>
           <p class="page-lead">{{ t('buyerWorkbench.desc') }}</p>
+          <div v-if="fxRateText" class="fx-card" role="status">
+            <p class="fx-label">{{ t('fx.cardLabel') }}</p>
+            <p class="fx-rate">{{ t('fx.cnyKrw', { rate: fxRateText }) }}</p>
+            <p class="fx-hint">{{ t('fx.referenceHint') }}</p>
+          </div>
         </div>
       </header>
 
@@ -133,6 +156,47 @@ onMounted(async () => {
 
           <section class="wb-card">
             <div class="card-head">
+              <h3 class="card-title">{{ t('buyerWorkbench.actionItems') }}</h3>
+            </div>
+            <p v-if="!actionItems.length" class="empty-inline">{{ t('buyerWorkbench.noActionItems') }}</p>
+            <ul v-else class="list">
+              <li v-for="row in actionItems" :key="`${row.kind}-${row.id}`">
+                <RouterLink :to="row.href || '/buyer'" class="list-row">
+                  <div class="list-main">
+                    <span class="kind">{{ actionKindLabel(row.kind) }}</span>
+                    <span class="list-title">{{ row.title }}</span>
+                    <span v-if="row.subtitle" class="list-sub">{{ row.subtitle }}</span>
+                  </div>
+                </RouterLink>
+              </li>
+            </ul>
+          </section>
+
+          <section class="wb-card">
+            <div class="card-head">
+              <h3 class="card-title">{{ t('buyerWorkbench.unreadChats') }}</h3>
+            </div>
+            <p v-if="!unreadChats.length" class="empty-inline">{{ t('buyerWorkbench.noUnreadChats') }}</p>
+            <ul v-else class="list">
+              <li v-for="row in unreadChats" :key="row.conversation_id">
+                <button
+                  type="button"
+                  class="list-row list-row--btn"
+                  :disabled="!row.quote_request_id"
+                  @click="openChat(row.quote_request_id)"
+                >
+                  <div class="list-main">
+                    <span class="list-title">{{ row.title }}</span>
+                    <span v-if="row.preview" class="list-sub">{{ row.preview }}</span>
+                  </div>
+                  <span v-if="row.unread" class="quick-count">{{ row.unread > 99 ? '99+' : row.unread }}</span>
+                </button>
+              </li>
+            </ul>
+          </section>
+
+          <section class="wb-card">
+            <div class="card-head">
               <h3 class="card-title">{{ t('buyerWorkbench.upcomingDeadlines') }}</h3>
             </div>
             <p v-if="!deadlines.length" class="empty-inline">{{ t('buyerWorkbench.noDeadlines') }}</p>
@@ -177,6 +241,39 @@ onMounted(async () => {
 
 <style scoped lang="scss">
 .wb-header { margin-bottom: var(--space-md); }
+.fx-card {
+  margin: 0.85rem 0 0;
+  max-width: 36rem;
+  padding: 0.9rem 1.1rem;
+  border: 1px solid var(--color-steel, #3a5a7a);
+  border-left-width: 4px;
+  border-radius: var(--radius-md);
+  background: var(--color-steel-muted, #eef3f7);
+  box-shadow: 0 1px 0 rgba(58, 90, 122, 0.08);
+}
+.fx-label {
+  margin: 0 0 0.2rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-steel, #3a5a7a);
+  opacity: 0.85;
+}
+.fx-rate {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.25;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text, #1a1a1a);
+}
+.fx-hint {
+  margin: 0.35rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  opacity: 0.65;
+}
 .wb-layout {
   display: grid;
   grid-template-columns: minmax(240px, 280px) 1fr;
@@ -299,6 +396,19 @@ onMounted(async () => {
   border-bottom: 1px solid var(--color-border);
   text-decoration: none;
   color: inherit;
+}
+.list-row--btn {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--color-border);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+}
+.list-row--btn:disabled {
+  cursor: default;
+  opacity: 0.7;
 }
 .list li:last-child .list-row { border-bottom: none; }
 .list-row.unread .list-title { font-weight: 600; }

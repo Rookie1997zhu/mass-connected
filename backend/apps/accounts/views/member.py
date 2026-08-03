@@ -319,6 +319,12 @@ class BuyerWorkbenchView(APIView):
         except Exception:  # noqa: BLE001
             pass
 
+        from apps.accounts.services.workbench import (
+            build_buyer_action_items,
+            build_unread_chats,
+        )
+        from core.fx_rate import get_cny_krw_rate
+
         data = {
             "profile": profile,
             "counts": {
@@ -327,7 +333,10 @@ class BuyerWorkbenchView(APIView):
                 "active_projects": active_projects,
                 "unread_notifications": unread_notifications,
             },
+            "action_items": build_buyer_action_items(user),
+            "unread_chats": build_unread_chats(user),
             "upcoming_deadlines": upcoming_deadlines,
             "recent_notifications": recent_notifications,
+            "fx": get_cny_krw_rate(),
         }
         return success_response(data, request=request)

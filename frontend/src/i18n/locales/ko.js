@@ -52,6 +52,11 @@ export default {
       copyright: '© {year} MASS CONNECTED. All rights reserved.',
     },
     common: { loading: '로딩 중...', empty: '데이터 없음', submit: '제출', cancel: '취소', status: '상태', view: '보기', close: '닫기', save: '저장' },
+    fx: {
+      cardLabel: '참고 환율',
+      cnyKrw: '1 CNY ≈ {rate} KRW',
+      referenceHint: '약 하루 1회 갱신 · 실시간 시세 아님 · 정산 기준 아님',
+    },
     chat: {
       title: '채팅',
       nav: '채팅',
@@ -179,8 +184,7 @@ export default {
       notConfigured: '번역 서비스가 설정되지 않았습니다',
     },
     simpleQuote: {
-      title: '간편 견적', desc: '표준 제조 공정에 대해 즉시 예상 견적을 받고 PDF를 생성합니다. (포인트 차감)', type: '견적 유형', injection: '사출 금형', print3d: '3D 프린팅', pcba: 'PCBA 가공', pcbDev: 'PCB 개발', pcb: 'PCB', software: '소프트웨어', ic: 'IC 설계', productName: '제품명', generate: '견적 생성', result: '견적 결과', total: '합계', unitPrice: '단가', moldFee: '금형비', convert: '상세 견적으로 전환', converted: '상세 견적으로 전환되었습니다', myQuotes: '내 간편 견적', material: '소재', weight: '중량(g)', cavity: '캐비티 수', quantity: '수량', pcbQty: 'PCB 수량', arrayCount: 'ARRAY 수', components: '부품 목록', package: '패키지', tech: '공정', addComponent: '부품 추가', moldType: '금형 등급', packaging: '포장 포함', printHours: '출력 시간(h)', uploadModel: '3D 파일 업로드', print3dFileTypes: '지원: STL, STP/STEP', printer: '프린터', quality: '품질', infill: '채움률(%)', support: '서포트', rush: '긴급', sliceStatus: '슬라이스 상태', sliceFailed: '슬라이스 실패', sliceTrustedHint: '중량/시간은 서버 슬라이스 결과이며 수동 수정할 수 없습니다.', print3dResultHint: '슬라이스 완료 후 견적 미리보기가 표시됩니다.', print3dOptionsFailed: '3D 옵션을 불러오지 못했습니다.', previewFailed: '미리보기 실패', previewing: '견적 계산 중...', generating: '생성 중...', print3dStage: { pending: '대기', converting: 'STEP 변환', slicing: '슬라이싱', done: '완료', failed: '실패' }, postProcess: '후처리', failed: '견적 생성 실패', color: '색상', colorNormal: '일반', colorTransparent: '투명', colorSemi: '반투명', colorPantone: 'PANTONE 지정', moldMaterial: '금형 재질', sliderCount: '슬라이드 수', precision: '정밀도 ≤0.2mm', fileName: '파일명(.stp)', family: 'FAMILY(다품목 1금형)', addPart: '부품 추가', removePart: '삭제', part: '부품', productTotal: '제품단가 합계', moq: 'MOQ', moqHint: 'PANTONE 미지정 시 MOQ {kg}KG', familyMaterialHint: 'FAMILY 견적은 모든 부품의 소재가 동일해야 합니다.', krwConverted: 'KRW 환산', uploadStp: 'STP 업로드 자동인식', uploadStpHint: '.stp / .step 파일 업로드 시 부피·치수를 자동 산출하고 소재 선택 후 중량을 채웁니다(수정 가능).', parsing: '분석 중...', volume: '부피', dimensions: '치수(mm)', estimateNote: '자동 추정치, 참고용이며 수정 가능합니다.', parseFailed: '파일 분석 실패, 수동으로 입력해 주세요.', parseTimeout: '분석 시간 초과, 수동으로 입력해 주세요.', drawDirection: '이형(발치) 방향', sliderSuggest: '슬라이드 추천', needReview: '추천값·확인 필요', materialSuggest: '소재 추천', uploadDrawing: '도면 업로드(OCR)', ocrParsing: 'OCR 분석 중...', precisionSuggest: '정밀도 추천', confidence: '신뢰도', confidenceHigh: '높음', confidenceLow: '낮음', confidenceMedium: '보통', undercutDownsampled: '복잡 모델은 다운샘플링 추정', ocrFailed: 'OCR 분석 실패, 수동으로 입력해 주세요.', ocrUnavailable: 'OCR 사용 불가, 수동으로 입력해 주세요.',       ocrColors: '색상 추천', paper_box: '종이 상자',
-    },
+      title: '간편 견적', desc: '표준 제조 공정에 대해 즉시 예상 견적을 받고 PDF를 생성합니다. (포인트 차감)', type: '견적 유형', injection: '사출 금형', print3d: '3D 프린팅', pcba: 'PCBA 가공', pcbDev: 'PCB 개발', pcb: 'PCB', software: '소프트웨어', ic: 'IC 설계', productName: '제품명', generate: '견적 생성', result: '견적 결과', total: '합계', unitPrice: '단가', moldFee: '금형비', convert: '상세 견적으로 전환', converted: '상세 견적으로 전환되었습니다', myQuotes: '내 간편 견적', material: '소재', weight: '중량(g)', cavity: '캐비티 수', quantity: '수량', pcbQty: 'PCB 수량', arrayCount: 'ARRAY 수', components: '부품 목록', package: '패키지', tech: '공정', addComponent: '부품 추가', moldType: '금형 등급', packaging: '포장 포함', printHours: '출력 시간(h)', uploadModel: '3D 파일 업로드', print3dFileTypes: '지원: STL, STP/STEP', printer: '프린터', quality: '품질', infill: '채움률(%)', support: '서포트', rush: '긴급', sliceStatus: '슬라이스 상태', sliceFailed: '슬라이스 실패', sliceTrustedHint: '중량/시간은 서버 슬라이스 결과이며 수동 수정할 수 없습니다.', print3dResultHint: '슬라이스 완료 후 견적 미리보기가 표시됩니다.', print3dOptionsFailed: '3D 옵션을 불러오지 못했습니다.', previewFailed: '미리보기 실패', previewing: '견적 계산 중...', generating: '생성 중...', print3dStage: { pending: '대기', converting: 'STEP 변환', slicing: '슬라이싱', done: '완료', failed: '실패' }, postProcess: '후처리', failed: '견적 생성 실패', color: '색상', colorNormal: '일반', colorTransparent: '투명', colorSemi: '반투명', colorPantone: 'PANTONE 지정', moldMaterial: '금형 재질', sliderCount: '슬라이드 수', precision: '정밀도 ≤0.2mm', fileName: '파일명(.stp)', family: 'FAMILY(다품목 1금형)', addPart: '부품 추가', removePart: '삭제', part: '부품', productTotal: '제품단가 합계', moq: 'MOQ', moqHint: 'PANTONE 미지정 시 MOQ {kg}KG', familyMaterialHint: 'FAMILY 견적은 모든 부품의 소재가 동일해야 합니다.', krwConverted: 'KRW 환산', uploadStp: 'STP 업로드 자동인식', uploadStpHint: '.stp / .step 파일 업로드 시 부피·치수를 자동 산출하고 소재 선택 후 중량을 채웁니다(수정 가능).', parsing: '분석 중...', volume: '부피', dimensions: '치수(mm)', estimateNote: '자동 추정치, 참고용이며 수정 가능합니다.', parseFailed: '파일 분석 실패, 수동으로 입력해 주세요.', parseTimeout: '분석 시간 초과, 수동으로 입력해 주세요.', drawDirection: '이형(발치) 방향', sliderSuggest: '슬라이드 추천', needReview: '추천값·확인 필요', materialSuggest: '소재 추천', uploadDrawing: '도면 업로드(OCR)', ocrParsing: 'OCR 분석 중...', precisionSuggest: '정밀도 추천', confidence: '신뢰도', confidenceHigh: '높음', confidenceLow: '낮음', confidenceMedium: '보통', undercutDownsampled: '복잡 모델은 다운샘플링 추정', ocrFailed: 'OCR 분석 실패, 수동으로 입력해 주세요.', ocrUnavailable: 'OCR 사용 불가, 수동으로 입력해 주세요.',       ocrColors: '색상 추천', paper_box: '종이 상자', fxHint: '금액은 위안화와 원화를 함께 표시합니다(참고 환율, 정산 기준 아님)',    },
     injectionQuote: {
       sheetTitle: '사출 금형견적', subtitleEn: 'Injection Mold Quotation', autoQuotation: 'AUTO QUOTATION',
       quoteNo: '견적번호', customer: '고객사', contact: '담당', materialWeight: '자재의 무게',
@@ -217,6 +221,10 @@ export default {
       pendingOrders: '수주 대기',
       activeProjects: '진행 중 프로젝트',
       unreadNotifications: '읽지 않은 알림',
+      actionItems: '할 일',
+      noActionItems: '할 일이 없습니다',
+      unreadChats: '읽지 않은 채팅',
+      noUnreadChats: '읽지 않은 채팅이 없습니다',
       upcomingDeadlines: '다가오는 마감',
       noDeadlines: '다가오는 마감이 없습니다',
       recentNotifications: '최근 알림',
@@ -227,6 +235,11 @@ export default {
       notificationFallback: '알림',
       loadFailed: '작업대 로드 실패',
       status: { approved: '승인됨', pending: '심사 중', rejected: '거절됨' },
+      actionKind: {
+        quote_request: '견적 대기',
+        production_order: '수주 대기',
+        project_issue: '프로젝트 이슈',
+      },
     },
     buyerWorkbench: {
       title: '구매자 작업대',
@@ -239,6 +252,10 @@ export default {
       pendingPayments: '결제 대기',
       activeProjects: '진행 중 프로젝트',
       unreadNotifications: '읽지 않은 알림',
+      actionItems: '할 일',
+      noActionItems: '할 일이 없습니다',
+      unreadChats: '읽지 않은 채팅',
+      noUnreadChats: '읽지 않은 채팅이 없습니다',
       upcomingDeadlines: '다가오는 마감',
       noDeadlines: '다가오는 마감이 없습니다',
       recentNotifications: '최근 알림',
@@ -249,6 +266,13 @@ export default {
       notificationFallback: '알림',
       loadFailed: '작업대 로드 실패',
       memberType: { individual: '개인 회원', enterprise: '기업 회원' },
+      actionKind: {
+        rfq_action: '처리 대기 견적',
+        payment_unpaid: '결제 대기',
+        payment_pending_confirm: '결제 확인 중',
+        nda_pending: 'NDA 서명 대기',
+        contract_pending_sign: '계약 서명 대기',
+      },
     },
     quoteRequest: {
       title: '견적 요청', desc: '관리자가 지정한 견적 요청만 표시됩니다.', requestNo: '요청번호', deadline: '마감일', submitQuote: '견적 제출', updateQuote: '견적 수정', submitted: '견적이 제출되었습니다', updated: '견적이 수정되었습니다', quoted: '견적 완료', assigned: '요청 접수', empty: '지정된 견적 요청이 없습니다', adminNote: '요청 메모', revision: '개정', locked: '확정 후 견적은 수정할 수 없습니다', attachments: '견적 자료 첨부', attachmentsHint: 'PDF/도면/Excel 등, 파일당 최대 20MB, 최대 10개', uploadAttachment: '첨부 업로드', attachmentUploaded: '첨부가 업로드되었습니다', attachmentUploadFailed: '첨부 업로드 실패', attachmentRemoved: '첨부가 삭제되었습니다', removeAttachment: '삭제',

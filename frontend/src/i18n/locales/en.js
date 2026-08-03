@@ -52,6 +52,11 @@ export default {
       copyright: '© {year} MASS CONNECTED. All rights reserved.',
     },
     common: { loading: 'Loading...', empty: 'No data', submit: 'Submit', cancel: 'Cancel', status: 'Status', view: 'View', close: 'Close', save: 'Save' },
+    fx: {
+      cardLabel: 'Reference rate',
+      cnyKrw: '1 CNY ≈ {rate} KRW',
+      referenceHint: 'Updated about daily · Not live market · Not for settlement',
+    },
     chat: {
       title: 'Chat',
       nav: 'Chat',
@@ -179,8 +184,7 @@ export default {
       notConfigured: 'Translation service is not configured',
     },
     simpleQuote: {
-      title: 'Simple Quote', desc: 'Get an instant estimate for standard processes and generate a PDF (points apply).', type: 'Quote Type', injection: 'Injection Mold', print3d: '3D Printing', pcba: 'PCBA Assembly', pcbDev: 'PCB Development', pcb: 'PCB', software: 'Software', ic: 'IC Design', productName: 'Product Name', generate: 'Generate Quote', result: 'Result', total: 'Total', unitPrice: 'Unit Price', moldFee: 'Mold Fee', convert: 'Convert to Detailed Quote', converted: 'Converted to detailed quote', myQuotes: 'My Simple Quotes', material: 'Material', weight: 'Weight (g)', cavity: 'Cavities', quantity: 'Quantity', pcbQty: 'PCB qty', arrayCount: 'ARRAY count', components: 'Components', package: 'Package', tech: 'Tech', addComponent: 'Add component', moldType: 'Mold Grade', packaging: 'Include packaging', printHours: 'Print Hours', uploadModel: 'Upload 3D file', print3dFileTypes: 'Supported: STL, STP/STEP', printer: 'Printer', quality: 'Quality', infill: 'Infill (%)', support: 'Support', rush: 'Rush', sliceStatus: 'Slice status', sliceFailed: 'Slicing failed', sliceTrustedHint: 'Weight and time come from server slicing and cannot be edited.', print3dResultHint: 'Quote preview appears after slicing completes.', print3dOptionsFailed: 'Failed to load 3D options', previewFailed: 'Preview failed', previewing: 'Calculating...', generating: 'Generating...', print3dStage: { pending: 'Pending', converting: 'STEP convert', slicing: 'Slicing', done: 'Done', failed: 'Failed' }, postProcess: 'Post-process', failed: 'Failed to generate quote', color: 'Color', colorNormal: 'Normal', colorTransparent: 'Transparent', colorSemi: 'Semi-transparent', colorPantone: 'PANTONE specified', moldMaterial: 'Mold Material', sliderCount: 'Sliders', precision: 'Precision ≤0.2mm', fileName: 'File name (.stp)', family: 'FAMILY (multi-part, one mold)', addPart: 'Add part', removePart: 'Remove', part: 'Part', productTotal: 'Product Unit Price Total', moq: 'MOQ', moqHint: 'MOQ {kg}KG when PANTONE not specified', familyMaterialHint: 'FAMILY quote requires all parts to share the same material.', krwConverted: 'KRW converted', uploadStp: 'Upload STP (auto-detect)', uploadStpHint: 'Upload a .stp / .step file to auto-compute volume and dimensions; weight is filled from density after selecting material (editable).', parsing: 'Parsing...', volume: 'Volume', dimensions: 'Dimensions (mm)', estimateNote: 'Auto-estimated, for reference only, editable.', parseFailed: 'Failed to parse file, please fill in manually.', parseTimeout: 'Parse timed out, please fill in manually.', drawDirection: 'Draw direction', sliderSuggest: 'Slider suggestion', needReview: 'Suggested · needs review', materialSuggest: 'Material suggestion', uploadDrawing: 'Upload drawing (OCR)', ocrParsing: 'OCR parsing...', precisionSuggest: 'Precision suggestion', confidence: 'Confidence', confidenceHigh: 'High', confidenceLow: 'Low', confidenceMedium: 'Medium', undercutDownsampled: 'Complex model: downsampled estimate', ocrFailed: 'Failed to parse drawing, please fill in manually.', ocrUnavailable: 'OCR unavailable, please fill in manually.',       ocrColors: 'Color suggestion', paper_box: 'Paper Box',
-    },
+      title: 'Simple Quote', desc: 'Get an instant estimate for standard processes and generate a PDF (points apply).', type: 'Quote Type', injection: 'Injection Mold', print3d: '3D Printing', pcba: 'PCBA Assembly', pcbDev: 'PCB Development', pcb: 'PCB', software: 'Software', ic: 'IC Design', productName: 'Product Name', generate: 'Generate Quote', result: 'Result', total: 'Total', unitPrice: 'Unit Price', moldFee: 'Mold Fee', convert: 'Convert to Detailed Quote', converted: 'Converted to detailed quote', myQuotes: 'My Simple Quotes', material: 'Material', weight: 'Weight (g)', cavity: 'Cavities', quantity: 'Quantity', pcbQty: 'PCB qty', arrayCount: 'ARRAY count', components: 'Components', package: 'Package', tech: 'Tech', addComponent: 'Add component', moldType: 'Mold Grade', packaging: 'Include packaging', printHours: 'Print Hours', uploadModel: 'Upload 3D file', print3dFileTypes: 'Supported: STL, STP/STEP', printer: 'Printer', quality: 'Quality', infill: 'Infill (%)', support: 'Support', rush: 'Rush', sliceStatus: 'Slice status', sliceFailed: 'Slicing failed', sliceTrustedHint: 'Weight and time come from server slicing and cannot be edited.', print3dResultHint: 'Quote preview appears after slicing completes.', print3dOptionsFailed: 'Failed to load 3D options', previewFailed: 'Preview failed', previewing: 'Calculating...', generating: 'Generating...', print3dStage: { pending: 'Pending', converting: 'STEP convert', slicing: 'Slicing', done: 'Done', failed: 'Failed' }, postProcess: 'Post-process', failed: 'Failed to generate quote', color: 'Color', colorNormal: 'Normal', colorTransparent: 'Transparent', colorSemi: 'Semi-transparent', colorPantone: 'PANTONE specified', moldMaterial: 'Mold Material', sliderCount: 'Sliders', precision: 'Precision ≤0.2mm', fileName: 'File name (.stp)', family: 'FAMILY (multi-part, one mold)', addPart: 'Add part', removePart: 'Remove', part: 'Part', productTotal: 'Product Unit Price Total', moq: 'MOQ', moqHint: 'MOQ {kg}KG when PANTONE not specified', familyMaterialHint: 'FAMILY quote requires all parts to share the same material.', krwConverted: 'KRW converted', uploadStp: 'Upload STP (auto-detect)', uploadStpHint: 'Upload a .stp / .step file to auto-compute volume and dimensions; weight is filled from density after selecting material (editable).', parsing: 'Parsing...', volume: 'Volume', dimensions: 'Dimensions (mm)', estimateNote: 'Auto-estimated, for reference only, editable.', parseFailed: 'Failed to parse file, please fill in manually.', parseTimeout: 'Parse timed out, please fill in manually.', drawDirection: 'Draw direction', sliderSuggest: 'Slider suggestion', needReview: 'Suggested · needs review', materialSuggest: 'Material suggestion', uploadDrawing: 'Upload drawing (OCR)', ocrParsing: 'OCR parsing...', precisionSuggest: 'Precision suggestion', confidence: 'Confidence', confidenceHigh: 'High', confidenceLow: 'Low', confidenceMedium: 'Medium', undercutDownsampled: 'Complex model: downsampled estimate', ocrFailed: 'Failed to parse drawing, please fill in manually.', ocrUnavailable: 'OCR unavailable, please fill in manually.',       ocrColors: 'Color suggestion', paper_box: 'Paper Box', fxHint: 'Amounts shown in CNY and KRW (reference rate, not for settlement)',    },
     injectionQuote: {
       sheetTitle: 'Injection Mold Quote', subtitleEn: 'Injection Mold Quotation', autoQuotation: 'AUTO QUOTATION',
       quoteNo: 'Quote No.', customer: 'Customer', contact: 'Contact', materialWeight: 'Material weight',
@@ -217,6 +221,10 @@ export default {
       pendingOrders: 'Orders to confirm',
       activeProjects: 'Active projects',
       unreadNotifications: 'Unread notifications',
+      actionItems: 'Action items',
+      noActionItems: 'No action items',
+      unreadChats: 'Unread chats',
+      noUnreadChats: 'No unread chats',
       upcomingDeadlines: 'Upcoming deadlines',
       noDeadlines: 'No upcoming deadlines',
       recentNotifications: 'Recent notifications',
@@ -227,6 +235,11 @@ export default {
       notificationFallback: 'Notification',
       loadFailed: 'Failed to load workbench',
       status: { approved: 'Approved', pending: 'Pending', rejected: 'Rejected' },
+      actionKind: {
+        quote_request: 'Quote request',
+        production_order: 'Order to confirm',
+        project_issue: 'Project issue',
+      },
     },
     buyerWorkbench: {
       title: 'Buyer Workbench',
@@ -239,6 +252,10 @@ export default {
       pendingPayments: 'Pending payments',
       activeProjects: 'Active projects',
       unreadNotifications: 'Unread notifications',
+      actionItems: 'Action items',
+      noActionItems: 'No action items',
+      unreadChats: 'Unread chats',
+      noUnreadChats: 'No unread chats',
       upcomingDeadlines: 'Upcoming deadlines',
       noDeadlines: 'No upcoming deadlines',
       recentNotifications: 'Recent notifications',
@@ -249,6 +266,13 @@ export default {
       notificationFallback: 'Notification',
       loadFailed: 'Failed to load workbench',
       memberType: { individual: 'Individual', enterprise: 'Enterprise' },
+      actionKind: {
+        rfq_action: 'RFQ action',
+        payment_unpaid: 'Unpaid',
+        payment_pending_confirm: 'Payment confirming',
+        nda_pending: 'NDA pending',
+        contract_pending_sign: 'Contract to sign',
+      },
     },
     quoteRequest: {
       title: 'Quote Requests', desc: 'Only quote requests assigned to you by the admin are shown.', requestNo: 'Request No.', deadline: 'Deadline', submitQuote: 'Submit Quote', updateQuote: 'Update Quote', submitted: 'Quote submitted', updated: 'Quote updated', quoted: 'Quoted', assigned: 'Awaiting quote', empty: 'No assigned quote requests', adminNote: 'Admin Note', revision: 'Revision', locked: 'Quote cannot be edited after plan confirmation', attachments: 'Quote attachments', attachmentsHint: 'PDF/CAD/Excel etc. Max 20MB each, up to 10 files', uploadAttachment: 'Upload attachment', attachmentUploaded: 'Attachment uploaded', attachmentUploadFailed: 'Attachment upload failed', attachmentRemoved: 'Attachment removed', removeAttachment: 'Remove',

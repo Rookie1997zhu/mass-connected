@@ -103,7 +103,7 @@ def build_comparison_pdf(*, title, quote_no, headers, rows, notes=None):
 
 
 def build_quotation_pdf(*, title, quote_no, meta_rows, line_items, total_label, total_amount,
-                        currency="KRW", notes=None):
+                        currency="KRW", notes=None, fx_rate=None, total_cny=None, total_krw=None):
     """生成通用报价/文档 PDF。
 
     meta_rows: list[(label, value)] 基本信息
@@ -145,6 +145,22 @@ def build_quotation_pdf(*, title, quote_no, meta_rows, line_items, total_label, 
     for label, amount in line_items:
         data.append([str(label), f"{int(amount):,}"])
     data.append([total_label, f"{int(total_amount):,}"])
+
+    cur = (currency or "KRW").upper()
+    rate = None
+    try:
+        if fx_rate is not None and float(fx_rate) > 0:
+            rate = float(fx_rate)
+    except (TypeError, ValueError):
+        rate = None
+    if rate:
+        if cur == "CNY":
+            converted = total_krw if total_krw is not None else round(float(total_amount) * rate)
+            data.append([f"환산 / 换算 (KRW @ {_fmt_amount(rate, 4)})", _fmt_amount(converted)])
+        else:
+            converted = total_cny if total_cny is not None else round(float(total_amount) / rate, 2)
+            data.append([f"환산 / 换算 (CNY @ {_fmt_amount(rate, 4)})", _fmt_amount(converted, 2)])
+
     item_table = Table(data, colWidths=[110 * mm, 55 * mm])
     item_table.setStyle(
         TableStyle(
@@ -461,7 +477,12 @@ def build_paper_box_quotation_pdf(*, quote_no, product_name, inputs, result, val
         ["单价 / Unit (RMB)", _fmt_amount(result.get("unit_price"), 4)],
         ["합계 / Total (RMB)", _fmt_amount(result.get("total"))],
     ]
-    if result.get("total_krw"):
+    rmb_to_krw = result.get("rmb_to_krw") or result.get("cny_to_krw")
+    if result.get("total_krw") is not None and rmb_to_krw:
+        total_rows.append(
+            [f"환산 / 换算 (KRW @ {_fmt_amount(rmb_to_krw, 4)})", _fmt_amount(result.get("total_krw"))]
+        )
+    elif result.get("total_krw"):
         total_rows.append(["환산 / KRW", _fmt_amount(result.get("total_krw"))])
     story.append(_amount_table(total_rows, font, highlight_last=True))
 
@@ -573,7 +594,12 @@ def build_pcba_quotation_pdf(*, quote_no, product_name, inputs, result, valid_un
     total_rows = [
         ["합계 / Total (RMB)", _fmt_amount(result.get("total"))],
     ]
-    if result.get("total_krw"):
+    rmb_to_krw = result.get("rmb_to_krw") or result.get("cny_to_krw")
+    if result.get("total_krw") is not None and rmb_to_krw:
+        total_rows.append(
+            [f"환산 / 换算 (KRW @ {_fmt_amount(rmb_to_krw, 4)})", _fmt_amount(result.get("total_krw"))]
+        )
+    elif result.get("total_krw"):
         total_rows.append(["환산 / KRW", _fmt_amount(result.get("total_krw"))])
     story.append(_amount_table(total_rows, font, highlight_last=True))
 
@@ -657,6 +683,11 @@ def build_pcb_dev_quotation_pdf(*, quote_no, product_name, inputs, result, valid
         ]
     else:
         total_rows = [["개발비 합계 / Total (VAT 별도)", _fmt_amount(result.get("total"))]]
+    fx_rate = result.get("rmb_to_krw") or result.get("cny_to_krw")
+    if result.get("total_cny") is not None and fx_rate:
+        total_rows.append(
+            [f"환산 / 换算 (CNY @ {_fmt_amount(fx_rate, 4)})", _fmt_amount(result.get("total_cny"), 2)]
+        )
     story.append(_amount_table(total_rows, font, highlight_last=True))
 
     manufacturing = result.get("pcb_manufacturing") or {}
