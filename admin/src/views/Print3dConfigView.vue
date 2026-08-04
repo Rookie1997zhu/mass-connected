@@ -91,6 +91,31 @@ const runPreview = async () => {
 
 const paramEntries = () => Object.keys(form.params || {})
 
+const paramLabel = (key) => {
+  const i18nKey = `print3dAdmin.paramLabels.${key}`
+  const translated = t(i18nKey)
+  if (translated && translated !== i18nKey) return translated
+  return (paramMeta.value[key] && paramMeta.value[key][0]) || key
+}
+
+const paramUnit = (key) => (paramMeta.value[key] && paramMeta.value[key][1]) || ''
+
+const BREAKDOWN_LABEL_MAP = {
+  材料费: 'print3dAdmin.breakdown.material',
+  电费: 'print3dAdmin.breakdown.electricity',
+  设备折旧: 'print3dAdmin.breakdown.depreciation',
+  '基础/其他': 'print3dAdmin.breakdown.baseOther',
+  后处理费: 'print3dAdmin.breakdown.postProcess',
+  设备使用费: 'print3dAdmin.breakdown.machine',
+  加价后小计: 'print3dAdmin.breakdown.afterMarkup',
+  税费: 'print3dAdmin.breakdown.tax',
+}
+
+const breakdownLabel = (label) => {
+  const key = BREAKDOWN_LABEL_MAP[label]
+  return key ? t(key) : label
+}
+
 // 默认打印机单选：开启某台时清除其他行的默认标记
 const setDefaultPrinter = (row, value) => {
   if (!value) return
@@ -121,10 +146,10 @@ onMounted(load)
         <el-form-item
           v-for="key in paramEntries().filter((k) => k !== 'pricing_mode')"
           :key="key"
-          :label="(paramMeta[key] && paramMeta[key][0]) || key"
+          :label="paramLabel(key)"
         >
           <el-input-number v-model="form.params[key]" :controls="false" style="width: 220px" />
-          <span class="unit">{{ (paramMeta[key] && paramMeta[key][1]) || '' }}</span>
+          <span class="unit">{{ paramUnit(key) }}</span>
         </el-form-item>
       </el-form>
     </el-card>
@@ -220,7 +245,7 @@ onMounted(load)
       <div v-if="preview" class="preview-box">
         <p>{{ t('print3dAdmin.unitPrice') }}: {{ preview.unit_price }} / {{ t('print3dAdmin.total') }}: {{ preview.total }}</p>
         <ul>
-          <li v-for="(row, i) in preview.breakdown || []" :key="i">{{ row.label }}: {{ row.amount }}</li>
+          <li v-for="(row, i) in preview.breakdown || []" :key="i">{{ breakdownLabel(row.label) }}: {{ row.amount }}</li>
         </ul>
       </div>
     </el-card>
