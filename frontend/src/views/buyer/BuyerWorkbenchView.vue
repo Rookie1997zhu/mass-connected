@@ -4,6 +4,7 @@ import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PageShell from '../../components/PageShell.vue'
 import { fetchBuyerWorkbench } from '../../api'
+import { localizeNotificationTitle } from '../../lib/notificationI18n'
 
 const { t, te } = useI18n()
 const loading = ref(true)
@@ -49,7 +50,7 @@ const deadlineKindLabel = (kind) => {
   return t('buyerWorkbench.kindRfq')
 }
 
-const notificationTitle = (row) => row.title || t('buyerWorkbench.notificationFallback')
+const notificationTitle = (row) => localizeNotificationTitle(row?.title, t, te)
 
 const actionKindLabel = (kind) => {
   const key = `buyerWorkbench.actionKind.${kind}`

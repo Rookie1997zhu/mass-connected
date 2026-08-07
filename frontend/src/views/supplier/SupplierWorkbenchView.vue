@@ -4,6 +4,7 @@ import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PageShell from '../../components/PageShell.vue'
 import { fetchSupplierDashboard } from '../../api'
+import { localizeNotificationTitle } from '../../lib/notificationI18n'
 
 const { t, te } = useI18n()
 const loading = ref(true)
@@ -42,7 +43,7 @@ const deadlineKindLabel = (kind) => {
   return t('supplierWorkbench.kindQuoteRequest')
 }
 
-const notificationTitle = (row) => row.title || t('supplierWorkbench.notificationFallback')
+const notificationTitle = (row) => localizeNotificationTitle(row?.title, t, te)
 
 const trOr = (key, fallback) => (te(key) ? t(key) : fallback)
 

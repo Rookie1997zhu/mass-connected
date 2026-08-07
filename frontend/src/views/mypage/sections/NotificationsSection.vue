@@ -1,5 +1,6 @@
 <script setup>
 import { useI18n } from 'vue-i18n'
+import { localizeNotificationTitle } from '../../../lib/notificationI18n'
 
 defineProps({
   notifications: { type: Array, default: () => [] },
@@ -7,7 +8,8 @@ defineProps({
 
 defineEmits(['mark-read', 'mark-all-read'])
 
-const { t } = useI18n()
+const { t, te } = useI18n()
+const titleOf = (n) => localizeNotificationTitle(n?.title, t, te)
 </script>
 
 <template>
@@ -16,7 +18,7 @@ const { t } = useI18n()
     <p v-if="!notifications.length" class="page-empty">{{ t('mypage.empty') }}</p>
     <ul v-else class="notif-list">
       <li v-for="n in notifications" :key="n.id" :class="{ unread: !n.is_read }" @click="$emit('mark-read', n)">
-        <strong>{{ n.title }}</strong>
+        <strong>{{ titleOf(n) }}</strong>
         <p>{{ n.content }}</p>
         <span class="notif-time">{{ (n.created_at || '').slice(0, 16).replace('T', ' ') }}</span>
       </li>
