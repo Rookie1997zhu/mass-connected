@@ -55,6 +55,7 @@ class MemberRegisterSerializer(serializers.Serializer):
             role="member",
             member_type=member_type,
             is_active=True,
+            is_verified=False,
             **validated_data,
         )
         if member_type == "enterprise":

@@ -1,23 +1,63 @@
 <script setup>
 import { computed, onMounted, ref, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PageShell from '../../components/PageShell.vue'
 import InjectionQuoteSheet from '../../components/quote/InjectionQuoteSheet.vue'
 import Print3dQuoteSheet from '../../components/quote/Print3dQuoteSheet.vue'
 import { useLocaleCurrency } from '../../composables/useLocaleCurrency'
 import { convertSimpleQuote, createSimpleQuote, fetchSimpleQuote, shippingEstimate } from '../../api'
+import { resolveApiMessage } from '../../utils/apiErrors'
+
+const VALID_TYPES = ['injection', 'print3d', 'pcba', 'pcb', 'software', 'ic']
+const HUB_TYPES = [
+  { value: 'injection', labelKey: 'simpleQuote.injection' },
+  { value: 'print3d', labelKey: 'simpleQuote.print3d' },
+  { value: 'pcba', labelKey: 'simpleQuote.pcba' },
+  { value: 'pcb', labelKey: 'simpleQuote.pcbDev' },
+  { value: 'software', labelKey: 'simpleQuote.software' },
+  { value: 'ic', labelKey: 'simpleQuote.ic' },
+]
+
+const normalizeType = (raw) => {
+  const value = Array.isArray(raw) ? raw[0] : raw
+  return VALID_TYPES.includes(value) ? value : null
+}
 
 const { t } = useI18n()
 const { formatMoney, fromQuote, dualMoney, quoteResultRate } = useLocaleCurrency()
 const route = useRoute()
 const router = useRouter()
 
-const quoteType = ref('injection')
+const quoteType = ref('')
 const productName = ref('')
 const error = ref('')
 const result = ref(null)
 const submitting = ref(false)
+
+const activeType = computed(() => normalizeType(route.query.type))
+const showHub = computed(() => !route.query.id && !activeType.value)
+const formWide = computed(
+  () => !showHub.value && (quoteType.value === 'injection' || quoteType.value === 'print3d'),
+)
+
+const syncQuoteTypeFromRoute = () => {
+  const type = activeType.value
+  if (type) quoteType.value = type
+}
+
+const setQuoteType = (type) => {
+  if (!VALID_TYPES.includes(type)) return
+  const query = { ...route.query, type }
+  delete query.id
+  result.value = null
+  error.value = ''
+  router.replace({ query })
+}
+
+const onTypeSelect = (event) => {
+  setQuoteType(event.target.value)
+}
 
 const fmtLine = (item) => fromQuote(item.amount, result.value, 0, item)
 const fmtMfgDual = (cny, krw) => dualMoney({
@@ -189,7 +229,7 @@ const onShippingEstimate = async () => {
     const res = await shippingEstimate(payload)
     shippingResult.value = res.data
   } catch (e) {
-    shippingError.value = e.message || t('shipping.failed')
+    shippingError.value = resolveApiMessage(e, t, 'shipping.failed')
   } finally {
     shippingLoading.value = false
   }
@@ -235,8 +275,12 @@ const buildInputs = () => {
 const loadExisting = async (id) => {
   const res = await fetchSimpleQuote(id)
   result.value = res.data
-  quoteType.value = res.data.quote_type
+  const type = normalizeType(res.data.quote_type) || res.data.quote_type
+  quoteType.value = type
   productName.value = res.data.product_name
+  if (VALID_TYPES.includes(type) && route.query.type !== type) {
+    router.replace({ query: { ...route.query, id, type } })
+  }
 }
 
 const onGenerate = async () => {
@@ -249,9 +293,15 @@ const onGenerate = async () => {
       inputs: buildInputs(),
     })
     result.value = res.data
-    router.replace({ query: { id: res.data.id } })
+    router.replace({
+      query: {
+        ...route.query,
+        id: res.data.id,
+        type: quoteType.value,
+      },
+    })
   } catch (e) {
-    error.value = e.message || t('simpleQuote.failed')
+    error.value = resolveApiMessage(e, t, 'simpleQuote.failed')
   } finally {
     submitting.value = false
   }
@@ -270,347 +320,414 @@ const onConvert = async () => {
 const fmt = (n, digits = 0) => Number(n || 0).toLocaleString(undefined, { maximumFractionDigits: digits })
 
 onMounted(() => {
+  syncQuoteTypeFromRoute()
   if (route.query.id) loadExisting(route.query.id)
 })
-watch(() => route.query.id, (id) => { if (id) loadExisting(id); else result.value = null })
+watch(() => route.query.type, () => {
+  syncQuoteTypeFromRoute()
+})
+watch(() => route.query.id, (id) => {
+  if (id) loadExisting(id)
+  else if (!activeType.value) result.value = null
+})
 </script>
 
 <template>
-  <PageShell :container-wide="quoteType === 'injection' || quoteType === 'print3d'">
+  <PageShell :container-wide="formWide">
     <h1 class="page-title">{{ t('simpleQuote.title') }}</h1>
-    <p class="page-lead">{{ t('simpleQuote.desc') }}</p>
+    <p class="page-lead">{{ showHub ? t('simpleQuote.hubHint') : t('simpleQuote.desc') }}</p>
 
-    <label class="sq-type-select">{{ t('simpleQuote.type') }}
-      <select v-model="quoteType">
-        <option value="injection">{{ t('simpleQuote.injection') }}</option>
-        <option value="print3d">{{ t('simpleQuote.print3d') }}</option>
-        <option value="pcba">{{ t('simpleQuote.pcba') }}</option>
-        <option value="pcb">{{ t('simpleQuote.pcbDev') }}</option>
-        <option value="software">{{ t('simpleQuote.software') }}</option>
-        <option value="ic">{{ t('simpleQuote.ic') }}</option>
-      </select>
-    </label>
+    <section v-if="showHub" class="sq-hub">
+      <div class="sq-hub-grid">
+        <RouterLink
+          v-for="item in HUB_TYPES"
+          :key="item.value"
+          :to="{ path: '/simple-quote', query: { type: item.value } }"
+          class="sq-hub-tile"
+        >
+          <span class="sq-hub-tile-name">{{ t(item.labelKey) }}</span>
+          <span class="sq-hub-tile-cta">{{ t('capabilities.getQuote') }} →</span>
+        </RouterLink>
+      </div>
+    </section>
 
-    <InjectionQuoteSheet
-      v-if="quoteType === 'injection'"
-      v-model:product-name="productName"
-      :saved-result="result?.quote_type === 'injection' ? result : null"
-      @generated="onInjectionGenerated"
-      @convert="onConvert"
-    />
-
-    <Print3dQuoteSheet
-      v-else-if="quoteType === 'print3d'"
-      v-model:product-name="productName"
-      :saved-result="result?.quote_type === 'print3d' ? result : null"
-      @generated="onInjectionGenerated"
-      @convert="onConvert"
-    />
-
-    <div v-else class="sq-layout">
-      <section class="sq-form card">
-        <label>{{ t('simpleQuote.productName') }}<input v-model="productName" type="text" /></label>
-
-        <template v-if="quoteType === 'pcba'">
-          <label>{{ t('simpleQuote.pcbQty') }}<input v-model.number="pcba.pcb_quantity" type="number" min="1" /></label>
-          <label>{{ t('simpleQuote.arrayCount') }}<input v-model.number="pcba.array_count" type="number" min="1" /></label>
-          <h3 class="sq-parts-title">{{ t('simpleQuote.components') }}</h3>
-          <div v-for="(c, i) in pcba.components" :key="i" class="sq-part">
-            <div class="sq-part-head">
-              <span># {{ i + 1 }}</span>
-              <button v-if="pcba.components.length > 1" type="button" class="btn btn-sm btn-secondary" @click="removeComponent(i)">{{ t('simpleQuote.removePart') }}</button>
-            </div>
-            <div class="sq-row">
-              <label>{{ t('simpleQuote.package') }}
-                <select v-model="c.package"><option v-for="p in pcbaPackages" :key="p" :value="p">{{ p }}</option></select>
-              </label>
-              <label>{{ t('simpleQuote.tech') }}
-                <select v-model="c.tech"><option value="smt">SMT</option><option value="dip">DIP</option></select>
-              </label>
-            </div>
-            <label>{{ t('simpleQuote.quantity') }}<input v-model.number="c.qty" type="number" min="1" /></label>
-          </div>
-          <button type="button" class="btn btn-sm btn-secondary sq-add" @click="addComponent">+ {{ t('simpleQuote.addComponent') }}</button>
-        </template>
-
-        <template v-else-if="quoteType === 'pcb'">
-          <label>{{ t('pcbDev.baseType') }}
-            <select v-model.number="pcbDev.base_item_no">
-              <option v-for="opt in pcbBaseOptions" :key="opt.no" :value="opt.no">{{ t(opt.labelKey) }}</option>
-            </select>
-          </label>
-          <fieldset class="sq-fieldset">
-            <legend>{{ t('pcbDev.weights') }}</legend>
-            <label v-for="w in pcbWeightOptions" :key="w.key" class="checkbox">
-              <input v-model="pcbDev.weight_keys" type="checkbox" :value="w.key" /> {{ t(w.labelKey) }}
-            </label>
-          </fieldset>
-          <fieldset class="sq-fieldset">
-            <legend>{{ t('pcbDev.services') }}</legend>
-            <label v-for="s in pcbServiceOptions" :key="s.no" class="checkbox">
-              <input v-model="pcbDev.service_nos" type="checkbox" :value="s.no" /> {{ t(s.labelKey) }}
-            </label>
-          </fieldset>
-          <label class="checkbox"><input v-model="pcbDev.ad_consent" type="checkbox" /> {{ t('pcbDev.adConsent') }}</label>
-          <label>{{ t('pcbDev.shippingWeight') }}<input v-model.number="pcbDev.shipping_weight_kg" type="number" min="0" step="0.1" /></label>
-          <p class="sq-stp-hint">{{ t('pcbDev.shippingHint') }}</p>
-          <fieldset class="sq-fieldset">
-            <legend>{{ t('pcbDev.mfgTitle') }}</legend>
-            <label class="checkbox">
-              <input v-model="pcbDev.include_pcb_manufacturing" type="checkbox" /> {{ t('pcbDev.mfgInclude') }}
-            </label>
-            <template v-if="pcbDev.include_pcb_manufacturing">
-              <label>{{ t('pcbDev.mfgMaterial') }}
-                <select v-model="pcbDev.mfg_material">
-                  <option v-for="m in pcbManufacturingMaterials" :key="m.value" :value="m.value">{{ t(m.labelKey) }}</option>
-                </select>
-              </label>
-              <div class="sq-row">
-                <label>{{ t('pcbDev.mfgLayers') }}<input v-model.number="pcbDev.mfg_layers" type="number" min="1" /></label>
-                <label>{{ t('pcbDev.mfgQuantity') }}<input v-model.number="pcbDev.mfg_quantity" type="number" min="1" /></label>
-              </div>
-              <div class="sq-row">
-                <label>{{ t('pcbDev.mfgWidth') }}<input v-model.number="pcbDev.mfg_width_mm" type="number" min="1" /></label>
-                <label>{{ t('pcbDev.mfgHeight') }}<input v-model.number="pcbDev.mfg_height_mm" type="number" min="1" /></label>
-              </div>
-              <div class="sq-row">
-                <label>{{ t('pcbDev.mfgBoardThickness') }}
-                  <select v-model="pcbDev.mfg_board_thickness">
-                    <option v-for="value in currentPcbProcessOptions.boardThickness" :key="value" :value="value">{{ value }}mm</option>
-                  </select>
-                </label>
-                <label>{{ t('pcbDev.mfgCopperThickness') }}
-                  <select v-model="pcbDev.mfg_copper_thickness">
-                    <option v-for="value in currentPcbProcessOptions.copperThickness" :key="value" :value="value">{{ value }}</option>
-                  </select>
-                </label>
-              </div>
-              <div class="sq-row">
-                <label>{{ t('pcbDev.mfgSolderColor') }}
-                  <select v-model="pcbDev.mfg_solder_color">
-                    <option v-for="value in currentPcbProcessOptions.solderColor" :key="value" :value="value">{{ t(`pcbDev.process.${value}`) }}</option>
-                  </select>
-                </label>
-                <label>{{ t('pcbDev.mfgSurfaceFinish') }}
-                  <select v-model="pcbDev.mfg_surface_finish">
-                    <option v-for="value in currentPcbProcessOptions.surfaceFinish" :key="value" :value="value">{{ t(`pcbDev.process.${value}`) }}</option>
-                  </select>
-                </label>
-              </div>
-              <div class="sq-row">
-                <label>{{ t('pcbDev.mfgSolderMaskCoverage') }}
-                  <select v-model="pcbDev.mfg_solder_mask_coverage">
-                    <option v-for="value in currentPcbProcessOptions.solderMaskCoverage" :key="value" :value="value">{{ t(`pcbDev.process.${value}`) }}</option>
-                  </select>
-                </label>
-                <label>{{ t('pcbDev.mfgPanelDesignCount') }}
-                  <select v-model="pcbDev.mfg_panel_design_count">
-                    <option v-for="value in currentPcbProcessOptions.panelDesignCount" :key="value" :value="value">{{ value }}</option>
-                  </select>
-                </label>
-              </div>
-              <label class="checkbox sq-smt-label">
-                <input v-model="pcbDev.mfg_smt_required" type="checkbox" />
-                <span>{{ t('pcbDev.mfgSmtRequired') }}</span>
-                <span class="sq-stp-hint">{{ t('pcbDev.smtNotIncludedHint') }}</span>
-              </label>
-              <p class="sq-stp-hint">{{ t('pcbDev.mfgHint') }}</p>
-            </template>
-          </fieldset>
-        </template>
-        <template v-else-if="quoteType === 'software'">
-          <label>Modules<input v-model.number="generic.module_count" type="number" min="0" /></label>
-        </template>
-
-        <p v-if="error" class="page-message page-message--error">{{ error }}</p>
-        <button type="button" class="btn btn-primary" :disabled="submitting" @click="onGenerate">
-          {{ t('simpleQuote.generate') }}
-        </button>
-      </section>
-
-      <section class="sq-shipping card">
-        <h2>{{ t('shipping.title') }}</h2>
-        <p class="sq-stp-hint">{{ t('shipping.desc') }}</p>
-        <label>{{ t('shipping.mode') }}
-          <select v-model="shippingMode">
-            <option value="air">{{ t('shipping.air') }}</option>
-            <option value="lcl">{{ t('shipping.lcl') }}</option>
+    <template v-else>
+      <div class="sq-form-toolbar">
+        <RouterLink to="/simple-quote" class="sq-back">← {{ t('simpleQuote.backToTypes') }}</RouterLink>
+        <label class="sq-type-select">{{ t('simpleQuote.type') }}
+          <select :value="quoteType" @change="onTypeSelect">
+            <option v-for="item in HUB_TYPES" :key="item.value" :value="item.value">
+              {{ t(item.labelKey) }}
+            </option>
           </select>
         </label>
-        <template v-if="shippingMode === 'air'">
-          <div class="sq-row">
-            <label>{{ t('shipping.weight') }}<input v-model.number="shipping.weight_kg" type="number" min="0" step="0.1" /></label>
-            <label>{{ t('shipping.length') }}<input v-model.number="shipping.length_cm" type="number" min="0" /></label>
-          </div>
-          <div class="sq-row">
-            <label>{{ t('shipping.width') }}<input v-model.number="shipping.width_cm" type="number" min="0" /></label>
-            <label>{{ t('shipping.height') }}<input v-model.number="shipping.height_cm" type="number" min="0" /></label>
-          </div>
-        </template>
-        <template v-else>
-          <div class="sq-row">
-            <label>CBM<input v-model.number="shipping.cbm" type="number" min="0" step="0.1" /></label>
-            <label>{{ t('shipping.weight') }}<input v-model.number="shipping.weight_kg" type="number" min="0" /></label>
-          </div>
-          <label>{{ t('shipping.serviceDays') }}
-            <select v-model.number="shipping.service_days"><option :value="4">4</option><option :value="5">5</option></select>
-          </label>
-          <label class="checkbox"><input v-model="shipping.has_battery" type="checkbox" /> {{ t('shipping.hasBattery') }}</label>
-          <template v-if="!shipping.has_battery">
-            <label class="checkbox"><input v-model="shipping.has_pickup" type="checkbox" /> {{ t('shipping.hasPickup') }}</label>
-            <label class="checkbox"><input v-model="shipping.has_co" type="checkbox" /> {{ t('shipping.hasCo') }}</label>
+      </div>
+
+      <InjectionQuoteSheet
+        v-if="quoteType === 'injection'"
+        v-model:product-name="productName"
+        :saved-result="result?.quote_type === 'injection' ? result : null"
+        @generated="onInjectionGenerated"
+        @convert="onConvert"
+      />
+
+      <Print3dQuoteSheet
+        v-else-if="quoteType === 'print3d'"
+        v-model:product-name="productName"
+        :saved-result="result?.quote_type === 'print3d' ? result : null"
+        @generated="onInjectionGenerated"
+        @convert="onConvert"
+      />
+
+      <div v-else-if="quoteType" class="sq-layout">
+        <section class="sq-form card">
+          <label>{{ t('simpleQuote.productName') }}<input v-model="productName" type="text" /></label>
+
+          <template v-if="quoteType === 'pcba'">
+            <label>{{ t('simpleQuote.pcbQty') }}<input v-model.number="pcba.pcb_quantity" type="number" min="1" /></label>
+            <label>{{ t('simpleQuote.arrayCount') }}<input v-model.number="pcba.array_count" type="number" min="1" /></label>
+            <h3 class="sq-parts-title">{{ t('simpleQuote.components') }}</h3>
+            <div v-for="(c, i) in pcba.components" :key="i" class="sq-part">
+              <div class="sq-part-head">
+                <span># {{ i + 1 }}</span>
+                <button v-if="pcba.components.length > 1" type="button" class="btn btn-sm btn-secondary" @click="removeComponent(i)">{{ t('simpleQuote.removePart') }}</button>
+              </div>
+              <div class="sq-row">
+                <label>{{ t('simpleQuote.package') }}
+                  <select v-model="c.package"><option v-for="p in pcbaPackages" :key="p" :value="p">{{ p }}</option></select>
+                </label>
+                <label>{{ t('simpleQuote.tech') }}
+                  <select v-model="c.tech"><option value="smt">SMT</option><option value="dip">DIP</option></select>
+                </label>
+              </div>
+              <label>{{ t('simpleQuote.quantity') }}<input v-model.number="c.qty" type="number" min="1" /></label>
+            </div>
+            <button type="button" class="btn btn-sm btn-secondary sq-add" @click="addComponent">+ {{ t('simpleQuote.addComponent') }}</button>
           </template>
-        </template>
-        <p v-if="shippingError" class="page-message page-message--error">{{ shippingError }}</p>
-        <button type="button" class="btn btn-secondary btn-sm" :disabled="shippingLoading" @click="onShippingEstimate">
-          {{ shippingLoading ? t('shipping.calculating') : t('shipping.estimate') }}
-        </button>
-        <ul v-if="shippingResult" class="sq-breakdown">
-          <li v-for="(item, i) in shippingResult.breakdown || []" :key="i">
-            <span>{{ item.label }}</span><span>{{ formatMoney({ amount: item.amount, currency: item.unit || 'KRW' }) }}</span>
-          </li>
-          <li><span>{{ t('shipping.total') }}</span><strong>{{ formatMoney({ amount: shippingResult.fee_krw, currency: 'KRW' }) }}</strong></li>
-        </ul>
-        <p v-if="shippingResult?.comparison" class="sq-stp-hint">
-          {{ t('shipping.compareDays', { days: shippingResult.comparison.service_days, fee: formatMoney({ amount: shippingResult.comparison.fee_krw, currency: 'KRW' }) }) }}
-        </p>
-      </section>
 
-      <section v-if="result" class="sq-result card">
-        <h2>{{ t('simpleQuote.result') }}</h2>
-        <p class="sq-no">{{ result.quote_no }}</p>
+          <template v-else-if="quoteType === 'pcb'">
+            <label>{{ t('pcbDev.baseType') }}
+              <select v-model.number="pcbDev.base_item_no">
+                <option v-for="opt in pcbBaseOptions" :key="opt.no" :value="opt.no">{{ t(opt.labelKey) }}</option>
+              </select>
+            </label>
+            <fieldset class="sq-fieldset">
+              <legend>{{ t('pcbDev.weights') }}</legend>
+              <label v-for="w in pcbWeightOptions" :key="w.key" class="checkbox">
+                <input v-model="pcbDev.weight_keys" type="checkbox" :value="w.key" /> {{ t(w.labelKey) }}
+              </label>
+            </fieldset>
+            <fieldset class="sq-fieldset">
+              <legend>{{ t('pcbDev.services') }}</legend>
+              <label v-for="s in pcbServiceOptions" :key="s.no" class="checkbox">
+                <input v-model="pcbDev.service_nos" type="checkbox" :value="s.no" /> {{ t(s.labelKey) }}
+              </label>
+            </fieldset>
+            <label class="checkbox"><input v-model="pcbDev.ad_consent" type="checkbox" /> {{ t('pcbDev.adConsent') }}</label>
+            <label>{{ t('pcbDev.shippingWeight') }}<input v-model.number="pcbDev.shipping_weight_kg" type="number" min="0" step="0.1" /></label>
+            <p class="sq-stp-hint">{{ t('pcbDev.shippingHint') }}</p>
+            <fieldset class="sq-fieldset">
+              <legend>{{ t('pcbDev.mfgTitle') }}</legend>
+              <label class="checkbox">
+                <input v-model="pcbDev.include_pcb_manufacturing" type="checkbox" /> {{ t('pcbDev.mfgInclude') }}
+              </label>
+              <template v-if="pcbDev.include_pcb_manufacturing">
+                <label>{{ t('pcbDev.mfgMaterial') }}
+                  <select v-model="pcbDev.mfg_material">
+                    <option v-for="m in pcbManufacturingMaterials" :key="m.value" :value="m.value">{{ t(m.labelKey) }}</option>
+                  </select>
+                </label>
+                <div class="sq-row">
+                  <label>{{ t('pcbDev.mfgLayers') }}<input v-model.number="pcbDev.mfg_layers" type="number" min="1" /></label>
+                  <label>{{ t('pcbDev.mfgQuantity') }}<input v-model.number="pcbDev.mfg_quantity" type="number" min="1" /></label>
+                </div>
+                <div class="sq-row">
+                  <label>{{ t('pcbDev.mfgWidth') }}<input v-model.number="pcbDev.mfg_width_mm" type="number" min="1" /></label>
+                  <label>{{ t('pcbDev.mfgHeight') }}<input v-model.number="pcbDev.mfg_height_mm" type="number" min="1" /></label>
+                </div>
+                <div class="sq-row">
+                  <label>{{ t('pcbDev.mfgBoardThickness') }}
+                    <select v-model="pcbDev.mfg_board_thickness">
+                      <option v-for="value in currentPcbProcessOptions.boardThickness" :key="value" :value="value">{{ value }}mm</option>
+                    </select>
+                  </label>
+                  <label>{{ t('pcbDev.mfgCopperThickness') }}
+                    <select v-model="pcbDev.mfg_copper_thickness">
+                      <option v-for="value in currentPcbProcessOptions.copperThickness" :key="value" :value="value">{{ value }}</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="sq-row">
+                  <label>{{ t('pcbDev.mfgSolderColor') }}
+                    <select v-model="pcbDev.mfg_solder_color">
+                      <option v-for="value in currentPcbProcessOptions.solderColor" :key="value" :value="value">{{ t(`pcbDev.process.${value}`) }}</option>
+                    </select>
+                  </label>
+                  <label>{{ t('pcbDev.mfgSurfaceFinish') }}
+                    <select v-model="pcbDev.mfg_surface_finish">
+                      <option v-for="value in currentPcbProcessOptions.surfaceFinish" :key="value" :value="value">{{ t(`pcbDev.process.${value}`) }}</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="sq-row">
+                  <label>{{ t('pcbDev.mfgSolderMaskCoverage') }}
+                    <select v-model="pcbDev.mfg_solder_mask_coverage">
+                      <option v-for="value in currentPcbProcessOptions.solderMaskCoverage" :key="value" :value="value">{{ t(`pcbDev.process.${value}`) }}</option>
+                    </select>
+                  </label>
+                  <label>{{ t('pcbDev.mfgPanelDesignCount') }}
+                    <select v-model="pcbDev.mfg_panel_design_count">
+                      <option v-for="value in currentPcbProcessOptions.panelDesignCount" :key="value" :value="value">{{ value }}</option>
+                    </select>
+                  </label>
+                </div>
+                <label class="checkbox sq-smt-label">
+                  <input v-model="pcbDev.mfg_smt_required" type="checkbox" />
+                  <span>{{ t('pcbDev.mfgSmtRequired') }}</span>
+                  <span class="sq-stp-hint">{{ t('pcbDev.smtNotIncludedHint') }}</span>
+                </label>
+                <p class="sq-stp-hint">{{ t('pcbDev.mfgHint') }}</p>
+              </template>
+            </fieldset>
+          </template>
+          <template v-else-if="quoteType === 'software'">
+            <label>Modules<input v-model.number="generic.module_count" type="number" min="0" /></label>
+          </template>
 
-        <template v-if="result.quote_type === 'pcba'">
-          <ul class="sq-breakdown">
-            <li v-for="(item, i) in result.result?.breakdown || []" :key="i">
-              <span>{{ item.label }}</span><span>{{ fmtLine(item) }}</span>
+          <p v-if="error" class="page-message page-message--error">{{ error }}</p>
+          <button type="button" class="btn btn-primary" :disabled="submitting" @click="onGenerate">
+            {{ t('simpleQuote.generate') }}
+          </button>
+        </section>
+
+        <section class="sq-shipping card">
+          <h2>{{ t('shipping.title') }}</h2>
+          <p class="sq-stp-hint">{{ t('shipping.desc') }}</p>
+          <label>{{ t('shipping.mode') }}
+            <select v-model="shippingMode">
+              <option value="air">{{ t('shipping.air') }}</option>
+              <option value="lcl">{{ t('shipping.lcl') }}</option>
+            </select>
+          </label>
+          <template v-if="shippingMode === 'air'">
+            <div class="sq-row">
+              <label>{{ t('shipping.weight') }}<input v-model.number="shipping.weight_kg" type="number" min="0" step="0.1" /></label>
+              <label>{{ t('shipping.length') }}<input v-model.number="shipping.length_cm" type="number" min="0" /></label>
+            </div>
+            <div class="sq-row">
+              <label>{{ t('shipping.width') }}<input v-model.number="shipping.width_cm" type="number" min="0" /></label>
+              <label>{{ t('shipping.height') }}<input v-model.number="shipping.height_cm" type="number" min="0" /></label>
+            </div>
+          </template>
+          <template v-else>
+            <div class="sq-row">
+              <label>CBM<input v-model.number="shipping.cbm" type="number" min="0" step="0.1" /></label>
+              <label>{{ t('shipping.weight') }}<input v-model.number="shipping.weight_kg" type="number" min="0" /></label>
+            </div>
+            <label>{{ t('shipping.serviceDays') }}
+              <select v-model.number="shipping.service_days"><option :value="4">4</option><option :value="5">5</option></select>
+            </label>
+            <label class="checkbox"><input v-model="shipping.has_battery" type="checkbox" /> {{ t('shipping.hasBattery') }}</label>
+            <template v-if="!shipping.has_battery">
+              <label class="checkbox"><input v-model="shipping.has_pickup" type="checkbox" /> {{ t('shipping.hasPickup') }}</label>
+              <label class="checkbox"><input v-model="shipping.has_co" type="checkbox" /> {{ t('shipping.hasCo') }}</label>
+            </template>
+          </template>
+          <p v-if="shippingError" class="page-message page-message--error">{{ shippingError }}</p>
+          <button type="button" class="btn btn-secondary btn-sm" :disabled="shippingLoading" @click="onShippingEstimate">
+            {{ shippingLoading ? t('shipping.calculating') : t('shipping.estimate') }}
+          </button>
+          <ul v-if="shippingResult" class="sq-breakdown">
+            <li v-for="(item, i) in shippingResult.breakdown || []" :key="i">
+              <span>{{ item.label }}</span><span>{{ formatMoney({ amount: item.amount, currency: item.unit || 'KRW' }) }}</span>
             </li>
+            <li><span>{{ t('shipping.total') }}</span><strong>{{ formatMoney({ amount: shippingResult.fee_krw, currency: 'KRW' }) }}</strong></li>
           </ul>
-          <p v-if="result.result?.warnings?.length" class="sq-stp-hint">{{ result.result.warnings.join('; ') }}</p>
-          <p class="sq-total">{{ t('simpleQuote.total') }}: <strong>{{ fromQuote(result.total_amount, result) }}</strong></p>
-          <p class="sq-stp-hint">{{ fxHintText }}</p>
-        </template>
-
-        <template v-else-if="result.quote_type === 'pcb'">
-          <ul class="sq-breakdown">
-            <li v-for="(item, i) in result.result?.breakdown || []" :key="i">
-              <span>{{ item.label }}</span><span>{{ fmtLine(item) }}</span>
-            </li>
-          </ul>
-          <div v-if="result.result?.pcb_manufacturing?.enabled" class="sq-manufacturing">
-            <strong>{{ t('pcbDev.mfgTitle') }}</strong>
-            <p v-if="!result.result.pcb_manufacturing.requires_manual_review">
-              {{ t('pcbDev.mfgAutoQuoted') }}:
-              <template v-if="result.result.pcb_manufacturing.pricing_display_mode === 'range'">
-                {{ fmtMfgDual(result.result.pcb_manufacturing.customer_quote_cny_min, result.result.pcb_manufacturing.customer_quote_krw_min) }}
-                ~
-                {{ fmtMfgDual(result.result.pcb_manufacturing.customer_quote_cny_max, result.result.pcb_manufacturing.customer_quote_krw_max) }}
-              </template>
-              <template v-else>
-                {{ fmtMfgDual(result.result.pcb_manufacturing.customer_quote_cny, result.result.pcb_manufacturing.customer_quote_krw) }}
-              </template>
-            </p>
-            <p
-              v-if="!result.result.pcb_manufacturing.requires_manual_review
-                && result.result.pcb_manufacturing.pricing_display_mode === 'range'"
-              class="sq-stp-hint"
-            >
-              {{ t('pcbDev.mfgRangeNote') }}
-            </p>
-            <p
-              v-if="!result.result.pcb_manufacturing.requires_manual_review"
-              class="sq-mfg-mode"
-              :class="{ 'is-estimated': result.result.pcb_manufacturing.is_estimated }"
-            >
-              {{ t('pcbDev.mfgPricingMode') }}:
-              {{ t(result.result.pcb_manufacturing.is_estimated ? 'pcbDev.mfgEstimated' : 'pcbDev.mfgExact') }}
-              <template v-if="result.result.pcb_manufacturing.is_estimated">
-                · {{ t('pcbDev.mfgConfidence') }}
-                {{ fmt((result.result.pcb_manufacturing.confidence || 0) * 100, 1) }}%
-              </template>
-            </p>
-            <p v-if="result.result.pcb_manufacturing.is_estimated" class="sq-stp-hint">
-              {{ t('pcbDev.mfgEstimateNote') }}
-            </p>
-            <p v-if="result.result.pcb_manufacturing.selected_process" class="sq-stp-hint">
-              {{ t('pcbDev.mfgProcess') }}:
-              {{ result.result.pcb_manufacturing.selected_process.board_thickness }}mm ·
-              {{ t(`pcbDev.process.${result.result.pcb_manufacturing.selected_process.solder_color}`) }} ·
-              {{ t(`pcbDev.process.${result.result.pcb_manufacturing.selected_process.surface_finish}`) }} ·
-              {{ result.result.pcb_manufacturing.selected_process.copper_thickness }}
-              <template v-if="result.result.pcb_manufacturing.selected_process.solder_mask_coverage">
-                · {{ t(`pcbDev.process.${result.result.pcb_manufacturing.selected_process.solder_mask_coverage}`) }}
-              </template>
-              <template v-if="result.result.pcb_manufacturing.selected_process.panel_design_count">
-                · {{ t('pcbDev.mfgPanelDesignCount') }} {{ result.result.pcb_manufacturing.selected_process.panel_design_count }}
-              </template>
-            </p>
-            <p v-if="result.result.pcb_manufacturing.smt_required" class="sq-stp-hint">
-              {{ t('pcbDev.mfgSmtRequired') }} · {{ t('pcbDev.smtNotIncludedHint') }}
-            </p>
-            <p v-if="result.result.pcb_manufacturing.risk_status" class="sq-stp-hint">
-              {{ t('pcbDev.mfgRiskStatus') }}: {{ result.result.pcb_manufacturing.risk_status }}
-            </p>
-            <p v-if="result.result.pcb_manufacturing.requires_manual_review">
-              {{ t('pcbDev.mfgManualReview') }}:
-              {{ (result.result.pcb_manufacturing.manual_review_reasons || []).join(' / ') }}
-            </p>
-            <p class="sq-stp-hint">
-              {{ t('pcbDev.mfgVersion') }}: {{ result.result.pcb_manufacturing.active_price_version || result.result.pcb_manufacturing.price_version || '-' }}
-              /
-              {{ t('pcbDev.mfgValidationStatus') }}: {{ result.result.pcb_manufacturing.validation_status || '-' }}
-              /
-              {{ t('pcbDev.mfgAcceptanceStatus') }}: {{ result.result.pcb_manufacturing.acceptance_status || t('pcbDev.mfgAcceptanceLegacy') }}
-            </p>
-            <p
-              v-if="result.result.pcb_manufacturing.acceptance_status && result.result.pcb_manufacturing.acceptance_status !== 'passed'"
-              class="sq-stp-hint"
-            >
-              {{ t('pcbDev.mfgAcceptanceFailedHint') }}
-              ({{ t('pcbDev.mfgFallbackVersion') }}: {{ result.result.pcb_manufacturing.fallback_version || 'jlc-cn-pcb-v6-20260712' }})
-            </p>
-          </div>
-          <p
-            v-if="result.result?.total_min != null && result.result?.total_max != null
-              && result.result.total_min !== result.result.total_max"
-            class="sq-total"
-          >
-            {{ t('pcbDev.totalRange') }}:
-            <strong>{{ fromQuote(result.result.total_min, result) }} ~ {{ fromQuote(result.result.total_max, result) }}</strong>
+          <p v-if="shippingResult?.comparison" class="sq-stp-hint">
+            {{ t('shipping.compareDays', { days: shippingResult.comparison.service_days, fee: formatMoney({ amount: shippingResult.comparison.fee_krw, currency: 'KRW' }) }) }}
           </p>
-          <p class="sq-total">{{ t('simpleQuote.total') }}: <strong>{{ fromQuote(result.total_amount, result) }}</strong></p>
-          <p class="sq-stp-hint">{{ t('pcbDev.vatExcluded') }}</p>
-          <p class="sq-stp-hint">{{ fxHintText }}</p>
-        </template>
+        </section>
 
-        <template v-else>
-          <ul class="sq-breakdown">
-            <li v-for="(item, i) in result.result?.breakdown || []" :key="i">
-              <span>{{ item.label }}</span><span>{{ fmtLine(item) }}</span>
-            </li>
-          </ul>
-          <p class="sq-total">{{ t('simpleQuote.total') }}: <strong>{{ fromQuote(result.total_amount, result) }}</strong></p>
-          <p class="sq-stp-hint">{{ fxHintText }}</p>
-        </template>
+        <section v-if="result" class="sq-result card">
+          <h2>{{ t('simpleQuote.result') }}</h2>
+          <p class="sq-no">{{ result.quote_no }}</p>
 
-        <div class="sq-actions">
-          <a v-if="result.pdf_url" :href="result.pdf_url" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">PDF</a>
-          <button v-if="!result.converted_rfq" type="button" class="btn btn-primary btn-sm" @click="onConvert">{{ t('simpleQuote.convert') }}</button>
-        </div>
-      </section>
-    </div>
+          <template v-if="result.quote_type === 'pcba'">
+            <ul class="sq-breakdown">
+              <li v-for="(item, i) in result.result?.breakdown || []" :key="i">
+                <span>{{ item.label }}</span><span>{{ fmtLine(item) }}</span>
+              </li>
+            </ul>
+            <p v-if="result.result?.warnings?.length" class="sq-stp-hint">{{ result.result.warnings.join('; ') }}</p>
+            <p class="sq-total">{{ t('simpleQuote.total') }}: <strong>{{ fromQuote(result.total_amount, result) }}</strong></p>
+            <p class="sq-stp-hint">{{ fxHintText }}</p>
+          </template>
+
+          <template v-else-if="result.quote_type === 'pcb'">
+            <ul class="sq-breakdown">
+              <li v-for="(item, i) in result.result?.breakdown || []" :key="i">
+                <span>{{ item.label }}</span><span>{{ fmtLine(item) }}</span>
+              </li>
+            </ul>
+            <div v-if="result.result?.pcb_manufacturing?.enabled" class="sq-manufacturing">
+              <strong>{{ t('pcbDev.mfgTitle') }}</strong>
+              <p v-if="!result.result.pcb_manufacturing.requires_manual_review">
+                {{ t('pcbDev.mfgAutoQuoted') }}:
+                <template v-if="result.result.pcb_manufacturing.pricing_display_mode === 'range'">
+                  {{ fmtMfgDual(result.result.pcb_manufacturing.customer_quote_cny_min, result.result.pcb_manufacturing.customer_quote_krw_min) }}
+                  ~
+                  {{ fmtMfgDual(result.result.pcb_manufacturing.customer_quote_cny_max, result.result.pcb_manufacturing.customer_quote_krw_max) }}
+                </template>
+                <template v-else>
+                  {{ fmtMfgDual(result.result.pcb_manufacturing.customer_quote_cny, result.result.pcb_manufacturing.customer_quote_krw) }}
+                </template>
+              </p>
+              <p
+                v-if="!result.result.pcb_manufacturing.requires_manual_review
+                  && result.result.pcb_manufacturing.pricing_display_mode === 'range'"
+                class="sq-stp-hint"
+              >
+                {{ t('pcbDev.mfgRangeNote') }}
+              </p>
+              <p
+                v-if="!result.result.pcb_manufacturing.requires_manual_review"
+                class="sq-mfg-mode"
+                :class="{ 'is-estimated': result.result.pcb_manufacturing.is_estimated }"
+              >
+                {{ t('pcbDev.mfgPricingMode') }}:
+                {{ t(result.result.pcb_manufacturing.is_estimated ? 'pcbDev.mfgEstimated' : 'pcbDev.mfgExact') }}
+                <template v-if="result.result.pcb_manufacturing.is_estimated">
+                  · {{ t('pcbDev.mfgConfidence') }}
+                  {{ fmt((result.result.pcb_manufacturing.confidence || 0) * 100, 1) }}%
+                </template>
+              </p>
+              <p v-if="result.result.pcb_manufacturing.is_estimated" class="sq-stp-hint">
+                {{ t('pcbDev.mfgEstimateNote') }}
+              </p>
+              <p v-if="result.result.pcb_manufacturing.selected_process" class="sq-stp-hint">
+                {{ t('pcbDev.mfgProcess') }}:
+                {{ result.result.pcb_manufacturing.selected_process.board_thickness }}mm ·
+                {{ t(`pcbDev.process.${result.result.pcb_manufacturing.selected_process.solder_color}`) }} ·
+                {{ t(`pcbDev.process.${result.result.pcb_manufacturing.selected_process.surface_finish}`) }} ·
+                {{ result.result.pcb_manufacturing.selected_process.copper_thickness }}
+                <template v-if="result.result.pcb_manufacturing.selected_process.solder_mask_coverage">
+                  · {{ t(`pcbDev.process.${result.result.pcb_manufacturing.selected_process.solder_mask_coverage}`) }}
+                </template>
+                <template v-if="result.result.pcb_manufacturing.selected_process.panel_design_count">
+                  · {{ t('pcbDev.mfgPanelDesignCount') }} {{ result.result.pcb_manufacturing.selected_process.panel_design_count }}
+                </template>
+              </p>
+              <p v-if="result.result.pcb_manufacturing.smt_required" class="sq-stp-hint">
+                {{ t('pcbDev.mfgSmtRequired') }} · {{ t('pcbDev.smtNotIncludedHint') }}
+              </p>
+              <p v-if="result.result.pcb_manufacturing.risk_status" class="sq-stp-hint">
+                {{ t('pcbDev.mfgRiskStatus') }}: {{ result.result.pcb_manufacturing.risk_status }}
+              </p>
+              <p v-if="result.result.pcb_manufacturing.requires_manual_review">
+                {{ t('pcbDev.mfgManualReview') }}:
+                {{ (result.result.pcb_manufacturing.manual_review_reasons || []).join(' / ') }}
+              </p>
+              <p class="sq-stp-hint">
+                {{ t('pcbDev.mfgVersion') }}: {{ result.result.pcb_manufacturing.active_price_version || result.result.pcb_manufacturing.price_version || '-' }}
+                /
+                {{ t('pcbDev.mfgValidationStatus') }}: {{ result.result.pcb_manufacturing.validation_status || '-' }}
+                /
+                {{ t('pcbDev.mfgAcceptanceStatus') }}: {{ result.result.pcb_manufacturing.acceptance_status || t('pcbDev.mfgAcceptanceLegacy') }}
+              </p>
+              <p
+                v-if="result.result.pcb_manufacturing.acceptance_status && result.result.pcb_manufacturing.acceptance_status !== 'passed'"
+                class="sq-stp-hint"
+              >
+                {{ t('pcbDev.mfgAcceptanceFailedHint') }}
+                ({{ t('pcbDev.mfgFallbackVersion') }}: {{ result.result.pcb_manufacturing.fallback_version || 'jlc-cn-pcb-v6-20260712' }})
+              </p>
+            </div>
+            <p
+              v-if="result.result?.total_min != null && result.result?.total_max != null
+                && result.result.total_min !== result.result.total_max"
+              class="sq-total"
+            >
+              {{ t('pcbDev.totalRange') }}:
+              <strong>{{ fromQuote(result.result.total_min, result) }} ~ {{ fromQuote(result.result.total_max, result) }}</strong>
+            </p>
+            <p class="sq-total">{{ t('simpleQuote.total') }}: <strong>{{ fromQuote(result.total_amount, result) }}</strong></p>
+            <p class="sq-stp-hint">{{ t('pcbDev.vatExcluded') }}</p>
+            <p class="sq-stp-hint">{{ fxHintText }}</p>
+          </template>
+
+          <template v-else>
+            <ul class="sq-breakdown">
+              <li v-for="(item, i) in result.result?.breakdown || []" :key="i">
+                <span>{{ item.label }}</span><span>{{ fmtLine(item) }}</span>
+              </li>
+            </ul>
+            <p class="sq-total">{{ t('simpleQuote.total') }}: <strong>{{ fromQuote(result.total_amount, result) }}</strong></p>
+            <p class="sq-stp-hint">{{ fxHintText }}</p>
+          </template>
+
+          <div class="sq-actions">
+            <a v-if="result.pdf_url" :href="result.pdf_url" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">PDF</a>
+            <button v-if="!result.converted_rfq" type="button" class="btn btn-primary btn-sm" @click="onConvert">{{ t('simpleQuote.convert') }}</button>
+          </div>
+        </section>
+      </div>
+    </template>
   </PageShell>
 </template>
 
 <style scoped lang="scss">
+.sq-form-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-md) var(--space-xl);
+  margin-bottom: var(--space-lg);
+}
+.sq-back {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-steel);
+  text-decoration: none;
+  margin-bottom: 0.35rem;
+  &:hover { text-decoration: underline; }
+}
 .sq-type-select {
   display: flex;
   flex-direction: column;
   gap: 0.375rem;
   font-size: 0.875rem;
   max-width: 320px;
-  margin-bottom: var(--space-lg);
+  margin-bottom: 0;
   select { padding: 0.625rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); }
+}
+.sq-hub {
+  margin-top: var(--space-md);
+}
+.sq-hub-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--space-md);
+}
+.sq-hub-tile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-lg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  text-decoration: none;
+  transition: border-color 0.15s;
+  &:hover { border-color: var(--color-steel); }
+}
+.sq-hub-tile-name {
+  font-weight: 600;
+  color: var(--color-text-heading);
+}
+.sq-hub-tile-cta {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-steel);
 }
 
 .sq-mfg-mode {

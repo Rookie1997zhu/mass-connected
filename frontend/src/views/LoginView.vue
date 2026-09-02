@@ -1,12 +1,15 @@
 <script setup>
 import { ref } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import PageShell from '../components/PageShell.vue'
 import { useAuthStore } from '../stores/auth'
+import { resolveApiMessage } from '../utils/apiErrors'
 
 const auth = useAuthStore()
 const route = useRoute()
 const router = useRouter()
+const { t } = useI18n()
 const form = ref({ email: '', password: '' })
 const error = ref('')
 
@@ -24,7 +27,7 @@ const onSubmit = async () => {
       router.push('/my/rfqs')
     }
   } catch (e) {
-    error.value = e.message || 'Login failed'
+    error.value = resolveApiMessage(e, t, 'common.failed')
   }
 }
 </script>

@@ -22,6 +22,8 @@ from apps.accounts.views import (
     MemberLoginView,
     MemberProfileView,
     MemberRegisterView,
+    VerifyEmailConfirmView,
+    VerifyEmailResendView,
     PublicPartnerListView,
     SupplierDashboardView,
     SupplierLicenseDownloadView,
@@ -32,6 +34,8 @@ from apps.accounts.views import (
 urlpatterns = [
     path("public/partners", PublicPartnerListView.as_view()),
     path("member/auth/register", MemberRegisterView.as_view()),
+    path("member/auth/verify-email/confirm", VerifyEmailConfirmView.as_view()),
+    path("member/auth/verify-email/resend", VerifyEmailResendView.as_view()),
     path("factory/auth/register", FactoryRegisterView.as_view()),
     path("member/auth/login", MemberLoginView.as_view()),
     path("member/auth/refresh", CookieTokenRefreshView.as_view()),

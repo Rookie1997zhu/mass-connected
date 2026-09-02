@@ -2,6 +2,7 @@
 import { onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { fetchRemindableOrders, sendChatOrderReminder } from '../api'
+import { resolveApiMessage } from '../utils/apiErrors'
 
 const props = defineProps({
   open: { type: Boolean, default: false },
@@ -49,7 +50,7 @@ const load = async ({ reset = false } = {}) => {
     items.value = reset ? next : [...items.value, ...next]
     totalPages.value = res.data?.pagination?.total_pages || 1
   } catch (e) {
-    emit('error', e?.message || t('chat.orderPickerLoadFailed'))
+    emit('error', resolveApiMessage(e, t, 'chat.orderPickerLoadFailed'))
   } finally {
     loading.value = false
   }
@@ -80,7 +81,7 @@ const onSend = async () => {
     emit('sent', res.data)
     emit('close')
   } catch (e) {
-    emit('error', e?.message || t('chat.orderRemindFailed'))
+    emit('error', resolveApiMessage(e, t, 'chat.orderRemindFailed'))
   } finally {
     sending.value = false
   }

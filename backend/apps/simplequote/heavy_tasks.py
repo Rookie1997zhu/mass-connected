@@ -213,3 +213,31 @@ def send_notification_email(self, subject: str, message: str, recipient: str) ->
     except Exception:  # noqa: BLE001
         logger.exception("send_notification_email failed recipient=%s", recipient)
         return {"ok": False}
+
+
+@shared_task(
+    bind=True,
+    name="accounts.send_verification_email",
+    queue="heavy",
+    max_retries=0,
+    soft_time_limit=30,
+    time_limit=60,
+)
+def send_verification_email(self, user_id: int, lang: str = "ko") -> dict:
+    try:
+        from apps.accounts.models import User
+        from apps.accounts.services.email_verification import get_email_content
+
+        user = User.objects.get(pk=user_id)
+        subject, message = get_email_content(user, lang)
+        send_mail(
+            subject=subject,
+            message=message,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[user.email],
+            fail_silently=False,
+        )
+        return {"ok": True}
+    except Exception:  # noqa: BLE001
+        logger.exception("send_verification_email failed user_id=%s", user_id)
+        return {"ok": False}

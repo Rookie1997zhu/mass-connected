@@ -6,6 +6,7 @@ import PageShell from '../../components/PageShell.vue'
 import { fetchDemandDetail, grabDemand } from '../../api'
 import { useAuthStore } from '../../stores/auth'
 import { useLocaleCurrency } from '../../composables/useLocaleCurrency'
+import { resolveApiMessage } from '../../utils/apiErrors'
 
 const { t } = useI18n()
 const { formatMoney } = useLocaleCurrency()
@@ -40,7 +41,7 @@ const onGrab = async () => {
       goQuote(res.data.id)
     }
   } catch (e) {
-    error.value = e.message || t('demandHall.grabFailed')
+    error.value = resolveApiMessage(e, t, 'demandHall.grabFailed')
   } finally {
     grabbing.value = false
   }

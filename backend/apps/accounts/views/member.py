@@ -3,7 +3,7 @@ from datetime import date
 from django.contrib.auth import authenticate
 from rest_framework import status
 from rest_framework.parsers import FormParser, MultiPartParser
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.throttling import ScopedRateThrottle
 from rest_framework.views import APIView
 
@@ -15,7 +15,13 @@ from apps.accounts.serializers import (
 )
 from apps.accounts.views._helpers import (
     _auth_success_with_refresh_cookie,
+    get_lang,
     user_login_payload,
+)
+from apps.accounts.services.email_verification import (
+    can_resend_verification,
+    confirm_verification_token,
+    enqueue_verification_email,
 )
 from core.file_validation import validate_upload_file
 from core.permissions import IsBuyerRole, IsMemberOrFactoryRole
@@ -46,6 +52,10 @@ class MemberRegisterView(APIView):
 
             grant_register_bonus(user)
         except Exception:  # noqa: BLE001 - 积分赠送失败不阻断注册
+            pass
+        try:
+            enqueue_verification_email(user, lang=get_lang(request))
+        except Exception:  # noqa: BLE001 - 验证邮件失败不阻断注册
             pass
         return _auth_success_with_refresh_cookie(
             request,
@@ -96,6 +106,66 @@ class MemberLoginView(APIView):
         return _auth_success_with_refresh_cookie(
             request, user_login_payload(user), kind="member"
         )
+
+
+class VerifyEmailConfirmView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        token = (request.data.get("token") or "").strip()
+        if not token:
+            return error_response(
+                "EMAIL_VERIFY_TOKEN_INVALID",
+                "验证链接无效",
+                status=status.HTTP_400_BAD_REQUEST,
+                request=request,
+            )
+        user, result = confirm_verification_token(token)
+        if result == "expired":
+            return error_response(
+                "EMAIL_VERIFY_TOKEN_EXPIRED",
+                "验证链接已过期",
+                status=status.HTTP_400_BAD_REQUEST,
+                request=request,
+            )
+        if result == "invalid":
+            return error_response(
+                "EMAIL_VERIFY_TOKEN_INVALID",
+                "验证链接无效",
+                status=status.HTTP_400_BAD_REQUEST,
+                request=request,
+            )
+        message = "邮箱已验证" if result == "verified" else "邮箱已验证"
+        return success_response(
+            {"user": UserSerializer(user).data},
+            message=message,
+            request=request,
+        )
+
+
+class VerifyEmailResendView(APIView):
+    permission_classes = [IsAuthenticated]
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = "verify_email"
+
+    def post(self, request):
+        user = request.user
+        if user.is_verified:
+            return error_response(
+                "EMAIL_ALREADY_VERIFIED",
+                "邮箱已验证",
+                status=status.HTTP_400_BAD_REQUEST,
+                request=request,
+            )
+        if not can_resend_verification(user.id):
+            return error_response(
+                "RATE_LIMIT_EXCEEDED",
+                "发送过于频繁，请稍后再试",
+                status=status.HTTP_429_TOO_MANY_REQUESTS,
+                request=request,
+            )
+        enqueue_verification_email(user, lang=get_lang(request))
+        return success_response({}, message="验证邮件已发送", request=request)
 
 
 class MemberProfileView(APIView):

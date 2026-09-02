@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n'
 import PageShell from '../../components/PageShell.vue'
 import { createOrder, fetchCart } from '../../api'
 import { useLocaleCurrency } from '../../composables/useLocaleCurrency'
+import { resolveApiMessage } from '../../utils/apiErrors'
 
 const { t } = useI18n()
 const { formatMoney } = useLocaleCurrency()
@@ -34,7 +35,7 @@ const submit = async () => {
     const res = await createOrder(form.value)
     router.push({ name: 'my-orders', query: { created: res.data.order_no } })
   } catch (e) {
-    error.value = e.message || t('orders.createFailed')
+    error.value = resolveApiMessage(e, t, 'orders.createFailed')
   }
 }
 </script>

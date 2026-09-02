@@ -15,6 +15,9 @@ export const fetchNavigation = () => http.get('/public/navigation')
 export const submitInquiry = (data) => http.post('/public/inquiries', data)
 
 export const memberRegister = (data) => http.post('/member/auth/register', data)
+export const verifyEmailConfirm = (token) =>
+  http.post('/member/auth/verify-email/confirm', { token })
+export const verifyEmailResend = () => http.post('/member/auth/verify-email/resend', {})
 export const factoryRegister = (data) => http.post('/factory/auth/register', data)
 export const memberLogin = (data) => http.post('/member/auth/login', data)
 export const memberLogout = () => http.post('/member/auth/logout', {})

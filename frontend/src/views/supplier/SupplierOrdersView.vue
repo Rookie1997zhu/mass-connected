@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n'
 import PageShell from '../../components/PageShell.vue'
 import { confirmProductionOrder, fetchSupplierProductionOrders, rejectProductionOrder } from '../../api'
 import { useLocaleCurrency } from '../../composables/useLocaleCurrency'
+import { resolveApiMessage } from '../../utils/apiErrors'
 
 const { t } = useI18n()
 const { formatMoney } = useLocaleCurrency()
@@ -45,7 +46,7 @@ const onConfirm = async (id) => {
     message.value = t('productionOrder.confirmed')
     await load()
   } catch (e) {
-    error.value = e.message || t('productionOrder.confirmFailed')
+    error.value = resolveApiMessage(e, t, 'productionOrder.confirmFailed')
   }
 }
 
@@ -57,7 +58,7 @@ const onReject = async (id) => {
     message.value = t('productionOrder.rejected')
     await load()
   } catch (e) {
-    error.value = e.message || t('productionOrder.rejectFailed')
+    error.value = resolveApiMessage(e, t, 'productionOrder.rejectFailed')
   }
 }
 </script>

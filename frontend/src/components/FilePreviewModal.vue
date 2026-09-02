@@ -12,6 +12,7 @@ import {
 } from '../api'
 import { toApiPath } from '../utils/downloadAuthedFile'
 import { pollParseJob } from '../utils/pollJob'
+import { resolveApiMessage } from '../utils/apiErrors'
 
 const props = defineProps({
   file: { type: Object, default: null },
@@ -214,7 +215,7 @@ const load = async () => {
       error.value = t('filePreview.unsupported')
     }
   } catch (e) {
-    error.value = e.message || t('filePreview.convertFailed')
+    error.value = resolveApiMessage(e, t, 'filePreview.convertFailed')
     previewKind.value = 'unsupported'
   } finally {
     loading.value = false
@@ -257,7 +258,7 @@ const onTranslateFile = async () => {
     } else if (code === 'PREVIEW_EXTRACT_EMPTY') {
       translateError.value = t('filePreview.noExtractableText')
     } else {
-      translateError.value = e.message || t('aiTranslate.translateFailed')
+      translateError.value = resolveApiMessage(e, t, 'aiTranslate.translateFailed')
     }
   } finally {
     translateLoading.value = false

@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import PageShell from '../../components/PageShell.vue'
 import { fetchNdaList, fetchNdaTemplate, signNda } from '../../api'
 import { downloadAuthedFile } from '../../utils/downloadAuthedFile'
+import { resolveApiMessage } from '../../utils/apiErrors'
 
 const { t } = useI18n()
 const loading = ref(true)
@@ -25,7 +26,7 @@ const load = async () => {
     companyName.value = tplRes.data.company_name || ''
     records.value = listRes.data.items || []
   } catch (e) {
-    error.value = e.message || t('nda.loadFailed')
+    error.value = resolveApiMessage(e, t, 'nda.loadFailed')
   } finally {
     loading.value = false
   }
@@ -39,7 +40,7 @@ const onSign = async () => {
     agree.value = false
     await load()
   } catch (e) {
-    error.value = e.message || t('nda.signFailed')
+    error.value = resolveApiMessage(e, t, 'nda.signFailed')
   } finally {
     signing.value = false
   }

@@ -16,6 +16,7 @@ import ChatMessageList from './chat/ChatMessageList.vue'
 import ChatComposer from './chat/ChatComposer.vue'
 import OrderPickerSheet from './OrderPickerSheet.vue'
 import { createChatSocket } from '../utils/chatWs'
+import { resolveApiMessage } from '../utils/apiErrors'
 import { useAuthStore } from '../stores/auth'
 
 const props = defineProps({
@@ -91,7 +92,7 @@ const loadConversations = async () => {
     const res = await fetchChatConversations(role.value, { page_size: 50 })
     conversations.value = res.data?.items || []
   } catch (e) {
-    error.value = e?.message || t('chat.loadFailed')
+    error.value = resolveApiMessage(e, t, 'chat.loadFailed')
   } finally {
     loadingList.value = false
   }
@@ -150,7 +151,7 @@ const loadMessages = async (conversationId, { afterId, beforeId } = {}) => {
       await messageListRef.value?.scrollToBottom()
     }
   } catch (e) {
-    error.value = e?.message || t('chat.loadFailed')
+    error.value = resolveApiMessage(e, t, 'chat.loadFailed')
   } finally {
     loadingMessages.value = false
     loadingOlder.value = false
@@ -179,7 +180,7 @@ const openByQuoteRequest = async (qrId) => {
     await loadConversations()
     if (conv?.id) await selectConversation(conv.id)
   } catch (e) {
-    error.value = e?.message || t('chat.openFailed')
+    error.value = resolveApiMessage(e, t, 'chat.openFailed')
   }
 }
 
@@ -198,7 +199,7 @@ const onSend = async (body) => {
     if (msg) bumpConversationLocal(activeId.value, msg, { clearUnread: true })
     await messageListRef.value?.scrollToBottom()
   } catch (e) {
-    error.value = e?.message || e?.code || t('chat.sendFailed')
+    error.value = resolveApiMessage(e, t, 'chat.sendFailed')
   } finally {
     sending.value = false
   }
@@ -212,7 +213,7 @@ const onOpenDispute = async () => {
     disputeReason.value = ''
     await loadConversations()
   } catch (e) {
-    error.value = e?.message || t('chat.disputeFailed')
+    error.value = resolveApiMessage(e, t, 'chat.disputeFailed')
   }
 }
 
@@ -222,7 +223,7 @@ const onResolveDispute = async () => {
     await resolveChatDispute(role.value, activeId.value)
     await loadConversations()
   } catch (e) {
-    error.value = e?.message || t('chat.disputeFailed')
+    error.value = resolveApiMessage(e, t, 'chat.disputeFailed')
   }
 }
 

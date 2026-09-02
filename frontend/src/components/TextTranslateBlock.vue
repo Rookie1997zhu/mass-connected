@@ -11,6 +11,7 @@ import {
   translateSupplierQuoteText,
 } from '../api'
 import { pollChatTranslateJob } from '../utils/pollJob'
+import { resolveApiMessage } from '../utils/apiErrors'
 
 const props = defineProps({
   // Legacy project API: projectId + role
@@ -90,7 +91,7 @@ const onTranslate = async () => {
     if (code === 'TRANSLATE_NOT_CONFIGURED') {
       error.value = t('aiTranslate.notConfigured')
     } else {
-      error.value = e.message || t('aiTranslate.translateFailed')
+      error.value = resolveApiMessage(e, t, 'aiTranslate.translateFailed')
     }
   } finally {
     loading.value = false

@@ -3,7 +3,20 @@ import { fetchChatTranslateJob, fetchParseJob } from '../api'
 export const CHAT_TRANSLATE_JOB_TIMEOUT = 60000
 
 /**
+ * @param {string} code
+ * @param {string} [rawMessage] 后端原始 message（供中文兜底映射，不直接展示）
+ * @param {object} [data]
+ */
+function makeJobError(code, rawMessage = '', data = null) {
+  const err = new Error(rawMessage || '')
+  err.code = code
+  if (data) err.data = data
+  return err
+}
+
+/**
  * 通用异步 job 短轮询：直至 done / failed / 超时。
+ * 失败时仅抛出带 `code` 的错误，展示文案由调用方 `resolveApiMessage` 解析。
  * @param {() => Promise<object>} fetchFn 返回响应对象（含 .data）的函数
  * @param {object} [opts]
  * @param {number} [opts.interval=1500] 轮询间隔（ms）
@@ -24,9 +37,7 @@ export async function pollJob(
   } = {},
 ) {
   if (typeof fetchFn !== 'function') {
-    const err = new Error('missing job id')
-    err.code = notFoundCode
-    throw err
+    throw makeJobError(notFoundCode)
   }
   const started = Date.now()
   while (Date.now() - started < timeout) {
@@ -35,16 +46,11 @@ export async function pollJob(
     const status = data.status
     if (status === 'done') return data
     if (status === 'failed') {
-      const err = new Error(data.error_message || '任务失败')
-      err.code = data.error_code || failedCode
-      err.data = data
-      throw err
+      throw makeJobError(data.error_code || failedCode, data.error_message || '', data)
     }
     await new Promise((resolve) => setTimeout(resolve, interval))
   }
-  const err = new Error('任务超时，请稍后重试')
-  err.code = timeoutCode
-  throw err
+  throw makeJobError(timeoutCode)
 }
 
 /**
@@ -53,9 +59,7 @@ export async function pollJob(
  */
 export async function pollParseJob(jobId, { interval = 1500, timeout = 90000 } = {}) {
   if (!jobId) {
-    const err = new Error('missing job id')
-    err.code = 'PARSE_JOB_NOT_FOUND'
-    throw err
+    throw makeJobError('PARSE_JOB_NOT_FOUND')
   }
   return pollJob(() => fetchParseJob(jobId), {
     interval,
@@ -76,9 +80,7 @@ export async function pollChatTranslateJob(
   { interval = 1500, timeout = CHAT_TRANSLATE_JOB_TIMEOUT } = {},
 ) {
   if (!jobId) {
-    const err = new Error('missing job id')
-    err.code = 'TRANSLATE_JOB_NOT_FOUND'
-    throw err
+    throw makeJobError('TRANSLATE_JOB_NOT_FOUND')
   }
   return pollJob(() => fetchChatTranslateJob(role, jobId), {
     interval,

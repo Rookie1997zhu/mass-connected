@@ -294,8 +294,12 @@ services:
     restart: unless-stopped
     mem_limit: 256m
     cpus: 0.5
+    environment:
+      CADDY_SITE_ADDRESS: ${CADDY_SITE_ADDRESS:-:80}
     ports:
       - "0.0.0.0:80:80"
+      - "0.0.0.0:443:443"
+      - "0.0.0.0:443:443/udp"
     volumes:
       - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
       - ./caddy/snippets:/etc/caddy/snippets:ro

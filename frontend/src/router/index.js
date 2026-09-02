@@ -19,6 +19,8 @@ const routes = [
       { path: 'contact', name: 'contact', component: () => import('../views/ContactView.vue') },
       { path: 'login', name: 'login', component: () => import('../views/LoginView.vue') },
       { path: 'register', name: 'register', component: () => import('../views/RegisterView.vue') },
+      { path: 'verify-email/sent', name: 'verify-email-sent', component: () => import('../views/VerifyEmailSentView.vue') },
+      { path: 'verify-email', name: 'verify-email', component: () => import('../views/VerifyEmailView.vue') },
       { path: 'partners', name: 'partners', component: () => import('../views/factory/PartnerApplyView.vue') },
       {
         path: 'buyer',

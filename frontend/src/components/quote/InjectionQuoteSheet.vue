@@ -5,6 +5,7 @@ import { useRouter } from 'vue-router'
 import StpViewer3d from './StpViewer3d.vue'
 import { INJECTION_MATERIALS, MOLD_MATERIALS, useInjectionQuote } from '../../composables/useInjectionQuote'
 import { useLocaleCurrency } from '../../composables/useLocaleCurrency'
+import { useAuthStore } from '../../stores/auth'
 
 const productName = defineModel('productName', { type: String, default: '' })
 
@@ -16,7 +17,11 @@ const emit = defineEmits(['generated', 'convert'])
 
 const { t } = useI18n()
 const router = useRouter()
+const auth = useAuthStore()
 const { formatMoney, fromPreview, displayCurrency } = useLocaleCurrency()
+
+/** 内部成本金额仅平台管理员可见；普通会员隐藏红框价格 */
+const canSeeInternalAmounts = computed(() => auth.isStaff)
 
 const {
   injection,
@@ -175,7 +180,7 @@ const handleGenerate = async () => {
         <div class="iq-section">
           <div class="iq-section__head">
             <h3>1. {{ t('injectionQuote.moldCostSection') }}</h3>
-            <div class="iq-amount">
+            <div v-if="canSeeInternalAmounts" class="iq-amount">
               <span class="iq-highlight iq-amount__val">{{ previewLoading ? '—' : fmtAmount(preview?.mold_fee) }}</span>
               <span class="iq-amount__unit">{{ displayCurrency }}</span>
             </div>
@@ -218,7 +223,7 @@ const handleGenerate = async () => {
         <div class="iq-section">
           <div class="iq-section__head">
             <h3>2. {{ t('injectionQuote.unitPriceSection') }}</h3>
-            <div class="iq-amount">
+            <div v-if="canSeeInternalAmounts" class="iq-amount">
               <span class="iq-highlight iq-amount__val">{{ previewLoading ? '—' : fmtAmount(preview?.product_total) }}</span>
               <span class="iq-amount__unit">{{ displayCurrency }}</span>
             </div>
@@ -226,7 +231,7 @@ const handleGenerate = async () => {
           <ol class="iq-lines">
             <li>
               <span>1. {{ t('injectionQuote.perUnitPrice') }}</span>
-              <span class="iq-highlight iq-highlight--text">{{ previewLoading ? '—' : fmtAmount(preview?.parts?.[0]?.unit_price, 4) }}</span>
+              <span v-if="canSeeInternalAmounts" class="iq-highlight iq-highlight--text">{{ previewLoading ? '—' : fmtAmount(preview?.parts?.[0]?.unit_price, 4) }}</span>
             </li>
             <li>
               <span>2. {{ t('injectionQuote.colorLabel') }}</span>
@@ -239,22 +244,22 @@ const handleGenerate = async () => {
             </li>
             <li>
               <span>3. {{ t('injectionQuote.productionCost') }}</span>
-              <span class="iq-highlight iq-highlight--text">
+              <span v-if="canSeeInternalAmounts" class="iq-highlight iq-highlight--text">
                 {{ previewLoading ? '—' : productionAmount != null ? fmtAmount(productionAmount, 4) : t('injectionQuote.shippingPending') }}
               </span>
             </li>
             <li>
               <span>4. {{ t('injectionQuote.packagingCost') }}</span>
-              <span class="iq-highlight iq-highlight--text">{{ packagingAmount != null ? fmtAmount(packagingAmount, 4) : '—' }}</span>
+              <span v-if="canSeeInternalAmounts" class="iq-highlight iq-highlight--text">{{ packagingAmount != null ? fmtAmount(packagingAmount, 4) : '—' }}</span>
             </li>
             <li>
               <span>5. {{ t('injectionQuote.shippingCost') }}</span>
-              <span class="iq-highlight iq-highlight--text">
+              <span v-if="canSeeInternalAmounts" class="iq-highlight iq-highlight--text">
                 {{ previewLoading ? '—' : shippingAmount != null ? fmtAmount(shippingAmount) : t('injectionQuote.shippingPending') }}
               </span>
             </li>
           </ol>
-          <p v-if="shippingHint" class="iq-shipping-hint">{{ shippingHint }}</p>
+          <p v-if="canSeeInternalAmounts && shippingHint" class="iq-shipping-hint">{{ shippingHint }}</p>
           <label class="iq-check">
             {{ t('simpleQuote.quantity') }}
             <input v-model.number="primaryPart.quantity" class="iq-highlight iq-highlight--narrow" type="number" min="1" />
@@ -267,8 +272,10 @@ const handleGenerate = async () => {
             <span class="iq-highlight iq-highlight--text">—</span>
             <span class="iq-footer__sep">/</span>
             <span>{{ t('injectionQuote.grandTotal') }}</span>
-            <span class="iq-highlight iq-amount__val">{{ previewLoading ? '—' : fmtAmount(preview?.total) }}</span>
-            <span>{{ displayCurrency }}</span>
+            <template v-if="canSeeInternalAmounts">
+              <span class="iq-highlight iq-amount__val">{{ previewLoading ? '—' : fmtAmount(preview?.total) }}</span>
+              <span>{{ displayCurrency }}</span>
+            </template>
           </div>
           <p class="iq-moq">{{ t('simpleQuote.moqHint', { kg: preview?.moq_kg || 25 }) }}</p>
         </div>
@@ -296,7 +303,7 @@ const handleGenerate = async () => {
               <input v-model.number="p.slider_count" type="number" min="0" :placeholder="t('simpleQuote.sliderCount')" />
               <input v-model.number="p.quantity" type="number" min="1" :placeholder="t('simpleQuote.quantity')" />
             </div>
-            <p v-if="preview?.parts?.[i]" class="iq-family-price">
+            <p v-if="canSeeInternalAmounts && preview?.parts?.[i]" class="iq-family-price">
               {{ colorLabel(p.color) }} · {{ fmtAmount(preview.parts[i].unit_price, 4) }}
             </p>
           </div>

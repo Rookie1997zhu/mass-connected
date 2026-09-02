@@ -17,6 +17,7 @@ import {
 } from '../../api'
 import { useLocaleCurrency } from '../../composables/useLocaleCurrency'
 import { downloadAuthedFile } from '../../utils/downloadAuthedFile'
+import { resolveApiMessage } from '../../utils/apiErrors'
 
 const { t } = useI18n()
 const { formatMoney } = useLocaleCurrency()
@@ -121,7 +122,7 @@ const onSaveRfq = async () => {
     successMessage.value = t('myRfqs.rfqUpdated')
     await load()
   } catch (e) {
-    message.value = e.message || t('myRfqs.rfqUpdateFailed')
+    message.value = resolveApiMessage(e, t, 'myRfqs.rfqUpdateFailed')
   } finally {
     saving.value = false
   }
@@ -151,7 +152,7 @@ const openDetail = async (quoteId) => {
     const res = await fetchMyQuoteDetail(rfq.value.id, quoteId)
     quoteDetail.value = res.data
   } catch (e) {
-    detailError.value = e.message || t('quoteDetail.loadFailed')
+    detailError.value = resolveApiMessage(e, t, 'quoteDetail.loadFailed')
   } finally {
     detailLoading.value = false
   }
@@ -176,7 +177,7 @@ const onAccept = async (quoteId) => {
     await load()
     activeTab.value = 'contract'
   } catch (e) {
-    message.value = e.message || t('rfq.acceptFailed')
+    message.value = resolveApiMessage(e, t, 'rfq.acceptFailed')
   }
 }
 </script>

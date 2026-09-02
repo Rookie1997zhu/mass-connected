@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import PageShell from '../components/PageShell.vue'
 import { submitInquiry } from '../api'
+import { resolveApiMessage } from '../utils/apiErrors'
 
 const { t } = useI18n()
 const form = ref({ name: '', company: '', email: '', phone: '', product_interest: '', message: '' })
@@ -17,7 +18,7 @@ const onSubmit = async () => {
     message.value = 'success'
     form.value = { name: '', company: '', email: '', phone: '', product_interest: '', message: '' }
   } catch (e) {
-    message.value = e.message || t('contact.submitFailed')
+    message.value = resolveApiMessage(e, t, 'contact.submitFailed')
   } finally {
     loading.value = false
   }

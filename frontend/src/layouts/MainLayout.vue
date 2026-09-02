@@ -9,8 +9,10 @@ import {
   fetchNavigation,
   fetchSupplierUnreadCount,
   fetchUnreadCount,
+  verifyEmailResend,
 } from '../api'
 import { useAuthStore } from '../stores/auth'
+import { resolveApiMessage } from '../utils/apiErrors'
 
 const { t, locale } = useI18n()
 const auth = useAuthStore()
@@ -25,6 +27,37 @@ const unreadCount = ref(0)
 const chatUnread = ref(0)
 const chatOpen = ref(false)
 const chatQuoteRequestId = ref(null)
+const verifyBannerDismissed = ref(
+  typeof sessionStorage !== 'undefined' && sessionStorage.getItem('verify_banner_dismissed') === '1',
+)
+const verifyBannerResending = ref(false)
+const verifyBannerMessage = ref('')
+
+const showVerifyBanner = computed(
+  () =>
+    auth.needsEmailVerification &&
+    !verifyBannerDismissed.value &&
+    route.name !== 'verify-email-sent' &&
+    route.name !== 'verify-email',
+)
+
+const dismissVerifyBanner = () => {
+  verifyBannerDismissed.value = true
+  sessionStorage.setItem('verify_banner_dismissed', '1')
+}
+
+const resendVerifyEmail = async () => {
+  verifyBannerMessage.value = ''
+  verifyBannerResending.value = true
+  try {
+    await verifyEmailResend()
+    verifyBannerMessage.value = t('register.resendSuccess')
+  } catch (e) {
+    verifyBannerMessage.value = resolveApiMessage(e, t, 'register.resendFailed')
+  } finally {
+    verifyBannerResending.value = false
+  }
+}
 
 const supplierMenuItems = computed(() => [
   { path: '/supplier/quote-requests', label: t('quoteRequest.title') },
@@ -33,8 +66,6 @@ const supplierMenuItems = computed(() => [
 ])
 
 const buyerMenuItems = computed(() => [
-  { path: '/simple-quote', label: t('simpleQuote.title') },
-  { path: '/rfq/new', label: t('nav.detailedQuote') },
   { path: '/my/rfqs', label: t('nav.myRfqs') },
   { path: '/my/production-orders', label: t('nav.productionOrders') },
   { path: '/packaging', label: t('packaging.title') },
@@ -107,7 +138,8 @@ const fallbackNavGroups = computed(() => [
   {
     label: t('nav.manufacturingQuote'),
     items: [
-      { path: '/rfq/new', label: t('nav.postRequest') },
+      { path: '/simple-quote', label: t('simpleQuote.title') },
+      { path: '/rfq/new', label: t('nav.detailedQuote') },
       { path: '/demand-hall', label: t('nav.findDemands') },
       { path: '/partners', label: t('nav.partnersDirectory') },
     ],
@@ -141,9 +173,32 @@ const mapApiGroups = (groups) =>
     }))
     .filter((group) => group.items.length > 0)
 
+/** 确保「制造报价」组含简单/详细报价入口（API 导航缺项时补上） */
+const ensureManufacturingQuoteEntries = (groups) => {
+  const simple = { path: '/simple-quote', label: t('simpleQuote.title') }
+  const detailed = { path: '/rfq/new', label: t('nav.detailedQuote') }
+  const mfgLabel = t('nav.manufacturingQuote')
+  const idx = groups.findIndex(
+    (g) =>
+      g.label === mfgLabel ||
+      g.items.some((i) => ['/rfq/new', '/simple-quote', '/demand-hall'].includes(i.path)),
+  )
+  if (idx < 0) {
+    return [{ label: mfgLabel, items: [simple, detailed] }, ...groups]
+  }
+  const rest = groups[idx].items.filter(
+    (i) => i.path !== '/simple-quote' && i.path !== '/rfq/new',
+  )
+  const next = [...groups]
+  next[idx] = { ...groups[idx], items: [simple, detailed, ...rest] }
+  return next
+}
+
 const navGroups = computed(() => {
-  if (apiNavGroups.value?.length) return mapApiGroups(apiNavGroups.value)
-  return fallbackNavGroups.value
+  const base = apiNavGroups.value?.length
+    ? mapApiGroups(apiNavGroups.value)
+    : fallbackNavGroups.value
+  return ensureManufacturingQuoteEntries(base)
 })
 
 const loadNavigation = async () => {
@@ -211,6 +266,26 @@ if (typeof window !== 'undefined') {
 
 <template>
   <div class="layout">
+    <div v-if="showVerifyBanner" class="verify-banner" role="status">
+      <span>{{ t('register.notVerifiedBanner') }}</span>
+      <span v-if="verifyBannerMessage" class="verify-banner-msg">{{ verifyBannerMessage }}</span>
+      <div class="verify-banner-actions">
+        <RouterLink to="/verify-email/sent" class="btn btn-sm btn-secondary">
+          {{ t('register.verifySentLink') }}
+        </RouterLink>
+        <button
+          type="button"
+          class="btn btn-sm btn-primary"
+          :disabled="verifyBannerResending"
+          @click="resendVerifyEmail"
+        >
+          {{ verifyBannerResending ? t('register.resending') : t('register.resend') }}
+        </button>
+        <button type="button" class="btn btn-sm btn-ghost" @click="dismissVerifyBanner">
+          {{ t('nav.close') }}
+        </button>
+      </div>
+    </div>
     <header class="header">
       <div class="header-inner container">
         <RouterLink to="/" class="logo" @click="closeMenu">
@@ -372,8 +447,6 @@ if (typeof window !== 'undefined') {
             <template v-if="auth.isLoggedIn && auth.isBuyer">
               <p class="nav-mobile-group">{{ t('nav.buyerWorkbench') }}</p>
               <RouterLink to="/buyer" @click="closeMenu">{{ t('buyerWorkbench.title') }}</RouterLink>
-              <RouterLink to="/simple-quote" @click="closeMenu">{{ t('simpleQuote.title') }}</RouterLink>
-              <RouterLink to="/rfq/new" @click="closeMenu">{{ t('nav.detailedQuote') }}</RouterLink>
               <RouterLink to="/my/rfqs" @click="closeMenu">{{ t('nav.myRfqs') }}</RouterLink>
               <RouterLink to="/my/production-orders" @click="closeMenu">{{ t('nav.productionOrders') }}</RouterLink>
               <RouterLink to="/packaging" @click="closeMenu">{{ t('packaging.title') }}</RouterLink>
@@ -412,7 +485,8 @@ if (typeof window !== 'undefined') {
         </div>
         <div class="footer-col">
           <h4>{{ t('nav.manufacturingQuote') }}</h4>
-          <RouterLink to="/rfq/new">{{ t('nav.postRequest') }}</RouterLink>
+          <RouterLink to="/simple-quote">{{ t('simpleQuote.title') }}</RouterLink>
+          <RouterLink to="/rfq/new">{{ t('nav.detailedQuote') }}</RouterLink>
           <RouterLink to="/demand-hall">{{ t('nav.findDemands') }}</RouterLink>
           <RouterLink to="/partners">{{ t('nav.partnersDirectory') }}</RouterLink>
         </div>
@@ -747,5 +821,27 @@ if (typeof window !== 'undefined') {
   .footer-grid {
     grid-template-columns: 1fr;
   }
+}
+
+.verify-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.65rem 1rem;
+  background: #fff7ed;
+  border-bottom: 1px solid #fed7aa;
+  color: #9a3412;
+  font-size: 0.92rem;
+}
+.verify-banner-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+.verify-banner-msg {
+  font-size: 0.85rem;
 }
 </style>

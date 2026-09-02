@@ -110,6 +110,7 @@ class UserSerializer(serializers.ModelSerializer):
             "member_type",
             "factory_profile",
             "is_active",
+            "is_verified",
             "created_at",
         ]
         read_only_fields = ["id", "role", "member_type", "created_at"]

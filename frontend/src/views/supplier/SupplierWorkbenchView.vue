@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n'
 import PageShell from '../../components/PageShell.vue'
 import { fetchSupplierDashboard } from '../../api'
 import { localizeNotificationTitle } from '../../lib/notificationI18n'
+import { resolveApiMessage } from '../../utils/apiErrors'
 
 const { t, te } = useI18n()
 const loading = ref(true)
@@ -64,7 +65,7 @@ onMounted(async () => {
     const res = await fetchSupplierDashboard()
     data.value = res.data || {}
   } catch (e) {
-    error.value = e.message || t('supplierWorkbench.loadFailed')
+    error.value = resolveApiMessage(e, t, 'supplierWorkbench.loadFailed')
   } finally {
     loading.value = false
   }

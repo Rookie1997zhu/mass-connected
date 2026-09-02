@@ -15,6 +15,7 @@ import {
 } from '../../api'
 import { useLocaleCurrency } from '../../composables/useLocaleCurrency'
 import { downloadAuthedFile } from '../../utils/downloadAuthedFile'
+import { resolveApiMessage } from '../../utils/apiErrors'
 
 const { t } = useI18n()
 const { formatMoney, displayCurrency } = useLocaleCurrency()
@@ -149,7 +150,7 @@ const submit = async () => {
     pendingFiles.value = []
     await load()
   } catch (e) {
-    error.value = e.message || t('demandHall.quoteFailed')
+    error.value = resolveApiMessage(e, t, 'demandHall.quoteFailed')
   } finally {
     uploading.value = false
   }
@@ -169,7 +170,7 @@ const uploadMore = async (e) => {
     message.value = t('quoteRequest.attachmentUploaded')
     await load()
   } catch (err) {
-    error.value = err.message || t('quoteRequest.attachmentUploadFailed')
+    error.value = resolveApiMessage(err, t, 'quoteRequest.attachmentUploadFailed')
   } finally {
     uploading.value = false
   }
@@ -182,7 +183,7 @@ const removeUploaded = async (fileId) => {
     message.value = t('quoteRequest.attachmentRemoved')
     await load()
   } catch (e) {
-    error.value = e.message || t('quoteRequest.attachmentUploadFailed')
+    error.value = resolveApiMessage(e, t, 'quoteRequest.attachmentUploadFailed')
   }
 }
 
@@ -203,7 +204,7 @@ const downloadFile = async (file) => {
   try {
     await downloadAuthedFile(url, file.file_name || 'file')
   } catch (e) {
-    error.value = e.message || t('quoteRequest.attachmentUploadFailed')
+    error.value = resolveApiMessage(e, t, 'quoteRequest.attachmentUploadFailed')
   }
 }
 </script>

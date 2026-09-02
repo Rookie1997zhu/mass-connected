@@ -18,6 +18,7 @@ import {
   updateSupplierProjectStage,
   uploadSupplierProjectFile,
 } from '../../api'
+import { resolveApiMessage } from '../../utils/apiErrors'
 
 const { t, te } = useI18n()
 const route = useRoute()
@@ -102,7 +103,7 @@ const onStageChange = async (stage, status) => {
     await updateSupplierProjectStage(project.value.id, stage.id, { status })
     await load()
   } catch (e) {
-    actionError.value = e.message || t('supplierProject.uploadFailed')
+    actionError.value = resolveApiMessage(e, t, 'supplierProject.uploadFailed')
   } finally {
     submitting.value = false
   }
@@ -125,7 +126,7 @@ const onSubmitUpdate = async () => {
     updateForm.value.content = ''
     await load()
   } catch (e) {
-    actionError.value = e.message || t('supplierProject.uploadFailed')
+    actionError.value = resolveApiMessage(e, t, 'supplierProject.uploadFailed')
   } finally {
     submitting.value = false
   }
@@ -144,7 +145,7 @@ const onSubmitIssue = async () => {
     issueForm.value = { title: '', description: '', severity: 'medium' }
     await load()
   } catch (e) {
-    actionError.value = e.message || t('supplierProject.uploadFailed')
+    actionError.value = resolveApiMessage(e, t, 'supplierProject.uploadFailed')
   } finally {
     submitting.value = false
   }
@@ -175,7 +176,7 @@ const onUploadFile = async () => {
     uploadForm.value.file = null
     await load()
   } catch (e) {
-    uploadError.value = e.message || t('supplierProject.uploadFailed')
+    uploadError.value = resolveApiMessage(e, t, 'supplierProject.uploadFailed')
   } finally {
     submitting.value = false
   }
@@ -204,7 +205,7 @@ const onDeleteFile = async (fileId) => {
     await deleteSupplierProjectFile(project.value.id, fileId)
     await load()
   } catch (e) {
-    fileActionError.value = e.message || t('supplierProject.fileDeleteFailed')
+    fileActionError.value = resolveApiMessage(e, t, 'supplierProject.fileDeleteFailed')
   } finally {
     deletingFileId.value = null
   }

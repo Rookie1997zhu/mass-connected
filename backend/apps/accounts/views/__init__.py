@@ -30,6 +30,8 @@ from apps.accounts.views.member import (
     MemberLoginView,
     MemberProfileView,
     MemberRegisterView,
+    VerifyEmailConfirmView,
+    VerifyEmailResendView,
 )
 from apps.accounts.views.public import PublicPartnerListView
 from apps.accounts.views.supplier import (
@@ -49,6 +51,8 @@ __all__ = [
     "AllowAnyTokenRefreshView",
     "LogoutView",
     "MemberRegisterView",
+    "VerifyEmailConfirmView",
+    "VerifyEmailResendView",
     "FactoryRegisterView",
     "MemberLoginView",
     "MemberProfileView",

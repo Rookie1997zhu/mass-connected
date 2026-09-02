@@ -67,6 +67,15 @@ export const useAuthStore = defineStore('auth', {
       const profile = state.profile || state.user?.factory_profile
       return Boolean(profile && profile.status === 'approved')
     },
+    needsEmailVerification: (state) =>
+      Boolean(state.user && state.user.is_verified === false && state.accessToken),
+    /** 平台管理员（会员端隐藏内部报价金额时用） */
+    isStaff: (state) =>
+      Boolean(
+        state.user &&
+          (['super_admin', 'operator', 'sales'].includes(state.user.role) ||
+            state.user.is_staff),
+      ),
   },
   actions: {
     persist() {
@@ -131,6 +140,17 @@ export const useAuthStore = defineStore('auth', {
         /* 仍清本地态 */
       }
       this.clearLocal()
+    },
+    updateUser(user) {
+      if (!user) return
+      this.user = user
+      this.profile = user.factory_profile || this.profile
+      this.persist()
+    },
+    markEmailVerified() {
+      if (!this.user) return
+      this.user = { ...this.user, is_verified: true }
+      this.persist()
     },
   },
 })

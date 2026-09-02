@@ -1,7 +1,7 @@
 <script setup>
 import { computed, onUnmounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import StpViewer3d from './StpViewer3d.vue'
 import { useLocaleCurrency } from '../../composables/useLocaleCurrency'
 import {
@@ -15,6 +15,7 @@ import {
 import http from '../../api/http'
 import { toApiPath } from '../../utils/downloadAuthedFile'
 import { pollParseJob } from '../../utils/pollJob'
+import { resolveApiMessage } from '../../utils/apiErrors'
 
 const productName = defineModel('productName', { type: String, default: '' })
 const props = defineProps({
@@ -23,6 +24,7 @@ const props = defineProps({
 const emit = defineEmits(['generated', 'convert'])
 
 const { t } = useI18n()
+const route = useRoute()
 const router = useRouter()
 const { fromQuote, fromPreview, displayCurrency } = useLocaleCurrency()
 
@@ -86,7 +88,7 @@ const loadOptions = async () => {
       form.value.post_process = options.value.post_processing[0].key
     }
   } catch (e) {
-    error.value = e.message || t('simpleQuote.print3dOptionsFailed')
+    error.value = resolveApiMessage(e, t, 'simpleQuote.print3dOptionsFailed')
   }
 }
 
@@ -117,7 +119,7 @@ const refreshPreview = async () => {
     preview.value = res.data
   } catch (e) {
     preview.value = null
-    error.value = e.message || t('simpleQuote.previewFailed')
+    error.value = resolveApiMessage(e, t, 'simpleQuote.previewFailed')
   } finally {
     previewLoading.value = false
   }
@@ -151,12 +153,16 @@ const pollJob = async (id) => {
       } else if (res.data.status === 'failed') {
         stopPoll()
         slicing.value = false
-        error.value = res.data.error_message || t('simpleQuote.sliceFailed')
+        error.value = resolveApiMessage(
+          { code: res.data.error_code, message: res.data.error_message },
+          t,
+          'simpleQuote.sliceFailed',
+        )
       }
     } catch (e) {
       stopPoll()
       slicing.value = false
-      error.value = e.message || t('simpleQuote.sliceFailed')
+      error.value = resolveApiMessage(e, t, 'simpleQuote.sliceFailed')
     }
   }
   await tick()
@@ -201,7 +207,7 @@ const onFileSelected = async (event) => {
     job.value = created.data
     await pollJob(created.data.id)
   } catch (e) {
-    error.value = e.message || t('simpleQuote.sliceFailed')
+    error.value = resolveApiMessage(e, t, 'simpleQuote.sliceFailed')
   } finally {
     parsing.value = false
     if (fileInput.value) fileInput.value.value = ''
@@ -228,9 +234,9 @@ const onGenerate = async () => {
       },
     })
     emit('generated', res.data)
-    router.replace({ query: { id: res.data.id } })
+    router.replace({ query: { ...route.query, id: res.data.id, type: 'print3d' } })
   } catch (e) {
-    error.value = e.message || t('simpleQuote.failed')
+    error.value = resolveApiMessage(e, t, 'simpleQuote.failed')
   } finally {
     submitting.value = false
   }
@@ -277,7 +283,7 @@ onUnmounted(stopPoll)
       <p class="hint">{{ t('simpleQuote.print3dFileTypes') }}</p>
       <div v-if="job" class="stage">
         <span>{{ t('simpleQuote.sliceStatus') }}: {{ stageLabel }}</span>
-        <span v-if="job.error_code" class="err">{{ job.error_message }}</span>
+        <span v-if="job.error_code" class="err">{{ resolveApiMessage({ code: job.error_code, message: job.error_message }, t, 'simpleQuote.sliceFailed') }}</span>
       </div>
     </aside>
 

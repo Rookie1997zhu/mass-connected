@@ -25,7 +25,7 @@ from apps.simplequote.shipping import ShippingError, estimate_shipping
 from apps.points.services import get_rule_amount, spend_points
 from apps.notification.services import notify
 from core.pagination import StandardPagination
-from core.permissions import IsBuyerRole
+from core.permissions import IsBuyerRole, IsEmailVerified
 from core.responses import error_response, success_response
 
 from apps.simplequote.views._helpers import (
@@ -52,6 +52,11 @@ class FefcoCatalogView(APIView):
 class MemberSimpleQuoteListCreateView(APIView):
     permission_classes = [IsBuyerRole]
     pagination_class = StandardPagination
+
+    def get_permissions(self):
+        if self.request.method == "POST":
+            return [IsBuyerRole(), IsEmailVerified()]
+        return [IsBuyerRole()]
 
     def get(self, request):
         qs = SimpleQuote.objects.filter(buyer=request.user).order_by("-created_at")

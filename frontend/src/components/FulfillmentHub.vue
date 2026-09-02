@@ -12,6 +12,7 @@ import {
   signContract,
   uploadPaymentProof,
 } from '../api'
+import { resolveApiMessage } from '../utils/apiErrors'
 
 const props = defineProps({
   role: { type: String, required: true }, // buyer | supplier
@@ -173,7 +174,7 @@ const downloadFile = async (file) => {
   try {
     await downloadAuthedFile(file.file_url, file.file_name || 'file')
   } catch (e) {
-    actionError.value = e.message || t('fulfillment.actionFailed')
+    actionError.value = resolveApiMessage(e, t, 'fulfillment.actionFailed')
   }
 }
 
@@ -194,7 +195,7 @@ const onSign = async () => {
     clearSignature()
     emit('refresh')
   } catch (e) {
-    actionError.value = e.message || t('fulfillment.actionFailed')
+    actionError.value = resolveApiMessage(e, t, 'fulfillment.actionFailed')
   } finally {
     busy.value = false
   }
@@ -213,7 +214,7 @@ const onUploadProof = async (event) => {
     actionMessage.value = t('mypage.proofUploaded')
     emit('refresh')
   } catch (e) {
-    actionError.value = e.message || t('fulfillment.actionFailed')
+    actionError.value = resolveApiMessage(e, t, 'fulfillment.actionFailed')
   } finally {
     busy.value = false
   }
@@ -228,7 +229,7 @@ const onConfirmOrder = async () => {
     actionMessage.value = t('productionOrder.confirmed')
     emit('refresh')
   } catch (e) {
-    actionError.value = e.message || t('fulfillment.actionFailed')
+    actionError.value = resolveApiMessage(e, t, 'fulfillment.actionFailed')
   } finally {
     busy.value = false
   }
@@ -244,7 +245,7 @@ const onConfirmPayment = async () => {
     emit('refresh')
     emit('payment-confirmed')
   } catch (e) {
-    actionError.value = e.message || t('fulfillment.actionFailed')
+    actionError.value = resolveApiMessage(e, t, 'fulfillment.actionFailed')
   } finally {
     busy.value = false
   }
@@ -259,7 +260,7 @@ const onRejectOrder = async () => {
     actionMessage.value = t('productionOrder.rejected')
     emit('refresh')
   } catch (e) {
-    actionError.value = e.message || t('fulfillment.actionFailed')
+    actionError.value = resolveApiMessage(e, t, 'fulfillment.actionFailed')
   } finally {
     busy.value = false
   }

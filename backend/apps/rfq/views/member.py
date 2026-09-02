@@ -29,7 +29,7 @@ from apps.rfq.serializers import (
 )
 from core.pagination import StandardPagination
 from core.pdf import build_comparison_pdf
-from core.permissions import IsBuyerRole
+from core.permissions import IsBuyerRole, IsEmailVerified
 from core.responses import error_response, success_response
 
 from ._helpers import (
@@ -43,6 +43,11 @@ from ._helpers import (
 class MemberRFQListCreateView(APIView):
     permission_classes = [IsBuyerRole]
     pagination_class = StandardPagination
+
+    def get_permissions(self):
+        if self.request.method == "POST":
+            return [IsBuyerRole(), IsEmailVerified()]
+        return [IsBuyerRole()]
 
     def get(self, request):
         qs = (

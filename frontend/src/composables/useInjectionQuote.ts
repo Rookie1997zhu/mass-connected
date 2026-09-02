@@ -3,6 +3,7 @@ import type { Router } from 'vue-router'
 import type { Composer } from 'vue-i18n'
 import { createSimpleQuote, drawingParse, previewSimpleQuote, stpParse } from '../api'
 import { pollParseJob } from '../utils/pollJob'
+import { resolveApiMessage } from '../utils/apiErrors'
 
 export const INJECTION_MATERIALS = ['ABS', 'ABS+Gf', 'PC', 'PA66', 'PP'] as const
 export const MOLD_MATERIALS = ['P20', '718', 'NAK80', 'S136', 'H13'] as const
@@ -140,7 +141,7 @@ export function useInjectionQuote({ productName, router, t }: UseInjectionQuoteO
       preview.value = res.data
     } catch (err) {
       preview.value = null
-      previewError.value = err.message || t('injectionQuote.previewFailed')
+      previewError.value = resolveApiMessage(err, t, 'injectionQuote.previewFailed')
     } finally {
       previewLoading.value = false
     }
@@ -185,7 +186,7 @@ export function useInjectionQuote({ productName, router, t }: UseInjectionQuoteO
       applyStpSuggestions()
       schedulePreview()
     } catch (err) {
-      error.value = err.message || t('simpleQuote.parseFailed')
+      error.value = resolveApiMessage(err, t, 'simpleQuote.parseFailed')
     } finally {
       parsing.value = false
       if (stpInput.value) stpInput.value.value = ''
@@ -224,7 +225,7 @@ export function useInjectionQuote({ productName, router, t }: UseInjectionQuoteO
       applyOcrSuggestions()
       schedulePreview()
     } catch (err) {
-      ocrError.value = err.message || t('simpleQuote.ocrFailed')
+      ocrError.value = resolveApiMessage(err, t, 'simpleQuote.ocrFailed')
     } finally {
       ocrParsing.value = false
       if (drawingInput.value) drawingInput.value.value = ''
@@ -254,10 +255,10 @@ export function useInjectionQuote({ productName, router, t }: UseInjectionQuoteO
         product_name: productName.value,
         inputs: buildInputs(),
       })
-      router.replace({ query: { id: res.data.id } })
+      router.replace({ query: { id: res.data.id, type: 'injection' } })
       return res.data
     } catch (e) {
-      error.value = e.message || t('simpleQuote.failed')
+      error.value = resolveApiMessage(e, t, 'simpleQuote.failed')
       return null
     } finally {
       submitting.value = false

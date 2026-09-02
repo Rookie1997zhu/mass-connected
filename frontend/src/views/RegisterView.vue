@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n'
 import PageShell from '../components/PageShell.vue'
 import { fetchServiceCategories } from '../api'
 import { useAuthStore } from '../stores/auth'
+import { resolveApiMessage } from '../utils/apiErrors'
 
 const auth = useAuthStore()
 const route = useRoute()
@@ -70,9 +71,9 @@ const onSubmit = async () => {
       })
     }
     await auth.register(payload)
-    router.push(route.query.redirect || '/my/rfqs')
+    router.push('/verify-email/sent')
   } catch (e) {
-    error.value = e.message || t('register.failed')
+    error.value = resolveApiMessage(e, t, 'register.failed')
   } finally {
     submitting.value = false
   }

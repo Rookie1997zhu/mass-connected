@@ -1,3 +1,5 @@
+from rest_framework import status
+from rest_framework.exceptions import APIException
 from rest_framework.permissions import BasePermission
 
 
@@ -57,6 +59,24 @@ class IsSupplierRole(BasePermission):
 
 class IsFactoryRole(IsSupplierRole):
     """Legacy alias."""
+
+
+class EmailNotVerifiedError(APIException):
+    status_code = status.HTTP_403_FORBIDDEN
+    default_code = "EMAIL_NOT_VERIFIED"
+    default_detail = "请先验证邮箱后再进行此操作"
+
+
+class IsEmailVerified(BasePermission):
+    message = "请先验证邮箱后再进行此操作"
+
+    def has_permission(self, request, view):
+        user = request.user
+        if not user or not user.is_authenticated:
+            return True
+        if getattr(user, "is_verified", True):
+            return True
+        raise EmailNotVerifiedError()
 
 
 class IsMemberOrFactoryRole(BasePermission):

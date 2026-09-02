@@ -36,6 +36,7 @@ if SECURE_SSL:
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    SECURE_REDIRECT_EXEMPT = [r"^api/health$"]
 
 INSTALLED_APPS = [
     "daphne",
@@ -189,6 +190,7 @@ CELERY_TASK_ROUTES = {
     "simplequote.run_drawing_parse": {"queue": "heavy"},
     "simplequote.run_preview_convert": {"queue": "heavy"},
     "simplequote.send_notification_email": {"queue": "heavy"},
+    "accounts.send_verification_email": {"queue": "heavy"},
     "chat.run_message_translate": {"queue": "translate"},
 }
 PRUSA_SLICER_PATH = os.environ.get("PRUSA_SLICER_PATH", "prusa-slicer")
@@ -210,6 +212,9 @@ THROTTLE_REGISTER = os.environ.get("THROTTLE_REGISTER", "5/min")
 THROTTLE_INQUIRY = os.environ.get("THROTTLE_INQUIRY", "10/min")
 THROTTLE_AI_TRANSLATE = os.environ.get("THROTTLE_AI_TRANSLATE", "20/min")
 THROTTLE_WS_TICKET = os.environ.get("THROTTLE_WS_TICKET", "30/min")
+THROTTLE_VERIFY_EMAIL = os.environ.get("THROTTLE_VERIFY_EMAIL", "3/min")
+
+FRONTEND_BASE_URL = os.environ.get("FRONTEND_BASE_URL", "http://localhost").rstrip("/")
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
@@ -228,6 +233,7 @@ REST_FRAMEWORK = {
         "inquiry": THROTTLE_INQUIRY,
         "ai_translate": THROTTLE_AI_TRANSLATE,
         "ws_ticket": THROTTLE_WS_TICKET,
+        "verify_email": THROTTLE_VERIFY_EMAIL,
     },
     "DEFAULT_PAGINATION_CLASS": "core.pagination.StandardPagination",
     "PAGE_SIZE": 20,

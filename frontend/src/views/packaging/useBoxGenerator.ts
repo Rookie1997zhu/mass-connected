@@ -21,6 +21,7 @@ import {
   resetFefcoCatalog,
   setFefcoCatalogFromApi,
 } from '../../lib/packaging/fefcoCatalog'
+import { resolveApiMessage } from '../../utils/apiErrors'
 
 /**
  * 纸箱生成器页面的状态与业务逻辑（目录加载、几何计算、报价提交）。
@@ -280,7 +281,7 @@ export function useBoxGenerator() {
       })
       result.value = res.data
     } catch (err) {
-      error.value = err.message || t('packaging.failed')
+      error.value = resolveApiMessage(err, t, 'packaging.failed')
     } finally {
       submitting.value = false
     }
@@ -292,7 +293,7 @@ export function useBoxGenerator() {
       const res = await convertSimpleQuote(result.value.id, {})
       router.push({ name: 'my-rfq-detail', params: { id: res.data.rfq_id } })
     } catch (err) {
-      error.value = err.message || t('packaging.failed')
+      error.value = resolveApiMessage(err, t, 'packaging.failed')
     }
   }
 

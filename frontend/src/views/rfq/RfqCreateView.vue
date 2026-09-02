@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PageShell from '../../components/PageShell.vue'
 import { createRfq, fetchServiceCategories, uploadRfqAttachment } from '../../api'
+import { resolveApiMessage } from '../../utils/apiErrors'
 
 const { t, locale } = useI18n()
 const route = useRoute()
@@ -88,7 +89,7 @@ const submit = async () => {
     }
     router.push(`/my/rfqs/${rfqId}`)
   } catch (e) {
-    error.value = e.message || t('rfq.submitFailed')
+    error.value = resolveApiMessage(e, t, 'rfq.submitFailed')
   } finally {
     submitting.value = false
   }

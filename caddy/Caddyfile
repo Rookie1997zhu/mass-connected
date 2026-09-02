@@ -1,7 +1,11 @@
 # 生产 / 默认：静态前端；公共片段见 snippets/common.caddy
+#
+# 本地默认 :80（仅 HTTP，不会自动 HTTPS）。
+# 云上在 .env 设置 CADDY_SITE_ADDRESS=www.massconnected.com, massconnected.com
+# 后，Caddy 会自动申请 Let's Encrypt 证书（需开放 80/443，且 DNS A 记录已指向本机）。
 import snippets/common.caddy
 
-:80 {
+{$CADDY_SITE_ADDRESS::80} {
 	encode gzip zstd
 	import security_headers
 	import api_ws
