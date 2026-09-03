@@ -45,9 +45,11 @@ from core.document_preview import (
     preview_mode_for_ext,
 )
 from core.file_validation import validate_upload_file
+from core.media_urls import absolute_file_url
 from core.pagination import StandardPagination
 from core.permissions import IsAdminRole, IsBuyerRole, IsSupplierRole
 from core.responses import error_response, success_response
+from core.storage_utils import local_file_path, materialize_field_file
 
 logger = logging.getLogger(__name__)
 
@@ -415,7 +417,7 @@ class MemberFileCenterView(APIView):
             data["source_no"] = pf.project.project_no
             items.append(data)
         for af in rfq_files:
-            url = request.build_absolute_uri(af.file.url) if af.file else ""
+            url = absolute_file_url(request, af.file) if af.file else ""
             items.append(
                 {
                     "id": af.id,
@@ -533,7 +535,7 @@ def _preview_project_file_pdf(request, project, file_id):
         )
 
     try:
-        source_path = pf.file.path
+        source_path = materialize_field_file(pf.file)
         cached = peek_cached_preview_pdf(source_path, pf.id, ext)
         if cached is not None:
             response = FileResponse(
@@ -587,20 +589,23 @@ def _translate_project_file_response(request, project, file_id):
     ext = file_ext(pf.file_name or pf.file.name)
 
     try:
-        if ext == PDF_EXT:
-            result = translate_project_pdf_file(pf.id, pf.file.path, target_lang)
-        else:
-            extracted = extract_text_from_file(pf.file.path, ext)
-            translated = translate_project_file_text(pf.id, extracted["text"], target_lang)
-            result = {
-                "translated_text": translated,
-                "source_text": extracted.get("text", ""),
-                "truncated": extracted.get("truncated", False),
-                "extraction_method": extracted.get("extraction_method", ""),
-                "page_count": extracted.get("page_count", 0),
-                "processed_pages": extracted.get("page_count", 0),
-                "char_count": extracted.get("char_count", 0),
-            }
+        with local_file_path(pf.file) as source_path:
+            if not source_path:
+                return error_response("PROJECT_FILE_MISSING", "文件不存在", request=request)
+            if ext == PDF_EXT:
+                result = translate_project_pdf_file(pf.id, source_path, target_lang)
+            else:
+                extracted = extract_text_from_file(source_path, ext)
+                translated = translate_project_file_text(pf.id, extracted["text"], target_lang)
+                result = {
+                    "translated_text": translated,
+                    "source_text": extracted.get("text", ""),
+                    "truncated": extracted.get("truncated", False),
+                    "extraction_method": extracted.get("extraction_method", ""),
+                    "page_count": extracted.get("page_count", 0),
+                    "processed_pages": extracted.get("page_count", 0),
+                    "char_count": extracted.get("char_count", 0),
+                }
     except PreviewError as exc:
         return error_response(exc.code, exc.message, status=status.HTTP_400_BAD_REQUEST, request=request)
     except TranslationError as exc:

@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from apps.content.models import Case, ContentPage, Download, FAQ, NavItem, News
+from core.media_urls import absolute_file_url
 
 
 class CaseSerializer(serializers.ModelSerializer):
@@ -39,10 +40,7 @@ class DownloadSerializer(serializers.ModelSerializer):
         read_only_fields = ["id", "url"]
 
     def get_url(self, obj):
-        request = self.context.get("request")
-        if obj.file and request:
-            return request.build_absolute_uri(obj.file.url)
-        return obj.file.url if obj.file else ""
+        return absolute_file_url(self.context.get("request"), obj.file)
 
 
 class ContentPageSerializer(serializers.ModelSerializer):

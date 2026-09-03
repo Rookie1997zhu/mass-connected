@@ -19,6 +19,7 @@ from apps.content.serializers import (
     NewsSerializer,
 )
 from core.exceptions import AppAPIException
+from core.media_urls import absolute_media_url
 from core.pagination import StandardPagination
 from core.permissions import IsAdminRole
 from core.responses import error_response, success_response
@@ -422,5 +423,5 @@ class AdminMediaUploadView(APIView):
         if file_obj.size > 5 * 1024 * 1024:
             return error_response("MEDIA_FILE_SIZE_EXCEEDED", "文件大小超限", request=request)
         path = default_storage.save(f"uploads/{file_obj.name}", file_obj)
-        url = request.build_absolute_uri(default_storage.url(path))
+        url = absolute_media_url(request, default_storage.url(path))
         return success_response({"path": path, "url": url}, status=status.HTTP_201_CREATED, request=request)

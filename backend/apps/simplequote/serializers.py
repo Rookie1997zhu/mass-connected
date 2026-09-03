@@ -9,6 +9,7 @@ from apps.simplequote.models import (
     QuoteTable,
     SimpleQuote,
 )
+from core.media_urls import absolute_file_url
 
 
 class QuoteTableSerializer(serializers.ModelSerializer):
@@ -49,10 +50,7 @@ class SimpleQuoteSerializer(serializers.ModelSerializer):
         read_only_fields = fields
 
     def get_pdf_url(self, obj):
-        request = self.context.get("request")
-        if obj.pdf and request:
-            return request.build_absolute_uri(obj.pdf.url)
-        return obj.pdf.url if obj.pdf else ""
+        return absolute_file_url(self.context.get("request"), obj.pdf)
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
@@ -358,16 +356,10 @@ class DielineTemplateSerializer(serializers.ModelSerializer):
         return attrs
 
     def get_thumbnail_url(self, obj):
-        request = self.context.get("request")
-        if obj.thumbnail and request:
-            return request.build_absolute_uri(obj.thumbnail.url)
-        return obj.thumbnail.url if obj.thumbnail else ""
+        return absolute_file_url(self.context.get("request"), obj.thumbnail)
 
     def get_production_asset_url(self, obj):
-        request = self.context.get("request")
-        if obj.production_asset and request:
-            return request.build_absolute_uri(obj.production_asset.url)
-        return obj.production_asset.url if obj.production_asset else ""
+        return absolute_file_url(self.context.get("request"), obj.production_asset)
 
     def get_parametric_asset_status(self, obj):
         asset = obj.assets.filter(is_active=True).first()
@@ -455,7 +447,4 @@ class DielineTemplateAssetSerializer(serializers.ModelSerializer):
         return parsed
 
     def get_source_file_url(self, obj):
-        request = self.context.get("request")
-        if obj.source_file and request:
-            return request.build_absolute_uri(obj.source_file.url)
-        return obj.source_file.url if obj.source_file else ""
+        return absolute_file_url(self.context.get("request"), obj.source_file)

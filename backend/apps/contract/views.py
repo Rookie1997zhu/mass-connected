@@ -20,6 +20,7 @@ from core.pagination import StandardPagination
 from core.pdf import build_nda_pdf
 from core.permissions import IsAdminRole, IsBuyerRole, IsSupplierRole
 from core.responses import error_response, success_response
+from core.storage_utils import local_file_path
 
 
 def _contract_file_response(field_file, default_name):
@@ -132,8 +133,8 @@ class MemberContractSignView(APIView):
         contract.terms = contract.rendered_body
         contract.save()
 
-        signature_path = contract.signature_image.path if contract.signature_image else None
-        render_contract_pdf(contract, signature_path=signature_path)
+        with local_file_path(contract.signature_image) as signature_path:
+            render_contract_pdf(contract, signature_path=signature_path)
         contract.save(update_fields=["pdf", "updated_at"])
 
         return success_response(

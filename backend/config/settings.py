@@ -132,7 +132,44 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_URL = os.environ.get("MEDIA_URL", "/media/")
+# 即使 USE_OSS=true 仍保留：preview_cache、tmp/parse、OSS 临时落盘等本地目录
 MEDIA_ROOT = os.environ.get("MEDIA_ROOT", str(BASE_DIR / "media"))
+
+USE_OSS = os.environ.get("USE_OSS", "false").lower() == "true"
+if USE_OSS:
+    _oss_access_key = os.environ.get("OSS_ACCESS_KEY_ID", "").strip()
+    _oss_secret_key = os.environ.get("OSS_ACCESS_KEY_SECRET", "").strip()
+    _oss_bucket = os.environ.get("OSS_BUCKET_NAME", "").strip()
+    _oss_endpoint = os.environ.get(
+        "OSS_ENDPOINT", "https://oss-ap-northeast-2.aliyuncs.com"
+    ).strip()
+    _oss_region = os.environ.get("OSS_REGION", "ap-northeast-2").strip()
+    _oss_expire = int(os.environ.get("OSS_QUERYSTRING_EXPIRE", "3600"))
+    if not _oss_access_key or not _oss_secret_key or not _oss_bucket:
+        raise RuntimeError(
+            "USE_OSS=true requires OSS_ACCESS_KEY_ID, OSS_ACCESS_KEY_SECRET, OSS_BUCKET_NAME"
+        )
+    STORAGES = {
+        "default": {
+            "BACKEND": "storages.backends.s3.S3Storage",
+            "OPTIONS": {
+                "access_key": _oss_access_key,
+                "secret_key": _oss_secret_key,
+                "bucket_name": _oss_bucket,
+                "endpoint_url": _oss_endpoint,
+                "region_name": _oss_region,
+                "signature_version": "s3v4",
+                "addressing_style": "virtual",
+                "default_acl": None,
+                "querystring_auth": True,
+                "querystring_expire": _oss_expire,
+                "file_overwrite": False,
+            },
+        },
+        "staticfiles": {
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        },
+    }
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 

@@ -21,6 +21,7 @@ from core.document_preview import (
 )
 from core.permissions import IsBuyerRole, IsSupplierRole
 from core.responses import error_response, success_response
+from core.storage_utils import local_file_path, materialize_field_file
 
 RFQ_ATT_CACHE_NS = "rfq_att"
 QUOTE_ATT_CACHE_NS = "quote_att"
@@ -177,8 +178,11 @@ class MemberRfqAttachmentPreviewPdfView(APIView):
     def get(self, request, pk, file_id):
         rfq = get_object_or_404(RFQ, pk=pk, buyer=request.user)
         att = get_object_or_404(RFQAttachment, pk=file_id, rfq=rfq)
+        if not att.file:
+            return error_response("RFQ_ATTACHMENT_MISSING", "文件不存在", request=request)
+        source_path = materialize_field_file(att.file)
         return _preview_pdf_response(
-            request, att.file.path if att.file else "", att.id, att.file_name, RFQ_ATT_CACHE_NS
+            request, source_path, att.id, att.file_name, RFQ_ATT_CACHE_NS
         )
 
 
@@ -192,9 +196,10 @@ class MemberRfqAttachmentTranslateView(APIView):
         att = get_object_or_404(RFQAttachment, pk=file_id, rfq=rfq)
         if not att.file:
             return error_response("RFQ_ATTACHMENT_MISSING", "文件不存在", request=request)
-        return _file_translate_response(
-            request, RFQ_ATT_CACHE_NS, att.id, att.file.path, att.file_name
-        )
+        with local_file_path(att.file) as source_path:
+            return _file_translate_response(
+                request, RFQ_ATT_CACHE_NS, att.id, source_path, att.file_name
+            )
 
 
 class SupplierRfqAttachmentDownloadView(APIView):
@@ -223,8 +228,11 @@ class SupplierRfqAttachmentPreviewPdfView(APIView):
             supplier=request.user,
         )
         att = get_object_or_404(RFQAttachment, pk=file_id, rfq=qr.rfq)
+        if not att.file:
+            return error_response("RFQ_ATTACHMENT_MISSING", "文件不存在", request=request)
+        source_path = materialize_field_file(att.file)
         return _preview_pdf_response(
-            request, att.file.path if att.file else "", att.id, att.file_name, RFQ_ATT_CACHE_NS
+            request, source_path, att.id, att.file_name, RFQ_ATT_CACHE_NS
         )
 
 
@@ -242,9 +250,10 @@ class SupplierRfqAttachmentTranslateView(APIView):
         att = get_object_or_404(RFQAttachment, pk=file_id, rfq=qr.rfq)
         if not att.file:
             return error_response("RFQ_ATTACHMENT_MISSING", "文件不存在", request=request)
-        return _file_translate_response(
-            request, RFQ_ATT_CACHE_NS, att.id, att.file.path, att.file_name
-        )
+        with local_file_path(att.file) as source_path:
+            return _file_translate_response(
+                request, RFQ_ATT_CACHE_NS, att.id, source_path, att.file_name
+            )
 
 
 # ----- Quote attachment -----
@@ -256,8 +265,11 @@ class MemberQuoteAttachmentPreviewPdfView(APIView):
     def get(self, request, quote_id, file_id):
         quote = _member_visible_quote(request, quote_id)
         att = get_object_or_404(QuoteAttachment, pk=file_id, quote=quote)
+        if not att.file:
+            return error_response("QUOTE_ATTACHMENT_MISSING", "文件不存在", request=request)
+        source_path = materialize_field_file(att.file)
         return _preview_pdf_response(
-            request, att.file.path if att.file else "", att.id, att.file_name, QUOTE_ATT_CACHE_NS
+            request, source_path, att.id, att.file_name, QUOTE_ATT_CACHE_NS
         )
 
 
@@ -271,9 +283,10 @@ class MemberQuoteAttachmentTranslateView(APIView):
         att = get_object_or_404(QuoteAttachment, pk=file_id, quote=quote)
         if not att.file:
             return error_response("QUOTE_ATTACHMENT_MISSING", "文件不存在", request=request)
-        return _file_translate_response(
-            request, QUOTE_ATT_CACHE_NS, att.id, att.file.path, att.file_name
-        )
+        with local_file_path(att.file) as source_path:
+            return _file_translate_response(
+                request, QUOTE_ATT_CACHE_NS, att.id, source_path, att.file_name
+            )
 
 
 class SupplierQuoteAttachmentPreviewPdfView(APIView):
@@ -282,8 +295,11 @@ class SupplierQuoteAttachmentPreviewPdfView(APIView):
     def get(self, request, quote_id, file_id):
         quote = get_object_or_404(Quote, pk=quote_id, supplier=request.user)
         att = get_object_or_404(QuoteAttachment, pk=file_id, quote=quote)
+        if not att.file:
+            return error_response("QUOTE_ATTACHMENT_MISSING", "文件不存在", request=request)
+        source_path = materialize_field_file(att.file)
         return _preview_pdf_response(
-            request, att.file.path if att.file else "", att.id, att.file_name, QUOTE_ATT_CACHE_NS
+            request, source_path, att.id, att.file_name, QUOTE_ATT_CACHE_NS
         )
 
 
@@ -297,9 +313,10 @@ class SupplierQuoteAttachmentTranslateView(APIView):
         att = get_object_or_404(QuoteAttachment, pk=file_id, quote=quote)
         if not att.file:
             return error_response("QUOTE_ATTACHMENT_MISSING", "文件不存在", request=request)
-        return _file_translate_response(
-            request, QUOTE_ATT_CACHE_NS, att.id, att.file.path, att.file_name
-        )
+        with local_file_path(att.file) as source_path:
+            return _file_translate_response(
+                request, QUOTE_ATT_CACHE_NS, att.id, source_path, att.file_name
+            )
 
 
 def cleanup_rfq_attachment_cache(file_id: int) -> None:

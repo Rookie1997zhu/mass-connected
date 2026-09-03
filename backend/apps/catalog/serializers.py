@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from apps.catalog.models import Category, Product, ProductImage
 from apps.i18n.fields import resolve_i18n
+from core.media_urls import absolute_file_url
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -20,10 +21,7 @@ class ProductImageSerializer(serializers.ModelSerializer):
         read_only_fields = ["id"]
 
     def get_url(self, obj):
-        request = self.context.get("request")
-        if obj.file and request:
-            return request.build_absolute_uri(obj.file.url)
-        return obj.file.url if obj.file else ""
+        return absolute_file_url(self.context.get("request"), obj.file)
 
 
 class ProductListSerializer(serializers.ModelSerializer):
@@ -60,10 +58,7 @@ class ProductListSerializer(serializers.ModelSerializer):
         cover = obj.images.filter(is_cover=True).first() or obj.images.first()
         if not cover:
             return ""
-        request = self.context.get("request")
-        if cover.file and request:
-            return request.build_absolute_uri(cover.file.url)
-        return cover.file.url if cover.file else ""
+        return absolute_file_url(self.context.get("request"), cover.file)
 
 
 class ProductDetailSerializer(ProductListSerializer):

@@ -1,5 +1,7 @@
 """FEFCO 标准盒型库（分类 + 盒型模板元数据，DB 驱动）。"""
 
+from core.media_urls import absolute_file_url
+
 
 def _float_or_none(value):
     if value is None:
@@ -25,18 +27,10 @@ def _serialize_db_category(category):
 
 
 def _serialize_db_template(template, request=None):
-    thumbnail_url = ""
-    if template.thumbnail:
-        if request:
-            thumbnail_url = request.build_absolute_uri(template.thumbnail.url)
-        else:
-            thumbnail_url = template.thumbnail.url
-    production_asset_url = ""
-    if template.production_asset:
-        if request:
-            production_asset_url = request.build_absolute_uri(template.production_asset.url)
-        else:
-            production_asset_url = template.production_asset.url
+    thumbnail_url = absolute_file_url(request, template.thumbnail) if template.thumbnail else ""
+    production_asset_url = (
+        absolute_file_url(request, template.production_asset) if template.production_asset else ""
+    )
     code = template.code
     mfg_l = _float_or_none(template.default_manufacturing_length_mm) or _float_or_none(
         template.default_length_mm
@@ -50,13 +44,11 @@ def _serialize_db_template(template, request=None):
     active_asset = template.assets.filter(is_active=True, mapping_status="mapped").first()
     active_asset_payload = None
     if active_asset:
-        source_file_url = ""
-        if active_asset.source_file:
-            source_file_url = (
-                request.build_absolute_uri(active_asset.source_file.url)
-                if request
-                else active_asset.source_file.url
-            )
+        source_file_url = (
+            absolute_file_url(request, active_asset.source_file)
+            if active_asset.source_file
+            else ""
+        )
         active_asset_payload = {
             "id": active_asset.id,
             "source_format": active_asset.source_format,

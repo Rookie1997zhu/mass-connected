@@ -3,6 +3,7 @@ from rest_framework import serializers
 from apps.catalog.models import Product
 from apps.i18n.fields import resolve_i18n
 from apps.order.models import CartItem, Order, OrderItem
+from core.media_urls import absolute_file_url
 
 
 class CartItemSerializer(serializers.ModelSerializer):
@@ -32,10 +33,7 @@ class CartItemSerializer(serializers.ModelSerializer):
         cover = obj.product.images.filter(is_cover=True).first() or obj.product.images.first()
         if not cover:
             return ""
-        request = self.context.get("request")
-        if cover.file and request:
-            return request.build_absolute_uri(cover.file.url)
-        return cover.file.url if cover.file else ""
+        return absolute_file_url(self.context.get("request"), cover.file)
 
 
 class CartItemCreateSerializer(serializers.Serializer):
