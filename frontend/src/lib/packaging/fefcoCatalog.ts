@@ -21,6 +21,8 @@ export interface FefcoCategory {
   isActive?: boolean
 }
 
+export type GeometryMode = 'formula' | 'fixed_asset' | 'parametric'
+
 export interface FefcoBoxTemplate {
   id?: number
   code: string
@@ -31,7 +33,11 @@ export interface FefcoBoxTemplate {
   descI18n?: Record<string, string>
   engineKey: EngineKey
   algorithmKey: EngineKey
+  geometryMode?: GeometryMode
+  pointsCost?: number
   priority: FefcoPriority
+  purchaseEnabled: boolean
+  /** @deprecated alias of purchaseEnabled */
   quoteEnabled: boolean
   previewEnabled: boolean
   inputs: string[]
@@ -128,6 +134,8 @@ export interface DielineTemplateAsset {
   parsedGeometry: ParsedDielineGeometry
   mappingSchema: DielineMappingSchema
   baseDimensions: Record<string, unknown>
+  calibratedWidthMm?: number | null
+  calibratedHeightMm?: number | null
   version?: number
   mappingStatus?: string
 }
@@ -157,8 +165,15 @@ export function normalizeCatalogTemplate(raw: Record<string, unknown>): FefcoBox
     descI18n: (raw.desc_i18n as Record<string, string>) || {},
     engineKey,
     algorithmKey: engineKey,
+    geometryMode: (raw.geometry_mode as GeometryMode) || 'formula',
+    pointsCost: Number(raw.points_cost) || 0,
     priority: (raw.priority as FefcoPriority) || 'P0',
-    quoteEnabled: Boolean(raw.quote_enabled),
+    purchaseEnabled: Boolean(
+      raw.purchase_enabled != null ? raw.purchase_enabled : raw.quote_enabled,
+    ),
+    quoteEnabled: Boolean(
+      raw.purchase_enabled != null ? raw.purchase_enabled : raw.quote_enabled,
+    ),
     previewEnabled: Boolean(raw.preview_enabled),
     inputs: Array.isArray(raw.inputs) ? (raw.inputs as string[]) : ['length_mm', 'width_mm', 'height_mm', 'thickness_mm'],
     sortOrder: Number(raw.sort_order) || 0,
@@ -206,6 +221,8 @@ function normalizeTemplateAsset(raw?: Record<string, unknown> | null): DielineTe
     parsedGeometry: (raw.parsed_geometry as ParsedDielineGeometry) || {},
     mappingSchema: (raw.mapping_schema as DielineMappingSchema) || {},
     baseDimensions: (raw.base_dimensions as Record<string, unknown>) || {},
+    calibratedWidthMm: toNumber(raw.calibrated_width_mm) ?? null,
+    calibratedHeightMm: toNumber(raw.calibrated_height_mm) ?? null,
     version: toNumber(raw.version),
     mappingStatus: String(raw.mapping_status || ''),
   }
@@ -294,6 +311,6 @@ export function defaultDimsForTemplate(
 export type BoxCode = string
 
 export const QUOTE_ENABLED_CODES = () =>
-  runtimeTemplates.filter((t) => t.quoteEnabled).map((t) => t.code)
+  runtimeTemplates.filter((t) => t.purchaseEnabled || t.quoteEnabled).map((t) => t.code)
 
 export const hasCatalogData = () => runtimeCategories.length > 0 || runtimeTemplates.length > 0

@@ -170,11 +170,37 @@ class AdminDielineTemplateAssetView(APIView):
                 "基准尺寸必须大于 0",
                 request=request,
             )
+
+        calibrated_width_mm = None
+        calibrated_height_mm = None
+        raw_cal_w = request.data.get("calibrated_width_mm")
+        raw_cal_h = request.data.get("calibrated_height_mm")
+        if raw_cal_w not in (None, ""):
+            try:
+                calibrated_width_mm = float(raw_cal_w)
+            except (TypeError, ValueError):
+                return error_response(
+                    "DIELINE_ASSET_CALIBRATION_INVALID",
+                    "标定宽度必须为数字",
+                    request=request,
+                )
+        if raw_cal_h not in (None, ""):
+            try:
+                calibrated_height_mm = float(raw_cal_h)
+            except (TypeError, ValueError):
+                return error_response(
+                    "DIELINE_ASSET_CALIBRATION_INVALID",
+                    "标定高度必须为数字",
+                    request=request,
+                )
+
         asset = DielineTemplateAsset.objects.create(
             template=template,
             source_file=upload,
             source_format=source_format,
             base_dimensions=base_dimensions,
+            calibrated_width_mm=calibrated_width_mm,
+            calibrated_height_mm=calibrated_height_mm,
             version=version,
             mapping_status="uploaded",
         )

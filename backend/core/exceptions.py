@@ -24,7 +24,11 @@ class AppAPIException(APIException):
 
     def __init__(self, detail=None, code=None, errors=None):
         self.errors = errors or {}
-        super().__init__(detail=detail, code=code or self.default_code)
+        # Instance attr so custom_exception_handler can read the real code
+        # (class default_code would otherwise always shadow the constructor arg).
+        resolved = code or self.default_code
+        self.default_code = resolved
+        super().__init__(detail=detail, code=resolved)
 
 
 def custom_exception_handler(exc, context):

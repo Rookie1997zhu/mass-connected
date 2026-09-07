@@ -28,6 +28,10 @@ from apps.simplequote.views.member import (
     ShippingEstimateView,
     SimpleQuotePreviewView,
 )
+from apps.simplequote.views.member_dieline import (
+    MemberDielinePurchaseListCreateView,
+    MemberDielineTemplateDownloadView,
+)
 from apps.simplequote.views.parse import (
     DrawingParseView,
     ParseJobDetailView,
@@ -53,6 +57,8 @@ __all__ = [
     "AdminQuoteTableDetailView",
     "AdminQuoteTableView",
     "FefcoCatalogView",
+    "MemberDielinePurchaseListCreateView",
+    "MemberDielineTemplateDownloadView",
     "MemberSimpleQuoteConvertView",
     "MemberSimpleQuoteDetailView",
     "MemberSimpleQuoteListCreateView",

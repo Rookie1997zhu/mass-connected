@@ -56,6 +56,8 @@ def _serialize_db_template(template, request=None):
             "parsed_geometry": active_asset.parsed_geometry or {},
             "mapping_schema": active_asset.mapping_schema or {},
             "base_dimensions": active_asset.base_dimensions or {},
+            "calibrated_width_mm": _float_or_none(active_asset.calibrated_width_mm),
+            "calibrated_height_mm": _float_or_none(active_asset.calibrated_height_mm),
             "version": active_asset.version,
             "mapping_status": active_asset.mapping_status,
         }
@@ -71,8 +73,11 @@ def _serialize_db_template(template, request=None):
         "desc_i18n": template.desc_i18n or {},
         "engine_key": template.engine_key,
         "algorithm_key": template.engine_key,
+        "geometry_mode": template.resolve_geometry_mode(),
+        "points_cost": int(template.points_cost or 0),
         "priority": template.priority,
-        "quote_enabled": template.quote_enabled,
+        "purchase_enabled": template.purchase_enabled,
+        "quote_enabled": template.purchase_enabled,  # backward-compatible alias
         "preview_enabled": template.preview_enabled,
         "inputs": ["length_mm", "width_mm", "height_mm", "thickness_mm"],
         "sort_order": template.sort_order,
@@ -139,12 +144,16 @@ def build_fefco_catalog(request=None, *, include_inactive=False):
     cat_qs = cat_qs.order_by("sort_order", "code")
     categories = [_serialize_db_category(item) for item in cat_qs]
 
-    tpl_qs = DielineTemplate.objects.filter(
-        assets__is_active=True,
-        assets__mapping_status="mapped",
-    ).distinct()
+    tpl_qs = DielineTemplate.objects.all()
     if not include_inactive:
         tpl_qs = tpl_qs.filter(is_active=True)
+    # Formula templates need no mapped asset; fixed_asset still requires mapped active asset.
+    from django.db.models import Q
+
+    tpl_qs = tpl_qs.filter(
+        Q(geometry_mode="formula")
+        | Q(assets__is_active=True, assets__mapping_status="mapped")
+    ).distinct()
     tpl_qs = tpl_qs.order_by("sort_order", "code")
     templates = [_serialize_db_template(item, request) for item in tpl_qs]
 

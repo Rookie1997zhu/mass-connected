@@ -228,8 +228,9 @@ def unfold_by_code(box_code, length_mm, width_mm, height_mm, thickness_mm=1.5, d
     template = get_box_template(code)
     if not template:
         raise PaperBoxGeometryError(f"不支持的 FEFCO 盒型: {code}")
-    if not template.get("quote_enabled"):
-        raise PaperBoxGeometryError(f"FEFCO {code} 尚未开放报价，敬请期待")
+    purchase_ok = template.get("purchase_enabled", template.get("quote_enabled"))
+    if not purchase_ok and not template.get("preview_enabled"):
+        raise PaperBoxGeometryError(f"FEFCO {code} 尚未开放，敬请期待")
     _validate_template_limits(length_mm, width_mm, height_mm, template)
 
     resolved_glue = glue_tab_mm
@@ -240,32 +241,60 @@ def unfold_by_code(box_code, length_mm, width_mm, height_mm, thickness_mm=1.5, d
     l, w, h, t = manufacturing_dims(length_mm, width_mm, height_mm, thickness_mm, dimension_type, template)
     _validate_dims(l, w, h)
 
-    active_asset_payload = template.get("active_parametric_asset")
-    if active_asset_payload and active_asset_payload.get("id"):
-        from apps.simplequote.dieline_import import DielineImportError, render_parametric_dieline
+    geometry_mode = template.get("geometry_mode") or (
+        "formula"
+        if (template.get("engine_key") or template.get("algorithm_key")) in UNFOLD_HANDLERS
+        else "fixed_asset"
+    )
+    engine_key = template.get("engine_key") or template.get("algorithm_key")
+
+    if geometry_mode == "formula":
+        handler = UNFOLD_HANDLERS.get(engine_key)
+        if not handler:
+            raise PaperBoxGeometryError(f"引擎 {engine_key} 不支持公式展开")
+        result = handler(length_mm, width_mm, height_mm, thickness_mm, dimension_type, resolved_glue, template)
+        result["box_code"] = code
+        result["engine_key"] = engine_key
+        result["geometry_mode"] = "formula"
+        return result
+
+    if geometry_mode == "fixed_asset":
+        from apps.simplequote.dieline_export import calibrate_fixed_segments, effective_bbox
         from apps.simplequote.models import DielineTemplateAsset
 
-        asset = DielineTemplateAsset.objects.filter(
-            id=active_asset_payload["id"],
-            is_active=True,
-            mapping_status="mapped",
-        ).first()
-        if asset:
-            try:
-                rendered = render_parametric_dieline(
-                    asset,
-                    {"length": l, "width": w, "height": h, "thickness": t},
-                )
-            except DielineImportError as exc:
-                raise PaperBoxGeometryError(str(exc)) from exc
-            blank_width_mm = rendered["width"]
-            blank_height_mm = rendered["height"]
-            unfold_area_m2 = rendered.get("area_m2")
-            if unfold_area_m2 is None:
-                unfold_area_m2 = (blank_width_mm * MM_TO_M) * (blank_height_mm * MM_TO_M)
-            result = _build_result(code, l, w, h, t, resolved_glue, blank_width_mm, blank_height_mm)
-            result["unfold_area_m2"] = round(_to_float(unfold_area_m2), 6)
-            result["engine_key"] = template.get("engine_key") or template.get("algorithm_key")
-            return result
+        active_asset_payload = template.get("active_parametric_asset") or {}
+        asset_id = active_asset_payload.get("id")
+        asset = None
+        if asset_id:
+            asset = DielineTemplateAsset.objects.filter(
+                id=asset_id, is_active=True
+            ).first()
+        if not asset:
+            raise PaperBoxGeometryError("固定图纸模板未配置可用资产")
 
-    raise PaperBoxGeometryError("模板未配置参数化资产，无法计算展开尺寸")
+        entities = (asset.parsed_geometry or {}).get("entities") or []
+        cal_w = _to_float(asset.calibrated_width_mm, 0)
+        cal_h = _to_float(asset.calibrated_height_mm, 0)
+        if cal_w <= 0 or cal_h <= 0:
+            # Fall back to effective bbox excluding ignore/bleed if not calibrated.
+            from apps.simplequote.dieline_export import entities_to_raw_segments
+
+            raw = entities_to_raw_segments(entities)
+            try:
+                min_x, min_y, max_x, max_y = effective_bbox(raw, exclude_kinds=("bleed", "ignore"))
+            except ValueError as exc:
+                raise PaperBoxGeometryError(str(exc)) from exc
+            blank_width_mm = max_x - min_x
+            blank_height_mm = max_y - min_y
+        else:
+            segs = calibrate_fixed_segments(entities, cal_w, cal_h)
+            blank_width_mm = cal_w
+            blank_height_mm = cal_h
+            _ = segs  # size from calibration
+
+        result = _build_result(code, l, w, h, t, resolved_glue, blank_width_mm, blank_height_mm)
+        result["engine_key"] = engine_key
+        result["geometry_mode"] = "fixed_asset"
+        return result
+
+    raise PaperBoxGeometryError(f"不支持的几何模式: {geometry_mode}")

@@ -4,7 +4,6 @@ import { useI18n } from 'vue-i18n'
 import PageShell from '../../components/PageShell.vue'
 import BoxParamForm from './BoxParamForm.vue'
 import BoxPreviewPanel from './BoxPreviewPanel.vue'
-import BoxQuoteResult from './BoxQuoteResult.vue'
 import { useBoxGenerator } from './useBoxGenerator'
 
 const { t } = useI18n()
@@ -26,12 +25,16 @@ const {
   printColors,
 
   error,
-  result,
   submitting,
+  downloadBusy,
+  pointsBalance,
+  pointsCost,
+  isUnlocked,
+  isFixedAsset,
 
   templateLabel,
   selectedTemplate,
-  canQuote,
+  canPurchase,
   hasBoxDims,
 
   previewError,
@@ -42,15 +45,15 @@ const {
   onDimFieldUpdate,
 
   goToLibrary,
-  onGenerate,
-  onConvert,
+  onUnlock,
+  onDownload,
 } = useBoxGenerator()
 
 const boxName = computed(() => templateLabel(selectedTemplate.value, 'name'))
 
-const submitDisabled = computed(() => submitting.value || !preview.value || !canQuote.value || !hasBoxDims.value)
-
-const productionAssetUrl = computed(() => selectedTemplate.value?.productionAssetUrl || '')
+const unlockDisabled = computed(
+  () => submitting.value || !canPurchase.value || isUnlocked.value || (!isFixedAsset.value && !hasBoxDims.value),
+)
 </script>
 
 <template>
@@ -78,9 +81,14 @@ const productionAssetUrl = computed(() => selectedTemplate.value?.productionAsse
         :box-code="boxCode"
         :box-name="boxName"
         :error="error"
-        :submit-disabled="submitDisabled"
+        :submit-disabled="unlockDisabled"
+        :is-fixed-asset="isFixedAsset"
+        :is-unlocked="isUnlocked"
+        :points-cost="pointsCost"
+        :points-balance="pointsBalance"
+        :submitting="submitting"
         @change-box="goToLibrary"
-        @submit="onGenerate"
+        @submit="onUnlock"
       />
 
       <BoxPreviewPanel
@@ -91,11 +99,11 @@ const productionAssetUrl = computed(() => selectedTemplate.value?.productionAsse
         :dim-annotations="dimAnnotations"
         :dim-view-box="dimViewBox"
         :preview-lines-svg="previewLinesSvg"
-        :production-asset-url="productionAssetUrl"
+        :is-unlocked="isUnlocked"
+        :download-busy="downloadBusy"
         @dim-field-update="onDimFieldUpdate"
+        @download="onDownload"
       />
-
-      <BoxQuoteResult v-if="result" :result="result" @convert="onConvert" />
     </div>
   </PageShell>
 </template>
@@ -122,13 +130,6 @@ const productionAssetUrl = computed(() => selectedTemplate.value?.productionAsse
 }
 
 .pkg-lib-status {
-  font-size: 0.9rem;
   color: var(--color-text-muted);
-}
-
-@media (max-width: 960px) {
-  .pkg-layout {
-    grid-template-columns: 1fr;
-  }
 }
 </style>

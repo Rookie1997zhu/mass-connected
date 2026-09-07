@@ -36,6 +36,8 @@ const assetUpload = ref({
   base_width: 150,
   base_height: 100,
   base_thickness: 1.5,
+  calibrated_width_mm: null,
+  calibrated_height_mm: null,
 })
 const assetDialogFullscreen = ref(true)
 const assetSidebarCollapsed = ref(false)
@@ -424,6 +426,12 @@ const uploadAsset = async () => {
     fd.append('base_width', String(assetUpload.value.base_width))
     fd.append('base_height', String(assetUpload.value.base_height))
     fd.append('base_thickness', String(assetUpload.value.base_thickness))
+    if (assetUpload.value.calibrated_width_mm) {
+      fd.append('calibrated_width_mm', String(assetUpload.value.calibrated_width_mm))
+    }
+    if (assetUpload.value.calibrated_height_mm) {
+      fd.append('calibrated_height_mm', String(assetUpload.value.calibrated_height_mm))
+    }
     await uploadDielineTemplateAsset(props.template.id, fd)
     ElMessage.success(t('common.success'))
     await loadAssets(props.template.id)
@@ -539,6 +547,15 @@ const removeAsset = async (asset) => {
           <el-form-item :label="t('dielineTemplates.defaultThickness')">
             <el-input-number v-model="assetUpload.base_thickness" :min="0" :step="0.1" :controls="false" />
           </el-form-item>
+          <div class="dim-row asset-dims">
+            <el-form-item :label="t('dielineTemplates.calibratedWidth')">
+              <el-input-number v-model="assetUpload.calibrated_width_mm" :min="1" :controls="false" />
+            </el-form-item>
+            <el-form-item :label="t('dielineTemplates.calibratedHeight')">
+              <el-input-number v-model="assetUpload.calibrated_height_mm" :min="1" :controls="false" />
+            </el-form-item>
+          </div>
+          <p class="field-hint">{{ t('dielineTemplates.calibratedHint') }}</p>
           <el-button type="primary" :loading="assetSubmitting" @click="uploadAsset">
             {{ t('dielineTemplates.uploadAndParse') }}
           </el-button>

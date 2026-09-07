@@ -4,6 +4,7 @@ from apps.simplequote.models import (
     DielineCategory,
     DielineTemplate,
     DielineTemplateAsset,
+    DielineTemplatePurchase,
     Print3dSliceJob,
     QuoteParam,
     QuoteTable,
@@ -214,6 +215,8 @@ class DielineTemplateSerializer(serializers.ModelSerializer):
             "category_id",
             "category_code",
             "engine_key",
+            "geometry_mode",
+            "points_cost",
             "name_i18n",
             "desc_i18n",
             "default_length_mm",
@@ -249,7 +252,7 @@ class DielineTemplateSerializer(serializers.ModelSerializer):
             "parametric_asset_status",
             "active_parametric_asset",
             "priority",
-            "quote_enabled",
+            "purchase_enabled",
             "preview_enabled",
             "sort_order",
             "is_active",
@@ -335,11 +338,17 @@ class DielineTemplateSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({"min_height_mm": "最小高不能大于最大高"})
 
         instance = self.instance
+        geometry_mode = attrs.get("geometry_mode")
+        if geometry_mode is None and instance is not None:
+            geometry_mode = getattr(instance, "geometry_mode", "formula")
+        if geometry_mode is None:
+            geometry_mode = "formula"
+
         enabling_flags = any(
             attrs.get(flag) if flag in attrs else (getattr(instance, flag) if instance else False)
-            for flag in ("is_active", "preview_enabled", "quote_enabled")
+            for flag in ("is_active", "preview_enabled", "purchase_enabled")
         )
-        if enabling_flags:
+        if enabling_flags and geometry_mode == "fixed_asset":
             has_mapped_asset = False
             if instance is not None:
                 has_mapped_asset = instance.assets.filter(
@@ -350,7 +359,7 @@ class DielineTemplateSerializer(serializers.ModelSerializer):
                 from core.exceptions import AppAPIException
 
                 raise AppAPIException(
-                    detail="模板须上传 DXF/SVG 并完成映射激活后，才可对用户开放预览或报价",
+                    detail="固定图纸模板须上传 DXF/SVG 并完成映射激活后，才可对用户开放",
                     code="DIELINE_TEMPLATE_ASSET_REQUIRED",
                 )
         return attrs
@@ -390,6 +399,8 @@ class DielineTemplateAssetSerializer(serializers.ModelSerializer):
             "parsed_geometry",
             "mapping_schema",
             "base_dimensions",
+            "calibrated_width_mm",
+            "calibrated_height_mm",
             "mapping_status",
             "parse_errors",
             "version",
@@ -448,3 +459,23 @@ class DielineTemplateAssetSerializer(serializers.ModelSerializer):
 
     def get_source_file_url(self, obj):
         return absolute_file_url(self.context.get("request"), obj.source_file)
+
+
+class DielineTemplatePurchaseSerializer(serializers.ModelSerializer):
+    template_code = serializers.CharField(source="template.code", read_only=True)
+    template_name_i18n = serializers.JSONField(source="template.name_i18n", read_only=True)
+    points_cost = serializers.IntegerField(source="template.points_cost", read_only=True)
+
+    class Meta:
+        model = DielineTemplatePurchase
+        fields = [
+            "id",
+            "template",
+            "template_code",
+            "template_name_i18n",
+            "points_cost",
+            "points_spent",
+            "transaction_no",
+            "created_at",
+        ]
+        read_only_fields = fields

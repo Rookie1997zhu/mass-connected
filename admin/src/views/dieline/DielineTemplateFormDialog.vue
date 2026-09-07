@@ -239,11 +239,20 @@ const submit = () => emit('submit')
         <p class="field-hint">{{ t('dielineTemplates.productionAssetHint') }}</p>
       </el-form-item>
 
+      <el-form-item :label="t('dielineTemplates.geometryMode')">
+        <el-select v-model="form.geometry_mode" style="width: 100%">
+          <el-option :label="t('dielineTemplates.geometryFormula')" value="formula" />
+          <el-option :label="t('dielineTemplates.geometryFixed')" value="fixed_asset" />
+        </el-select>
+      </el-form-item>
+      <el-form-item :label="t('dielineTemplates.pointsCost')">
+        <el-input-number v-model="form.points_cost" :min="0" :controls="false" />
+      </el-form-item>
       <el-form-item :label="t('dielineTemplates.sortOrder')">
         <el-input-number v-model="form.sort_order" :min="0" :controls="false" />
       </el-form-item>
-      <el-form-item :label="t('dielineTemplates.quoteEnabled')">
-        <el-switch v-model="form.quote_enabled" />
+      <el-form-item :label="t('dielineTemplates.purchaseEnabled')">
+        <el-switch v-model="form.purchase_enabled" />
         <p class="field-hint">{{ t('dielineTemplates.enableRequiresAsset') }}</p>
       </el-form-item>
       <el-form-item :label="t('dielineTemplates.previewEnabled')">

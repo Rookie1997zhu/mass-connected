@@ -276,6 +276,8 @@ REST_FRAMEWORK = {
     "PAGE_SIZE": 20,
     "EXCEPTION_HANDLER": "core.exceptions.custom_exception_handler",
     "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
+    # Allow business query ?format=dxf|pdf on download APIs (not DRF renderer negotiation)
+    "URL_FORMAT_OVERRIDE": None,
 }
 
 SIMPLE_JWT = {

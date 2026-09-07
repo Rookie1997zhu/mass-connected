@@ -262,6 +262,64 @@ function buildBlankOutlineSegments(totalW: number, totalH: number): LineSegment[
   return segments
 }
 
+function buildFormulaSegments(engineKey: EngineKey, geometry: DielineGeometry, flapGapMm?: number): LineSegment[] {
+  switch (engineKey) {
+    case 'slotted_rsc':
+      return build0201Segments(geometry)
+    case 'folding_shipping':
+      return buildFoldingShippingSegments(geometry)
+    case 'mailer_folder':
+      return build0427Segments(geometry)
+    case 'tuck_end':
+      return buildTuckEndSegments(geometry, flapGapMm)
+    case 'auto_lock_bottom':
+      return buildAutoLockBottomSegments(geometry, flapGapMm)
+    default:
+      throw new Error(`Unsupported engine: ${engineKey}`)
+  }
+}
+
+function buildFixedAssetSegments(asset: DielineTemplateAsset): LineSegment[] {
+  const entities = asset.parsedGeometry?.entities || []
+  const usable = entities.filter((e) => e.role !== 'ignore')
+  if (!usable.length) {
+    throw new Error('Fixed asset has no usable entities')
+  }
+
+  const xs = usable.flatMap((e) => [Number(e.x1), Number(e.x2)])
+  const ys = usable.flatMap((e) => [Number(e.y1), Number(e.y2)])
+  const minX = Math.min(...xs)
+  const maxX = Math.max(...xs)
+  const minY = Math.min(...ys)
+  const maxY = Math.max(...ys)
+  const spanX = maxX - minX
+  const spanY = maxY - minY
+  if (spanX <= 0 || spanY <= 0) {
+    throw new Error('Fixed asset bbox is empty')
+  }
+
+  const calW = Number(asset.calibratedWidthMm)
+  const calH = Number(asset.calibratedHeightMm)
+  const scaleX = calW > 0 ? calW / spanX : 1
+  const scaleY = calH > 0 ? calH / spanY : 1
+  const roles = asset.mappingSchema?.entity_roles || {}
+
+  return usable
+    .map((entity) => {
+      const role = String(roles[entity.entity_id] || entity.role || 'cut')
+      if (role === 'ignore') return null
+      const kind = role === 'crease' || role === 'bleed' || role === 'cut' ? role : 'cut'
+      return {
+        x1: (Number(entity.x1) - minX) * scaleX,
+        y1: (Number(entity.y1) - minY) * scaleY,
+        x2: (Number(entity.x2) - minX) * scaleX,
+        y2: (Number(entity.y2) - minY) * scaleY,
+        kind: kind as LineKind,
+      }
+    })
+    .filter((item): item is LineSegment => Boolean(item))
+}
+
 export function buildPreview(params: BoxParams): DielinePreview {
   const template = getBoxTemplate(params.boxCode)
   if (!template) {
@@ -271,31 +329,57 @@ export function buildPreview(params: BoxParams): DielinePreview {
     throw new Error('Box type preview not available yet')
   }
 
-  const geometry = computeGeometry(params)
+  const mode = template.geometryMode || 'formula'
 
-  if (hasMappedParametricAsset(template.activeParametricAsset)) {
-    const segments = buildParametricSegments(template.activeParametricAsset, geometry)
-    if (segments.length) {
-      const xs = segments.flatMap((seg) => [seg.x1, seg.x2])
-      const ys = segments.flatMap((seg) => [seg.y1, seg.y2])
-      const blankWidthMm = Math.max(...xs) - Math.min(...xs)
-      const blankHeightMm = Math.max(...ys) - Math.min(...ys)
-      return {
-        geometry: {
-          ...geometry,
-          blankWidthMm,
-          blankHeightMm,
-          unfoldAreaM2: (blankWidthMm * blankHeightMm) / 1_000_000,
-        },
-        segments,
-        viewBox: viewBoxFromSegments(segments),
-        previewMode: 'detailed',
-        source: 'parametric',
-      }
+  if (mode === 'fixed_asset') {
+    const asset = template.activeParametricAsset
+    if (!asset?.parsedGeometry?.entities?.length) {
+      throw new Error(PARAMETRIC_ASSET_REQUIRED)
+    }
+    const segments = buildFixedAssetSegments(asset)
+    const xs = segments.flatMap((seg) => [seg.x1, seg.x2])
+    const ys = segments.flatMap((seg) => [seg.y1, seg.y2])
+    const blankWidthMm = Math.max(...xs) - Math.min(...xs)
+    const blankHeightMm = Math.max(...ys) - Math.min(...ys)
+    const thicknessMm = Math.max(0.1, toMm(params.thickness, params.unit))
+    const manufacturing = {
+      length: toMm(params.length, params.unit),
+      width: toMm(params.width, params.unit),
+      height: toMm(params.height, params.unit),
+    }
+    return {
+      geometry: {
+        boxCode: params.boxCode,
+        manufacturing,
+        internal: manufacturing,
+        external: manufacturing,
+        thicknessMm,
+        glueTabMm: template.defaultGlueTabMm ?? DEFAULT_GLUE_TAB_MM,
+        blankWidthMm,
+        blankHeightMm,
+        unfoldAreaM2: (blankWidthMm * blankHeightMm) / 1_000_000,
+      },
+      segments,
+      viewBox: viewBoxFromSegments(segments),
+      previewMode: 'detailed',
+      source: 'parametric',
     }
   }
 
-  throw new Error(PARAMETRIC_ASSET_REQUIRED)
+  // formula (default) — ignore legacy parametric stretch
+  const geometry = computeGeometry(params)
+  const segments = buildFormulaSegments(
+    template.engineKey,
+    geometry,
+    template.flapGapMm ?? undefined,
+  )
+  return {
+    geometry,
+    segments,
+    viewBox: computePreviewViewBox(geometry),
+    previewMode: 'detailed',
+    source: 'engine',
+  }
 }
 
 function computePreviewViewBox(geometry: DielineGeometry): string {

@@ -2,16 +2,22 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import DOMPurify from 'dompurify'
-import { convertSimpleQuote, createSimpleQuote, fetchFefcoCatalog } from '../../api'
+import {
+  downloadDielineTemplate,
+  fetchDielinePurchases,
+  fetchFefcoCatalog,
+  fetchPointWallet,
+  purchaseDielineTemplate,
+} from '../../api'
 import {
   buildPreview,
-  buildQuoteInputs,
   computeDimViewBox,
   computeGeometry,
   fromMm,
   getDimAnnotations,
   PARAMETRIC_ASSET_REQUIRED,
   renderPreviewLinesSvg,
+  toMm,
 } from '../../lib/packaging/boxEngine'
 import {
   categoriesWithTemplates,
@@ -24,8 +30,7 @@ import {
 import { resolveApiMessage } from '../../utils/apiErrors'
 
 /**
- * 纸箱生成器页面的状态与业务逻辑（目录加载、几何计算、报价提交）。
- * 预览面板自身的缩放/平移/导出交互见 BoxPreviewPanel.vue。
+ * 纸箱生成器：目录、预览、积分解锁与后端下载。
  */
 export function useBoxGenerator() {
   const { t, locale } = useI18n()
@@ -50,8 +55,10 @@ export function useBoxGenerator() {
 
   const error = ref('')
   const previewError = ref('')
-  const result = ref(null)
   const submitting = ref(false)
+  const unlockedCodes = ref(new Set())
+  const pointsBalance = ref(null)
+  const downloadBusy = ref(false)
 
   const localeKey = computed(() => {
     const map = { 'zh-CN': 'zh', zh: 'zh', en: 'en', ko: 'ko', ja: 'ja' }
@@ -87,7 +94,7 @@ export function useBoxGenerator() {
   const syncDimsForDimensionType = (newType, oldType) => {
     if (!boxCode.value || !oldType || newType === oldType || !hasBoxDims.value) return
     const tpl = getBoxTemplate(boxCode.value)
-    if (!tpl?.previewEnabled) return
+    if (!tpl?.previewEnabled || tpl.geometryMode === 'fixed_asset') return
     try {
       const geo = computeGeometry({
         boxCode: boxCode.value,
@@ -107,25 +114,28 @@ export function useBoxGenerator() {
       width.value = roundDimForUnit(target.width)
       height.value = roundDimForUnit(target.height)
     } catch {
-      // 尺寸未通过校验时保持用户输入
+      // keep user input when validation fails
     }
   }
 
   const selectedTemplate = computed(() => (boxCode.value ? getBoxTemplate(boxCode.value) : undefined))
-
-  const canQuote = computed(() => selectedTemplate.value?.quoteEnabled ?? false)
+  const isFixedAsset = computed(() => selectedTemplate.value?.geometryMode === 'fixed_asset')
+  const canPurchase = computed(() => selectedTemplate.value?.purchaseEnabled ?? false)
+  const pointsCost = computed(() => Number(selectedTemplate.value?.pointsCost) || 0)
+  const isUnlocked = computed(() => Boolean(boxCode.value && unlockedCodes.value.has(boxCode.value)))
 
   const hasBoxDims = computed(() => {
+    if (isFixedAsset.value) return true
     const nums = [length.value, width.value, height.value, thickness.value]
     return nums.every((v) => v !== '' && v !== null && Number(v) > 0)
   })
 
   const params = computed(() => ({
     boxCode: boxCode.value,
-    length: Number(length.value),
-    width: Number(width.value),
-    height: Number(height.value),
-    thickness: Number(thickness.value),
+    length: Number(length.value) || Number(selectedTemplate.value?.defaultLengthMm) || 100,
+    width: Number(width.value) || Number(selectedTemplate.value?.defaultWidthMm) || 80,
+    height: Number(height.value) || Number(selectedTemplate.value?.defaultHeightMm) || 50,
+    thickness: Number(thickness.value) || Number(selectedTemplate.value?.defaultThicknessMm) || 1.5,
     unit: unit.value,
     dimensionType: dimensionType.value,
     boardType: boardType.value,
@@ -159,7 +169,7 @@ export function useBoxGenerator() {
   })
 
   const dimAnnotations = computed(() => {
-    if (!preview.value) return []
+    if (!preview.value || isFixedAsset.value) return []
     return getDimAnnotations(
       preview.value,
       unit.value,
@@ -180,6 +190,7 @@ export function useBoxGenerator() {
   })
 
   const onDimFieldUpdate = ({ field, value }) => {
+    if (isFixedAsset.value) return
     if (field === 'length') length.value = value
     else if (field === 'width') width.value = value
     else if (field === 'height') height.value = value
@@ -228,6 +239,26 @@ export function useBoxGenerator() {
     },
   )
 
+  const refreshUnlockState = async () => {
+    try {
+      const [purchasesRes, walletRes] = await Promise.all([
+        fetchDielinePurchases({ page_size: 200 }),
+        fetchPointWallet().catch(() => null),
+      ])
+      const rows = purchasesRes?.data?.items || purchasesRes?.data?.results || []
+      const next = new Set()
+      ;(Array.isArray(rows) ? rows : []).forEach((row) => {
+        if (row.template_code) next.add(row.template_code)
+      })
+      unlockedCodes.value = next
+      if (walletRes?.data) {
+        pointsBalance.value = walletRes.data.balance
+      }
+    } catch {
+      // ignore — unlock state stays empty until login/purchase
+    }
+  }
+
   const loadCatalog = async () => {
     catalogLoading.value = true
     catalogError.value = ''
@@ -241,6 +272,7 @@ export function useBoxGenerator() {
       }
       catalogReady.value = true
       initFromRoute()
+      await refreshUnlockState()
     } catch {
       resetFefcoCatalog()
       catalogError.value = t('packaging.catalogLoadFailed')
@@ -253,47 +285,71 @@ export function useBoxGenerator() {
     router.push({ name: 'packaging-library' })
   }
 
-  const onGenerate = async () => {
+  const onUnlock = async () => {
     if (!boxCode.value) {
       error.value = t('packaging.noBoxSelected')
       return
     }
-    if (!hasBoxDims.value) {
-      error.value = t('packaging.fillDimsFirst')
-      return
-    }
-    if (!canQuote.value) {
+    if (!canPurchase.value) {
       error.value = t('packaging.previewNotReady')
-      return
-    }
-    if (!preview.value) {
-      error.value = previewError.value || t('packaging.invalidDims')
       return
     }
     error.value = ''
     submitting.value = true
-    result.value = null
     try {
-      const res = await createSimpleQuote({
-        quote_type: 'paper_box',
-        product_name: productName.value,
-        inputs: buildQuoteInputs(params.value),
-      })
-      result.value = res.data
+      const res = await purchaseDielineTemplate({ template_code: boxCode.value })
+      const code = res?.data?.template_code || boxCode.value
+      unlockedCodes.value = new Set([...unlockedCodes.value, code])
+      if (typeof res?.data?.points_spent === 'number' && pointsBalance.value != null) {
+        pointsBalance.value = Math.max(0, pointsBalance.value - Number(res.data.points_spent || 0))
+      } else {
+        await refreshUnlockState()
+      }
     } catch (err) {
-      error.value = resolveApiMessage(err, t, 'packaging.failed')
+      const apiCode = err?.response?.data?.code || err?.code
+      if (apiCode === 'POINT_INSUFFICIENT') {
+        error.value = t('packaging.pointsInsufficient')
+      } else {
+        error.value = resolveApiMessage(err, t, 'packaging.unlockFailed')
+      }
     } finally {
       submitting.value = false
     }
   }
 
-  const onConvert = async () => {
-    if (!result.value?.id) return
+  const triggerBlobDownload = (blob, filename) => {
+    const url = URL.createObjectURL(blob)
+    const anchor = document.createElement('a')
+    anchor.href = url
+    anchor.download = filename
+    anchor.click()
+    URL.revokeObjectURL(url)
+  }
+
+  const onDownload = async (format) => {
+    if (!boxCode.value || !preview.value) return
+    if (!isUnlocked.value) {
+      error.value = t('packaging.unlockRequired')
+      return
+    }
+    downloadBusy.value = true
+    error.value = ''
     try {
-      const res = await convertSimpleQuote(result.value.id, {})
-      router.push({ name: 'my-rfq-detail', params: { id: res.data.rfq_id } })
+      const query = { format }
+      if (!isFixedAsset.value) {
+        query.length_mm = toMm(Number(length.value), unit.value)
+        query.width_mm = toMm(Number(width.value), unit.value)
+        query.height_mm = toMm(Number(height.value), unit.value)
+        query.thickness_mm = toMm(Number(thickness.value), unit.value)
+        query.dimension_type = dimensionType.value
+      }
+      const res = await downloadDielineTemplate(boxCode.value, query)
+      const blob = res instanceof Blob ? res : new Blob([res])
+      triggerBlobDownload(blob, `dieline-${boxCode.value}.${format}`)
     } catch (err) {
-      error.value = resolveApiMessage(err, t, 'packaging.failed')
+      error.value = resolveApiMessage(err, t, 'packaging.downloadFailed')
+    } finally {
+      downloadBusy.value = false
     }
   }
 
@@ -319,12 +375,16 @@ export function useBoxGenerator() {
     printColors,
 
     error,
-    result,
     submitting,
+    downloadBusy,
+    pointsBalance,
+    pointsCost,
+    isUnlocked,
+    isFixedAsset,
 
     templateLabel,
     selectedTemplate,
-    canQuote,
+    canPurchase,
     hasBoxDims,
     params,
 
@@ -339,7 +399,7 @@ export function useBoxGenerator() {
     initFromRoute,
     loadCatalog,
     goToLibrary,
-    onGenerate,
-    onConvert,
+    onUnlock,
+    onDownload,
   }
 }

@@ -6,6 +6,11 @@ defineProps({
   boxName: { type: String, default: '' },
   error: { type: String, default: '' },
   submitDisabled: { type: Boolean, default: false },
+  isFixedAsset: { type: Boolean, default: false },
+  isUnlocked: { type: Boolean, default: false },
+  pointsCost: { type: Number, default: 0 },
+  pointsBalance: { type: [Number, null], default: null },
+  submitting: { type: Boolean, default: false },
 })
 
 const emit = defineEmits(['change-box', 'submit'])
@@ -56,7 +61,7 @@ const onSubmit = () => emit('submit')
         </label>
       </div>
 
-      <div class="pkg-dim-type">
+      <div v-if="!isFixedAsset" class="pkg-dim-type">
         <span class="pkg-dim-label">{{ t('packaging.dimensionType') }}</span>
         <div class="pkg-dim-chips">
           <button
@@ -86,11 +91,14 @@ const onSubmit = () => emit('submit')
         </div>
       </div>
 
-      <div class="pkg-row">
-        <label>{{ t('packaging.length') }}<input v-model.number="length" type="number" min="1" step="0.1" :placeholder="t('packaging.dimPlaceholder')" /></label>
-        <label>{{ t('packaging.width') }}<input v-model.number="width" type="number" min="1" step="0.1" :placeholder="t('packaging.dimPlaceholder')" /></label>
-      </div>
-      <label>{{ t('packaging.height') }}<input v-model.number="height" type="number" min="1" step="0.1" :placeholder="t('packaging.dimPlaceholder')" /></label>
+      <template v-if="!isFixedAsset">
+        <div class="pkg-row">
+          <label>{{ t('packaging.length') }}<input v-model.number="length" type="number" min="1" step="0.1" :placeholder="t('packaging.dimPlaceholder')" /></label>
+          <label>{{ t('packaging.width') }}<input v-model.number="width" type="number" min="1" step="0.1" :placeholder="t('packaging.dimPlaceholder')" /></label>
+        </div>
+        <label>{{ t('packaging.height') }}<input v-model.number="height" type="number" min="1" step="0.1" :placeholder="t('packaging.dimPlaceholder')" /></label>
+      </template>
+      <p v-else class="pkg-fixed-hint">{{ t('packaging.fixedAssetDimsHint') }}</p>
 
       <label>{{ t('packaging.boardType') }}
         <select v-model="boardType">
@@ -101,14 +109,15 @@ const onSubmit = () => emit('submit')
         </select>
       </label>
 
-      <div class="pkg-row">
-        <label>{{ t('packaging.quantity') }}<input v-model.number="quantity" type="number" min="1" :placeholder="t('packaging.dimPlaceholder')" /></label>
-        <label>{{ t('packaging.printColors') }}<input v-model.number="printColors" type="number" min="0" :placeholder="t('packaging.dimPlaceholder')" /></label>
-      </div>
+      <p class="pkg-points-row">
+        <span>{{ t('packaging.pointsCost', { n: pointsCost }) }}</span>
+        <span v-if="pointsBalance != null">{{ t('packaging.pointsBalance', { n: pointsBalance }) }}</span>
+      </p>
+      <p v-if="isUnlocked" class="pkg-unlocked">{{ t('packaging.alreadyUnlocked') }}</p>
 
       <p v-if="error" class="page-message page-message--error">{{ error }}</p>
       <button type="button" class="btn btn-primary" :disabled="submitDisabled" @click="onSubmit">
-        {{ t('packaging.generate') }}
+        {{ submitting ? t('packaging.unlocking') : (isUnlocked ? t('packaging.alreadyUnlocked') : t('packaging.unlock')) }}
       </button>
     </div>
   </section>
@@ -189,6 +198,24 @@ const onSubmit = () => emit('submit')
 
 .pkg-box-name {
   font-weight: 600;
+}
+
+.pkg-fixed-hint,
+.pkg-points-row,
+.pkg-unlocked {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.pkg-points-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.pkg-unlocked {
+  color: #15803d;
 }
 
 .pkg-form-fields {

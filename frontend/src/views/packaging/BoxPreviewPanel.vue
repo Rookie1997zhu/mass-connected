@@ -2,8 +2,7 @@
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import DimAnnotationLayer from '../../components/packaging/DimAnnotationLayer.vue'
-import { downloadTextFile, exportDxf, fromMm } from '../../lib/packaging/boxEngine'
-import { exportDielineAi, exportDielinePdf } from '../../lib/packaging/dielineExport'
+import { fromMm } from '../../lib/packaging/boxEngine'
 
 const PREVIEW_ZOOM_MIN = 0.5
 const PREVIEW_ZOOM_MAX = 3
@@ -17,10 +16,11 @@ const props = defineProps({
   dimAnnotations: { type: Array, default: () => [] },
   dimViewBox: { type: String, default: '' },
   previewLinesSvg: { type: String, default: '' },
-  productionAssetUrl: { type: String, default: '' },
+  isUnlocked: { type: Boolean, default: false },
+  downloadBusy: { type: Boolean, default: false },
 })
 
-const emit = defineEmits(['dim-field-update'])
+const emit = defineEmits(['dim-field-update', 'download'])
 
 const { t } = useI18n()
 
@@ -90,18 +90,18 @@ const endPan = () => {
 const onDimFieldUpdate = (payload) => emit('dim-field-update', payload)
 
 const onDownloadDielinePdf = () => {
-  if (!props.preview) return
-  exportDielinePdf(props.preview)
+  if (!props.isUnlocked || props.downloadBusy) return
+  emit('download', 'pdf')
 }
 
 const onDownloadDielineAi = () => {
-  if (!props.preview) return
-  exportDielineAi(props.preview)
+  if (!props.isUnlocked || props.downloadBusy) return
+  emit('download', 'ai')
 }
 
 const onDownloadDxf = () => {
-  if (!props.preview) return
-  downloadTextFile(exportDxf(props.preview), `dieline-${props.boxCode}.dxf`, 'application/dxf')
+  if (!props.isUnlocked || props.downloadBusy) return
+  emit('download', 'dxf')
 }
 
 onMounted(() => {
@@ -214,16 +214,25 @@ onUnmounted(() => {
     </div>
 
     <div v-if="preview" class="pkg-actions">
-      <button type="button" class="btn btn-secondary btn-sm" @click="onDownloadDielinePdf">{{ t('packaging.downloadDielinePdf') }}</button>
-      <button type="button" class="btn btn-secondary btn-sm" @click="onDownloadDielineAi">{{ t('packaging.downloadDielineAi') }}</button>
-      <button type="button" class="btn btn-secondary btn-sm" @click="onDownloadDxf">{{ t('packaging.downloadDxf') }}</button>
-      <a
-        v-if="productionAssetUrl"
-        :href="productionAssetUrl"
-        target="_blank"
-        rel="noopener"
+      <p v-if="!isUnlocked" class="pkg-download-lock">{{ t('packaging.unlockToDownload') }}</p>
+      <button
+        type="button"
         class="btn btn-secondary btn-sm"
-      >{{ t('packaging.downloadProductionAsset') }}</a>
+        :disabled="!isUnlocked || downloadBusy"
+        @click="onDownloadDielinePdf"
+      >{{ t('packaging.downloadDielinePdf') }}</button>
+      <button
+        type="button"
+        class="btn btn-secondary btn-sm"
+        :disabled="!isUnlocked || downloadBusy"
+        @click="onDownloadDielineAi"
+      >{{ t('packaging.downloadDielineAi') }}</button>
+      <button
+        type="button"
+        class="btn btn-secondary btn-sm"
+        :disabled="!isUnlocked || downloadBusy"
+        @click="onDownloadDxf"
+      >{{ t('packaging.downloadDxf') }}</button>
     </div>
   </section>
 </template>
@@ -431,6 +440,14 @@ onUnmounted(() => {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-sm);
+  align-items: center;
+}
+
+.pkg-download-lock {
+  margin: 0;
+  width: 100%;
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
 }
 
 @media (max-width: 960px) {

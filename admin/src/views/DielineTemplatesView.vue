@@ -57,7 +57,9 @@ const emptyForm = () => ({
   structure_params: {},
   allowances: {},
   priority: 'P0',
-  quote_enabled: false,
+  geometry_mode: 'formula',
+  points_cost: 0,
+  purchase_enabled: false,
   preview_enabled: false,
   sort_order: 0,
   is_active: false,
@@ -135,7 +137,9 @@ const openEdit = (row) => {
     structure_params: row.structure_params || {},
     allowances: row.allowances || {},
     priority: row.priority,
-    quote_enabled: row.quote_enabled,
+    geometry_mode: row.geometry_mode || 'formula',
+    points_cost: Number(row.points_cost) || 0,
+    purchase_enabled: row.purchase_enabled ?? row.quote_enabled,
     preview_enabled: row.preview_enabled,
     sort_order: row.sort_order,
     is_active: row.is_active,
@@ -184,7 +188,9 @@ const buildFormData = () => {
   fd.append('structure_params', JSON.stringify(f.structure_params || {}))
   fd.append('allowances', JSON.stringify(f.allowances || {}))
   fd.append('priority', f.priority)
-  fd.append('quote_enabled', f.quote_enabled ? 'true' : 'false')
+  fd.append('geometry_mode', f.geometry_mode || 'formula')
+  fd.append('points_cost', String(Number(f.points_cost) || 0))
+  fd.append('purchase_enabled', f.purchase_enabled ? 'true' : 'false')
   fd.append('preview_enabled', f.preview_enabled ? 'true' : 'false')
   fd.append('sort_order', String(f.sort_order))
   fd.append('is_active', f.is_active ? 'true' : 'false')

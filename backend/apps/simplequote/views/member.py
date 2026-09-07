@@ -73,6 +73,13 @@ class MemberSimpleQuoteListCreateView(APIView):
         quote_type = serializer.validated_data["quote_type"]
         inputs = dict(serializer.validated_data.get("inputs", {}) or {})
 
+        if quote_type == "paper_box":
+            return error_response(
+                "SIMPLE_QUOTE_TYPE_RETIRED",
+                "纸盒刀版已改为积分买断下载，请使用包装生成器解锁模板",
+                request=request,
+            )
+
         if quote_type == "print3d":
             slice_job_id = inputs.pop("slice_job_id", None)
             if slice_job_id:

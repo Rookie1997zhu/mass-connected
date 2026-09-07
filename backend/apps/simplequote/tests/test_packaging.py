@@ -62,6 +62,7 @@ def create_mapped_template(
         "category": category,
         "category_code": category.code,
         "engine_key": engine_key,
+        "geometry_mode": "formula",
         "default_length_mm": 200,
         "default_width_mm": 150,
         "default_height_mm": 100,
@@ -76,7 +77,7 @@ def create_mapped_template(
         "default_external_height_mm": 104,
         "default_thickness_mm": 1.5,
         "default_glue_tab_mm": default_glue_tab_mm,
-        "quote_enabled": quote_enabled,
+        "purchase_enabled": quote_enabled,
         "preview_enabled": preview_enabled,
         "is_active": is_active,
         "sort_order": 1,
@@ -155,15 +156,13 @@ class BoardAllowancesTests(SimpleTestCase):
 class DielineTemplateCatalogTests(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.cat0200 = DielineCategory.objects.create(
+        cls.cat0200, _ = DielineCategory.objects.get_or_create(
             code="0200",
-            name_i18n={"zh": "开槽箱"},
-            sort_order=20,
+            defaults={"name_i18n": {"zh": "开槽箱"}, "sort_order": 20},
         )
-        cls.cat0400 = DielineCategory.objects.create(
+        cls.cat0400, _ = DielineCategory.objects.get_or_create(
             code="0400",
-            name_i18n={"zh": "翻盖箱"},
-            sort_order=40,
+            defaults={"name_i18n": {"zh": "翻盖箱"}, "sort_order": 40},
         )
         cls.template0201 = create_mapped_template("0201", cls.cat0200, sort_order=1)
         cls.template0427 = create_mapped_template(
@@ -179,7 +178,7 @@ class DielineTemplateCatalogTests(TestCase):
             category=cls.cat0200,
             category_code="0200",
             engine_key="slotted_rsc",
-            quote_enabled=False,
+            purchase_enabled=False,
             preview_enabled=False,
             is_active=False,
             sort_order=99,
@@ -206,41 +205,48 @@ class DielineTemplateCatalogTests(TestCase):
         self.assertIsNotNone(tpl["default_internal_length_mm"])
         self.assertIsNotNone(tpl["default_external_length_mm"])
 
-    def test_catalog_only_lists_mapped_asset_templates(self):
+    def test_catalog_lists_formula_and_mapped_templates(self):
         catalog = build_fefco_catalog()
         codes = {t["code"] for t in catalog["templates"]}
         self.assertIn("0201", codes)
         self.assertIn("0427", codes)
         self.assertNotIn("DRAFT01", codes)
 
-    def test_unfold_by_code_uses_parametric_bbox(self):
+    def test_unfold_by_code_uses_formula_blank(self):
         result = unfold_by_code("0427", 315, 202, 62, thickness_mm=1.5, dimension_type="manufacturing")
         self.assertEqual(result["box_code"], "0427")
-        self.assertEqual(result["blank_width_mm"], 315.0)
-        self.assertEqual(result["blank_height_mm"], 62.0)
-        self.assertAlmostEqual(result["unfold_area_m2"], 0.01953, places=5)
-
-    def test_unfold_by_code_parametric_legacy_dims(self):
-        result = unfold_by_code("0427", 200, 150, 100)
-        self.assertEqual(result["box_code"], "0427")
-        self.assertAlmostEqual(result["blank_width_mm"], 201.5, places=1)
+        self.assertEqual(result["geometry_mode"], "formula")
+        # blank = L + 2W ; H*2 + W*2 + tuck
+        self.assertEqual(result["blank_width_mm"], 719.0)
+        self.assertGreater(result["blank_height_mm"], 500)
         self.assertGreater(result["unfold_area_m2"], 0)
 
-    def test_unfold_by_code_without_asset_rejected(self):
-        cat = DielineCategory.objects.create(code="0700", name_i18n={"zh": "插舌盒"}, sort_order=70)
+    def test_unfold_by_code_formula_internal_dims(self):
+        result = unfold_by_code("0427", 200, 150, 100)
+        self.assertEqual(result["box_code"], "0427")
+        self.assertEqual(result["geometry_mode"], "formula")
+        self.assertGreater(result["blank_width_mm"], 400)
+        self.assertGreater(result["unfold_area_m2"], 0)
+
+    def test_unfold_by_code_formula_without_asset_ok(self):
+        cat, _ = DielineCategory.objects.get_or_create(
+            code="0700",
+            defaults={"name_i18n": {"zh": "插舌盒"}, "sort_order": 70},
+        )
         DielineTemplate.objects.create(
             code="0713",
             category=cat,
             category_code="0700",
             engine_key="tuck_end",
-            quote_enabled=True,
+            geometry_mode="formula",
+            purchase_enabled=True,
             preview_enabled=True,
             is_active=True,
             sort_order=3,
         )
-        with self.assertRaises(PaperBoxGeometryError):
-            unfold_by_code("0713", 200, 150, 100, dimension_type="manufacturing")
-
+        result = unfold_by_code("0713", 200, 150, 100, dimension_type="manufacturing")
+        self.assertEqual(result["geometry_mode"], "formula")
+        self.assertEqual(result["blank_width_mm"], 2 * (200 + 150) + 25)
     def test_unfold_by_code_unsupported(self):
         with self.assertRaises(PaperBoxGeometryError):
             unfold_by_code("9999", 200, 150, 100)
@@ -256,11 +262,14 @@ class DielineTemplateCatalogTests(TestCase):
         self.assertEqual(result["box_code"], "0201A")
         self.assertEqual(result["engine_key"], "slotted_rsc")
         self.assertEqual(result["glue_tab_mm"], 30)
-        self.assertEqual(result["blank_width_mm"], 434.0)
-        self.assertEqual(result["blank_height_mm"], 278.0)
+        self.assertEqual(result["blank_width_mm"], 2 * (434 + 214) + 30)
+        self.assertEqual(result["blank_height_mm"], 214 + 278)
 
     def test_unfold_template_dimension_limits(self):
-        cat = DielineCategory.objects.create(code="0700", name_i18n={"zh": "插舌盒"}, sort_order=70)
+        cat, _ = DielineCategory.objects.get_or_create(
+            code="0700",
+            defaults={"name_i18n": {"zh": "插舌盒"}, "sort_order": 70},
+        )
         create_mapped_template(
             "0713LIM",
             cat,
@@ -281,17 +290,15 @@ class DielineTemplateCatalogTests(TestCase):
             unfold_by_code("0713LIM", 350, 150, 100, dimension_type="manufacturing")
         result = unfold_by_code("0713LIM", 200, 150, 100, dimension_type="manufacturing")
         self.assertEqual(result["box_code"], "0713LIM")
-        self.assertEqual(result["blank_width_mm"], 200.0)
-        self.assertEqual(result["blank_height_mm"], 100.0)
-
+        self.assertEqual(result["blank_width_mm"], 2 * (200 + 150) + 25)
+        self.assertEqual(result["blank_height_mm"], 2 * 100 + 150)
 
 class DielineTemplateSerializerTests(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.category = DielineCategory.objects.create(
+        cls.category, _ = DielineCategory.objects.get_or_create(
             code="0200",
-            name_i18n={"zh": "开槽箱"},
-            sort_order=20,
+            defaults={"name_i18n": {"zh": "开槽箱"}, "sort_order": 20},
         )
 
     def test_enable_without_asset_rejected(self):
@@ -300,7 +307,8 @@ class DielineTemplateSerializerTests(TestCase):
             category=self.category,
             category_code="0200",
             engine_key="slotted_rsc",
-            quote_enabled=False,
+            geometry_mode="fixed_asset",
+            purchase_enabled=False,
             preview_enabled=False,
             is_active=False,
             sort_order=1,
@@ -314,6 +322,27 @@ class DielineTemplateSerializerTests(TestCase):
             serializer.is_valid(raise_exception=True)
         self.assertEqual(ctx.exception.default_code, "DIELINE_TEMPLATE_ASSET_REQUIRED")
 
+    def test_enable_formula_without_asset_allowed(self):
+        template = DielineTemplate.objects.create(
+            code="FORMULA01",
+            category=self.category,
+            category_code="0200",
+            engine_key="slotted_rsc",
+            geometry_mode="formula",
+            purchase_enabled=False,
+            preview_enabled=False,
+            is_active=False,
+            sort_order=1,
+        )
+        serializer = DielineTemplateSerializer(
+            instance=template,
+            data={"is_active": True, "preview_enabled": True, "purchase_enabled": True},
+            partial=True,
+        )
+        self.assertTrue(serializer.is_valid(raise_exception=True))
+        serializer.save()
+        template.refresh_from_db()
+        self.assertTrue(template.is_active)
     def test_enable_with_mapped_asset_allowed(self):
         template = create_mapped_template(
             "WITHASSET",
@@ -325,7 +354,7 @@ class DielineTemplateSerializerTests(TestCase):
         )
         serializer = DielineTemplateSerializer(
             instance=template,
-            data={"is_active": True, "preview_enabled": True, "quote_enabled": True},
+            data={"is_active": True, "preview_enabled": True, "purchase_enabled": True},
             partial=True,
         )
         self.assertTrue(serializer.is_valid(raise_exception=True))

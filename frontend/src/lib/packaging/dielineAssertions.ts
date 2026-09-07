@@ -5,11 +5,10 @@ import {
   computeGeometry,
   exportDxf,
   getDimAnnotations,
-  PARAMETRIC_ASSET_REQUIRED,
 } from './boxEngine'
 import { viewBoxFromSegments } from './parametricTemplate'
 import { buildDielinePdfBytes } from './dielineExport'
-import { build0427Segments } from './dieline0427'
+import { build0427Segments, compute0427BlankSize } from './dieline0427'
 import { buildTuckEndSegments } from './dieline0713'
 import { buildAutoLockBottomSegments } from './dieline0716'
 import { buildFoldingShippingSegments } from './dielineFoldingShipping'
@@ -29,6 +28,8 @@ function seedTestCatalog() {
         code: '0201',
         category_code: '0200',
         engine_key: 'slotted_rsc',
+        geometry_mode: 'formula',
+        purchase_enabled: true,
         quote_enabled: true,
         preview_enabled: true,
         sort_order: 1,
@@ -111,6 +112,8 @@ function seedTestCatalog() {
         code: '9998',
         category_code: '0200',
         engine_key: 'slotted_rsc',
+        geometry_mode: 'fixed_asset',
+        purchase_enabled: true,
         quote_enabled: true,
         preview_enabled: true,
         sort_order: 99,
@@ -282,13 +285,9 @@ export function runDielineAssertions(): void {
 
   assert(preview.segments.length === segments.length, 'engine preview segments should match build0201Segments')
 
-  let missingAssetError = ''
-  try {
-    buildPreview(params)
-  } catch (err) {
-    missingAssetError = err instanceof Error ? err.message : String(err)
-  }
-  assert(missingAssetError === PARAMETRIC_ASSET_REQUIRED, '0201 without parametric asset should require asset')
+  const formulaPreview = buildPreview(params)
+  assert(formulaPreview.source === 'engine', '0201 formula preview should use engine source')
+  assert(formulaPreview.segments.length === segments.length, '0201 formula preview segments match builder')
 
   const dxf = exportDxf(preview)
   assert(dxf.length > 500, 'DXF export should produce line entities')
@@ -311,8 +310,13 @@ export function runDielineAssertions(): void {
   }
   const geo0427 = computeGeometry(params0427)
   const seg0427 = build0427Segments(geo0427)
-  assert(countByKind(seg0427, 'cut') > 0, '0427 should still produce cut segments')
-  assert(countByKind(seg0427, 'crease') > 0, '0427 should still produce crease segments')
+  const blank0427 = compute0427BlankSize(200, 150, 100, 3)
+  assert(countByKind(seg0427, 'cut') > 20, '0427 should produce substantial cut geometry')
+  assert(countByKind(seg0427, 'crease') >= 10, '0427 should produce multiple crease lines')
+  assert(blank0427.blankWidthMm === 500, '0427 blank width = L + 2W')
+  assert(Math.abs(blank0427.blankHeightMm - (2 * 100 + 2 * 150 + blank0427.tuckHeightMm)) < 0.01, '0427 blank height formula')
+  assert(geo0427.blankWidthMm === blank0427.blankWidthMm, '0427 geometry blank width matches helper')
+  assert(geo0427.blankHeightMm === blank0427.blankHeightMm, '0427 geometry blank height matches helper')
 
   const params0210: BoxParams = {
     ...params,
@@ -362,26 +366,26 @@ export function runDielineAssertions(): void {
     thickness: 1.5,
     dimensionType: 'manufacturing',
   })
-  assert(parametricPreview.segments.length === 2, 'parametric template should skip ignored entities')
-  assert(parametricPreview.geometry.blankWidthMm === 200, 'parametric bbox width should scale by length')
-  assert(parametricPreview.geometry.blankHeightMm === 100, 'parametric bbox height should scale by height')
-  assert(parametricPreview.source === 'parametric', 'parametric preview should be marked for generic annotations')
-  assert(exportDxf(parametricPreview).includes('LINE'), 'parametric DXF should reuse transformed segments')
+  assert(parametricPreview.segments.length === 2, 'fixed asset should skip ignored entities')
+  assert(parametricPreview.geometry.blankWidthMm === 100, 'fixed asset blank width uses calibrated/raw bbox')
+  assert(parametricPreview.geometry.blankHeightMm === 50, 'fixed asset blank height uses calibrated/raw bbox')
+  assert(parametricPreview.source === 'parametric', 'fixed asset preview marked for generic annotations')
+  assert(exportDxf(parametricPreview).includes('LINE'), 'fixed asset DXF should reuse segments')
   const parametricAsset = getBoxTemplate('9998')?.activeParametricAsset
   const parametricAnnotations = getDimAnnotations(parametricPreview, 'mm', 'manufacturing', 'slotted_rsc', parametricAsset)
-  assert(parametricAnnotations.length === 3, 'parametric template should use admin L/W/H annotations')
-  assert(getDimAnnotations(parametricPreview, 'mm', 'manufacturing', 'slotted_rsc').length === 0, 'parametric template without admin annotations should not use bbox fallback')
+  assert(parametricAnnotations.length === 3, 'fixed asset template should use admin L/W/H annotations')
+  assert(getDimAnnotations(parametricPreview, 'mm', 'manufacturing', 'slotted_rsc').length === 0, 'without admin annotations should not use bbox fallback')
   assert(
     parametricAnnotations.some((ann) => ann.field === 'length' && ann.displayValue === 200),
-    'parametric length annotation should use current geometry',
+    'length annotation should use current geometry',
   )
   assert(
     parametricAnnotations.some((ann) => ann.field === 'width' && ann.displayValue === 80),
-    'parametric width annotation should use current geometry',
+    'width annotation should use current geometry',
   )
   assert(
     parametricAnnotations.some((ann) => ann.field === 'height' && ann.displayValue === 100),
-    'parametric height annotation should use current geometry',
+    'height annotation should use current geometry',
   )
   const lengthAnn = parametricAnnotations.find((ann) => ann.field === 'length')
   assert((lengthAnn?.dimLines?.length || 0) >= 3, 'parametric length annotation should include extension lines and dimension line')

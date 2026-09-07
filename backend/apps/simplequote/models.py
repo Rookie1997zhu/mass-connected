@@ -86,6 +86,18 @@ class DielineTemplate(models.Model):
         ("P0", "P0"),
         ("P1", "P1"),
     ]
+    GEOMETRY_MODE_CHOICES = [
+        ("formula", "Formula"),
+        ("fixed_asset", "Fixed asset"),
+        # Extensible: "parametric" reserved for future zone-stretch resizing
+    ]
+    FORMULA_ENGINE_KEYS = {
+        "slotted_rsc",
+        "folding_shipping",
+        "mailer_folder",
+        "tuck_end",
+        "auto_lock_bottom",
+    }
 
     code = models.CharField(max_length=16, unique=True)
     category = models.ForeignKey(
@@ -133,7 +145,11 @@ class DielineTemplate(models.Model):
         upload_to="dieline_production/%Y/%m/", null=True, blank=True
     )
     priority = models.CharField(max_length=8, choices=PRIORITY_CHOICES, default="P0")
-    quote_enabled = models.BooleanField(default=True)
+    geometry_mode = models.CharField(
+        max_length=16, choices=GEOMETRY_MODE_CHOICES, default="formula"
+    )
+    points_cost = models.PositiveIntegerField(default=0)
+    purchase_enabled = models.BooleanField(default=True)
     preview_enabled = models.BooleanField(default=True)
     sort_order = models.PositiveIntegerField(default=0)
     is_active = models.BooleanField(default=True)
@@ -146,6 +162,44 @@ class DielineTemplate(models.Model):
 
     def __str__(self):
         return f"FEFCO {self.code}"
+
+    def resolve_geometry_mode(self):
+        mode = (self.geometry_mode or "").strip()
+        if mode in {"formula", "fixed_asset", "parametric"}:
+            return mode
+        if self.engine_key in self.FORMULA_ENGINE_KEYS:
+            return "formula"
+        return "fixed_asset"
+
+
+class DielineTemplatePurchase(models.Model):
+    """会员按模板买断解锁记录（同一用户同一模板仅一条）。"""
+
+    user = models.ForeignKey(
+        "accounts.User",
+        on_delete=models.CASCADE,
+        related_name="dieline_purchases",
+    )
+    template = models.ForeignKey(
+        DielineTemplate,
+        on_delete=models.CASCADE,
+        related_name="purchases",
+    )
+    points_spent = models.PositiveIntegerField(default=0)
+    transaction_no = models.CharField(max_length=64, blank=True, default="")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["user", "template"],
+                name="uniq_dieline_purchase_user_template",
+            )
+        ]
+
+    def __str__(self):
+        return f"purchase {self.user_id}:{self.template.code}"
 
 
 class DielineTemplateAsset(models.Model):
@@ -175,6 +229,13 @@ class DielineTemplateAsset(models.Model):
     parsed_geometry = models.JSONField(default=dict, blank=True)
     mapping_schema = models.JSONField(default=dict, blank=True)
     base_dimensions = models.JSONField(default=dict, blank=True)
+    # Physical blank size for fixed_asset calibration (SVG units are unreliable).
+    calibrated_width_mm = models.DecimalField(
+        max_digits=12, decimal_places=4, null=True, blank=True
+    )
+    calibrated_height_mm = models.DecimalField(
+        max_digits=12, decimal_places=4, null=True, blank=True
+    )
     mapping_status = models.CharField(max_length=24, choices=STATUS_CHOICES, default="uploaded")
     parse_errors = models.JSONField(default=dict, blank=True)
     version = models.PositiveIntegerField(default=1)

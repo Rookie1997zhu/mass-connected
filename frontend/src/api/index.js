@@ -114,6 +114,13 @@ export const fetchSimpleQuotes = (params) => http.get('/member/simple-quotes', {
 export const fetchSimpleQuote = (id) => http.get(`/member/simple-quotes/${id}`)
 export const createSimpleQuote = (data) => http.post('/member/simple-quotes', data)
 export const fetchFefcoCatalog = () => http.get('/packaging/fefco-catalog')
+export const purchaseDielineTemplate = (data) => http.post('/member/dieline-purchases', data)
+export const fetchDielinePurchases = (params) => http.get('/member/dieline-purchases', { params })
+export const downloadDielineTemplate = (code, params) =>
+  http.get(`/member/dieline-templates/${encodeURIComponent(code)}/download`, {
+    params,
+    responseType: 'blob',
+  })
 export const convertSimpleQuote = (id, data) => http.post(`/member/simple-quotes/${id}/convert`, data)
 export const previewSimpleQuote = (data) => http.post('/member/simple-quotes/preview', data)
 export const fetchPrint3dOptions = () => http.get('/member/simple-quotes/print3d/options')
