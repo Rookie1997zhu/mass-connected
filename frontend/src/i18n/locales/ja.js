@@ -22,6 +22,7 @@ export default {
       oemOdm: 'OEM/ODM',
       cases: '事例',
       news: 'ニュース',
+      blog: 'ブログ',
       contact: 'お問い合わせ',
       support: 'サポート',
       faq: 'FAQ',
@@ -413,6 +414,9 @@ export default {
     },
     filePreview: {
       title: 'ファイルプレビュー', preview: 'プレビュー', download: '原本ダウンロード', loadFailed: 'プレビュー読込失敗', unsupported: 'この形式はプレビュー非対応です', excelHint: '最大 {rows} 行 × {cols} 列までプレビュー。複雑な書式は原本をダウンロードしてください。', converting: 'プレビュー PDF を生成中…', convertFailed: 'プレビュー生成に失敗しました', complexFormatHint: '複雑な書式は原本をダウンロードして確認してください。', translateFile: '全文翻訳', translateFileHint: 'AI 翻訳は内容理解用です。レイアウトは上の PDF と照合してください。', translateTruncated: '文書が長いため、一部のみ翻訳しました。', translateScannedHint: 'スキャン PDF は OCR で認識しました。内容が欠ける場合があります。', noExtractableText: 'このファイルは画像・図面中心のため、翻訳可能なテキストがありません。', translateVisionHint: '画像・図面 PDF は AI 画像認識で翻訳しました。参考用のため原本と照合してください。', translateVisionTruncated: '文書は {total} ページあるため、先頭 {processed} ページのみ翻訳しました。', sourceTextLabel: '原文', translatedTextLabel: '訳文',
+    },
+    blog: {
+      title: 'ブログ', subtitle: '工程、プロジェクト、プラットフォームの最新情報。', language: '言語', categories: '分類', searchResult: '検索結果', searchCount: '「{keyword}」の記事 {count} 件', emptyTitle: 'まだ記事がありません', emptyDesc: 'MASS CONNECTED は新しい記事を準備しています。', emptySearchTitle: '該当する記事がありません', emptySearchDesc: '別のキーワードを試してください。', emptyLanguageTitle: '{name}の記事がありません', emptyLanguageDesc: '{name}ではまだ公開されていません。', emptyCategoryTitle: '{name}の記事がありません', emptyCategoryDesc: 'この分類にはまだ記事がありません。', emptyTagTitle: '該当する記事がありません', emptyTagDesc: 'タグ「{name}」の記事はまだありません。', emptyFilterTitle: '記事がありません', emptyFilterDesc: '現在の条件に一致する記事がありません。', searchPlaceholder: '記事を検索', search: '検索', allCategories: 'すべて', featured: 'おすすめ', popular: '人気', tags: 'タグ', empty: 'まだ記事がありません', views: '閲覧', likes: 'いいね', comments: 'コメント', pinned: '固定', languageAll: 'すべての言語', langKo: '韓国語', langZh: '中国語', langEn: '英語', langJa: '日本語', prev: '前へ', next: '次へ', previousPost: '前の記事', nextPost: '次の記事', related: '関連記事', like: 'いいね', liked: 'いいね済', commentPlaceholder: 'コメントを書く', reply: '返信', replying: '{name} に返信', submitComment: '投稿', deleteComment: '削除', commentEmpty: 'コメントはまだありません', missing: '記事が見つかりません', back: 'ブログへ戻る', actionFailed: '操作に失敗しました',
     },
     fileCategory: {
       label: 'ファイル分類', bom: 'BOM', purchase_order: '発注書', defect_report: '不良報告', sample_image: 'サンプル画像', report: '報告', design: '設計', other: 'その他',

@@ -193,6 +193,20 @@ export const sendAdminChatMessage = (id, body) =>
   http.post(`/admin/chat/conversations/${id}/messages`, { body })
 export const resolveAdminChatDispute = (id) =>
   http.post(`/admin/chat/conversations/${id}/dispute/resolve`)
+export const blogPostList = (params) => http.get('/admin/blog/posts', { params: { page_size: 100, ...params } })
+export const blogPostCreate = (data) => http.post('/admin/blog/posts', data)
+export const blogPostUpdate = (id, data) => http.patch(`/admin/blog/posts/${id}`, data)
+export const blogPostDelete = (id) => http.delete(`/admin/blog/posts/${id}`)
+export const blogCategoryList = (params) => http.get('/admin/blog/categories', { params: { page_size: 100, ...params } })
+export const blogCategoryCreate = (data) => http.post('/admin/blog/categories', data)
+export const blogCategoryUpdate = (id, data) => http.patch(`/admin/blog/categories/${id}`, data)
+export const blogCategoryDelete = (id) => http.delete(`/admin/blog/categories/${id}`)
+export const blogCommentList = (params) => http.get('/admin/blog/comments', { params: { page_size: 100, ...params } })
+export const blogCommentUpdate = (id, data) => http.patch(`/admin/blog/comments/${id}`, data)
+export const blogCommentDelete = (id) => http.delete(`/admin/blog/comments/${id}`)
+export const uploadAdminMedia = (formData) =>
+  http.post('/admin/media/upload', formData, { headers: { 'Content-Type': 'multipart/form-data' } })
+
 export const translateAdminChatMessage = (conversationId, messageId, data) =>
   http.post(
     `/admin/chat/conversations/${conversationId}/messages/${messageId}/translate`,

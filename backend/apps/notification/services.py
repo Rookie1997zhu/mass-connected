@@ -14,6 +14,7 @@ VALID_TYPES = {
     "inquiry",
     "order",
     "chat",
+    "blog",
 }
 
 STAFF_ROLES = {"super_admin", "operator", "sales"}

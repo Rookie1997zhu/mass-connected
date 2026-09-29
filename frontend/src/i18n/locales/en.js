@@ -22,6 +22,7 @@ export default {
       oemOdm: 'OEM/ODM',
       cases: 'Cases',
       news: 'News',
+      blog: 'Blog',
       contact: 'Contact',
       support: 'Support',
       faq: 'FAQ',
@@ -413,6 +414,9 @@ export default {
     },
     filePreview: {
       title: 'File Preview', preview: 'Preview', download: 'Download original', loadFailed: 'Failed to load preview', unsupported: 'This file type cannot be previewed', excelHint: 'Preview limited to {rows} rows × {cols} cols. Download original for complex formatting.', converting: 'Generating preview PDF…', convertFailed: 'Failed to generate preview', complexFormatHint: 'For complex formatting, please download the original file.', translateFile: 'Translate full text', translateFileHint: 'AI translation is for understanding content; compare with the PDF above for layout.', translateTruncated: 'Document was truncated before translation due to length.', translateScannedHint: 'Scanned PDF was processed with OCR; some content may be missing.', noExtractableText: 'This file is mostly images/drawings and has no translatable text.', translateVisionHint: 'Image/drawing PDF was translated with AI vision. Results are for reference only; compare with the original.', translateVisionTruncated: 'Document has {total} pages; only the first {processed} pages were translated.', sourceTextLabel: 'Original', translatedTextLabel: 'Translation',
+    },
+    blog: {
+      title: 'Blog', subtitle: 'Updates on processes, projects, and the platform.', language: 'Language', categories: 'Categories', searchResult: 'Search results', searchCount: '“{keyword}” · {count} posts', emptyTitle: 'No posts yet', emptyDesc: 'MASS CONNECTED is preparing new articles.', emptySearchTitle: 'No matching posts', emptySearchDesc: 'Try another keyword.', emptyLanguageTitle: 'No {name} posts', emptyLanguageDesc: 'Nothing has been published in {name} yet.', emptyCategoryTitle: 'No posts in {name}', emptyCategoryDesc: 'This category does not have any posts yet.', emptyTagTitle: 'No matching posts', emptyTagDesc: 'Nothing is tagged “{name}” yet.', emptyFilterTitle: 'No posts', emptyFilterDesc: 'Nothing matches the current filters.', searchPlaceholder: 'Search posts', search: 'Search', allCategories: 'All', featured: 'Featured', popular: 'Popular', tags: 'Tags', empty: 'No posts yet', views: 'Views', likes: 'Likes', comments: 'Comments', pinned: 'Pinned', languageAll: 'All languages', langKo: 'Korean', langZh: 'Chinese', langEn: 'English', langJa: 'Japanese', prev: 'Prev', next: 'Next', previousPost: 'Previous', nextPost: 'Next', related: 'Related', like: 'Like', liked: 'Liked', commentPlaceholder: 'Write a comment', reply: 'Reply', replying: 'Replying to {name}', submitComment: 'Post', deleteComment: 'Delete', commentEmpty: 'No comments yet', missing: 'This post is unavailable', back: 'Back to blog', actionFailed: 'Something went wrong',
     },
     fileCategory: {
       label: 'File category', bom: 'BOM', purchase_order: 'Purchase order', defect_report: 'Defect report', sample_image: 'Sample image', report: 'Report', design: 'Design', other: 'Other',

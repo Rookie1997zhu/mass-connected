@@ -22,6 +22,7 @@ export default {
       oemOdm: 'OEM/ODM',
       cases: '案例',
       news: '资讯',
+      blog: '博客',
       contact: '联系',
       support: '支持',
       faq: 'FAQ',
@@ -413,6 +414,9 @@ export default {
     },
     filePreview: {
       title: '文件预览', preview: '预览', download: '下载原件', loadFailed: '预览加载失败', unsupported: '该文件类型暂不支持预览', excelHint: '最多预览 {rows} 行 × {cols} 列；复杂格式请下载原件查看。', converting: '正在生成预览 PDF…', convertFailed: '预览生成失败', complexFormatHint: '复杂格式请下载原件查看。', translateFile: '翻译全文', translateFileHint: 'AI 译文供理解内容，复杂排版请对照上方原件 PDF。', translateTruncated: '文档较长，已截断部分内容后再翻译。', translateScannedHint: '扫描 PDF 经 OCR 识别，部分内容可能不完整。', noExtractableText: '该文件为图片/图纸类内容，暂无可翻译的文字。', translateVisionHint: '图片/图纸类 PDF 已通过 AI 图像识别翻译，结果仅供参考，请对照原件。', translateVisionTruncated: '文档共 {total} 页，仅翻译了前 {processed} 页。', sourceTextLabel: '原文', translatedTextLabel: '译文',
+    },
+    blog: {
+      title: '博客', subtitle: '工艺、项目与平台的最新动态。', language: '语言', categories: '分类', searchResult: '搜索结果', searchCount: '“{keyword}”共找到 {count} 篇文章', emptyTitle: '暂无文章', emptyDesc: 'MASS CONNECTED 正在准备新的内容。', emptySearchTitle: '没有找到相关文章', emptySearchDesc: '尝试其他关键词。', emptyLanguageTitle: '暂无{name}文章', emptyLanguageDesc: '当前还没有发布{name}内容。', emptyCategoryTitle: '暂无{name}文章', emptyCategoryDesc: '这个分类下还没有文章。', emptyTagTitle: '暂无相关文章', emptyTagDesc: '标签「{name}」下还没有文章。', emptyFilterTitle: '暂无文章', emptyFilterDesc: '当前筛选下还没有文章。', searchPlaceholder: '搜索文章', search: '搜索', allCategories: '全部', featured: '精选', popular: '热门', tags: '标签', empty: '还没有文章', views: '浏览', likes: '点赞', comments: '评论', pinned: '置顶', languageAll: '全部语种', langKo: '韩语', langZh: '中文', langEn: '英语', langJa: '日语', prev: '上一页', next: '下一页', previousPost: '上一篇', nextPost: '下一篇', related: '相关文章', like: '点赞', liked: '已赞', commentPlaceholder: '写下评论', reply: '回复', replying: '正在回复 {name}', submitComment: '发表', deleteComment: '删除', commentEmpty: '还没有评论', missing: '文章不存在或未发布', back: '返回博客', actionFailed: '操作失败',
     },
     fileCategory: {
       label: '文件分类', bom: 'BOM', purchase_order: '采购单', defect_report: '不良报告', sample_image: '样品图', report: '报告', design: '设计', other: '其他',

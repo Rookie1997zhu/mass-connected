@@ -1,15 +1,104 @@
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { fetchServiceCategories, fetchNews, fetchCases } from '../api'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import Swiper from 'swiper'
+import 'swiper/css'
+import { fetchServiceCategories, fetchNews, fetchCases, fetchBlogPosts } from '../api'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const { t, locale } = useI18n()
 
+const homeRoot = ref(null)
+const casesSwiperEl = ref(null)
+const blogSwiperEl = ref(null)
 const processes = ref([])
 const news = ref([])
 const cases = ref([])
+const blogPosts = ref([])
 const loading = ref(true)
+
+let motionContext = null
+const swipers = []
+
+const prefersReducedMotion = () =>
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+const destroyMotion = () => {
+  swipers.splice(0).forEach((instance) => instance.destroy(true, true))
+  motionContext?.revert()
+  motionContext = null
+}
+
+const mountSwiper = (element) => {
+  if (!element) return
+  swipers.push(new Swiper(element, {
+    slidesPerView: 1.15,
+    spaceBetween: 16,
+    grabCursor: true,
+    allowTouchMove: true,
+    breakpoints: {
+      768: { slidesPerView: 2.2, spaceBetween: 20 },
+      1024: { slidesPerView: 3, spaceBetween: 24 },
+    },
+  }))
+}
+
+const setupHero = () => {
+  if (!homeRoot.value || prefersReducedMotion()) return
+  motionContext = gsap.context(() => {
+    const timeline = gsap.timeline({ defaults: { ease: 'power3.out' } })
+    timeline.from('.hero-title-line', {
+      yPercent: 110,
+      duration: 0.85,
+    }, 0)
+    timeline.from('.hero-subtitle', {
+      y: 24,
+      opacity: 0,
+      duration: 0.7,
+    }, 0.3)
+    timeline.from('.hero-actions', {
+      y: 16,
+      opacity: 0,
+      duration: 0.6,
+    }, 0.5)
+    timeline.from('.hero-visual', {
+      clipPath: 'inset(0 0 100% 0)',
+      duration: 0.9,
+    }, 0.15)
+  }, homeRoot.value)
+}
+
+const setupReveals = () => {
+  mountSwiper(casesSwiperEl.value)
+  mountSwiper(blogSwiperEl.value)
+  if (!homeRoot.value || prefersReducedMotion()) return
+
+  const addReveals = () => {
+    homeRoot.value.querySelectorAll('.reveal').forEach((element) => {
+      gsap.from(element, {
+        y: 24,
+        opacity: 0,
+        duration: 0.6,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: element,
+          start: 'top 85%',
+          once: true,
+        },
+      })
+    })
+  }
+
+  if (motionContext) {
+    motionContext.add(addReveals)
+    return
+  }
+  motionContext = gsap.context(addReveals, homeRoot.value)
+}
 
 const pickI18n = (field) => {
   if (!field || typeof field !== 'object') return field || ''
@@ -56,29 +145,37 @@ const roleCards = computed(() => [
 ])
 
 onMounted(async () => {
+  await nextTick()
+  setupHero()
   try {
-    const [p, n, c] = await Promise.all([
+    const [p, n, c, b] = await Promise.all([
       fetchServiceCategories(),
       fetchNews({ page_size: 3 }),
       fetchCases({ page_size: 3 }),
+      fetchBlogPosts({ page_size: 6 }).catch(() => ({ data: { items: [] } })),
     ])
     processes.value = (p.data.items || []).slice(0, 8)
     news.value = n.data.items || []
     cases.value = c.data.items || []
+    blogPosts.value = b.data.items || []
   } finally {
     loading.value = false
+    await nextTick()
+    setupReveals()
   }
 })
+
+onUnmounted(destroyMotion)
 </script>
 
 <template>
-  <div class="home">
+  <div ref="homeRoot" class="home">
     <!-- Hero -->
     <section class="hero">
       <div class="hero-inner container">
         <div class="hero-content">
           <span class="section-eyebrow hero-eyebrow">{{ t('home.hero.eyebrow') }}</span>
-          <h1 class="hero-title">{{ t('home.hero.title') }}</h1>
+          <h1 class="hero-title"><span class="hero-title-line">{{ t('home.hero.title') }}</span></h1>
           <p class="hero-subtitle">{{ t('home.hero.subtitle') }}</p>
           <div class="hero-actions">
             <RouterLink to="/rfq/new" class="btn btn-primary">{{ t('home.hero.ctaRfq') }}</RouterLink>
@@ -115,7 +212,7 @@ onMounted(async () => {
     </section>
 
     <!-- Company Intro -->
-    <section class="section section-intro">
+    <section class="section section-intro reveal">
       <div class="container intro-grid">
         <div class="intro-content">
           <span class="section-eyebrow">{{ t('home.intro.eyebrow') }}</span>
@@ -139,7 +236,7 @@ onMounted(async () => {
 
     <template v-else>
       <!-- Manufacturing Processes -->
-      <section class="section section-surface">
+      <section class="section section-surface reveal">
         <div class="container">
           <div class="section-header section-header--row">
             <div>
@@ -164,7 +261,7 @@ onMounted(async () => {
       </section>
 
       <!-- How It Works -->
-      <section class="section">
+      <section class="section reveal">
         <div class="container">
           <div class="section-header">
             <span class="section-eyebrow">{{ t('home.howItWorks.eyebrow') }}</span>
@@ -181,7 +278,7 @@ onMounted(async () => {
       </section>
 
       <!-- Roles -->
-      <section class="section section-dark">
+      <section class="section section-dark reveal">
         <div class="container">
           <div class="section-header">
             <span class="section-eyebrow services-eyebrow">{{ t('home.roles.eyebrow') }}</span>
@@ -200,7 +297,7 @@ onMounted(async () => {
       </section>
 
       <!-- Cases -->
-      <section class="section section-surface">
+      <section class="section section-surface reveal">
         <div class="container">
           <div class="section-header section-header--row">
             <div>
@@ -209,25 +306,29 @@ onMounted(async () => {
             </div>
             <RouterLink to="/cases" class="btn btn-ghost">{{ t('home.cases.viewAll') }} →</RouterLink>
           </div>
-          <div v-if="cases.length" class="grid-3">
-            <article v-for="item in cases" :key="item.id" class="card">
-              <RouterLink :to="`/cases/${item.id}`" class="card-link">
-                <div class="card-thumb">
-                  <span class="card-thumb-label">CASE</span>
+          <div v-if="cases.length" ref="casesSwiperEl" class="swiper home-swiper">
+            <div class="swiper-wrapper">
+              <article v-for="item in cases" :key="item.id" class="swiper-slide">
+                <div class="card">
+                  <RouterLink :to="`/cases/${item.id}`" class="card-link">
+                    <div class="card-thumb">
+                      <span class="card-thumb-label">CASE</span>
+                    </div>
+                    <div class="card-body">
+                      <h3 class="card-title">{{ pickI18n(item.title) }}</h3>
+                      <p v-if="item.summary" class="card-meta card-summary">{{ pickI18n(item.summary) }}</p>
+                    </div>
+                  </RouterLink>
                 </div>
-                <div class="card-body">
-                  <h3 class="card-title">{{ pickI18n(item.title) }}</h3>
-                  <p v-if="item.summary" class="card-meta card-summary">{{ pickI18n(item.summary) }}</p>
-                </div>
-              </RouterLink>
-            </article>
+              </article>
+            </div>
           </div>
           <p v-else class="state-message">{{ t('home.cases.empty') }}</p>
         </div>
       </section>
 
       <!-- News -->
-      <section class="section">
+      <section class="section reveal">
         <div class="container">
           <div class="section-header section-header--row">
             <div>
@@ -250,6 +351,38 @@ onMounted(async () => {
             </article>
           </div>
           <p v-else class="state-message">{{ t('home.news.empty') }}</p>
+        </div>
+      </section>
+
+      <section v-if="blogPosts.length" class="section section-surface reveal">
+        <div class="container">
+          <div class="section-header section-header--row">
+            <div>
+              <span class="section-eyebrow">{{ t('home.blog.eyebrow') }}</span>
+              <h2>{{ t('home.blog.title') }}</h2>
+            </div>
+            <RouterLink to="/blog" class="btn btn-ghost">{{ t('home.blog.viewAll') }} →</RouterLink>
+          </div>
+          <div ref="blogSwiperEl" class="swiper home-swiper">
+            <div class="swiper-wrapper">
+              <article v-for="item in blogPosts" :key="item.id" class="swiper-slide">
+                <div class="card">
+                  <RouterLink :to="`/blog/${item.id}`" class="card-link">
+                    <div
+                      class="card-thumb blog-thumb"
+                      :style="item.cover_image ? { backgroundImage: `url(${item.cover_image})` } : {}"
+                    >
+                      <span v-if="!item.cover_image" class="card-thumb-label">{{ item.title?.slice(0, 1) }}</span>
+                    </div>
+                    <div class="card-body">
+                      <h3 class="card-title">{{ item.title }}</h3>
+                      <p v-if="item.summary" class="card-meta card-summary">{{ item.summary }}</p>
+                    </div>
+                  </RouterLink>
+                </div>
+              </article>
+            </div>
+          </div>
         </div>
       </section>
     </template>
@@ -290,13 +423,18 @@ onMounted(async () => {
 }
 
 .hero-eyebrow {
-  animation: fadeUp 0.6s var(--ease-out) both;
+  display: inline-block;
 }
 
 .hero-title {
+  overflow: hidden;
   white-space: pre-line;
   margin-top: var(--space-md);
-  animation: fadeUp 0.6s var(--ease-out) 0.08s both;
+}
+
+.hero-title-line {
+  display: block;
+  white-space: pre-line;
 }
 
 .hero-subtitle {
@@ -305,7 +443,6 @@ onMounted(async () => {
   line-height: 1.75;
   color: var(--color-text);
   max-width: 28rem;
-  animation: fadeUp 0.6s var(--ease-out) 0.16s both;
 }
 
 .hero-actions {
@@ -313,11 +450,10 @@ onMounted(async () => {
   flex-wrap: wrap;
   gap: var(--space-md);
   margin-top: var(--space-xl);
-  animation: fadeUp 0.6s var(--ease-out) 0.24s both;
 }
 
 .hero-visual {
-  animation: fadeUp 0.7s var(--ease-out) 0.2s both;
+  overflow: hidden;
 }
 
 .blueprint-panel {
@@ -615,11 +751,17 @@ onMounted(async () => {
   border-radius: var(--radius-lg);
   text-decoration: none;
   transition: border-color var(--duration-normal) var(--ease-out),
-    box-shadow var(--duration-normal) var(--ease-out);
+    box-shadow var(--duration-normal) var(--ease-out),
+    transform var(--duration-normal) var(--ease-out);
 
   &:hover {
     border-color: var(--color-steel);
     box-shadow: var(--shadow-md);
+    transform: translateY(-4px);
+
+    .process-tile-cta {
+      transform: translateX(4px);
+    }
   }
 }
 
@@ -630,9 +772,11 @@ onMounted(async () => {
 }
 
 .process-tile-cta {
+  display: inline-block;
   font-size: 0.8125rem;
   font-weight: 600;
   color: var(--color-steel);
+  transition: transform var(--duration-normal) var(--ease-out);
 }
 
 .card-summary {
@@ -697,15 +841,28 @@ onMounted(async () => {
   }
 }
 
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
+.home-swiper {
+  overflow: hidden;
+
+  .swiper-slide {
+    height: auto;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  .card {
+    height: 100%;
   }
+}
+
+.blog-thumb {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.blog-thumb {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 @media (max-width: 1024px) {
@@ -754,16 +911,36 @@ onMounted(async () => {
 
   .cta-inner {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
   }
 
   .cta-actions {
     width: 100%;
+    flex-direction: column;
 
     .btn {
-      flex: 1;
-      min-width: 140px;
+      width: 100%;
+      min-height: 44px;
     }
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-actions,
+  .cta-actions {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+
+    .btn {
+      width: 100%;
+      min-height: 44px;
+    }
+  }
+
+  .cta-inner {
+    flex-direction: column;
+    align-items: stretch;
   }
 }
 </style>

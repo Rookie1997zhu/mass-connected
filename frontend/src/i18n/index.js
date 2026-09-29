@@ -67,6 +67,11 @@ const homeMessages = {
       viewAll: '전체 뉴스',
       empty: '등록된 뉴스가 없습니다.',
     },
+    blog: {
+      eyebrow: '블로그',
+      title: '최신 글',
+      viewAll: '모든 글',
+    },
     cta: {
       title: '오늘부터 제조 조달을 시작하세요',
       desc: '맞춤 제조가 필요하면 RFQ를 등록하고, 표준 부품은 몰에서 바로 주문하세요.',
@@ -135,6 +140,11 @@ const homeMessages = {
       title: '最新资讯',
       viewAll: '全部资讯',
       empty: '暂无资讯。',
+    },
+    blog: {
+      eyebrow: '博客',
+      title: '最新文章',
+      viewAll: '全部文章',
     },
     cta: {
       title: '今天就开始你的制造采购',
@@ -205,6 +215,11 @@ const homeMessages = {
       viewAll: 'All News',
       empty: 'No news available.',
     },
+    blog: {
+      eyebrow: 'Blog',
+      title: 'Latest posts',
+      viewAll: 'All posts',
+    },
     cta: {
       title: 'Start Sourcing Today',
       desc: 'Custom manufacturing? Post an RFQ for multiple quotes. Standard parts? Head to the shop.',
@@ -273,6 +288,11 @@ const homeMessages = {
       title: '最新ニュース',
       viewAll: 'すべてのニュース',
       empty: 'ニュースがありません。',
+    },
+    blog: {
+      eyebrow: 'ブログ',
+      title: '最新記事',
+      viewAll: 'すべての記事',
     },
     cta: {
       title: '今日から製造調達を始めましょう',

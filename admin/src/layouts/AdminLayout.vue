@@ -102,6 +102,12 @@ onMounted(loadUnreadCount)
         <el-menu-item index="/inquiries">{{ t('nav.inquiries') }}</el-menu-item>
         <el-menu-item index="/cases">{{ t('nav.cases') }}</el-menu-item>
         <el-menu-item index="/news">{{ t('nav.news') }}</el-menu-item>
+        <el-sub-menu index="blog">
+          <template #title>{{ t('nav.blog') }}</template>
+          <el-menu-item index="/blog/posts">{{ t('nav.blogPosts') }}</el-menu-item>
+          <el-menu-item index="/blog/categories">{{ t('nav.blogCategories') }}</el-menu-item>
+          <el-menu-item index="/blog/comments">{{ t('nav.blogComments') }}</el-menu-item>
+        </el-sub-menu>
         <el-menu-item index="/faqs">{{ t('nav.faqs') }}</el-menu-item>
         <el-menu-item index="/downloads">{{ t('nav.downloads') }}</el-menu-item>
         <el-menu-item index="/content-pages">{{ t('nav.pages') }}</el-menu-item>

@@ -22,6 +22,7 @@ export default {
       oemOdm: 'OEM/ODM',
       cases: '사례',
       news: '뉴스',
+      blog: '블로그',
       contact: '문의',
       support: '지원',
       faq: 'FAQ',
@@ -413,6 +414,9 @@ export default {
     },
     filePreview: {
       title: '파일 미리보기', preview: '미리보기', download: '원본 다운로드', loadFailed: '미리보기 로드 실패', unsupported: '이 파일 형식은 미리보기를 지원하지 않습니다', excelHint: '최대 {rows}행 × {cols}열까지 미리보기합니다. 복잡한 서식은 원본을 다운로드하세요.', converting: '미리보기 PDF 생성 중…', convertFailed: '미리보기 생성 실패', complexFormatHint: '복잡한 형식은 원본을 다운로드하여 확인하세요.', translateFile: '전문 번역', translateFileHint: 'AI 번역은 내용 이해용입니다. 복잡한 서식은 원본 PDF와 대조하세요.', translateTruncated: '문서가 길어 일부만 번역되었습니다.', translateScannedHint: '스캔 PDF는 OCR로 인식했으며, 일부 내용이 누락될 수 있습니다.', noExtractableText: '이 파일은 이미지/도면 위주 콘텐츠로, 번역할 텍스트가 없습니다.', translateVisionHint: '이미지/도면 PDF는 AI 이미지 인식으로 번역했습니다. 결과는 참고용이며 원본과 대조하세요.', translateVisionTruncated: '문서가 {total}페이지라 앞 {processed}페이지만 번역했습니다.', sourceTextLabel: '원문', translatedTextLabel: '번역',
+    },
+    blog: {
+      title: '블로그', subtitle: '공정, 프로젝트, 플랫폼의 최근 소식.', language: '언어', categories: '분류', searchResult: '검색 결과', searchCount: '“{keyword}” 글 {count}개', emptyTitle: '아직 글이 없습니다', emptyDesc: 'MASS CONNECTED가 새 글을 준비하고 있습니다.', emptySearchTitle: '관련 글이 없습니다', emptySearchDesc: '다른 검색어를 시도해 보세요.', emptyLanguageTitle: '{name} 글이 없습니다', emptyLanguageDesc: '아직 {name}로 발행된 글이 없습니다.', emptyCategoryTitle: '{name} 글이 없습니다', emptyCategoryDesc: '이 분류에는 아직 글이 없습니다.', emptyTagTitle: '관련 글이 없습니다', emptyTagDesc: '태그 “{name}”에 해당하는 글이 없습니다.', emptyFilterTitle: '글이 없습니다', emptyFilterDesc: '현재 조건에 맞는 글이 없습니다.', searchPlaceholder: '글 검색', search: '검색', allCategories: '전체', featured: '추천', popular: '인기', tags: '태그', empty: '아직 글이 없습니다', views: '조회', likes: '공감', comments: '댓글', pinned: '고정', languageAll: '모든 언어', langKo: '한국어', langZh: '중국어', langEn: '영어', langJa: '일본어', prev: '이전', next: '다음', previousPost: '이전 글', nextPost: '다음 글', related: '관련 글', like: '공감', liked: '공감함', commentPlaceholder: '댓글을 남겨 주세요', reply: '답글', replying: '{name}에게 답글', submitComment: '등록', deleteComment: '삭제', commentEmpty: '댓글이 없습니다', missing: '글을 찾을 수 없습니다', back: '블로그로', actionFailed: '처리에 실패했습니다',
     },
     fileCategory: {
       label: '파일 분류', bom: 'BOM', purchase_order: '발주서', defect_report: '불량 보고서', sample_image: '샘플 이미지', report: '보고서', design: '설계', other: '기타',

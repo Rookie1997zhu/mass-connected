@@ -159,6 +159,11 @@ const fallbackNavGroups = computed(() => [
       { path: '/contact', label: t('nav.contact') },
     ],
   },
+  {
+    label: t('nav.blog'),
+    direct: true,
+    items: [{ path: '/blog', label: t('nav.blog') }],
+  },
 ])
 
 const mapApiGroups = (groups) =>
@@ -194,11 +199,38 @@ const ensureManufacturingQuoteEntries = (groups) => {
   return next
 }
 
+/** 博客固定为独立菜单；若后台导航把它放进某个分组，则抽出来。 */
+const ensureBlogEntry = (groups) => {
+  const blogGroup = {
+    label: t('nav.blog'),
+    direct: true,
+    items: [{ path: '/blog', label: t('nav.blog') }],
+  }
+  const withoutNested = groups
+    .map((group) => {
+      if (group.direct) return group
+      return { ...group, items: group.items.filter((item) => item.path !== '/blog') }
+    })
+    .filter((group) => group.direct || group.items.length > 0)
+
+  if (withoutNested.some((group) => group.direct && group.items[0]?.path === '/blog')) {
+    return withoutNested
+  }
+
+  const aboutIdx = withoutNested.findIndex(
+    (group) => group.label === t('nav.about') || group.items.some((item) => item.path === '/news'),
+  )
+  if (aboutIdx < 0) return [...withoutNested, blogGroup]
+  const next = [...withoutNested]
+  next.splice(aboutIdx + 1, 0, blogGroup)
+  return next
+}
+
 const navGroups = computed(() => {
   const base = apiNavGroups.value?.length
     ? mapApiGroups(apiNavGroups.value)
     : fallbackNavGroups.value
-  return ensureManufacturingQuoteEntries(base)
+  return ensureBlogEntry(ensureManufacturingQuoteEntries(base))
 })
 
 const loadNavigation = async () => {
@@ -293,12 +325,12 @@ if (typeof window !== 'undefined') {
         </RouterLink>
 
         <nav class="nav-desktop" aria-label="Main">
-          <NavDropdown
-            v-for="group in navGroups"
-            :key="group.label"
-            :label="group.label"
-            :items="group.items"
-          />
+          <template v-for="group in navGroups" :key="group.label">
+            <RouterLink v-if="group.direct" :to="group.items[0].path" class="nav-direct">
+              {{ group.label }}
+            </RouterLink>
+            <NavDropdown v-else :label="group.label" :items="group.items" />
+          </template>
         </nav>
 
         <div class="header-actions">
@@ -423,7 +455,16 @@ if (typeof window !== 'undefined') {
       <div v-if="menuOpen" class="nav-mobile" @click="closeMenu">
         <nav class="nav-mobile-inner" @click.stop>
           <template v-for="group in navGroups" :key="group.label">
-            <p class="nav-mobile-group">{{ group.label }}</p>
+            <RouterLink
+              v-if="group.direct"
+              :to="group.items[0].path"
+              class="nav-mobile-direct"
+              @click="closeMenu"
+            >
+              {{ group.label }}
+            </RouterLink>
+            <p v-else class="nav-mobile-group">{{ group.label }}</p>
+            <template v-if="!group.direct">
             <template v-for="item in group.items" :key="item.path">
               <RouterLink
                 v-if="!isExternal(item.path)"
@@ -441,6 +482,7 @@ if (typeof window !== 'undefined') {
               >
                 {{ item.label }}
               </a>
+            </template>
             </template>
           </template>
           <div class="nav-mobile-auth">
@@ -482,6 +524,7 @@ if (typeof window !== 'undefined') {
             <img src="/mass-connected-logo.png" alt="MASS CONNECTED" class="footer-logo-img" />
           </RouterLink>
           <p class="footer-tagline">{{ t('footer.tagline') }}</p>
+          <RouterLink to="/rfq/new" class="btn btn-primary footer-rfq">{{ t('home.hero.ctaRfq') }}</RouterLink>
         </div>
         <div class="footer-col">
           <h4>{{ t('nav.manufacturingQuote') }}</h4>
@@ -493,8 +536,12 @@ if (typeof window !== 'undefined') {
         <div class="footer-col">
           <h4>{{ t('nav.shop') }}</h4>
           <RouterLink to="/shop">{{ t('nav.shopCategories') }}</RouterLink>
+        </div>
+        <div class="footer-col">
+          <h4>{{ t('footer.resources') }}</h4>
           <RouterLink to="/cases">{{ t('footer.cases') }}</RouterLink>
           <RouterLink to="/news">{{ t('footer.news') }}</RouterLink>
+          <RouterLink to="/blog">{{ t('nav.blog') }}</RouterLink>
         </div>
         <div class="footer-col">
           <h4>{{ t('footer.support') }}</h4>
@@ -559,6 +606,19 @@ if (typeof window !== 'undefined') {
   gap: var(--space-xl);
   flex: 1;
   justify-content: center;
+}
+
+.nav-direct {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text);
+  text-decoration: none;
+  white-space: nowrap;
+
+  &:hover,
+  &.router-link-active {
+    color: var(--color-steel);
+  }
 }
 
 .header-actions {
@@ -636,6 +696,10 @@ if (typeof window !== 'undefined') {
   }
 }
 
+.nav-mobile-direct {
+  font-weight: 600;
+}
+
 .nav-mobile-group {
   margin: var(--space-sm) 0 0;
   padding: 0 var(--space-md);
@@ -669,7 +733,7 @@ if (typeof window !== 'undefined') {
 
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.5fr repeat(3, 1fr);
+  grid-template-columns: 1.4fr repeat(4, 1fr);
   gap: var(--space-2xl);
   padding-block: var(--space-3xl);
 }
@@ -693,6 +757,11 @@ if (typeof window !== 'undefined') {
   max-width: 16rem;
 }
 
+.footer-rfq {
+  margin-top: var(--space-lg);
+  min-height: 44px;
+}
+
 .footer-col {
   display: flex;
   flex-direction: column;
@@ -708,6 +777,9 @@ if (typeof window !== 'undefined') {
   }
 
   a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     font-size: 0.875rem;
     color: rgba(255, 255, 255, 0.75);
     text-decoration: none;

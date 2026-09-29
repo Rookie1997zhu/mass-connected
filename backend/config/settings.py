@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     "apps.contract",
     "apps.payment",
     "apps.chat",
+    "apps.blog",
 ]
 
 MIDDLEWARE = [
@@ -250,6 +251,7 @@ THROTTLE_INQUIRY = os.environ.get("THROTTLE_INQUIRY", "10/min")
 THROTTLE_AI_TRANSLATE = os.environ.get("THROTTLE_AI_TRANSLATE", "20/min")
 THROTTLE_WS_TICKET = os.environ.get("THROTTLE_WS_TICKET", "30/min")
 THROTTLE_VERIFY_EMAIL = os.environ.get("THROTTLE_VERIFY_EMAIL", "3/min")
+THROTTLE_BLOG_COMMENT = os.environ.get("THROTTLE_BLOG_COMMENT", "20/min")
 
 FRONTEND_BASE_URL = os.environ.get("FRONTEND_BASE_URL", "http://localhost").rstrip("/")
 
@@ -271,6 +273,7 @@ REST_FRAMEWORK = {
         "ai_translate": THROTTLE_AI_TRANSLATE,
         "ws_ticket": THROTTLE_WS_TICKET,
         "verify_email": THROTTLE_VERIFY_EMAIL,
+        "blog_comment": THROTTLE_BLOG_COMMENT,
     },
     "DEFAULT_PAGINATION_CLASS": "core.pagination.StandardPagination",
     "PAGE_SIZE": 20,
