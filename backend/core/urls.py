@@ -52,6 +52,7 @@ urlpatterns = [
     path("", include("apps.payment.urls")),
     path("", include("apps.chat.urls")),
     path("", include("apps.blog.urls")),
+    path("", include("apps.ops.urls")),
 ]
 
 if settings.DEBUG:

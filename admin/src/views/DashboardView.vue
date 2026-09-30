@@ -52,27 +52,4 @@ const cards = [
 <style scoped>
 .desc { color: #6b7280; margin-bottom: 1.5rem; }
 .muted { color: #9ca3af; }
-.stat-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 1rem;
-}
-.stat-card {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 1.25rem;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  background: #fff;
-  cursor: pointer;
-  text-align: left;
-  transition: border-color 0.15s, box-shadow 0.15s;
-}
-.stat-card:hover {
-  border-color: #409eff;
-  box-shadow: 0 2px 8px rgba(64, 158, 255, 0.12);
-}
-.stat-num { font-size: 1.75rem; font-weight: 700; color: #111827; }
-.stat-label { font-size: 0.85rem; color: #6b7280; margin-top: 0.35rem; }
 </style>

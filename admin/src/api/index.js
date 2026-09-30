@@ -61,6 +61,10 @@ export default http
 export const adminLogin = (data) => http.post('/admin/auth/login', data)
 export const adminLogout = () => http.post('/admin/auth/logout', {})
 export const fetchAdminStats = () => http.get('/admin/stats')
+export const fetchOpsRuntime = () => http.get('/admin/ops/runtime')
+export const fetchOpsStorage = (params) =>
+  http.get('/admin/ops/storage', { params, timeout: params?.recount ? 120000 : 15000 })
+export const fetchOpsBehavior = (params) => http.get('/admin/ops/behavior', { params })
 export const fetchServiceCategories = () => http.get('/admin/service-categories')
 export const saveServiceCategory = (data) => http.post('/admin/service-categories', data)
 export const updateServiceCategory = (id, data) => http.patch(`/admin/service-categories/${id}`, data)

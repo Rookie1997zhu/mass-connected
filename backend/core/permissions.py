@@ -20,6 +20,14 @@ class IsAdminRole(BasePermission):
         return bool(user and user.is_authenticated and user.role in {"super_admin", "operator", "sales"})
 
 
+class IsSuperAdmin(BasePermission):
+    message = "无超级管理员权限"
+
+    def has_permission(self, request, view):
+        user = request.user
+        return bool(user and user.is_authenticated and user.role == "super_admin")
+
+
 class IsBuyerRole(BasePermission):
     message = "需要会员登录"
 
