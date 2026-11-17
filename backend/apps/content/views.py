@@ -8,7 +8,9 @@ from rest_framework import status
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
+from apps.blog.authentication import BlogMcpApiKeyAuthentication
 from apps.content.models import Case, ContentPage, Download, FAQ, NavItem, News
 from apps.content.serializers import (
     CaseSerializer,
@@ -411,6 +413,7 @@ class AdminNavigationDetailView(APIView):
 class AdminMediaUploadView(APIView):
     """通用媒体上传（供富文本编辑器等复用）。"""
 
+    authentication_classes = [BlogMcpApiKeyAuthentication, JWTAuthentication]
     permission_classes = [IsAdminRole]
     parser_classes = [MultiPartParser, FormParser]
 

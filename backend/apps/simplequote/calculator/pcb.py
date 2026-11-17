@@ -78,6 +78,13 @@ def _pcb_manufacturing_spec(inputs):
             or inputs.get("manufacturing_panel_design_count")
             or ""
         ).strip(),
+        "confirm_production_file": str(
+            manufacturing.get("confirm_production_file")
+            or inputs.get("mfg_confirm_production_file")
+            or inputs.get("manufacturing_confirm_production_file")
+            or "none"
+        ).strip()
+        or "none",
         "smt_required": _to_pcb_bool(
             manufacturing.get("smt_required")
             or inputs.get("mfg_smt_required")
@@ -142,6 +149,8 @@ def _resolve_pcb_process_spec(spec, meta):
 
 
 def _apply_pcb_process_model(base_price, spec, meta):
+    from apps.simplequote.calculator.pcb_jlc_closed_addons import lead_free_hasl_fee_cny
+
     process_model = meta.get("process_model") or {}
     material = (process_model.get("materials") or {}).get(spec["material_key"]) or {}
     factors = material.get("factors") or {}
@@ -178,7 +187,14 @@ def _apply_pcb_process_model(base_price, spec, meta):
         if allowed_layers and spec["layers"] not in allowed_layers:
             return None
         before = price
-        if factor.get("method") == "additive":
+        method = factor.get("method") or "multiplier"
+        if method == "lead_free_hasl_area":
+            price += lead_free_hasl_fee_cny(
+                spec.get("width_mm"),
+                spec.get("height_mm"),
+                spec.get("quantity"),
+            )
+        elif method == "additive":
             price += _to_number(factor.get("additiveCny"), 0)
         else:
             price *= _to_number(factor.get("multiplier"), 1)
@@ -186,7 +202,7 @@ def _apply_pcb_process_model(base_price, spec, meta):
             {
                 "field": output_field,
                 "value": value,
-                "method": factor.get("method") or "multiplier",
+                "method": method,
                 "amount_cny": round(price - before, 2),
                 "area_band": area_band,
             }
@@ -905,6 +921,32 @@ def _estimate_pcb_manufacturing(inputs, params, tables):
                 "process_adjustments": process_result["adjustments"],
             }
         )
+
+    # 确认生产稿：jlc_pcb_quote 已闭合加价（不参与工艺 enabled zone）
+    from apps.simplequote.calculator.pcb_jlc_closed_addons import confirm_file_fee_cny
+
+    confirm_fee = confirm_file_fee_cny(spec.get("confirm_production_file"))
+    if confirm_fee is None:
+        return {
+            **base_result,
+            "requires_manual_review": True,
+            "manual_review_reasons": ["确认生产稿选项不在已校准范围"],
+        }
+    if confirm_fee:
+        before_confirm = jlc_price_cny
+        jlc_price_cny = round(jlc_price_cny + confirm_fee, 2)
+        adjustments = list(base_result.get("process_adjustments") or [])
+        adjustments.append(
+            {
+                "field": "confirm_production_file",
+                "value": str(spec.get("confirm_production_file") or "none"),
+                "method": "additive",
+                "amount_cny": round(jlc_price_cny - before_confirm, 2),
+            }
+        )
+        base_result["process_adjustments"] = adjustments
+        base_result["process_adjusted"] = True
+
     # 风险门禁：命中 risk_zone 则 manual_review + fee=0
     risk_zone = _match_pcb_risk_zone(spec, meta)
     if risk_zone:

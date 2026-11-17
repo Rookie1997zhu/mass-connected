@@ -9,11 +9,12 @@ import { useLocaleCurrency } from '../../composables/useLocaleCurrency'
 import { convertSimpleQuote, createSimpleQuote, fetchSimpleQuote, shippingEstimate } from '../../api'
 import { resolveApiMessage } from '../../utils/apiErrors'
 
-const VALID_TYPES = ['injection', 'print3d', 'pcba', 'pcb', 'software', 'ic']
+const VALID_TYPES = ['injection', 'print3d', 'pcba', 'smt', 'pcb', 'software', 'ic']
 const HUB_TYPES = [
   { value: 'injection', labelKey: 'simpleQuote.injection' },
   { value: 'print3d', labelKey: 'simpleQuote.print3d' },
   { value: 'pcba', labelKey: 'simpleQuote.pcba' },
+  { value: 'smt', labelKey: 'simpleQuote.smt' },
   { value: 'pcb', labelKey: 'simpleQuote.pcbDev' },
   { value: 'software', labelKey: 'simpleQuote.software' },
   { value: 'ic', labelKey: 'simpleQuote.ic' },
@@ -78,6 +79,19 @@ const generic = ref({ layers: 2, module_count: 3 })
 const pcbaPackages = ['0402', '0603', '0805', '1206', 'SOT-23', 'SOP-8', 'SOP-16', 'QFN-16', 'QFN-24', 'DIP-CONN-2-10', 'CAP-2PIN']
 const newComponent = () => ({ package: '0402', qty: 10, tech: 'smt' })
 const pcba = ref({ pcb_quantity: 100, array_count: 1, components: [newComponent()] })
+const smt = ref({
+  board_length_cm: 10,
+  board_width_cm: 10,
+  patch_location: 'T',
+  patch_quantity: 5,
+  patch_component_quantity: 20,
+  patch_component_type: 10,
+  plugin_quantity: 0,
+  plugin_type: 0,
+})
+const smtEcoAvailable = computed(
+  () => smt.value.patch_location === 'T' && Number(smt.value.patch_quantity) <= 50,
+)
 
 const pcbBaseOptions = [
   { no: 1, group: 'A', labelKey: 'pcbDev.a1' },
@@ -247,6 +261,18 @@ const buildInputs = () => {
       })),
     }
   }
+  if (quoteType.value === 'smt') {
+    return {
+      board_length_cm: Number(smt.value.board_length_cm) || 0,
+      board_width_cm: Number(smt.value.board_width_cm) || 0,
+      patch_location: smt.value.patch_location || 'T',
+      patch_quantity: Number(smt.value.patch_quantity) || 0,
+      patch_component_quantity: Number(smt.value.patch_component_quantity) || 0,
+      patch_component_type: Number(smt.value.patch_component_type) || 0,
+      plugin_quantity: Number(smt.value.plugin_quantity) || 0,
+      plugin_type: Number(smt.value.plugin_type) || 0,
+    }
+  }
   if (quoteType.value === 'pcb') {
     return {
       base_item_no: pcbDev.value.base_item_no,
@@ -383,7 +409,33 @@ watch(() => route.query.id, (id) => {
         <section class="sq-form card">
           <label>{{ t('simpleQuote.productName') }}<input v-model="productName" type="text" /></label>
 
-          <template v-if="quoteType === 'pcba'">
+          <template v-if="quoteType === 'smt'">
+            <p class="sq-stp-hint">{{ t('simpleQuote.smtHint') }}</p>
+            <div class="sq-row">
+              <label>{{ t('simpleQuote.smtBoardLength') }}<input v-model.number="smt.board_length_cm" type="number" min="0.1" step="0.1" /></label>
+              <label>{{ t('simpleQuote.smtBoardWidth') }}<input v-model.number="smt.board_width_cm" type="number" min="0.1" step="0.1" /></label>
+            </div>
+            <label>{{ t('simpleQuote.smtPatchLocation') }}
+              <select v-model="smt.patch_location">
+                <option value="T">{{ t('simpleQuote.smtSingleSide') }}</option>
+                <option value="TB">{{ t('simpleQuote.smtDoubleSide') }}</option>
+              </select>
+            </label>
+            <label>{{ t('simpleQuote.smtPatchQuantity') }}<input v-model.number="smt.patch_quantity" type="number" min="2" /></label>
+            <p v-if="!smtEcoAvailable" class="sq-stp-hint">{{ t('simpleQuote.smtEcoUnavailable') }}</p>
+            <div class="sq-row">
+              <label>{{ t('simpleQuote.smtPatchPads') }}<input v-model.number="smt.patch_component_quantity" type="number" min="0" /></label>
+              <label>{{ t('simpleQuote.smtPatchTypes') }}<input v-model.number="smt.patch_component_type" type="number" min="0" /></label>
+            </div>
+            <div class="sq-row">
+              <label>{{ t('simpleQuote.smtPluginPads') }}<input v-model.number="smt.plugin_quantity" type="number" min="0" /></label>
+              <label>{{ t('simpleQuote.smtPluginTypes') }}<input v-model.number="smt.plugin_type" type="number" min="0" /></label>
+            </div>
+            <p class="sq-stp-hint">{{ t('simpleQuote.smtExcludesHint') }}</p>
+          </template>
+
+          <template v-else-if="quoteType === 'pcba'">
+            <p class="sq-stp-hint">{{ t('simpleQuote.pcbaHint') }}</p>
             <label>{{ t('simpleQuote.pcbQty') }}<input v-model.number="pcba.pcb_quantity" type="number" min="1" /></label>
             <label>{{ t('simpleQuote.arrayCount') }}<input v-model.number="pcba.array_count" type="number" min="1" /></label>
             <h3 class="sq-parts-title">{{ t('simpleQuote.components') }}</h3>
@@ -552,7 +604,40 @@ watch(() => route.query.id, (id) => {
           <h2>{{ t('simpleQuote.result') }}</h2>
           <p class="sq-no">{{ result.quote_no }}</p>
 
-          <template v-if="result.quote_type === 'pcba'">
+          <template v-if="result.quote_type === 'smt'">
+            <div v-if="result.result?.eco_available && result.result?.economic" class="sq-manufacturing">
+              <strong>{{ t('simpleQuote.smtEconomic') }}</strong>
+              <ul class="sq-breakdown">
+                <li><span>{{ t('simpleQuote.smtProjectFee') }}</span><span>{{ fmt(result.result.economic.projectMoney, 2) }}</span></li>
+                <li><span>{{ t('simpleQuote.smtPadFee') }}</span><span>{{ fmt(result.result.economic.padMoney, 2) }}</span></li>
+                <li><span>{{ t('simpleQuote.smtManualPadFee') }}</span><span>{{ fmt(result.result.economic.manualPadMoney, 2) }}</span></li>
+                <li><span>{{ t('simpleQuote.smtManualProjectFee') }}</span><span>{{ fmt(result.result.economic.manualWeldProjectMoney, 2) }}</span></li>
+                <li><span>{{ t('simpleQuote.smtPlateChange') }}</span><span>{{ fmt(result.result.economic.plateChangeMaterialCountMoney, 2) }}</span></li>
+                <li><span>{{ t('simpleQuote.smtSteelFee') }}</span><span>{{ fmt(result.result.economic.steelMoney, 2) }}</span></li>
+                <li><span>{{ t('simpleQuote.smtPackageFee') }}</span><span>{{ fmt(result.result.economic.packageMoney, 2) }}</span></li>
+                <li><span>{{ t('simpleQuote.smtTierTotal') }}</span><strong>{{ fmt(result.result.economic.totalMoney, 2) }}</strong></li>
+              </ul>
+            </div>
+            <p v-else class="sq-stp-hint">{{ t('simpleQuote.smtEcoUnavailable') }}</p>
+            <div v-if="result.result?.standard" class="sq-manufacturing">
+              <strong>{{ t('simpleQuote.smtStandard') }}</strong>
+              <ul class="sq-breakdown">
+                <li><span>{{ t('simpleQuote.smtProjectFee') }}</span><span>{{ fmt(result.result.standard.projectMoney, 2) }}</span></li>
+                <li><span>{{ t('simpleQuote.smtPadFee') }}</span><span>{{ fmt(result.result.standard.padMoney, 2) }}</span></li>
+                <li><span>{{ t('simpleQuote.smtManualPadFee') }}</span><span>{{ fmt(result.result.standard.manualPadMoney, 2) }}</span></li>
+                <li><span>{{ t('simpleQuote.smtManualProjectFee') }}</span><span>{{ fmt(result.result.standard.manualWeldProjectMoney, 2) }}</span></li>
+                <li><span>{{ t('simpleQuote.smtPlateChange') }}</span><span>{{ fmt(result.result.standard.plateChangeMaterialCountMoney, 2) }}</span></li>
+                <li><span>{{ t('simpleQuote.smtSteelFee') }}</span><span>{{ fmt(result.result.standard.steelMoney, 2) }}</span></li>
+                <li><span>{{ t('simpleQuote.smtPackageFee') }}</span><span>{{ fmt(result.result.standard.packageMoney, 2) }}</span></li>
+                <li><span>{{ t('simpleQuote.smtTierTotal') }}</span><strong>{{ fmt(result.result.standard.totalMoney, 2) }}</strong></li>
+              </ul>
+            </div>
+            <p class="sq-total">{{ t('simpleQuote.total') }} ({{ t('simpleQuote.smtStandard') }}): <strong>{{ fromQuote(result.total_amount, result) }}</strong></p>
+            <p class="sq-stp-hint">{{ t('simpleQuote.smtExcludesHint') }}</p>
+            <p class="sq-stp-hint">{{ fxHintText }}</p>
+          </template>
+
+          <template v-else-if="result.quote_type === 'pcba'">
             <ul class="sq-breakdown">
               <li v-for="(item, i) in result.result?.breakdown || []" :key="i">
                 <span>{{ item.label }}</span><span>{{ fmtLine(item) }}</span>

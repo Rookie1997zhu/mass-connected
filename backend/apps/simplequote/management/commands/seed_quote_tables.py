@@ -17,6 +17,8 @@ from apps.simplequote.table_data import (
     QUOTE_TABLE_SEED,
     SHIPPING_PARAM_DEFAULTS,
     SHIPPING_PARAM_META,
+    SMT_PARAM_DEFAULTS,
+    SMT_PARAM_META,
 )
 
 
@@ -50,6 +52,7 @@ class Command(BaseCommand):
 
         param_count = self._seed_params("shipping", SHIPPING_PARAM_DEFAULTS, SHIPPING_PARAM_META)
         param_count += self._seed_params("pcba", PCBA_PARAM_DEFAULTS, PCBA_PARAM_META)
+        param_count += self._seed_params("smt", SMT_PARAM_DEFAULTS, SMT_PARAM_META)
         param_count += self._seed_params("pcb", PCB_PARAM_DEFAULTS, PCB_PARAM_META)
         param_count += self._seed_params("print3d", PRINT3D_PARAM_DEFAULTS, PRINT3D_PARAM_META)
 

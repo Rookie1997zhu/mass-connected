@@ -13,6 +13,7 @@ from apps.simplequote.calculator import (
     PaperBoxQuoteError,
     PcbaQuoteError,
     PcbQuoteError,
+    SmtQuoteError,
     calculate,
 )
 from apps.simplequote.models import Print3dSliceJob, SimpleQuote
@@ -134,6 +135,12 @@ class MemberSimpleQuoteListCreateView(APIView):
                     param_overrides("pcba"),
                     table_overrides("pcba"),
                 )
+            elif quote_type == "smt":
+                result = calculate(
+                    quote_type,
+                    inputs,
+                    param_overrides("smt"),
+                )
             elif quote_type == "injection":
                 result = calculate(
                     quote_type,
@@ -147,7 +154,7 @@ class MemberSimpleQuoteListCreateView(APIView):
                 result = calculate(quote_type, inputs, overrides)
             else:
                 result = calculate(quote_type, inputs, param_overrides(quote_type))
-        except (InjectionQuoteError, PcbQuoteError, PcbaQuoteError, PaperBoxQuoteError) as exc:
+        except (InjectionQuoteError, PcbQuoteError, PcbaQuoteError, PaperBoxQuoteError, SmtQuoteError) as exc:
             return error_response("SIMPLE_QUOTE_INPUT_INVALID", str(exc), request=request)
         except ValueError:
             return error_response("SIMPLE_QUOTE_TYPE_INVALID", "暂不支持该报价类型", request=request)
@@ -156,6 +163,9 @@ class MemberSimpleQuoteListCreateView(APIView):
             currency = "CNY"
             valid_days = 14
         elif quote_type == "pcba":
+            currency = "CNY"
+            valid_days = 30
+        elif quote_type == "smt":
             currency = "CNY"
             valid_days = 30
         elif quote_type == "pcb":

@@ -14,6 +14,7 @@ from core.pdf import (
     build_pcba_quotation_pdf,
     build_pcb_dev_quotation_pdf,
     build_quotation_pdf,
+    build_smt_quotation_pdf,
 )
 
 
@@ -185,6 +186,7 @@ TYPE_LABELS = {
     "injection": "注塑模具报价书",
     "print3d": "3D 打印报价书",
     "pcba": "PCBA 加工费报价书",
+    "smt": "SMT 工艺费报价书",
     "pcb": "PCB 开发报价书",
     "software": "软件开发报价书",
     "ic": "IC 方案报价书",
@@ -235,6 +237,18 @@ def render_pdf(quote):
 
     if quote.quote_type == "pcba":
         pdf_bytes = build_pcba_quotation_pdf(
+            quote_no=quote.quote_no,
+            product_name=quote.product_name or "-",
+            inputs=quote.inputs or {},
+            result=quote.result or {},
+            valid_until=quote.valid_until.isoformat() if quote.valid_until else "-",
+            created_at=quote.created_at.strftime("%Y-%m-%d %H:%M"),
+        )
+        quote.pdf.save(f"{quote.quote_no}.pdf", ContentFile(pdf_bytes), save=False)
+        return
+
+    if quote.quote_type == "smt":
+        pdf_bytes = build_smt_quotation_pdf(
             quote_no=quote.quote_no,
             product_name=quote.product_name or "-",
             inputs=quote.inputs or {},

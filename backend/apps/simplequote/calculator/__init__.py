@@ -41,12 +41,14 @@ from apps.simplequote.calculator.pcb import (
 )
 from apps.simplequote.calculator.pcba import _calc_sum, _match_score, calc_pcba
 from apps.simplequote.calculator.print3d import calc_print3d
+from apps.simplequote.calculator.smt import calc_smt
 from apps.simplequote.calculator.utils import (
     DEFAULT_PARAMS,
     InjectionQuoteError,
     PaperBoxQuoteError,
     PcbaQuoteError,
     PcbQuoteError,
+    SmtQuoteError,
     _int,
     _normalize_material,
     _round4,
@@ -58,6 +60,7 @@ CALCULATORS = {
     "injection": calc_injection,
     "print3d": calc_print3d,
     "pcba": calc_pcba,
+    "smt": calc_smt,
     "pcb": calc_pcb,
     "software": calc_software,
     "ic": calc_ic,
@@ -71,7 +74,7 @@ def calculate(quote_type, inputs, param_overrides=None, table_overrides=None):
     params = build_param_map(quote_type, param_overrides)
     tables = table_overrides or {}
     calc_fn = CALCULATORS[quote_type]
-    if quote_type in ("pcba", "pcb", "injection", "print3d"):
+    if quote_type in ("pcba", "pcb", "injection", "print3d", "smt"):
         return calc_fn(inputs or {}, params, tables)
     return calc_fn(inputs or {}, params)
 
@@ -85,6 +88,7 @@ __all__ = [
     "calc_injection",
     "calc_print3d",
     "calc_pcba",
+    "calc_smt",
     "calc_pcb",
     "calc_software",
     "calc_ic",
@@ -93,6 +97,7 @@ __all__ = [
     "PcbQuoteError",
     "PcbaQuoteError",
     "PaperBoxQuoteError",
+    "SmtQuoteError",
     "_to_number",
     "_int",
     "_normalize_material",

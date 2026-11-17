@@ -191,6 +191,46 @@ services:
       retries: 5
       start_period: 60s
 
+  # 内容流水线日批调度（YouTube→博客）；时区默认 Asia/Shanghai
+  celery-beat:
+    image: oemco-backend
+    build: ./backend
+    restart: unless-stopped
+    mem_limit: 256m
+    cpus: 0.25
+    env_file: .env
+    environment:
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379/0}
+      REDIS_CELERY_URL: ${REDIS_CELERY_URL:-redis://redis:6379/1}
+      REDIS_CHANNELS_URL: ${REDIS_CHANNELS_URL:-redis://redis:6379/2}
+      CELERY_BROKER_URL: ${CELERY_BROKER_URL:-redis://redis:6379/1}
+      CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND:-redis://redis:6379/1}
+      CELERY_TIMEZONE: ${CONTENT_PIPELINE_TIMEZONE:-Asia/Shanghai}
+      DB_HOST: mysql
+    volumes:
+      - ./backend:/app
+      - media_data:/app/media
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      backend:
+        condition: service_started
+      heavy-worker:
+        condition: service_started
+    command: celery -A config beat -l info
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "python -c \"import subprocess,sys; r=subprocess.run(['ps','ax'],capture_output=True,text=True); sys.exit(0 if 'celery' in r.stdout else 1)\"",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+
   translate-worker:
     image: oemco-backend
     build: ./backend
@@ -228,6 +268,35 @@ services:
       timeout: 10s
       retries: 5
       start_period: 60s
+
+  # 博客远程 HTTP MCP（Claude Code 连接 /mcp/blog）
+  blog-mcp:
+    build: ./mcp/oem-blog
+    image: oemco-blog-mcp
+    restart: unless-stopped
+    mem_limit: 256m
+    cpus: 0.5
+    env_file: .env
+    environment:
+      OEM_API_BASE_URL: ${OEM_API_BASE_URL:-http://backend:8000/api}
+      BLOG_MCP_API_KEY: ${BLOG_MCP_API_KEY:-}
+      BLOG_MCP_HOST: 0.0.0.0
+      BLOG_MCP_PORT: 3100
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:3100/healthz', timeout=3)",
+        ]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
 
   # 默认：生产静态构建（nginx 托管 dist）
   frontend:
@@ -315,6 +384,8 @@ services:
         condition: service_healthy
       admin:
         condition: service_healthy
+      blog-mcp:
+        condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/api/health >/dev/null || exit 1"]
       interval: 15s
@@ -341,6 +412,8 @@ services:
       backend:
         condition: service_healthy
       chat-ws:
+        condition: service_healthy
+      blog-mcp:
         condition: service_healthy
       frontend-dev:
         condition: service_started

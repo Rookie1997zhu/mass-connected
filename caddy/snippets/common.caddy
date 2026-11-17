@@ -22,6 +22,13 @@
 			header_up Host localhost
 		}
 	}
+
+	# 博客 MCP（streamable-http），对外 URL：/mcp/blog
+	handle /mcp/blog* {
+		reverse_proxy blog-mcp:3100 {
+			header_up Host localhost
+		}
+	}
 }
 
 (sensitive_media) {

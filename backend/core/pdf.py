@@ -615,6 +615,104 @@ def build_pcba_quotation_pdf(*, quote_no, product_name, inputs, result, valid_un
     return pdf
 
 
+def build_smt_quotation_pdf(*, quote_no, product_name, inputs, result, valid_until, created_at):
+    """SMT 工艺费报价单 PDF（经济型 / 标准型，不含元器件）。"""
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(
+        buffer,
+        pagesize=A4,
+        leftMargin=15 * mm,
+        rightMargin=15 * mm,
+        topMargin=15 * mm,
+        bottomMargin=15 * mm,
+    )
+    styles = _styles()
+    font = _ensure_cjk_font()
+    story = []
+
+    story.append(Paragraph(f"<b>{BRAND}</b>", styles["Title"]))
+    story.append(Paragraph("SMT 공정비 견적 / SMT Process Fee Quote", styles["Heading2"]))
+    story.append(Spacer(1, 6))
+
+    location = result.get("patch_location") or inputs.get("patch_location") or "-"
+    meta_rows = [
+        ["견적번호 / 编号", quote_no, "고객 / 客户", product_name or "-"],
+        ["작성일 / 作成", created_at, "유효기간 / 有效期", valid_until],
+        [
+            "보드 / 板尺寸(cm)",
+            f"{result.get('board_length_cm', '-')} × {result.get('board_width_cm', '-')}",
+            "면 / 贴片面",
+            str(location),
+        ],
+        [
+            "수량 / 数量",
+            str(result.get("patch_quantity", 1)),
+            "패드·종류 / 焊点·种类",
+            f"{result.get('patch_component_quantity', 0)} / {result.get('patch_component_type', 0)}",
+        ],
+    ]
+    meta_table = Table(meta_rows, colWidths=[35 * mm, 50 * mm, 35 * mm, 50 * mm])
+    meta_table.setStyle(
+        TableStyle(
+            [
+                ("FONTNAME", (0, 0), (-1, -1), font),
+                ("FONTSIZE", (0, 0), (-1, -1), 8),
+                ("TOPPADDING", (0, 0), (-1, -1), 3),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
+            ]
+        )
+    )
+    story.append(meta_table)
+    story.append(Spacer(1, 10))
+
+    def _tier_rows(title, tier):
+        story.append(Paragraph(title, styles["Heading3"]))
+        if not tier:
+            story.append(Paragraph("不可用 / Not available", styles["Normal"]))
+            story.append(Spacer(1, 6))
+            return
+        rows = [
+            ["항목 / Item", "금액(RMB)"],
+            ["工程费 / Project", _fmt_amount(tier.get("projectMoney"))],
+            ["贴片焊点费 / Pads", _fmt_amount(tier.get("padMoney"))],
+            ["手工焊点费 / Manual pads", _fmt_amount(tier.get("manualPadMoney"))],
+            ["手工工程费 / Manual project", _fmt_amount(tier.get("manualWeldProjectMoney"))],
+            ["换料计入 / Plate change", _fmt_amount(tier.get("plateChangeMaterialCountMoney"))],
+            ["钢网费 / Stencil", _fmt_amount(tier.get("steelMoney"))],
+            ["包装费 / Package", _fmt_amount(tier.get("packageMoney"))],
+            ["合计 / Total", _fmt_amount(tier.get("totalMoney"))],
+        ]
+        story.append(_amount_table(rows, font, highlight_last=True))
+        story.append(Spacer(1, 8))
+
+    _tier_rows(
+        "1. 경제형 / 经济型" + ("" if result.get("eco_available") else " (不可用)"),
+        result.get("economic") if result.get("eco_available") else None,
+    )
+    _tier_rows("2. 표준형 / 标准型", result.get("standard"))
+
+    total_rows = [["합계(표준형) / Total standard (RMB)", _fmt_amount(result.get("total"))]]
+    rmb_to_krw = result.get("rmb_to_krw") or result.get("cny_to_krw")
+    if result.get("total_krw") is not None and rmb_to_krw:
+        total_rows.append(
+            [f"환산 / 换算 (KRW @ {_fmt_amount(rmb_to_krw, 4)})", _fmt_amount(result.get("total_krw"))]
+        )
+    story.append(_amount_table(total_rows, font, highlight_last=True))
+    story.append(Spacer(1, 8))
+
+    excludes = result.get("excludes") or []
+    notes = list(result.get("notes") or [])
+    notes.append("본 견적은 SMT 공정비만 포함하며 소자비는 제외합니다.")
+    notes.extend([f"미포함: {x}" for x in excludes])
+    for note in notes:
+        story.append(Paragraph(f"• {note}", styles["Normal"]))
+
+    doc.build(story)
+    pdf = buffer.getvalue()
+    buffer.close()
+    return pdf
+
+
 def build_pcb_dev_quotation_pdf(*, quote_no, product_name, inputs, result, valid_until, created_at):
     """PCB 开发成本报价单 PDF。"""
     buffer = io.BytesIO()

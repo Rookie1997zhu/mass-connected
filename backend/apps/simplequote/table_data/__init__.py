@@ -25,6 +25,7 @@ from apps.simplequote.table_data.shipping import (
     SHIPPING_PARAM_DEFAULTS,
     SHIPPING_PARAM_META,
 )
+from apps.simplequote.table_data.smt import SMT_PARAM_DEFAULTS, SMT_PARAM_META
 
 __all__ = [
     "AIR_FREIGHT_TIERS",
@@ -34,6 +35,8 @@ __all__ = [
     "PCBA_COMPONENT_SCORES",
     "PCBA_PARAM_META",
     "PCBA_PARAM_DEFAULTS",
+    "SMT_PARAM_META",
+    "SMT_PARAM_DEFAULTS",
     "PCB_BASE_PRICING",
     "PCB_SERVICES",
     "PCB_WEIGHTS",

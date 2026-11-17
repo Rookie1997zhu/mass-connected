@@ -316,6 +316,7 @@ class SimpleQuote(models.Model):
         ("injection", "Injection Mold"),
         ("print3d", "3D Printing"),
         ("pcba", "PCBA Assembly"),
+        ("smt", "SMT Process Fee"),
         ("pcb", "PCB Development"),
         ("software", "Software"),
         ("ic", "IC Design"),

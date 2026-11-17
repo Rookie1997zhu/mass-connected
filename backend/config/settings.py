@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     "apps.payment",
     "apps.chat",
     "apps.blog",
+    "apps.content_pipeline",
     "apps.ops",
 ]
 
@@ -220,7 +221,6 @@ CELERY_TASK_TRACK_STARTED = True
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
-CELERY_TIMEZONE = TIME_ZONE
 CELERY_WORKER_PREFETCH_MULTIPLIER = 1
 CELERY_TASK_ACKS_LATE = True
 CELERY_TASK_ALWAYS_EAGER = os.environ.get("CELERY_TASK_ALWAYS_EAGER", "false").lower() == "true"
@@ -231,11 +231,55 @@ CELERY_TASK_ROUTES = {
     "simplequote.send_notification_email": {"queue": "heavy"},
     "accounts.send_verification_email": {"queue": "heavy"},
     "chat.run_message_translate": {"queue": "translate"},
+    "content_pipeline.run_daily_batch": {"queue": "heavy"},
+    "content_pipeline.process_video_item": {"queue": "heavy"},
+    "content_pipeline.finalize_daily_run": {"queue": "heavy"},
 }
 PRUSA_SLICER_PATH = os.environ.get("PRUSA_SLICER_PATH", "prusa-slicer")
 PRINT3D_SLICE_JOB_TTL_HOURS = int(os.environ.get("PRINT3D_SLICE_JOB_TTL_HOURS", "24"))
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
+
+# 博客 MCP 机器凭证（环境变量；空则仅 JWT 可用）
+BLOG_MCP_API_KEY = os.environ.get("BLOG_MCP_API_KEY", "")
+BLOG_MCP_AUTHOR_EMAIL = os.environ.get("BLOG_MCP_AUTHOR_EMAIL", "")
+
+# 每日 YouTube→博客 内容流水线
+CONTENT_PIPELINE_ENABLED = os.environ.get("CONTENT_PIPELINE_ENABLED", "false").lower() == "true"
+CONTENT_PIPELINE_DAILY_COUNT = int(os.environ.get("CONTENT_PIPELINE_DAILY_COUNT", "10"))
+CONTENT_PIPELINE_KEYWORDS = os.environ.get("CONTENT_PIPELINE_KEYWORDS", "")
+CONTENT_PIPELINE_LANGUAGES = os.environ.get("CONTENT_PIPELINE_LANGUAGES", "zh,ko")
+CONTENT_PIPELINE_SCHEDULE_CRON = os.environ.get("CONTENT_PIPELINE_SCHEDULE_CRON", "0 9 * * *")
+CONTENT_PIPELINE_TIMEZONE = os.environ.get("CONTENT_PIPELINE_TIMEZONE", "Asia/Shanghai")
+CONTENT_PIPELINE_AUTHOR_EMAIL = os.environ.get("CONTENT_PIPELINE_AUTHOR_EMAIL", "") or BLOG_MCP_AUTHOR_EMAIL
+YOUTUBE_API_KEY = os.environ.get("YOUTUBE_API_KEY", "")
+CELERY_TIMEZONE = os.environ.get("CELERY_TIMEZONE", TIME_ZONE)
+
+
+def _content_pipeline_cron_parts():
+    raw = (CONTENT_PIPELINE_SCHEDULE_CRON or "0 9 * * *").strip().split()
+    minute = 0
+    hour = 9
+    try:
+        if len(raw) >= 1 and raw[0].isdigit():
+            minute = int(raw[0])
+        if len(raw) >= 2 and raw[1].isdigit():
+            hour = int(raw[1])
+    except ValueError:
+        minute, hour = 0, 9
+    return minute, hour
+
+
+from celery.schedules import crontab  # noqa: E402
+
+_cp_minute, _cp_hour = _content_pipeline_cron_parts()
+CELERY_BEAT_SCHEDULE = {
+    "content-pipeline-daily": {
+        "task": "content_pipeline.run_daily_batch",
+        "schedule": crontab(minute=_cp_minute, hour=_cp_hour),
+        "options": {"queue": "heavy"},
+    },
+}
 
 # 工作台参考汇率（exchangerate.host）；密钥仅环境变量，不进仓库
 EXCHANGERATE_HOST_ACCESS_KEY = os.environ.get("EXCHANGERATE_HOST_ACCESS_KEY", "")

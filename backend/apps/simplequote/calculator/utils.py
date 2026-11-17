@@ -85,6 +85,25 @@ DEFAULT_PARAMS = {
         "default_smt_score": 2,
         "default_dip_score": 2,
     },
+    # 嘉立创 SMT 工艺费（离线复刻 exports/jlc_smt_calc/rates/rates.json）
+    "smt": {
+        "pad_fee_per_joint": 0.01,
+        "manual_pad_fee_per_joint": 0.1,
+        "manual_project_fee_if_plugin": 20.0,
+        "package_base": 3.0,
+        "package_area_qty_rate": 0.0002,
+        "plate_change_per_type": 5.0,
+        "change_materiel_per_type_economic": 20.0,
+        "change_materiel_per_type_standard": 8.0,
+        "project_fee_economic_T": 50.0,
+        "project_fee_standard_T": 150.0,
+        "project_fee_standard_TB": 300.0,
+        "steel_fee_economic": 0.0,
+        "steel_fee_standard_T": 50.0,
+        "steel_fee_standard_TB": 100.0,
+        "min_single_piece_processing_fee": 2.9,
+        "rmb_to_krw": 226,
+    },
     "software": {
         "base_fee": 3000000,
         "module_fee": 1500000,
@@ -162,3 +181,7 @@ class PcbaQuoteError(ValueError):
 
 class PaperBoxQuoteError(ValueError):
     """纸盒包装报价输入错误。"""
+
+
+class SmtQuoteError(ValueError):
+    """SMT 工艺费报价输入错误。"""

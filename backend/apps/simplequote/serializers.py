@@ -84,7 +84,7 @@ class SimpleQuoteListSerializer(serializers.ModelSerializer):
 
 class SimpleQuoteCreateSerializer(serializers.Serializer):
     quote_type = serializers.ChoiceField(
-        choices=["injection", "print3d", "pcba", "pcb", "software", "ic", "paper_box"]
+        choices=["injection", "print3d", "pcba", "smt", "pcb", "software", "ic", "paper_box"]
     )
     product_name = serializers.CharField(max_length=200, required=False, allow_blank=True)
     # currency 一般由服务端按报价类型决定（注塑=CNY），此处仅作前向兼容可选入参。

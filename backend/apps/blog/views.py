@@ -7,6 +7,9 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.throttling import ScopedRateThrottle
 from rest_framework.views import APIView
 
+from rest_framework_simplejwt.authentication import JWTAuthentication
+
+from apps.blog.authentication import BlogMcpApiKeyAuthentication
 from apps.blog.models import BlogCategory, BlogComment, BlogPost
 from apps.blog.serializers import (
     BlogCategorySerializer,
@@ -30,6 +33,8 @@ from core.exceptions import AppAPIException
 from core.pagination import StandardPagination
 from core.permissions import IsAdminRole, IsEmailVerified
 from core.responses import success_response
+
+_ADMIN_AUTH = [BlogMcpApiKeyAuthentication, JWTAuthentication]
 
 logger = logging.getLogger(__name__)
 
@@ -260,6 +265,7 @@ class BlogCommentDeleteView(APIView):
 
 
 class AdminBlogCategoryListCreateView(APIView):
+    authentication_classes = _ADMIN_AUTH
     permission_classes = [IsAdminRole]
 
     def get(self, request):
@@ -274,6 +280,7 @@ class AdminBlogCategoryListCreateView(APIView):
 
 
 class AdminBlogCategoryDetailView(APIView):
+    authentication_classes = _ADMIN_AUTH
     permission_classes = [IsAdminRole]
 
     def get(self, request, pk):
@@ -294,6 +301,7 @@ class AdminBlogCategoryDetailView(APIView):
 
 
 class AdminBlogPostListCreateView(APIView):
+    authentication_classes = _ADMIN_AUTH
     permission_classes = [IsAdminRole]
 
     def get(self, request):
@@ -319,6 +327,7 @@ class AdminBlogPostListCreateView(APIView):
 
 
 class AdminBlogPostDetailView(APIView):
+    authentication_classes = _ADMIN_AUTH
     permission_classes = [IsAdminRole]
 
     def get(self, request, pk):
@@ -341,6 +350,7 @@ class AdminBlogPostDetailView(APIView):
 
 
 class AdminBlogCommentListView(APIView):
+    authentication_classes = _ADMIN_AUTH
     permission_classes = [IsAdminRole]
 
     def get(self, request):
@@ -355,6 +365,7 @@ class AdminBlogCommentListView(APIView):
 
 
 class AdminBlogCommentDetailView(APIView):
+    authentication_classes = _ADMIN_AUTH
     permission_classes = [IsAdminRole]
 
     def patch(self, request, pk):
