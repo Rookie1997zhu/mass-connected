@@ -6,7 +6,14 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Swiper from 'swiper'
 import 'swiper/css'
-import { fetchServiceCategories, fetchNews, fetchCases, fetchBlogPosts } from '../api'
+import {
+  fetchServiceCategories,
+  fetchNews,
+  fetchCases,
+  fetchBlogPosts,
+  fetchPartners,
+  fetchDemandHall,
+} from '../api'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -19,7 +26,10 @@ const processes = ref([])
 const news = ref([])
 const cases = ref([])
 const blogPosts = ref([])
+const partners = ref([])
+const demands = ref([])
 const loading = ref(true)
+const audience = ref('buyer')
 
 let motionContext = null
 const swipers = []
@@ -106,10 +116,18 @@ const pickI18n = (field) => {
 }
 
 const heroMetrics = computed(() => [
-  { label: t('home.hero.metricFactories'), value: t('home.hero.metricFactoriesValue') },
-  { label: t('home.hero.metricProcesses'), value: t('home.hero.metricProcessesValue') },
-  { label: t('home.hero.metricQuotes'), value: t('home.hero.metricQuotesValue') },
-  { label: t('home.hero.metricMarkets'), value: t('home.hero.metricMarketsValue') },
+  {
+    label: t('home.hero.metricFactories'),
+    value: partners.value.length ? String(partners.value.length) : '—',
+  },
+  {
+    label: t('home.hero.metricProcesses'),
+    value: processes.value.length ? String(processes.value.length) : '—',
+  },
+  {
+    label: t('home.hero.metricQuotes'),
+    value: demands.value.length ? String(demands.value.length) : '—',
+  },
 ])
 
 const howItWorksItems = computed(() => [
@@ -127,6 +145,18 @@ const howItWorksItems = computed(() => [
   },
 ])
 
+const heroPrimary = computed(() =>
+  audience.value === 'supplier'
+    ? { to: '/demand-hall', label: t('home.hero.ctaFindDemands') }
+    : { to: '/rfq/new', label: t('home.hero.ctaRfq') },
+)
+
+const heroSecondary = computed(() =>
+  audience.value === 'supplier'
+    ? { to: '/register?type=enterprise', label: t('home.hero.ctaShowCapability') }
+    : { to: '/partners', label: t('home.hero.ctaPartner') },
+)
+
 const roleCards = computed(() => [
   {
     title: t('home.roles.buyerTitle'),
@@ -139,7 +169,7 @@ const roleCards = computed(() => [
     title: t('home.roles.factoryTitle'),
     desc: t('home.roles.factoryDesc'),
     cta: t('home.roles.factoryCta'),
-    link: '/partners',
+    link: '/demand-hall',
     primary: false,
   },
 ])
@@ -148,16 +178,20 @@ onMounted(async () => {
   await nextTick()
   setupHero()
   try {
-    const [p, n, c, b] = await Promise.all([
+    const [p, n, c, b, partnersRes, demandsRes] = await Promise.all([
       fetchServiceCategories(),
       fetchNews({ page_size: 3 }),
       fetchCases({ page_size: 3 }),
       fetchBlogPosts({ page_size: 6 }).catch(() => ({ data: { items: [] } })),
+      fetchPartners().catch(() => ({ data: { items: [] } })),
+      fetchDemandHall({ page_size: 6 }).catch(() => ({ data: { items: [] } })),
     ])
     processes.value = (p.data.items || []).slice(0, 8)
     news.value = n.data.items || []
     cases.value = c.data.items || []
     blogPosts.value = b.data.items || []
+    partners.value = (partnersRes.data.items || []).slice(0, 6)
+    demands.value = (demandsRes.data.items || []).slice(0, 6)
   } finally {
     loading.value = false
     await nextTick()
@@ -177,9 +211,27 @@ onUnmounted(destroyMotion)
           <span class="section-eyebrow hero-eyebrow">{{ t('home.hero.eyebrow') }}</span>
           <h1 class="hero-title"><span class="hero-title-line">{{ t('home.hero.title') }}</span></h1>
           <p class="hero-subtitle">{{ t('home.hero.subtitle') }}</p>
+          <div class="audience-toggle" role="group" :aria-label="t('home.roles.eyebrow')">
+            <button
+              type="button"
+              class="audience-btn"
+              :class="{ active: audience === 'buyer' }"
+              @click="audience = 'buyer'"
+            >
+              {{ t('home.hero.audienceBuyer') }}
+            </button>
+            <button
+              type="button"
+              class="audience-btn"
+              :class="{ active: audience === 'supplier' }"
+              @click="audience = 'supplier'"
+            >
+              {{ t('home.hero.audienceSupplier') }}
+            </button>
+          </div>
           <div class="hero-actions">
-            <RouterLink to="/rfq/new" class="btn btn-primary">{{ t('home.hero.ctaRfq') }}</RouterLink>
-            <RouterLink to="/partners" class="btn btn-secondary">{{ t('home.hero.ctaPartner') }}</RouterLink>
+            <RouterLink :to="heroPrimary.to" class="btn btn-primary">{{ heroPrimary.label }}</RouterLink>
+            <RouterLink :to="heroSecondary.to" class="btn btn-secondary">{{ heroSecondary.label }}</RouterLink>
           </div>
         </div>
         <div class="hero-visual" aria-hidden="true">
@@ -235,6 +287,80 @@ onUnmounted(destroyMotion)
     </template>
 
     <template v-else>
+      <!-- Roles -->
+      <section class="section section-dark reveal">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-eyebrow services-eyebrow">{{ t('home.roles.eyebrow') }}</span>
+            <h2>{{ t('home.roles.title') }}</h2>
+          </div>
+          <div class="grid-2 roles-grid">
+            <article v-for="role in roleCards" :key="role.link" class="role-card">
+              <h3>{{ role.title }}</h3>
+              <p>{{ role.desc }}</p>
+              <RouterLink :to="role.link" :class="['btn', role.primary ? 'btn-primary' : 'btn-secondary', 'role-cta']">
+                {{ role.cta }}
+              </RouterLink>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Public partners -->
+      <section class="section section-surface reveal">
+        <div class="container">
+          <div class="section-header section-header--row">
+            <div>
+              <span class="section-eyebrow">{{ t('home.marketplace.partnersEyebrow') }}</span>
+              <h2>{{ t('home.marketplace.partnersTitle') }}</h2>
+            </div>
+            <RouterLink to="/partners" class="btn btn-ghost">{{ t('home.marketplace.partnersViewAll') }} →</RouterLink>
+          </div>
+          <div v-if="partners.length" class="grid-3">
+            <article v-for="item in partners" :key="item.id" class="cap-card marketplace-card">
+              <h3>{{ item.company_name }}</h3>
+              <p v-if="item.region" class="card-meta">{{ item.region }}</p>
+              <p class="card-summary">{{ item.intro || '—' }}</p>
+              <p v-if="item.process_names?.length" class="card-meta">
+                {{ item.process_names.slice(0, 3).join(' · ') }}
+              </p>
+            </article>
+          </div>
+          <p v-else class="state-message">{{ t('home.marketplace.partnersEmpty') }}</p>
+        </div>
+      </section>
+
+      <!-- Open demands -->
+      <section class="section reveal">
+        <div class="container">
+          <div class="section-header section-header--row">
+            <div>
+              <span class="section-eyebrow">{{ t('home.marketplace.demandsEyebrow') }}</span>
+              <h2>{{ t('home.marketplace.demandsTitle') }}</h2>
+            </div>
+            <RouterLink to="/demand-hall" class="btn btn-ghost">{{ t('home.marketplace.demandsViewAll') }} →</RouterLink>
+          </div>
+          <div v-if="demands.length" class="demand-list">
+            <RouterLink
+              v-for="item in demands"
+              :key="item.id"
+              :to="`/demand-hall/${item.id}`"
+              class="demand-row"
+            >
+              <div>
+                <strong>{{ item.rfq_no }}</strong>
+                <span class="card-meta">{{ item.service_category_name || pickI18n(item.material) }}</span>
+              </div>
+              <div class="demand-row-meta">
+                <span>{{ t('home.marketplace.demandQuotes', { count: item.quotes_count || 0 }) }}</span>
+                <span>{{ item.quantity }}</span>
+              </div>
+            </RouterLink>
+          </div>
+          <p v-else class="state-message">{{ t('home.marketplace.demandsEmpty') }}</p>
+        </div>
+      </section>
+
       <!-- Manufacturing Processes -->
       <section class="section section-surface reveal">
         <div class="container">
@@ -272,25 +398,6 @@ onUnmounted(destroyMotion)
               <span class="step-badge">{{ String(idx + 1).padStart(2, '0') }}</span>
               <h3>{{ item.title }}</h3>
               <p>{{ item.desc }}</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <!-- Roles -->
-      <section class="section section-dark reveal">
-        <div class="container">
-          <div class="section-header">
-            <span class="section-eyebrow services-eyebrow">{{ t('home.roles.eyebrow') }}</span>
-            <h2>{{ t('home.roles.title') }}</h2>
-          </div>
-          <div class="grid-2 roles-grid">
-            <article v-for="role in roleCards" :key="role.link" class="role-card">
-              <h3>{{ role.title }}</h3>
-              <p>{{ role.desc }}</p>
-              <RouterLink :to="role.link" :class="['btn', role.primary ? 'btn-primary' : 'btn-secondary', 'role-cta']">
-                {{ role.cta }}
-              </RouterLink>
             </article>
           </div>
         </div>
@@ -396,7 +503,7 @@ onUnmounted(destroyMotion)
         </div>
         <div class="cta-actions">
           <RouterLink to="/rfq/new" class="btn btn-primary">{{ t('home.cta.rfq') }}</RouterLink>
-          <RouterLink to="/shop" class="btn btn-secondary cta-btn-light">{{ t('home.cta.shop') }}</RouterLink>
+          <RouterLink to="/partners" class="btn btn-secondary cta-btn-light">{{ t('home.cta.shop') }}</RouterLink>
         </div>
       </div>
     </section>
@@ -445,11 +552,71 @@ onUnmounted(destroyMotion)
   max-width: 28rem;
 }
 
+.audience-toggle {
+  display: inline-flex;
+  margin-top: var(--space-lg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.audience-btn {
+  border: 0;
+  background: transparent;
+  padding: 0.5rem 0.9rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  color: var(--color-text);
+
+  &.active {
+    background: var(--color-steel);
+    color: #fff;
+  }
+}
+
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-md);
   margin-top: var(--space-xl);
+}
+
+.marketplace-card .card-summary {
+  margin-top: var(--space-sm);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.demand-list {
+  display: grid;
+  gap: var(--space-sm);
+}
+
+.demand-row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-md);
+  align-items: center;
+  padding: var(--space-md) var(--space-lg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  text-decoration: none;
+  color: inherit;
+
+  strong { display: block; margin-bottom: 0.25rem; }
+}
+
+.demand-row-meta {
+  display: flex;
+  gap: var(--space-md);
+  font-size: 0.8125rem;
+  opacity: 0.75;
+  white-space: nowrap;
 }
 
 .hero-visual {

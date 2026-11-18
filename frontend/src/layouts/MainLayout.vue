@@ -136,12 +136,21 @@ const isExternal = (path) => /^https?:\/\//i.test(path || '')
 
 const fallbackNavGroups = computed(() => [
   {
+    label: t('nav.findSuppliers'),
+    direct: true,
+    items: [{ path: '/partners', label: t('nav.findSuppliers') }],
+  },
+  {
+    label: t('nav.findDemands'),
+    direct: true,
+    items: [{ path: '/demand-hall', label: t('nav.findDemands') }],
+  },
+  {
     label: t('nav.manufacturingQuote'),
     items: [
+      { path: '/rfq/new', label: t('nav.postDemand') },
       { path: '/simple-quote', label: t('simpleQuote.title') },
-      { path: '/rfq/new', label: t('nav.detailedQuote') },
-      { path: '/demand-hall', label: t('nav.findDemands') },
-      { path: '/partners', label: t('nav.partnersDirectory') },
+      { path: '/register?type=enterprise', label: t('nav.showCapability') },
     ],
   },
   {
@@ -178,25 +187,59 @@ const mapApiGroups = (groups) =>
     }))
     .filter((group) => group.items.length > 0)
 
-/** 确保「制造报价」组含简单/详细报价入口（API 导航缺项时补上） */
+/** 公共发现入口：找供应商 / 找需求置顶；制造报价组保留发布与预估 */
 const ensureManufacturingQuoteEntries = (groups) => {
+  const findSuppliers = {
+    label: t('nav.findSuppliers'),
+    direct: true,
+    items: [{ path: '/partners', label: t('nav.findSuppliers') }],
+  }
+  const findDemands = {
+    label: t('nav.findDemands'),
+    direct: true,
+    items: [{ path: '/demand-hall', label: t('nav.findDemands') }],
+  }
   const simple = { path: '/simple-quote', label: t('simpleQuote.title') }
-  const detailed = { path: '/rfq/new', label: t('nav.detailedQuote') }
+  const postDemand = { path: '/rfq/new', label: t('nav.postDemand') }
+  const showCapability = { path: '/register?type=enterprise', label: t('nav.showCapability') }
   const mfgLabel = t('nav.manufacturingQuote')
-  const idx = groups.findIndex(
+
+  const withoutDiscovery = groups
+    .map((group) => {
+      if (group.direct) return group
+      return {
+        ...group,
+        items: group.items.filter(
+          (i) => i.path !== '/partners' && i.path !== '/demand-hall',
+        ),
+      }
+    })
+    .filter((group) => {
+      if (group.direct) {
+        const path = group.items[0]?.path
+        return path !== '/partners' && path !== '/demand-hall'
+      }
+      return group.items.length > 0
+    })
+
+  const idx = withoutDiscovery.findIndex(
     (g) =>
       g.label === mfgLabel ||
-      g.items.some((i) => ['/rfq/new', '/simple-quote', '/demand-hall'].includes(i.path)),
+      g.items.some((i) => ['/rfq/new', '/simple-quote'].includes(i.path)),
   )
+  let next = [...withoutDiscovery]
   if (idx < 0) {
-    return [{ label: mfgLabel, items: [simple, detailed] }, ...groups]
+    next = [{ label: mfgLabel, items: [postDemand, simple, showCapability] }, ...next]
+  } else {
+    const rest = next[idx].items.filter(
+      (i) =>
+        i.path !== '/simple-quote' &&
+        i.path !== '/rfq/new' &&
+        i.path !== '/register?type=enterprise',
+    )
+    next[idx] = { ...next[idx], items: [postDemand, simple, showCapability, ...rest] }
   }
-  const rest = groups[idx].items.filter(
-    (i) => i.path !== '/simple-quote' && i.path !== '/rfq/new',
-  )
-  const next = [...groups]
-  next[idx] = { ...groups[idx], items: [simple, detailed, ...rest] }
-  return next
+  return [findSuppliers, findDemands, ...next]
 }
 
 /** 博客固定为独立菜单；若后台导航把它放进某个分组，则抽出来。 */
@@ -528,10 +571,10 @@ if (typeof window !== 'undefined') {
         </div>
         <div class="footer-col">
           <h4>{{ t('nav.manufacturingQuote') }}</h4>
-          <RouterLink to="/simple-quote">{{ t('simpleQuote.title') }}</RouterLink>
-          <RouterLink to="/rfq/new">{{ t('nav.detailedQuote') }}</RouterLink>
+          <RouterLink to="/partners">{{ t('nav.findSuppliers') }}</RouterLink>
           <RouterLink to="/demand-hall">{{ t('nav.findDemands') }}</RouterLink>
-          <RouterLink to="/partners">{{ t('nav.partnersDirectory') }}</RouterLink>
+          <RouterLink to="/rfq/new">{{ t('nav.postDemand') }}</RouterLink>
+          <RouterLink to="/simple-quote">{{ t('simpleQuote.title') }}</RouterLink>
         </div>
         <div class="footer-col">
           <h4>{{ t('nav.shop') }}</h4>
