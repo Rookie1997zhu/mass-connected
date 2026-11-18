@@ -34,7 +34,7 @@ export const fetchProfile = () => http.get('/member/profile')
 export const fetchFactoryProfile = () => http.get('/factory/profile')
 export const fetchPartners = (params) => http.get('/public/partners', { params })
 
-export const createRfq = (data) => http.post('/member/rfqs', data)
+export const createRfq = (data, config = {}) => http.post('/member/rfqs', data, config)
 export const uploadRfqAttachment = (id, formData) =>
   http.post(`/member/rfqs/${id}/attachments`, formData, {
     headers: { 'Content-Type': 'multipart/form-data' },

@@ -46,6 +46,14 @@ class RFQ(models.Model):
         ("public", "Public"),
         ("supply_chain", "Supply Chain"),
     ]
+    SOLICITATION_OPEN = "open"
+    SOLICITATION_PAUSED = "paused"
+    SOLICITATION_CLOSED = "closed"
+    SOLICITATION_CHOICES = [
+        (SOLICITATION_OPEN, "Open"),
+        (SOLICITATION_PAUSED, "Paused"),
+        (SOLICITATION_CLOSED, "Closed"),
+    ]
 
     rfq_no = models.CharField(max_length=32, unique=True, default=generate_rfq_no)
     buyer = models.ForeignKey(
@@ -68,6 +76,15 @@ class RFQ(models.Model):
     remark = models.TextField(blank=True)
     markup_percent = models.PositiveIntegerField(default=0)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="submitted")
+    # 征集状态与协作 status 分离：首份报价进入 comparing 不自动关闭大厅
+    solicitation_status = models.CharField(
+        max_length=16,
+        choices=SOLICITATION_CHOICES,
+        default=SOLICITATION_CLOSED,
+        db_index=True,
+    )
+    # 客户端创建幂等键；空字符串表示未使用。同一买方下非空键唯一。
+    idempotency_key = models.CharField(max_length=64, blank=True, default="")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -76,6 +93,17 @@ class RFQ(models.Model):
         indexes = [
             models.Index(fields=["buyer", "-created_at"], name="rfq_buyer_created_idx"),
             models.Index(fields=["status", "scope", "-created_at"], name="rfq_status_scope_idx"),
+            models.Index(
+                fields=["scope", "solicitation_status", "-created_at"],
+                name="rfq_scope_solicitation_idx",
+            ),
+        ]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["buyer", "idempotency_key"],
+                condition=~models.Q(idempotency_key=""),
+                name="rfq_buyer_idempotency_uniq",
+            ),
         ]
 
 

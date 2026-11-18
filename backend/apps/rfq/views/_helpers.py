@@ -14,16 +14,42 @@ ALLOWED_ATTACHMENT_EXTENSIONS = {
     "jpg", "jpeg", "png", "gif", "webp", "xlsx", "xls", "docx", "doc", "csv", "txt",
 }
 MAX_ATTACHMENT_SIZE = 20 * 1024 * 1024
+# 历史协作状态集合（兼容旧逻辑/测试）；大厅开放以 solicitation_status 为准
 OPEN_RFQ_STATUSES = {"submitted", "quoting", "quoted", "negotiating"}
+
+
+def is_publicly_listed(rfq) -> bool:
+    return (
+        getattr(rfq, "scope", None) == "public"
+        and getattr(rfq, "solicitation_status", None) == RFQ.SOLICITATION_OPEN
+    )
+
+
+def can_supplier_join(rfq, user=None) -> bool:
+    if not is_publicly_listed(rfq):
+        return False
+    if user is None:
+        return True
+    if not getattr(user, "is_authenticated", False) or not user.is_active:
+        return False
+    return True
 
 
 def open_demand_hall_queryset():
     return (
-        RFQ.objects.filter(scope="public", status__in=OPEN_RFQ_STATUSES)
+        RFQ.objects.filter(scope="public", solicitation_status=RFQ.SOLICITATION_OPEN)
         .select_related("service_category")
         .annotate(quotes_count=Count("quotes", distinct=True))
         .order_by("-created_at")
     )
+
+
+def close_rfq_solicitation(rfq, *, reason: str = "") -> RFQ:
+    if rfq.solicitation_status == RFQ.SOLICITATION_CLOSED:
+        return rfq
+    rfq.solicitation_status = RFQ.SOLICITATION_CLOSED
+    rfq.save(update_fields=["solicitation_status", "updated_at"])
+    return rfq
 
 
 def get_lang(request):

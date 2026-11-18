@@ -18,10 +18,10 @@ from apps.rfq.models import (
     RFQAttachment,
 )
 from apps.rfq.serializers import (
+    CustomerPlanSerializer,
     CustomerQuoteDetailSerializer,
     MemberRFQDetailSerializer,
     ProductionOrderSerializer,
-    QuoteSerializer,
     RFQCreateSerializer,
     RFQDetailSerializer,
     RFQListSerializer,
@@ -36,6 +36,7 @@ from ._helpers import (
     ALLOWED_ATTACHMENT_EXTENSIONS,
     MAX_ATTACHMENT_SIZE,
     _download_quote_attachment,
+    close_rfq_solicitation,
     get_lang,
 )
 
@@ -62,7 +63,27 @@ class MemberRFQListCreateView(APIView):
         return paginator.get_paginated_response(serializer.data)
 
     def post(self, request):
-        serializer = RFQCreateSerializer(data=request.data)
+        header_key = (request.headers.get("Idempotency-Key") or "").strip()
+        data = request.data.copy() if hasattr(request.data, "copy") else dict(request.data)
+        if header_key and not (data.get("idempotency_key") or "").strip():
+            data["idempotency_key"] = header_key
+        idempotency_key = (data.get("idempotency_key") or "").strip()
+        if idempotency_key:
+            existing = (
+                RFQ.objects.filter(buyer=request.user, idempotency_key=idempotency_key)
+                .select_related("service_category", "buyer")
+                .prefetch_related("attachments", "quotes")
+                .first()
+            )
+            if existing:
+                return success_response(
+                    RFQDetailSerializer(
+                        existing, context={"request": request, "lang": get_lang(request)}
+                    ).data,
+                    message="询价已提交",
+                    request=request,
+                )
+        serializer = RFQCreateSerializer(data=data)
         serializer.is_valid(raise_exception=True)
         scope = serializer.validated_data.get("scope", "internal")
         if scope not in {"internal", "public"}:
@@ -237,6 +258,7 @@ class MemberQuoteAcceptView(APIView):
                     )
             rfq.status = "won"
             rfq.save(update_fields=["status", "updated_at"])
+            close_rfq_solicitation(rfq)
             production_order = ProductionOrder.objects.create(
                 rfq=rfq,
                 quote=quote,
@@ -301,7 +323,16 @@ class MemberQuoteAcceptView(APIView):
 
         return success_response(
             {
-                "quote": QuoteSerializer(quote).data,
+                "quote": CustomerQuoteDetailSerializer(
+                    quote,
+                    context={
+                        "request": request,
+                        "lang": get_lang(request),
+                        "markup_percent": markup,
+                        "quote_id": quote.id,
+                        "rfq_id": rfq.id,
+                    },
+                ).data,
                 "production_order": ProductionOrderSerializer(
                     production_order, context={"request": request}
                 ).data,
@@ -453,27 +484,21 @@ class MemberRFQQuotePdfView(APIView):
             return error_response("QUOTE_PLANS_EMPTY", "暂无可下载的报价方案", request=request)
         visible.sort(key=lambda q: (q.plan_label or "", q.id))
         markup = rfq.markup_percent
-        headers = ["项目"] + [f"方案 {q.plan_label or q.id}" for q in visible]
-        supplier_names = []
-        for q in visible:
-            if q.supplier_id:
-                profile = getattr(q.supplier, "factory_profile", None)
-                supplier_names.append(
-                    (profile.company_name if profile and profile.company_name else None)
-                    or q.supplier.name
-                    or "供应商"
-                )
-            else:
-                supplier_names.append("平台")
+        plans = CustomerPlanSerializer(
+            visible,
+            many=True,
+            context={"markup_percent": markup, "request": request},
+        ).data
+        headers = ["项目"] + [f"方案 {p.get('plan_label') or p['id']}" for p in plans]
         rows = [
-            ["供应商"] + supplier_names,
-            ["总价"] + [f"{apply_markup(q.price_amount, markup):,}" for q in visible],
-            ["单价"] + [f"{apply_markup(q.unit_price, markup):,}" if q.unit_price else "—" for q in visible],
-            ["模具费"] + [f"{apply_markup(q.mold_fee, markup):,}" if q.mold_fee else "—" for q in visible],
-            ["样品费"] + [f"{apply_markup(q.sample_fee, markup):,}" if q.sample_fee else "—" for q in visible],
-            ["MOQ"] + [str(q.moq or "—") for q in visible],
-            ["交期(天)"] + [str(q.lead_time_days) for q in visible],
-            ["付款条件"] + [(q.payment_terms or PLATFORM_PAYMENT_TERMS) for q in visible],
+            ["供应商"] + [p.get("supplier_name") or "—" for p in plans],
+            ["总价"] + [f"{p['price_amount']:,}" for p in plans],
+            ["单价"] + [f"{p['unit_price']:,}" if p.get("unit_price") is not None else "—" for p in plans],
+            ["模具费"] + [f"{p['mold_fee']:,}" if p.get("mold_fee") is not None else "—" for p in plans],
+            ["样品费"] + [f"{p['sample_fee']:,}" if p.get("sample_fee") is not None else "—" for p in plans],
+            ["MOQ"] + [str(p.get("moq") or "—") for p in plans],
+            ["交期(天)"] + [str(p.get("lead_time_days") or "—") for p in plans],
+            ["付款条件"] + [(p.get("payment_terms") or PLATFORM_PAYMENT_TERMS) for p in plans],
         ]
         pdf_bytes = build_comparison_pdf(
             title="比较报价书",

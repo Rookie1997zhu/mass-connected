@@ -12,7 +12,7 @@ class PublicPartnerListView(APIView):
 
     def get(self, request):
         qs = (
-            FactoryProfile.objects.filter(status="approved")
+            FactoryProfile.objects.filter(status="approved", is_public=True)
             .prefetch_related("processes")
             .order_by("-created_at")
         )

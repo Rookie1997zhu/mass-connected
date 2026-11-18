@@ -11,6 +11,9 @@ class RFQCreateSerializer(serializers.ModelSerializer):
         queryset=ServiceCategory.objects.filter(is_active=True)
     )
     scope = serializers.ChoiceField(choices=["internal", "public"], default="internal")
+    idempotency_key = serializers.CharField(
+        max_length=64, required=False, allow_blank=True, write_only=True
+    )
 
     class Meta:
         model = RFQ
@@ -28,7 +31,17 @@ class RFQCreateSerializer(serializers.ModelSerializer):
             "budget_amount",
             "currency",
             "remark",
+            "idempotency_key",
         ]
+
+    def create(self, validated_data):
+        scope = validated_data.get("scope") or "internal"
+        validated_data["solicitation_status"] = (
+            RFQ.SOLICITATION_OPEN if scope == "public" else RFQ.SOLICITATION_CLOSED
+        )
+        key = (validated_data.get("idempotency_key") or "").strip()
+        validated_data["idempotency_key"] = key
+        return super().create(validated_data)
 
 
 class RFQListSerializer(serializers.ModelSerializer):
@@ -44,6 +57,7 @@ class RFQListSerializer(serializers.ModelSerializer):
             "service_category_name",
             "scope",
             "status",
+            "solicitation_status",
             "quantity",
             "quotes_count",
             "created_at",
@@ -80,6 +94,7 @@ class DemandHallListSerializer(serializers.ModelSerializer):
             "currency",
             "remark",
             "status",
+            "solicitation_status",
             "quotes_count",
             "created_at",
         ]
@@ -117,6 +132,7 @@ class DemandHallDetailSerializer(serializers.ModelSerializer):
             "currency",
             "remark",
             "status",
+            "solicitation_status",
             "attachments",
             "my_quote",
             "my_quote_request",
@@ -182,6 +198,7 @@ class RFQDetailSerializer(serializers.ModelSerializer):
             "remark",
             "markup_percent",
             "status",
+            "solicitation_status",
             "attachments",
             "quotes",
             "created_at",
@@ -221,6 +238,7 @@ class MemberRFQDetailSerializer(serializers.ModelSerializer):
             "currency",
             "remark",
             "status",
+            "solicitation_status",
             "attachments",
             "plans",
             "can_edit",
