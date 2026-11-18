@@ -74,9 +74,26 @@ class RFQListSerializer(serializers.ModelSerializer):
         return obj.quotes.count()
 
 
+def build_public_demand_summary(obj, *, lang="ko") -> str:
+    """公开大厅摘要：只用安全字段，不拼接原始 remark。"""
+    parts = []
+    if obj.service_category_id:
+        name = resolve_i18n(obj.service_category.name, lang)
+        if name:
+            parts.append(str(name))
+    if obj.material:
+        parts.append(str(obj.material).strip())
+    if obj.quantity:
+        parts.append(f"x{obj.quantity}")
+    if obj.surface_finish:
+        parts.append(str(obj.surface_finish).strip())
+    return " · ".join(p for p in parts if p)
+
+
 class DemandHallListSerializer(serializers.ModelSerializer):
     service_category_name = serializers.SerializerMethodField()
     quotes_count = serializers.SerializerMethodField()
+    public_summary = serializers.SerializerMethodField()
 
     class Meta:
         model = RFQ
@@ -92,7 +109,7 @@ class DemandHallListSerializer(serializers.ModelSerializer):
             "target_delivery_date",
             "budget_amount",
             "currency",
-            "remark",
+            "public_summary",
             "status",
             "solicitation_status",
             "quotes_count",
@@ -103,6 +120,9 @@ class DemandHallListSerializer(serializers.ModelSerializer):
         lang = self.context.get("lang", "ko")
         return resolve_i18n(obj.service_category.name, lang) if obj.service_category else ""
 
+    def get_public_summary(self, obj):
+        return build_public_demand_summary(obj, lang=self.context.get("lang", "ko"))
+
     def get_quotes_count(self, obj):
         annotated = getattr(obj, "quotes_count", None)
         if annotated is not None and not callable(annotated):
@@ -112,6 +132,7 @@ class DemandHallListSerializer(serializers.ModelSerializer):
 
 class DemandHallDetailSerializer(serializers.ModelSerializer):
     service_category_name = serializers.SerializerMethodField()
+    public_summary = serializers.SerializerMethodField()
     attachments = RFQAttachmentSerializer(many=True, read_only=True)
     my_quote = serializers.SerializerMethodField()
     my_quote_request = serializers.SerializerMethodField()
@@ -130,7 +151,7 @@ class DemandHallDetailSerializer(serializers.ModelSerializer):
             "target_delivery_date",
             "budget_amount",
             "currency",
-            "remark",
+            "public_summary",
             "status",
             "solicitation_status",
             "attachments",
@@ -143,6 +164,9 @@ class DemandHallDetailSerializer(serializers.ModelSerializer):
     def get_service_category_name(self, obj):
         lang = self.context.get("lang", "ko")
         return resolve_i18n(obj.service_category.name, lang) if obj.service_category else ""
+
+    def get_public_summary(self, obj):
+        return build_public_demand_summary(obj, lang=self.context.get("lang", "ko"))
 
     def get_my_quote(self, obj):
         request = self.context.get("request")

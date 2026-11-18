@@ -22,6 +22,8 @@ from apps.accounts.serializers.public import (
     PublicPartnerSerializer,
     PublicSupplierAttachmentSerializer,
     PublicSupplierProfileSerializer,
+    PublicWebsiteAttachmentSerializer,
+    PublicWebsitePartnerDetailSerializer,
 )
 from apps.accounts.serializers.supplier import (
     FactoryProfileSerializer,
@@ -42,6 +44,8 @@ __all__ = [
     "SupplierProfileUpdateSerializer",
     "PublicSupplierAttachmentSerializer",
     "PublicSupplierProfileSerializer",
+    "PublicWebsiteAttachmentSerializer",
+    "PublicWebsitePartnerDetailSerializer",
     "PublicPartnerSerializer",
     "AdminFactorySerializer",
     "AdminSupplierUpdateSerializer",

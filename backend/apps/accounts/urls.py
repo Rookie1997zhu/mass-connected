@@ -24,6 +24,8 @@ from apps.accounts.views import (
     MemberRegisterView,
     VerifyEmailConfirmView,
     VerifyEmailResendView,
+    PublicPartnerAttachmentDownloadView,
+    PublicPartnerDetailView,
     PublicPartnerListView,
     SupplierDashboardView,
     SupplierLicenseDownloadView,
@@ -33,6 +35,11 @@ from apps.accounts.views import (
 
 urlpatterns = [
     path("public/partners", PublicPartnerListView.as_view()),
+    path("public/partners/<int:pk>", PublicPartnerDetailView.as_view()),
+    path(
+        "public/partner-attachments/<int:file_id>/download",
+        PublicPartnerAttachmentDownloadView.as_view(),
+    ),
     path("member/auth/register", MemberRegisterView.as_view()),
     path("member/auth/verify-email/confirm", VerifyEmailConfirmView.as_view()),
     path("member/auth/verify-email/resend", VerifyEmailResendView.as_view()),

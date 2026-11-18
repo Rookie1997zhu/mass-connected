@@ -21,6 +21,7 @@ class MemberEnterpriseProfileSerializer(serializers.ModelSerializer):
             "monthly_capacity",
             "quality_certifications",
             "equipment_summary",
+            "is_public",
         ]
 
 

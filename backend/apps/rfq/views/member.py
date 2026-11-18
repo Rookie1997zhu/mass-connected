@@ -155,6 +155,12 @@ class MemberRFQAttachmentView(APIView):
 
     def post(self, request, pk):
         rfq = get_object_or_404(RFQ, pk=pk, buyer=request.user)
+        if rfq.status in {"won", "closed"}:
+            return error_response(
+                "RFQ_STATUS_LOCKED",
+                "当前状态不可再上传附件",
+                request=request,
+            )
         file_obj = request.FILES.get("file")
         if not file_obj:
             return error_response("MEDIA_FILE_TYPE_INVALID", "请上传文件", request=request)
@@ -170,6 +176,12 @@ class MemberRFQAttachmentView(APIView):
             return error_response(
                 "MEDIA_FILE_SIZE_EXCEEDED",
                 "文件大小超限（最大 20MB）",
+                request=request,
+            )
+        if rfq.attachments.count() >= 20:
+            return error_response(
+                "RFQ_ATTACHMENT_LIMIT",
+                "附件数量已达上限",
                 request=request,
             )
         attachment = RFQAttachment.objects.create(

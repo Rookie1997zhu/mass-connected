@@ -33,7 +33,11 @@ from apps.accounts.views.member import (
     VerifyEmailConfirmView,
     VerifyEmailResendView,
 )
-from apps.accounts.views.public import PublicPartnerListView
+from apps.accounts.views.public import (
+    PublicPartnerAttachmentDownloadView,
+    PublicPartnerDetailView,
+    PublicPartnerListView,
+)
 from apps.accounts.views.supplier import (
     FactoryProfileView,
     SupplierDashboardView,
@@ -76,4 +80,6 @@ __all__ = [
     "AdminFactoryDetailView",
     "AdminStatsView",
     "PublicPartnerListView",
+    "PublicPartnerDetailView",
+    "PublicPartnerAttachmentDownloadView",
 ]
