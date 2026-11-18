@@ -18,6 +18,7 @@ const routes = [
       { path: 'blog', name: 'blog', component: () => import('../views/BlogView.vue') },
       { path: 'blog/:id', name: 'blog-detail', component: () => import('../views/BlogDetailView.vue') },
       { path: 'support/:tab?', name: 'support', component: () => import('../views/SupportView.vue') },
+      { path: 'subscription', name: 'subscription', component: () => import('../views/SubscriptionExplainView.vue') },
       { path: 'contact', name: 'contact', component: () => import('../views/ContactView.vue') },
       { path: 'login', name: 'login', component: () => import('../views/LoginView.vue') },
       { path: 'register', name: 'register', component: () => import('../views/RegisterView.vue') },

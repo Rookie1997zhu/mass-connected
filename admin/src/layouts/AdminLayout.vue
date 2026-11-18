@@ -29,6 +29,7 @@ const initialOpeneds = computed(() => {
     '/quote-tables',
     '/dieline-templates',
     '/points',
+    '/subscription',
   ].includes(path)) opened.push('quote')
   if (['/categories', '/products', '/orders'].includes(path)) opened.push('shop')
   if (
@@ -145,6 +146,7 @@ onMounted(loadUnreadCount)
           <el-menu-item index="/quote-tables">{{ t('nav.quoteTables') }}</el-menu-item>
           <el-menu-item index="/dieline-templates">{{ t('nav.dielineTemplates') }}</el-menu-item>
           <el-menu-item index="/points">{{ t('nav.points') }}</el-menu-item>
+          <el-menu-item index="/subscription">{{ t('nav.subscription') }}</el-menu-item>
         </el-sub-menu>
         <el-sub-menu index="shop">
           <template #title>{{ t('nav.groups.shop') }}</template>

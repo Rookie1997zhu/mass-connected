@@ -15,6 +15,8 @@ import {
   fetchMyProjects,
   fetchMyRfqs,
   fetchNotifications,
+  fetchMemberEntitlements,
+  fetchMemberUsageLedgers,
   fetchPointTransactions,
   fetchPointWallet,
   fetchRecharges,
@@ -40,6 +42,7 @@ import TodosSection from './sections/TodosSection.vue'
 import FilesSection from './sections/FilesSection.vue'
 import PaymentsSection from './sections/PaymentsSection.vue'
 import PointsSection from './sections/PointsSection.vue'
+import EntitlementsSection from './sections/EntitlementsSection.vue'
 import NotificationsSection from './sections/NotificationsSection.vue'
 import ProfileSettingsSection from './sections/ProfileSettingsSection.vue'
 
@@ -58,6 +61,7 @@ const tabs = computed(() => [
   { key: 'contracts', label: t('mypage.contracts') },
   { key: 'payments', label: t('mypage.payments') },
   { key: 'points', label: t('mypage.points') },
+  { key: 'entitlements', label: t('mypage.entitlements') },
   { key: 'notifications', label: t('mypage.notifications') },
   ...(auth.isEnterprise ? [{ key: 'profile', label: t('mypage.profile') }] : []),
   { key: 'settings', label: t('mypage.settings') },
@@ -76,6 +80,8 @@ const payments = ref([])
 const wallet = ref(null)
 const transactions = ref([])
 const recharges = ref([])
+const entitlementsSummary = ref(null)
+const usageLedgers = ref([])
 const notifications = ref([])
 const todos = ref([])
 const files = ref([])
@@ -146,6 +152,13 @@ const loadTab = async (tab) => {
       wallet.value = w.data
       transactions.value = txns.data.items || []
       recharges.value = rech.data.items || []
+    } else if (tab === 'entitlements') {
+      const [ent, led] = await Promise.all([
+        fetchMemberEntitlements(),
+        fetchMemberUsageLedgers({ page: 1 }),
+      ])
+      entitlementsSummary.value = ent.data || null
+      usageLedgers.value = led.data?.items || []
     } else if (tab === 'notifications') {
       const fetcher = auth.user?.role === 'factory' ? fetchSupplierNotifications : fetchNotifications
       const res = await fetcher()
@@ -375,6 +388,12 @@ const onLogout = async () => {
         :transactions="transactions"
         @recharge-proof-change="onRechargeProof"
         @submit-recharge="onRecharge"
+      />
+
+      <EntitlementsSection
+        v-else-if="activeTab === 'entitlements'"
+        :summary="entitlementsSummary"
+        :ledgers="usageLedgers"
       />
 
       <NotificationsSection

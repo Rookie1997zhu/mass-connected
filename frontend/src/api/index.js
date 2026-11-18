@@ -247,6 +247,18 @@ export const createRecharge = (formData) =>
   })
 export const fetchRecharges = (params) => http.get('/member/points/recharge', { params })
 
+// 订阅权益
+export const fetchPublicSubscriptionPlans = () => http.get('/public/subscription/plans')
+export const fetchMemberEntitlements = () => http.get('/member/subscription/entitlements')
+export const fetchMemberUsageLedgers = (params) =>
+  http.get('/member/subscription/ledgers', { params })
+export const createSubscriptionOrder = (formData) =>
+  http.post('/member/subscription/orders', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  })
+export const fetchMemberSubscriptionOrders = (params) =>
+  http.get('/member/subscription/orders', { params })
+
 // 通知
 export const fetchNotifications = (params) => http.get('/member/notifications', { params })
 export const fetchUnreadCount = () => http.get('/member/notifications/unread-count')

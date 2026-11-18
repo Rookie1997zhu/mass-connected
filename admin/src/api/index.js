@@ -143,6 +143,16 @@ export const confirmRecharge = (id) => http.post(`/admin/points/recharges/${id}/
 export const adjustUserPoints = (userId, data) => http.post(`/admin/points/users/${userId}`, data)
 export const fetchUserPoints = (userId) => http.get(`/admin/points/users/${userId}`)
 
+// 订阅
+export const fetchSubscriptionPlans = (params) => http.get('/admin/subscription/plans', { params })
+export const createSubscriptionPlan = (data) => http.post('/admin/subscription/plans', data)
+export const updateSubscriptionPlan = (id, data) => http.patch(`/admin/subscription/plans/${id}`, data)
+export const grantSubscription = (data) => http.post('/admin/subscription/grants', data)
+export const fetchSubscriptions = (params) => http.get('/admin/subscriptions', { params })
+export const fetchSubscriptionOrders = (params) => http.get('/admin/subscription/orders', { params })
+export const confirmSubscriptionOrder = (id) => http.post(`/admin/subscription/orders/${id}/confirm`)
+export const fetchSubscriptionLedgers = (params) => http.get('/admin/subscription/ledgers', { params })
+
 // 会员
 export const fetchMembers = (params) => http.get('/admin/members', { params })
 

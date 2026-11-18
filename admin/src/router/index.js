@@ -20,6 +20,7 @@ const routes = [
       { path: 'quote-tables', name: 'quote-tables', meta: { titleKey: 'nav.quoteTables' }, component: () => import('../views/QuoteTablesView.vue') },
       { path: 'dieline-templates', name: 'dieline-templates', meta: { titleKey: 'nav.dielineTemplates' }, component: () => import('../views/DielineTemplatesView.vue') },
       { path: 'points', name: 'points', meta: { titleKey: 'nav.points' }, component: () => import('../views/PointsView.vue') },
+      { path: 'subscription', name: 'subscription', meta: { titleKey: 'nav.subscription' }, component: () => import('../views/SubscriptionView.vue') },
       { path: 'members', name: 'members', meta: { titleKey: 'nav.members' }, component: () => import('../views/MembersView.vue') },
       { path: 'projects', name: 'projects', meta: { titleKey: 'nav.projects' }, component: () => import('../views/ProjectsView.vue') },
       { path: 'contracts', name: 'contracts', meta: { titleKey: 'nav.contracts' }, component: () => import('../views/ContractsView.vue') },

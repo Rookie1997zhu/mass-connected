@@ -589,6 +589,7 @@ if (typeof window !== 'undefined') {
         <div class="footer-col">
           <h4>{{ t('footer.support') }}</h4>
           <RouterLink to="/support/faq">{{ t('footer.faq') }}</RouterLink>
+          <RouterLink to="/subscription">{{ t('footer.subscription') }}</RouterLink>
           <RouterLink to="/contact">{{ t('footer.contact') }}</RouterLink>
           <RouterLink to="/about">{{ t('footer.about') }}</RouterLink>
         </div>
