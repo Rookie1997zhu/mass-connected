@@ -61,8 +61,10 @@ onMounted(async () => {
     <p v-if="loading" class="page-empty">{{ t('common.loading') }}</p>
     <template v-else-if="rfq">
       <h1 class="page-title">{{ rfq.rfq_no }}</h1>
+      <p v-if="rfq.public_summary" class="page-lead">{{ rfq.public_summary }}</p>
       <dl class="detail-grid">
         <div><dt>{{ t('rfq.stepProcess') }}</dt><dd>{{ rfq.service_category_name }}</dd></div>
+        <div><dt>{{ t('demandHall.solicitationStatus') }}</dt><dd>{{ rfq.solicitation_status }}</dd></div>
         <div><dt>{{ t('rfq.quantity') }}</dt><dd>{{ rfq.quantity }}</dd></div>
         <div><dt>{{ t('rfq.material') }}</dt><dd>{{ rfq.material || '—' }}</dd></div>
         <div><dt>{{ t('rfq.tolerance') }}</dt><dd>{{ rfq.tolerance || '—' }}</dd></div>

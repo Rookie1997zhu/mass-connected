@@ -98,7 +98,10 @@ const profileForm = ref({
   monthly_capacity: '',
   quality_certifications: '',
   equipment_summary: '',
+  is_public: true,
 })
+const profileId = ref(null)
+const profileStatus = ref('')
 const profileAttachments = ref([])
 const companyFile = ref(null)
 const companyFileCategory = ref('company_profile')
@@ -178,7 +181,10 @@ const loadTab = async (tab) => {
         monthly_capacity: fp.monthly_capacity || '',
         quality_certifications: fp.quality_certifications || '',
         equipment_summary: fp.equipment_summary || '',
+        is_public: fp.is_public !== false,
       }
+      profileId.value = fp.id || null
+      profileStatus.value = fp.status || ''
       profileAttachments.value = fp.attachments || []
       profileError.value = ''
     }
@@ -255,6 +261,7 @@ const onSaveProfile = async () => {
       monthly_capacity: profileForm.value.monthly_capacity,
       quality_certifications: profileForm.value.quality_certifications,
       equipment_summary: profileForm.value.equipment_summary,
+      is_public: Boolean(profileForm.value.is_public),
     }
     if (auth.user?.role === 'factory') {
       const res = await updateFactoryProfile({
@@ -384,6 +391,8 @@ const onLogout = async () => {
         :active-tab="activeTab"
         :profile-attachments="profileAttachments"
         :profile-error="profileError"
+        :profile-id="profileId"
+        :profile-status="profileStatus"
         @company-file-change="onCompanyFile"
         @upload-company-attachment="onUploadCompanyAttachment"
         @remove-company-attachment="onRemoveCompanyAttachment"

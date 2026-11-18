@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PageShell from '../../components/PageShell.vue'
@@ -14,6 +14,7 @@ import {
   fetchMyRfq,
   fetchMyRfqFulfillment,
   updateMyRfq,
+  uploadRfqAttachment,
 } from '../../api'
 import { useLocaleCurrency } from '../../composables/useLocaleCurrency'
 import { downloadAuthedFile } from '../../utils/downloadAuthedFile'
@@ -53,6 +54,11 @@ const editForm = ref({
   budget_amount: null,
   remark: '',
 })
+const uploadItems = ref([])
+const uploading = ref(false)
+const canReattach = computed(
+  () => rfq.value && !['won', 'closed'].includes(rfq.value.status),
+)
 
 const tabs = [
   { id: 'specs', labelKey: 'fulfillment.tabSpecs' },
@@ -140,6 +146,55 @@ const downloadRfqFile = async (file) => {
     await downloadAuthedFile(url, file.file_name || 'file')
   } catch (e) {
     console.error(e)
+  }
+}
+
+const onReattachFiles = (e) => {
+  const selected = Array.from(e.target.files || [])
+  const existing = new Set(uploadItems.value.map((i) => `${i.file.name}:${i.file.size}`))
+  selected.forEach((file) => {
+    const key = `${file.name}:${file.size}`
+    if (existing.has(key)) return
+    uploadItems.value.push({
+      id: `${key}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+      file,
+      status: 'pending',
+      message: '',
+    })
+  })
+  e.target.value = ''
+}
+
+const uploadOneAttachment = async (item) => {
+  item.status = 'uploading'
+  item.message = ''
+  const fd = new FormData()
+  fd.append('file', item.file)
+  try {
+    await uploadRfqAttachment(rfq.value.id, fd)
+    item.status = 'done'
+  } catch (e) {
+    item.status = 'failed'
+    item.message = resolveApiMessage(e, t, 'rfq.attachmentUploadFailed')
+  }
+}
+
+const uploadPendingAttachments = async () => {
+  if (!canReattach.value || uploading.value) return
+  uploading.value = true
+  message.value = ''
+  try {
+    for (const item of uploadItems.value.filter((i) => i.status === 'pending' || i.status === 'failed')) {
+      await uploadOneAttachment(item)
+    }
+    if (uploadItems.value.some((i) => i.status === 'failed')) {
+      message.value = t('rfq.attachmentPartialFailed')
+    } else {
+      uploadItems.value = []
+      await load()
+    }
+  } finally {
+    uploading.value = false
   }
 }
 
@@ -264,6 +319,32 @@ const onAccept = async (quoteId) => {
             </button>
           </li>
         </ul>
+
+        <section v-if="canReattach" class="reattach-box">
+          <p class="hint">{{ t('rfq.attachmentReselectHint') }}</p>
+          <input type="file" multiple @change="onReattachFiles" />
+          <ul v-if="uploadItems.length" class="upload-list">
+            <li v-for="item in uploadItems" :key="item.id">
+              <span>{{ item.file.name }} · {{ item.status }}</span>
+              <span v-if="item.message" class="err">{{ item.message }}</span>
+            </li>
+          </ul>
+          <button
+            type="button"
+            class="btn btn-secondary btn-sm"
+            :disabled="uploading || !uploadItems.length"
+            @click="uploadPendingAttachments"
+          >
+            {{
+              uploading
+                ? t('common.loading')
+                : uploadItems.some((i) => i.status === 'failed')
+                  ? t('rfq.retryFailedAttachments')
+                  : t('quoteRequest.uploadAttachment')
+            }}
+          </button>
+        </section>
+        <p v-else class="hint">{{ t('rfq.attachmentLocked') }}</p>
       </div>
 
       <div v-show="activeTab === 'quotes'" class="tab-panel">

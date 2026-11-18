@@ -317,14 +317,19 @@ onUnmounted(destroyMotion)
             <RouterLink to="/partners" class="btn btn-ghost">{{ t('home.marketplace.partnersViewAll') }} →</RouterLink>
           </div>
           <div v-if="partners.length" class="grid-3">
-            <article v-for="item in partners" :key="item.id" class="cap-card marketplace-card">
+            <RouterLink
+              v-for="item in partners"
+              :key="item.id"
+              :to="`/partners/${item.id}`"
+              class="cap-card marketplace-card"
+            >
               <h3>{{ item.company_name }}</h3>
               <p v-if="item.region" class="card-meta">{{ item.region }}</p>
               <p class="card-summary">{{ item.intro || '—' }}</p>
               <p v-if="item.process_names?.length" class="card-meta">
                 {{ item.process_names.slice(0, 3).join(' · ') }}
               </p>
-            </article>
+            </RouterLink>
           </div>
           <p v-else class="state-message">{{ t('home.marketplace.partnersEmpty') }}</p>
         </div>
@@ -579,6 +584,12 @@ onUnmounted(destroyMotion)
   flex-wrap: wrap;
   gap: var(--space-md);
   margin-top: var(--space-xl);
+}
+
+.marketplace-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
 }
 
 .marketplace-card .card-summary {

@@ -33,6 +33,7 @@ export const memberLogout = () => http.post('/member/auth/logout', {})
 export const fetchProfile = () => http.get('/member/profile')
 export const fetchFactoryProfile = () => http.get('/factory/profile')
 export const fetchPartners = (params) => http.get('/public/partners', { params })
+export const fetchPartner = (id) => http.get(`/public/partners/${id}`)
 
 export const createRfq = (data, config = {}) => http.post('/member/rfqs', data, config)
 export const uploadRfqAttachment = (id, formData) =>

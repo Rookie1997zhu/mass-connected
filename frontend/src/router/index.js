@@ -25,6 +25,11 @@ const routes = [
       { path: 'verify-email', name: 'verify-email', component: () => import('../views/VerifyEmailView.vue') },
       { path: 'partners', name: 'partners', component: () => import('../views/factory/PartnerApplyView.vue') },
       {
+        path: 'partners/:id',
+        name: 'partner-detail',
+        component: () => import('../views/factory/PartnerDetailView.vue'),
+      },
+      {
         path: 'buyer',
         name: 'buyer-workbench',
         component: () => import('../views/buyer/BuyerWorkbenchView.vue'),

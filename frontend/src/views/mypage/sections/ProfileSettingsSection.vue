@@ -1,12 +1,16 @@
 <script setup>
+import { computed } from 'vue'
+import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '../../../stores/auth'
 import { downloadAuthedFile } from '../../../utils/downloadAuthedFile'
 
-defineProps({
+const props = defineProps({
   activeTab: { type: String, required: true },
   profileAttachments: { type: Array, default: () => [] },
   profileError: { type: String, default: '' },
+  profileId: { type: [Number, String], default: null },
+  profileStatus: { type: String, default: '' },
 })
 
 const profileForm = defineModel('profileForm', { type: Object, required: true })
@@ -22,6 +26,13 @@ defineEmits([
 
 const { t } = useI18n()
 const auth = useAuthStore()
+
+const canPreviewPublicPage = computed(
+  () =>
+    Boolean(props.profileId) &&
+    props.profileStatus === 'approved' &&
+    Boolean(profileForm.value?.is_public),
+)
 
 const employeeScaleOptions = [
   { value: '', labelKey: 'mypage.employeeScaleEmpty' },
@@ -103,7 +114,15 @@ const employeeScaleOptions = [
         <textarea v-model="profileForm.equipment_summary" rows="2" />
       </label>
 
+      <label class="checkbox-row">
+        <input v-model="profileForm.is_public" type="checkbox" />
+        <span>{{ t('mypage.isPublicDirectory') }}</span>
+      </label>
       <p class="hint">{{ t('mypage.publicProfileHint') }}</p>
+      <p v-if="canPreviewPublicPage" class="preview-link">
+        <RouterLink :to="`/partners/${profileId}`">{{ t('mypage.previewPublicPage') }}</RouterLink>
+      </p>
+      <p v-else class="hint">{{ t('mypage.previewPublicPageHint') }}</p>
       <template v-if="auth.isSupplier">
         <h3 class="form-section-title">{{ t('mypage.profileSectionAttachments') }}</h3>
         <p class="hint">{{ t('mypage.profileSectionAttachmentsHint') }}</p>
@@ -172,6 +191,14 @@ const employeeScaleOptions = [
   }
   .hint { font-size: 0.8rem; opacity: 0.7; margin: 0; }
 }
+.checkbox-row {
+  flex-direction: row !important;
+  align-items: center;
+  gap: 0.5rem !important;
+  input { width: auto; }
+}
+.preview-link a { color: var(--color-steel); font-weight: 600; }
+
 .form-section-title { margin: var(--space-md) 0 0; font-size: 1rem; font-weight: 600; }
 .form-section-title:first-child { margin-top: 0; }
 .req { color: #b91c1c; margin-left: 0.15rem; }
