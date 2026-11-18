@@ -12,9 +12,11 @@ import ProjectFileCenter from '../../components/project/ProjectFileCenter.vue'
 import {
   addSupplierProjectIssue,
   addSupplierProjectUpdate,
+  createSupplierProjectTodo,
   deleteSupplierProjectFile,
   downloadSupplierDefectReportTemplate,
   fetchSupplierProject,
+  toggleSupplierProjectTodo,
   updateSupplierProjectStage,
   uploadSupplierProjectFile,
 } from '../../api'
@@ -43,6 +45,8 @@ const openPlatformChat = (quoteRequestId) => {
 
 const updateForm = ref({ content: '', is_customer_visible: true })
 const issueForm = ref({ title: '', description: '', severity: 'medium' })
+const todoForm = ref({ title: '' })
+const todoError = ref('')
 const uploadForm = ref({
   file_category: 'bom',
   file: null,
@@ -73,6 +77,40 @@ const fileCategories = [
 const load = async () => {
   const res = await fetchSupplierProject(route.params.id)
   project.value = res.data
+}
+
+const supplierTodos = computed(() =>
+  (project.value?.todos || []).filter((td) => td.assignee_type === 'supplier'),
+)
+
+const onAddTodo = async () => {
+  const title = (todoForm.value.title || '').trim()
+  if (!title || !project.value?.id || submitting.value) return
+  submitting.value = true
+  todoError.value = ''
+  try {
+    await createSupplierProjectTodo(project.value.id, { title })
+    todoForm.value.title = ''
+    await load()
+  } catch (e) {
+    todoError.value = resolveApiMessage(e, t, 'supplierProject.todoFailed')
+  } finally {
+    submitting.value = false
+  }
+}
+
+const onToggleTodo = async (todo) => {
+  if (!project.value?.id || submitting.value) return
+  submitting.value = true
+  todoError.value = ''
+  try {
+    await toggleSupplierProjectTodo(project.value.id, todo.id)
+    await load()
+  } catch (e) {
+    todoError.value = resolveApiMessage(e, t, 'supplierProject.todoFailed')
+  } finally {
+    submitting.value = false
+  }
 }
 
 onMounted(async () => {
@@ -349,6 +387,35 @@ const onDeleteFile = async (fileId) => {
       </ol>
       <p v-if="!hasCurrentStage" class="page-empty">{{ t('supplierProject.noActiveStage') }}</p>
 
+      <h2 class="section-sub">{{ t('supplierProject.todos') }}</h2>
+      <form class="todo-form" @submit.prevent="onAddTodo">
+        <input
+          v-model="todoForm.title"
+          type="text"
+          class="input"
+          :placeholder="t('supplierProject.todoPlaceholder')"
+          maxlength="200"
+        />
+        <button type="submit" class="btn btn-sm btn-primary" :disabled="submitting || !todoForm.title.trim()">
+          {{ t('supplierProject.addTodo') }}
+        </button>
+      </form>
+      <p v-if="todoError" class="page-message page-message--error">{{ todoError }}</p>
+      <p v-if="!supplierTodos.length" class="page-empty">—</p>
+      <ul v-else class="todo-list">
+        <li v-for="td in supplierTodos" :key="td.id">
+          <label>
+            <input
+              type="checkbox"
+              :checked="td.is_done"
+              :disabled="submitting"
+              @change="onToggleTodo(td)"
+            />
+            <span :class="{ done: td.is_done }">{{ td.title }}</span>
+          </label>
+        </li>
+      </ul>
+
       <p v-if="fileActionError" class="page-message page-message--error">{{ fileActionError }}</p>
       <ProjectActivityGrid>
         <template #main>
@@ -409,6 +476,33 @@ const onDeleteFile = async (fileId) => {
 
 <style scoped lang="scss">
 .proj-no { opacity: 0.6; font-size: 0.85rem; margin: 0 0 var(--space-md); }
+.todo-form {
+  display: flex;
+  gap: 0.5rem;
+  max-width: 480px;
+  margin: 0 0 var(--space-md);
+}
+.todo-form .input { flex: 1; min-width: 0; }
+.todo-list {
+  list-style: none;
+  margin: 0 0 var(--space-lg);
+  padding: 0;
+  max-width: 480px;
+}
+.todo-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+.todo-list label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+.todo-list .done { text-decoration: line-through; opacity: 0.55; }
 .progress-bar {
   height: 8px;
   background: var(--color-border);

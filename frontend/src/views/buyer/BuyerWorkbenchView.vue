@@ -58,6 +58,12 @@ const actionKindLabel = (kind) => {
   return te(key) ? t(key) : kind
 }
 
+const actionCtaLabel = (cta) => {
+  if (!cta) return t('buyerWorkbench.cta.go')
+  const key = `buyerWorkbench.cta.${cta}`
+  return te(key) ? t(key) : t('buyerWorkbench.cta.go')
+}
+
 const openChat = (quoteRequestId) => {
   if (!quoteRequestId) return
   window.__openPlatformChat?.(quoteRequestId)
@@ -163,13 +169,19 @@ onMounted(async () => {
             <p v-if="!actionItems.length" class="empty-inline">{{ t('buyerWorkbench.noActionItems') }}</p>
             <ul v-else class="list">
               <li v-for="row in actionItems" :key="`${row.kind}-${row.id}`">
-                <RouterLink :to="row.href || '/buyer'" class="list-row">
-                  <div class="list-main">
+                <div class="list-row list-row--action">
+                  <RouterLink :to="row.href || '/buyer'" class="list-main list-main--link">
                     <span class="kind">{{ actionKindLabel(row.kind) }}</span>
                     <span class="list-title">{{ row.title }}</span>
                     <span v-if="row.subtitle" class="list-sub">{{ row.subtitle }}</span>
-                  </div>
-                </RouterLink>
+                  </RouterLink>
+                  <RouterLink
+                    :to="row.href || '/buyer'"
+                    class="btn btn-sm btn-primary action-cta"
+                  >
+                    {{ actionCtaLabel(row.cta) }}
+                  </RouterLink>
+                </div>
               </li>
             </ul>
           </section>
@@ -398,6 +410,19 @@ onMounted(async () => {
   border-bottom: 1px solid var(--color-border);
   text-decoration: none;
   color: inherit;
+}
+.list-row--action {
+  align-items: center;
+}
+.list-main--link {
+  text-decoration: none;
+  color: inherit;
+  flex: 1;
+  min-width: 0;
+}
+.action-cta {
+  flex-shrink: 0;
+  text-decoration: none;
 }
 .list-row--btn {
   width: 100%;

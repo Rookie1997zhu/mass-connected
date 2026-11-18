@@ -61,6 +61,7 @@ export default http
 export const adminLogin = (data) => http.post('/admin/auth/login', data)
 export const adminLogout = () => http.post('/admin/auth/logout', {})
 export const fetchAdminStats = () => http.get('/admin/stats')
+export const fetchAdminOpsQueue = () => http.get('/admin/ops-queue')
 export const fetchOpsRuntime = () => http.get('/admin/ops/runtime')
 export const fetchOpsStorage = (params) =>
   http.get('/admin/ops/storage', { params, timeout: params?.recount ? 120000 : 15000 })

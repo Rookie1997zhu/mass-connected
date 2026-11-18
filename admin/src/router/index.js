@@ -10,6 +10,7 @@ const routes = [
     meta: { requiresAuth: true },
     children: [
       { path: '', name: 'dashboard', meta: { titleKey: 'nav.dashboard' }, component: () => import('../views/DashboardView.vue') },
+      { path: 'ops-queue', name: 'ops-queue', meta: { titleKey: 'nav.opsQueue' }, component: () => import('../views/OpsQueueView.vue') },
       { path: 'service-categories', name: 'service-categories', meta: { titleKey: 'nav.serviceCategories' }, component: () => import('../views/ServiceCategoriesView.vue') },
       { path: 'factories', name: 'factories', meta: { titleKey: 'nav.factories' }, component: () => import('../views/FactoriesView.vue') },
       { path: 'suppliers', name: 'suppliers', meta: { titleKey: 'nav.suppliers' }, component: () => import('../views/SuppliersView.vue') },

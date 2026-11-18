@@ -199,6 +199,10 @@ export const addSupplierProjectUpdate = (id, data) => http.post(`/supplier/proje
 export const updateSupplierProjectStage = (id, stageId, data) =>
   http.patch(`/supplier/projects/${id}/stages/${stageId}`, data)
 export const addSupplierProjectIssue = (id, data) => http.post(`/supplier/projects/${id}/issues`, data)
+export const createSupplierProjectTodo = (id, data) =>
+  http.post(`/supplier/projects/${id}/todos`, data)
+export const toggleSupplierProjectTodo = (projectId, todoId) =>
+  http.post(`/supplier/projects/${projectId}/todos/${todoId}/toggle`)
 export const translateSupplierProjectText = (id, data) =>
   http.post(`/supplier/projects/${id}/translate`, data, { timeout: 45000 })
 export const translateSupplierProjectFile = (projectId, fileId, data) =>

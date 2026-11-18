@@ -122,6 +122,7 @@ onMounted(loadUnreadCount)
         <el-sub-menu index="daily">
           <template #title>{{ t('nav.groups.daily') }}</template>
           <el-menu-item index="/">{{ t('nav.dashboard') }}</el-menu-item>
+          <el-menu-item index="/ops-queue">{{ t('nav.opsQueue') }}</el-menu-item>
           <el-menu-item index="/rfqs">{{ t('nav.rfqs') }}</el-menu-item>
           <el-menu-item index="/inquiries">{{ t('nav.inquiries') }}</el-menu-item>
           <el-menu-item index="/projects">{{ t('nav.projects') }}</el-menu-item>
