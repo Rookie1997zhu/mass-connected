@@ -9,6 +9,8 @@ from rest_framework.views import APIView
 
 from apps.notification.services import notify, notify_staff
 from apps.rfq.constants import PLATFORM_PAYMENT_TERMS
+from django.core.cache import cache
+
 from apps.rfq.models import (
     ProductionOrder,
     Quote,
@@ -219,35 +221,140 @@ class MemberRfqFulfillmentView(APIView):
 class MemberQuoteAcceptView(APIView):
     permission_classes = [IsBuyerRole]
 
+    def _accept_payload(self, request, rfq, quote, production_order, contract, payment, markup):
+        from apps.contract.serializers import ContractSerializer
+        from apps.payment.serializers import PaymentSerializer
+
+        return {
+            "quote": CustomerQuoteDetailSerializer(
+                quote,
+                context={
+                    "request": request,
+                    "lang": get_lang(request),
+                    "markup_percent": markup,
+                    "quote_id": quote.id,
+                    "rfq_id": rfq.id,
+                },
+            ).data,
+            "production_order": ProductionOrderSerializer(
+                production_order, context={"request": request}
+            ).data,
+            "contract": ContractSerializer(contract, context={"request": request}).data,
+            "payment": PaymentSerializer(payment, context={"request": request}).data,
+        }
+
     def post(self, request, pk, quote_id):
-        rfq = get_object_or_404(RFQ, pk=pk, buyer=request.user)
-        quote = Quote.objects.filter(pk=quote_id, rfq=rfq).first()
-        if not quote:
-            return error_response(
-                "QUOTE_NOT_FOUND",
-                "报价不存在",
-                status=status.HTTP_404_NOT_FOUND,
-                request=request,
-            )
-        if not quote.is_customer_visible:
-            return error_response(
-                "QUOTE_NOT_AVAILABLE",
-                "该方案暂未开放确认",
-                status=status.HTTP_403_FORBIDDEN,
-                request=request,
-            )
-        if quote.valid_until and quote.valid_until < timezone.now().date():
-            return error_response("QUOTE_EXPIRED", "报价已过期", request=request)
-        if not quote.supplier_id:
-            return error_response(
-                "QUOTE_SUPPLIER_REQUIRED",
-                "平台报价无法生成生产订单，请联系客服线下履约",
-                request=request,
-            )
-        if ProductionOrder.objects.filter(quote=quote).exists():
-            return error_response("PRODUCTION_ORDER_EXISTS", "该报价已生成生产订单", request=request)
+        idem_key = (request.headers.get("Idempotency-Key") or "").strip()
+        cache_key = None
+        if idem_key:
+            cache_key = f"rfq:accept:{request.user.id}:{pk}:{quote_id}:{idem_key}"
+            cached_po_id = cache.get(cache_key)
+            if cached_po_id:
+                production_order = (
+                    ProductionOrder.objects.select_related("quote", "rfq")
+                    .filter(pk=cached_po_id, buyer=request.user)
+                    .first()
+                )
+                if production_order:
+                    from apps.contract.models import Contract
+                    from apps.payment.models import Payment
+
+                    contract = Contract.objects.filter(production_order=production_order).first()
+                    payment = Payment.objects.filter(contract=contract).first() if contract else None
+                    markup = production_order.markup_percent_snapshot or production_order.rfq.markup_percent or 0
+                    return success_response(
+                        self._accept_payload(
+                            request,
+                            production_order.rfq,
+                            production_order.quote,
+                            production_order,
+                            contract,
+                            payment,
+                            markup,
+                        ),
+                        message="已确认方案，合同与付款单已生成",
+                        request=request,
+                    )
 
         with transaction.atomic():
+            rfq = get_object_or_404(RFQ.objects.select_for_update(), pk=pk, buyer=request.user)
+            if rfq.status == "won":
+                existing_po = ProductionOrder.objects.filter(rfq=rfq, quote_id=quote_id).first()
+                if existing_po and idem_key:
+                    # 同报价重放：返回已有结果
+                    from apps.contract.models import Contract
+                    from apps.payment.models import Payment
+
+                    contract = Contract.objects.filter(production_order=existing_po).first()
+                    payment = Payment.objects.filter(contract=contract).first() if contract else None
+                    markup = existing_po.markup_percent_snapshot or rfq.markup_percent or 0
+                    payload = self._accept_payload(
+                        request, rfq, existing_po.quote, existing_po, contract, payment, markup
+                    )
+                    if cache_key:
+                        cache.set(cache_key, existing_po.id, timeout=86400)
+                    return success_response(
+                        payload,
+                        message="已确认方案，合同与付款单已生成",
+                        request=request,
+                    )
+                return error_response(
+                    "RFQ_ALREADY_WON",
+                    "该询价已确认方案，无法重复接受",
+                    status=status.HTTP_409_CONFLICT,
+                    request=request,
+                )
+
+            quote = (
+                Quote.objects.select_for_update()
+                .filter(pk=quote_id, rfq=rfq)
+                .first()
+            )
+            if not quote:
+                return error_response(
+                    "QUOTE_NOT_FOUND",
+                    "报价不存在",
+                    status=status.HTTP_404_NOT_FOUND,
+                    request=request,
+                )
+            if quote.status != "sent" or not quote.is_customer_visible:
+                return error_response(
+                    "QUOTE_NOT_AVAILABLE",
+                    "该方案暂未开放确认",
+                    status=status.HTTP_403_FORBIDDEN,
+                    request=request,
+                )
+            if quote.valid_until and quote.valid_until < timezone.now().date():
+                return error_response("QUOTE_EXPIRED", "报价已过期", request=request)
+            if not quote.supplier_id:
+                return error_response(
+                    "QUOTE_SUPPLIER_REQUIRED",
+                    "平台报价无法生成生产订单，请联系客服线下履约",
+                    request=request,
+                )
+            if ProductionOrder.objects.filter(quote=quote).exists():
+                existing_po = ProductionOrder.objects.get(quote=quote)
+                if idem_key and cache_key:
+                    cache.set(cache_key, existing_po.id, timeout=86400)
+                    from apps.contract.models import Contract
+                    from apps.payment.models import Payment
+
+                    contract = Contract.objects.filter(production_order=existing_po).first()
+                    payment = Payment.objects.filter(contract=contract).first() if contract else None
+                    markup = existing_po.markup_percent_snapshot or rfq.markup_percent or 0
+                    return success_response(
+                        self._accept_payload(
+                            request, rfq, quote, existing_po, contract, payment, markup
+                        ),
+                        message="已确认方案，合同与付款单已生成",
+                        request=request,
+                    )
+                return error_response(
+                    "PRODUCTION_ORDER_EXISTS",
+                    "该报价已生成生产订单",
+                    request=request,
+                )
+
             markup = rfq.markup_percent or 0
             supplier_amount = quote.price_amount
             customer_amount = apply_markup(supplier_amount, markup)
@@ -256,7 +363,9 @@ class MemberQuoteAcceptView(APIView):
             rfq.quotes.exclude(pk=quote.pk).update(status="rejected")
             if quote.quote_request_id:
                 QuoteRequest.objects.filter(pk=quote.quote_request_id).update(status="adopted")
-                not_adopted = QuoteRequest.objects.filter(rfq=rfq).exclude(pk=quote.quote_request_id)
+                not_adopted = QuoteRequest.objects.filter(rfq=rfq).exclude(
+                    pk=quote.quote_request_id
+                )
                 for qr in not_adopted:
                     qr.status = "not_adopted"
                     qr.save(update_fields=["status", "updated_at"])
@@ -302,6 +411,10 @@ class MemberQuoteAcceptView(APIView):
                 currency=contract.currency,
                 status="unpaid",
             )
+
+        if cache_key:
+            cache.set(cache_key, production_order.id, timeout=86400)
+
         notify(
             quote.supplier,
             "production_order",
@@ -330,27 +443,10 @@ class MemberQuoteAcceptView(APIView):
             send_email=True,
         )
 
-        from apps.contract.serializers import ContractSerializer
-        from apps.payment.serializers import PaymentSerializer
-
         return success_response(
-            {
-                "quote": CustomerQuoteDetailSerializer(
-                    quote,
-                    context={
-                        "request": request,
-                        "lang": get_lang(request),
-                        "markup_percent": markup,
-                        "quote_id": quote.id,
-                        "rfq_id": rfq.id,
-                    },
-                ).data,
-                "production_order": ProductionOrderSerializer(
-                    production_order, context={"request": request}
-                ).data,
-                "contract": ContractSerializer(contract, context={"request": request}).data,
-                "payment": PaymentSerializer(payment, context={"request": request}).data,
-            },
+            self._accept_payload(
+                request, rfq, quote, production_order, contract, payment, markup
+            ),
             message="已确认方案，合同与付款单已生成",
             request=request,
         )

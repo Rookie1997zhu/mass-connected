@@ -14,6 +14,10 @@ from apps.rfq.serializers.orders import (
     ProductionOrderSerializer,
     SupplierPaymentSummarySerializer,
 )
+from apps.rfq.serializers.counter_offers import (
+    QuoteCounterOfferCreateSerializer,
+    QuoteCounterOfferSerializer,
+)
 from apps.rfq.serializers.quotes import (
     AdminQuoteCreateSerializer,
     AdminQuoteRequestCreateSerializer,
@@ -47,6 +51,8 @@ __all__ = [
     "AdminQuoteCreateSerializer",
     "QuoteRequestSerializer",
     "AdminQuoteRequestCreateSerializer",
+    "QuoteCounterOfferSerializer",
+    "QuoteCounterOfferCreateSerializer",
     "RFQCreateSerializer",
     "RFQListSerializer",
     "DemandHallListSerializer",

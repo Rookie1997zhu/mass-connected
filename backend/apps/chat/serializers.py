@@ -4,9 +4,28 @@ from apps.chat.models import ChatAttachment, Conversation, Message
 
 
 class ChatAttachmentSerializer(serializers.ModelSerializer):
+    file_url = serializers.SerializerMethodField()
+
     class Meta:
         model = ChatAttachment
-        fields = ["id", "file_name", "file_type", "size", "uploaded_at"]
+        fields = ["id", "file_name", "file_type", "size", "uploaded_at", "file_url"]
+
+    def get_file_url(self, obj):
+        request = self.context.get("request")
+        if not request or not obj.pk:
+            return ""
+        role = getattr(request.user, "role", "")
+        if role in {"super_admin", "operator", "sales"} or getattr(request.user, "is_staff", False):
+            prefix = "admin"
+        elif request.user.id == obj.message.conversation.supplier_id:
+            prefix = "supplier"
+        else:
+            prefix = "member"
+        path = (
+            f"/api/{prefix}/chat/conversations/{obj.message.conversation_id}"
+            f"/attachments/{obj.id}/download"
+        )
+        return request.build_absolute_uri(path)
 
 
 class MessageSerializer(serializers.ModelSerializer):
@@ -65,17 +84,31 @@ class ConversationSerializer(serializers.ModelSerializer):
         request = self.context.get("request")
         user = getattr(request, "user", None) if request else None
 
-        def _name(peer):
+        def _supplier_name(peer):
             profile = getattr(peer, "factory_profile", None)
             if profile and getattr(profile, "company_name", None):
                 return profile.company_name
-            return getattr(peer, "email", "") or f"User#{peer.id}"
+            name = (getattr(peer, "name", None) or "").strip()
+            if name:
+                return name
+            return f"Supplier#{peer.id}"
+
+        def _buyer_name(peer):
+            # 对供应商永不回退邮箱，避免绕过联系方式脱敏
+            name = (getattr(peer, "name", None) or "").strip()
+            if name:
+                return name
+            rfq = getattr(getattr(obj, "quote_request", None), "rfq", None)
+            company = (getattr(rfq, "company", None) or "").strip() if rfq else ""
+            if company:
+                return company
+            return f"Buyer#{peer.id}"
 
         if user and user.id == obj.buyer_id:
-            return _name(obj.supplier)
+            return _supplier_name(obj.supplier)
         if user and user.id == obj.supplier_id:
-            return _name(obj.buyer)
-        return f"{_name(obj.buyer)} / {_name(obj.supplier)}"
+            return _buyer_name(obj.buyer)
+        return f"{_buyer_name(obj.buyer)} / {_supplier_name(obj.supplier)}"
 
     def get_unread(self, obj):
         from django.core.cache import cache
@@ -99,7 +132,7 @@ class ConversationSerializer(serializers.ModelSerializer):
 
 
 class MessageCreateSerializer(serializers.Serializer):
-    body = serializers.CharField(max_length=4000, allow_blank=False)
+    body = serializers.CharField(max_length=4000, allow_blank=True, required=False, default="")
 
 
 class OrderReminderCreateSerializer(serializers.Serializer):

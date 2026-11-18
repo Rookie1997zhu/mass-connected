@@ -89,6 +89,7 @@ class CustomerPlanSerializer(serializers.ModelSerializer):
             "note",
             "status",
             "revision_version",
+            "revised_at",
             "attachment_count",
             "created_at",
         ]
@@ -140,7 +141,6 @@ class CustomerQuoteDetailSerializer(CustomerPlanSerializer):
         fields = CustomerPlanSerializer.Meta.fields + [
             "supplier_profile",
             "attachments",
-            "revised_at",
         ]
 
     def get_supplier_profile(self, obj):

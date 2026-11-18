@@ -225,6 +225,55 @@ def generate_production_order_no():
     return f"PO{uuid.uuid4().hex[:12].upper()}"
 
 
+class QuoteCounterOffer(models.Model):
+    """买方结构化还价（客户侧意向条件）。接受后须供应商修订正式报价，不静默改价。"""
+
+    STATUS_PENDING = "pending"
+    STATUS_ACCEPTED = "accepted"
+    STATUS_REJECTED = "rejected"
+    STATUS_WITHDRAWN = "withdrawn"
+    STATUS_EXPIRED = "expired"
+    STATUS_CHOICES = [
+        (STATUS_PENDING, "Pending"),
+        (STATUS_ACCEPTED, "Accepted"),
+        (STATUS_REJECTED, "Rejected"),
+        (STATUS_WITHDRAWN, "Withdrawn"),
+        (STATUS_EXPIRED, "Expired"),
+    ]
+
+    quote = models.ForeignKey(Quote, on_delete=models.CASCADE, related_name="counter_offers")
+    rfq = models.ForeignKey(RFQ, on_delete=models.CASCADE, related_name="counter_offers")
+    created_by = models.ForeignKey(
+        "accounts.User",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="created_counter_offers",
+    )
+    quantity = models.PositiveIntegerField(null=True, blank=True)
+    target_total_amount = models.PositiveIntegerField()
+    currency = models.CharField(max_length=3, default="KRW")
+    lead_time_days = models.PositiveIntegerField(null=True, blank=True)
+    note = models.TextField(blank=True)
+    status = models.CharField(
+        max_length=20, choices=STATUS_CHOICES, default=STATUS_PENDING, db_index=True
+    )
+    valid_until = models.DateField(null=True, blank=True)
+    responded_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-created_at", "-id"]
+        indexes = [
+            models.Index(fields=["quote", "status", "-created_at"], name="qco_quote_status_idx"),
+            models.Index(fields=["rfq", "status", "-created_at"], name="qco_rfq_status_idx"),
+        ]
+
+    def __str__(self):
+        return f"CounterOffer#{self.pk} Quote#{self.quote_id} {self.status}"
+
+
 class ProductionOrder(models.Model):
     STATUS_CHOICES = [
         ("pending_confirm", "Pending Confirm"),

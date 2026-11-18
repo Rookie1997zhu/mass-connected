@@ -240,6 +240,7 @@ class MemberRFQDetailSerializer(serializers.ModelSerializer):
     service_category_name = serializers.SerializerMethodField()
     attachments = RFQAttachmentSerializer(many=True, read_only=True)
     plans = serializers.SerializerMethodField()
+    participants = serializers.SerializerMethodField()
     can_edit = serializers.SerializerMethodField()
 
     class Meta:
@@ -265,6 +266,7 @@ class MemberRFQDetailSerializer(serializers.ModelSerializer):
             "solicitation_status",
             "attachments",
             "plans",
+            "participants",
             "can_edit",
             "created_at",
             "updated_at",
@@ -280,6 +282,44 @@ class MemberRFQDetailSerializer(serializers.ModelSerializer):
         return CustomerPlanSerializer(
             visible, many=True, context={"markup_percent": obj.markup_percent}
         ).data
+
+    def get_participants(self, obj):
+        """报价前也可沟通：仅返回参与身份信息，不含供货金额。"""
+        from apps.chat.models import Conversation
+
+        items = []
+        qrs = list(
+            obj.quote_requests.exclude(status="cancelled").select_related(
+                "supplier", "supplier__factory_profile"
+            )
+        )
+        conv_map = {
+            c.quote_request_id: c.id
+            for c in Conversation.objects.filter(quote_request_id__in=[qr.id for qr in qrs]).only(
+                "id", "quote_request_id"
+            )
+        }
+        quotes = list(obj.quotes.all())
+        for qr in qrs:
+            profile = getattr(qr.supplier, "factory_profile", None)
+            company = ""
+            if profile and profile.company_name:
+                company = profile.company_name
+            elif qr.supplier_id:
+                company = (qr.supplier.name or "").strip() or f"Supplier#{qr.supplier_id}"
+            has_visible = any(
+                q.is_customer_visible and q.quote_request_id == qr.id for q in quotes
+            )
+            items.append(
+                {
+                    "quote_request_id": qr.id,
+                    "supplier_company_name": company,
+                    "status": qr.status,
+                    "has_visible_quote": has_visible,
+                    "conversation_id": conv_map.get(qr.id),
+                }
+            )
+        return items
 
     def get_can_edit(self, obj):
         return not obj.quotes.filter(supplier__isnull=False).exists() and obj.status not in {

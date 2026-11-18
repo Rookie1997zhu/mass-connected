@@ -207,6 +207,16 @@ def serialize_message_brief(message: Message) -> dict:
     }
 
 
+def assert_conversation_writable(conversation: Conversation):
+    """取消/成交后禁止发送；历史消息仍可读。"""
+    qr = conversation.quote_request
+    if qr.status == "cancelled":
+        raise ValueError("CHAT_THREAD_READONLY")
+    rfq_status = getattr(qr.rfq, "status", None)
+    if rfq_status in {"won", "closed"}:
+        raise ValueError("CHAT_THREAD_READONLY")
+
+
 @transaction.atomic
 def send_message(
     *,
@@ -216,24 +226,29 @@ def send_message(
     body: str,
     message_type: str = Message.TYPE_TEXT,
     payload: dict | None = None,
+    allow_empty_body: bool = False,
 ) -> Message:
+    assert_conversation_writable(conversation)
     max_len = getattr(settings, "CHAT_MESSAGE_MAX_LENGTH", 4000)
     text = (body or "").strip()
-    if not text:
+    if not text and not allow_empty_body:
         raise ValueError("EMPTY_BODY")
     if len(text) > max_len:
         raise ValueError("BODY_TOO_LONG")
     if message_type not in {Message.TYPE_TEXT, Message.TYPE_ORDER_CARD}:
         raise ValueError("INVALID_MESSAGE_TYPE")
 
-    masked, hinted = mask_contact_info(text)
+    if text:
+        masked, hinted = mask_contact_info(text)
+    else:
+        masked, hinted = "", False
     message = Message.objects.create(
         conversation=conversation,
         sender=sender,
         sender_role=sender_role,
         message_type=message_type,
         payload=payload,
-        body=masked,
+        body=masked or ("[附件]" if allow_empty_body else ""),
         body_original=text,
         has_contact_hint=hinted,
     )

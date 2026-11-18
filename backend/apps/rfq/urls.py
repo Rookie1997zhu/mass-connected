@@ -34,6 +34,8 @@ from apps.rfq.views import (
     MemberProductionOrderListView,
     MemberQuoteAcceptView,
     MemberQuoteAttachmentDownloadView,
+    MemberQuoteCounterOfferListCreateView,
+    MemberQuoteCounterOfferWithdrawView,
     MemberQuoteDetailView,
     MemberRfqFulfillmentView,
     MemberRFQAttachmentView,
@@ -51,6 +53,9 @@ from apps.rfq.views import (
     SupplierQuoteAttachmentDeleteView,
     SupplierQuoteAttachmentDownloadView,
     SupplierQuoteAttachmentListCreateView,
+    SupplierQuoteCounterOfferAcceptView,
+    SupplierQuoteCounterOfferListView,
+    SupplierQuoteCounterOfferRejectView,
     SupplierQuoteRequestDetailView,
     SupplierQuoteRequestFulfillmentView,
     SupplierQuoteRequestListView,
@@ -80,6 +85,14 @@ urlpatterns = [
     ),
     path("member/rfqs/<int:pk>/quote-pdf", MemberRFQQuotePdfView.as_view()),
     path("member/rfqs/<int:pk>/quotes/<int:quote_id>", MemberQuoteDetailView.as_view()),
+    path(
+        "member/rfqs/<int:pk>/quotes/<int:quote_id>/counter-offers",
+        MemberQuoteCounterOfferListCreateView.as_view(),
+    ),
+    path(
+        "member/rfqs/<int:pk>/counter-offers/<int:counter_offer_id>/withdraw",
+        MemberQuoteCounterOfferWithdrawView.as_view(),
+    ),
     path(
         "member/rfqs/<int:pk>/quotes/<int:quote_id>/accept",
         MemberQuoteAcceptView.as_view(),
@@ -129,6 +142,18 @@ urlpatterns = [
     ),
     path("supplier/quotes", FactoryQuoteListView.as_view()),
     path("supplier/quotes/<int:quote_id>/translate", SupplierQuoteTranslateView.as_view()),
+    path(
+        "supplier/quotes/<int:quote_id>/counter-offers",
+        SupplierQuoteCounterOfferListView.as_view(),
+    ),
+    path(
+        "supplier/counter-offers/<int:counter_offer_id>/accept",
+        SupplierQuoteCounterOfferAcceptView.as_view(),
+    ),
+    path(
+        "supplier/counter-offers/<int:counter_offer_id>/reject",
+        SupplierQuoteCounterOfferRejectView.as_view(),
+    ),
     path(
         "supplier/quotes/<int:quote_id>/attachments",
         SupplierQuoteAttachmentListCreateView.as_view(),

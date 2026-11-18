@@ -1,12 +1,15 @@
 from django.urls import path
 
 from apps.chat.views import (
+    AdminChatAttachmentDownloadView,
     AdminConversationMessagesView,
     AdminDisputeListView,
     AdminDisputeResolveView,
     AdminMessageTranslateView,
     AdminTranslateJobDetailView,
     ChatWsTicketView,
+    MemberChatAttachmentDownloadView,
+    MemberChatAttachmentUploadView,
     MemberChatUnreadCountView,
     MemberConversationListCreateView,
     MemberConversationReadView,
@@ -17,6 +20,8 @@ from apps.chat.views import (
     MemberOrderReminderCreateView,
     MemberRemindableOrdersView,
     MemberTranslateJobDetailView,
+    SupplierChatAttachmentDownloadView,
+    SupplierChatAttachmentUploadView,
     SupplierChatUnreadCountView,
     SupplierConversationListCreateView,
     SupplierConversationReadView,
@@ -33,6 +38,14 @@ urlpatterns = [
     path("member/chat/ws-ticket", ChatWsTicketView.as_view()),
     path("member/chat/conversations", MemberConversationListCreateView.as_view()),
     path("member/chat/conversations/<int:pk>/messages", MemberMessageListCreateView.as_view()),
+    path(
+        "member/chat/conversations/<int:pk>/attachments",
+        MemberChatAttachmentUploadView.as_view(),
+    ),
+    path(
+        "member/chat/conversations/<int:pk>/attachments/<int:attachment_id>/download",
+        MemberChatAttachmentDownloadView.as_view(),
+    ),
     path(
         "member/chat/conversations/<int:pk>/messages/order-reminder",
         MemberOrderReminderCreateView.as_view(),
@@ -53,6 +66,14 @@ urlpatterns = [
     path("supplier/chat/ws-ticket", ChatWsTicketView.as_view()),
     path("supplier/chat/conversations", SupplierConversationListCreateView.as_view()),
     path("supplier/chat/conversations/<int:pk>/messages", SupplierMessageListCreateView.as_view()),
+    path(
+        "supplier/chat/conversations/<int:pk>/attachments",
+        SupplierChatAttachmentUploadView.as_view(),
+    ),
+    path(
+        "supplier/chat/conversations/<int:pk>/attachments/<int:attachment_id>/download",
+        SupplierChatAttachmentDownloadView.as_view(),
+    ),
     path(
         "supplier/chat/conversations/<int:pk>/messages/order-reminder",
         SupplierOrderReminderCreateView.as_view(),
@@ -77,6 +98,10 @@ urlpatterns = [
     path(
         "admin/chat/conversations/<int:pk>/messages/<int:message_id>/translate",
         AdminMessageTranslateView.as_view(),
+    ),
+    path(
+        "admin/chat/conversations/<int:pk>/attachments/<int:attachment_id>/download",
+        AdminChatAttachmentDownloadView.as_view(),
     ),
     path("admin/chat/conversations/<int:pk>/dispute/resolve", AdminDisputeResolveView.as_view()),
 ]

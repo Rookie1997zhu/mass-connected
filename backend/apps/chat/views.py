@@ -1,12 +1,14 @@
 from django.core.cache import cache
 from django.db.models import Q
+from django.http import FileResponse
 from django.shortcuts import get_object_or_404
 from rest_framework import status
+from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.throttling import ScopedRateThrottle
 from rest_framework.views import APIView
 
-from apps.chat.models import Conversation, Message
+from apps.chat.models import ChatAttachment, Conversation, Message
 from apps.chat.serializers import (
     ConversationCreateSerializer,
     ConversationSerializer,
@@ -15,6 +17,7 @@ from apps.chat.serializers import (
     MessageSerializer,
     OrderReminderCreateSerializer,
 )
+from core.file_validation import validate_upload_file
 from apps.chat.services import (
     after_message_sent,
     check_rate_limit,
@@ -59,7 +62,13 @@ class ChatWsTicketView(APIView):
 def _conversation_queryset_for_user(user):
     return (
         Conversation.objects.filter(Q(buyer=user) | Q(supplier=user))
-        .select_related("quote_request", "buyer", "supplier", "supplier__factory_profile")
+        .select_related(
+            "quote_request",
+            "quote_request__rfq",
+            "buyer",
+            "supplier",
+            "supplier__factory_profile",
+        )
         .order_by("-last_message_at", "-id")
     )
 
@@ -292,11 +301,22 @@ class _BaseMessageListCreateView(APIView):
                 conversation=conversation,
                 sender=request.user,
                 sender_role=role,
-                body=ser.validated_data["body"],
+                body=ser.validated_data.get("body") or "",
             )
         except ValueError as exc:
             code = str(exc)
-            return error_response(code or "VALIDATION_ERROR", "消息内容无效", request=request)
+            if code == "CHAT_THREAD_READONLY":
+                return error_response(
+                    "CHAT_THREAD_READONLY",
+                    "会话已结束，仅可查看历史消息",
+                    status=status.HTTP_403_FORBIDDEN,
+                    request=request,
+                )
+            msg = {
+                "EMPTY_BODY": "消息内容不能为空",
+                "BODY_TOO_LONG": "消息过长",
+            }.get(code, "消息内容无效")
+            return error_response(code or "VALIDATION_ERROR", msg, request=request)
         after_message_sent(message)
         return success_response(
             MessageSerializer(message, context={"request": request}).data,
@@ -655,3 +675,292 @@ class AdminMessageTranslateView(APIView):
                 request=request,
             )
         return _message_translate_response(request, conversation, message_id)
+
+
+class _BaseChatAttachmentUploadView(APIView):
+    """上传聊天附件：创建 Message（可空正文）+ ChatAttachment。"""
+
+    parser_classes = [MultiPartParser, FormParser]
+    role_gate = None
+
+    def post(self, request, pk):
+        conversation = _get_participant_conversation(request.user, pk)
+        role = participant_role(conversation, request.user)
+        if role is None:
+            return error_response(
+                "CHAT_NOT_PARTICIPANT", "无权访问该会话", status=403, request=request
+            )
+        if self.role_gate == "buyer" and role != Message.ROLE_BUYER:
+            return error_response(
+                "CHAT_NOT_PARTICIPANT", "无权访问该会话", status=403, request=request
+            )
+        if self.role_gate == "supplier" and role != Message.ROLE_SUPPLIER:
+            return error_response(
+                "CHAT_NOT_PARTICIPANT", "无权访问该会话", status=403, request=request
+            )
+        if not check_rate_limit(request.user.id):
+            return error_response(
+                "CHAT_RATE_LIMITED",
+                "发送过于频繁，请稍后再试",
+                status=429,
+                request=request,
+            )
+        upload = request.FILES.get("file")
+        err_code, ext_or_msg = validate_upload_file(upload)
+        if err_code:
+            return error_response(err_code, ext_or_msg, request=request)
+        body = (request.data.get("body") or "").strip()
+        try:
+            message = send_message(
+                conversation=conversation,
+                sender=request.user,
+                sender_role=role,
+                body=body,
+                allow_empty_body=True,
+            )
+        except ValueError as exc:
+            code = str(exc)
+            if code == "CHAT_THREAD_READONLY":
+                return error_response(
+                    "CHAT_THREAD_READONLY",
+                    "会话已结束，仅可查看历史消息",
+                    status=status.HTTP_403_FORBIDDEN,
+                    request=request,
+                )
+            return error_response(code or "VALIDATION_ERROR", "消息内容无效", request=request)
+
+        att = ChatAttachment.objects.create(
+            message=message,
+            file=upload,
+            file_name=getattr(upload, "name", "")[:255] or f"file.{ext_or_msg}",
+            file_type=(getattr(upload, "content_type", "") or ext_or_msg or "")[:64],
+            size=getattr(upload, "size", 0) or 0,
+        )
+        after_message_sent(message)
+        data = MessageSerializer(message, context={"request": request}).data
+        # 确保附件已刷新
+        data["attachments"] = [
+            {
+                "id": att.id,
+                "file_name": att.file_name,
+                "file_type": att.file_type,
+                "size": att.size,
+                "uploaded_at": att.uploaded_at.isoformat() if att.uploaded_at else None,
+                "file_url": request.build_absolute_uri(
+                    f"/api/{'supplier' if self.role_gate == 'supplier' else 'member'}"
+                    f"/chat/conversations/{conversation.id}/attachments/{att.id}/download"
+                ),
+            }
+        ]
+        return success_response(data, status=201, request=request)
+
+
+class MemberChatAttachmentUploadView(_BaseChatAttachmentUploadView):
+    permission_classes = [IsBuyerRole]
+    role_gate = "buyer"
+
+
+class SupplierChatAttachmentUploadView(_BaseChatAttachmentUploadView):
+    permission_classes = [IsSupplierRole]
+    role_gate = "supplier"
+
+
+class _BaseChatAttachmentDownloadView(APIView):
+    role_gate = None
+
+    def get(self, request, pk, attachment_id):
+        conversation = _get_participant_conversation(request.user, pk)
+        role = participant_role(conversation, request.user)
+        if role is None:
+            return error_response(
+                "CHAT_NOT_PARTICIPANT", "无权访问该会话", status=403, request=request
+            )
+        if self.role_gate == "buyer" and role != Message.ROLE_BUYER:
+            return error_response(
+                "CHAT_NOT_PARTICIPANT", "无权访问该会话", status=403, request=request
+            )
+        if self.role_gate == "supplier" and role != Message.ROLE_SUPPLIER:
+            return error_response(
+                "CHAT_NOT_PARTICIPANT", "无权访问该会话", status=403, request=request
+            )
+        att = get_object_or_404(
+            ChatAttachment.objects.select_related("message"),
+            pk=attachment_id,
+            message__conversation=conversation,
+        )
+        if not att.file:
+            return error_response("CHAT_ATTACHMENT_MISSING", "文件不存在", request=request)
+        return FileResponse(att.file.open("rb"), as_attachment=False, filename=att.file_name)
+
+
+class MemberChatAttachmentDownloadView(_BaseChatAttachmentDownloadView):
+    permission_classes = [IsBuyerRole]
+    role_gate = "buyer"
+
+
+class SupplierChatAttachmentDownloadView(_BaseChatAttachmentDownloadView):
+    permission_classes = [IsSupplierRole]
+    role_gate = "supplier"
+
+
+class AdminChatAttachmentDownloadView(APIView):
+    permission_classes = [IsAdminRole]
+
+    def get(self, request, pk, attachment_id):
+        conversation = get_object_or_404(Conversation, pk=pk)
+        if not user_can_access_conversation(request.user, conversation, for_admin=True):
+            return error_response(
+                "CHAT_DISPUTE_REQUIRED",
+                "仅纠纷中的会话可供管理员下载附件",
+                status=403,
+                request=request,
+            )
+        att = get_object_or_404(
+            ChatAttachment.objects.select_related("message"),
+            pk=attachment_id,
+            message__conversation=conversation,
+        )
+        if not att.file:
+            return error_response("CHAT_ATTACHMENT_MISSING", "文件不存在", request=request)
+        return FileResponse(att.file.open("rb"), as_attachment=False, filename=att.file_name)
+
+
+class _BaseChatAttachmentUploadView(APIView):
+    """multipart 上传聊天附件：创建 Message（可空正文）+ ChatAttachment。"""
+
+    parser_classes = [MultiPartParser, FormParser]
+    role_gate = None
+
+    def post(self, request, pk):
+        conversation = _get_participant_conversation(request.user, pk)
+        role = participant_role(conversation, request.user)
+        if role is None:
+            return error_response(
+                "CHAT_NOT_PARTICIPANT", "无权访问该会话", status=403, request=request
+            )
+        if self.role_gate == "buyer" and role != Message.ROLE_BUYER:
+            return error_response(
+                "CHAT_NOT_PARTICIPANT", "无权访问该会话", status=403, request=request
+            )
+        if self.role_gate == "supplier" and role != Message.ROLE_SUPPLIER:
+            return error_response(
+                "CHAT_NOT_PARTICIPANT", "无权访问该会话", status=403, request=request
+            )
+        if not check_rate_limit(request.user.id):
+            return error_response(
+                "CHAT_RATE_LIMITED",
+                "发送过于频繁，请稍后再试",
+                status=429,
+                request=request,
+            )
+        upload = request.FILES.get("file")
+        err_code, ext_or_msg = validate_upload_file(upload)
+        if err_code:
+            return error_response(err_code, ext_or_msg, request=request)
+        body = (request.data.get("body") or "").strip()
+        try:
+            message = send_message(
+                conversation=conversation,
+                sender=request.user,
+                sender_role=role,
+                body=body,
+                allow_empty_body=True,
+            )
+        except ValueError as exc:
+            code = str(exc)
+            if code == "CHAT_THREAD_READONLY":
+                return error_response(
+                    "CHAT_THREAD_READONLY",
+                    "会话已结束，仅可查看历史消息",
+                    status=status.HTTP_403_FORBIDDEN,
+                    request=request,
+                )
+            return error_response(code or "VALIDATION_ERROR", "消息内容无效", request=request)
+        ChatAttachment.objects.create(
+            message=message,
+            file=upload,
+            file_name=upload.name[:255],
+            file_type=ext_or_msg,
+            size=getattr(upload, "size", 0) or 0,
+        )
+        after_message_sent(message)
+        message = Message.objects.prefetch_related("attachments").get(pk=message.pk)
+        return success_response(
+            MessageSerializer(message, context={"request": request}).data,
+            status=201,
+            request=request,
+        )
+
+
+class MemberChatAttachmentUploadView(_BaseChatAttachmentUploadView):
+    permission_classes = [IsBuyerRole]
+    role_gate = "buyer"
+
+
+class SupplierChatAttachmentUploadView(_BaseChatAttachmentUploadView):
+    permission_classes = [IsSupplierRole]
+    role_gate = "supplier"
+
+
+class _BaseChatAttachmentDownloadView(APIView):
+    role_gate = None
+
+    def get(self, request, pk, attachment_id):
+        conversation = _get_participant_conversation(request.user, pk)
+        role = participant_role(conversation, request.user)
+        if role is None:
+            return error_response(
+                "CHAT_NOT_PARTICIPANT", "无权访问该会话", status=403, request=request
+            )
+        if self.role_gate == "buyer" and role != Message.ROLE_BUYER:
+            return error_response(
+                "CHAT_NOT_PARTICIPANT", "无权访问该会话", status=403, request=request
+            )
+        if self.role_gate == "supplier" and role != Message.ROLE_SUPPLIER:
+            return error_response(
+                "CHAT_NOT_PARTICIPANT", "无权访问该会话", status=403, request=request
+            )
+        att = get_object_or_404(
+            ChatAttachment.objects.select_related("message"),
+            pk=attachment_id,
+            message__conversation=conversation,
+        )
+        if not att.file:
+            return error_response("CHAT_ATTACHMENT_MISSING", "文件不存在", request=request)
+        return FileResponse(
+            att.file.open("rb"), as_attachment=False, filename=att.file_name or "file"
+        )
+
+
+class MemberChatAttachmentDownloadView(_BaseChatAttachmentDownloadView):
+    permission_classes = [IsBuyerRole]
+    role_gate = "buyer"
+
+
+class SupplierChatAttachmentDownloadView(_BaseChatAttachmentDownloadView):
+    permission_classes = [IsSupplierRole]
+    role_gate = "supplier"
+
+
+class AdminChatAttachmentDownloadView(APIView):
+    permission_classes = [IsAdminRole]
+
+    def get(self, request, pk, attachment_id):
+        conversation = get_object_or_404(Conversation, pk=pk)
+        if not user_can_access_conversation(request.user, conversation, for_admin=True):
+            return error_response(
+                "CHAT_DISPUTE_REQUIRED",
+                "仅纠纷中的会话可供管理员下载附件",
+                status=403,
+                request=request,
+            )
+        att = get_object_or_404(
+            ChatAttachment.objects.select_related("message"),
+            pk=attachment_id,
+            message__conversation=conversation,
+        )
+        if not att.file:
+            return error_response("CHAT_ATTACHMENT_MISSING", "文件不存在", request=request)
+        return FileResponse(
+            att.file.open("rb"), as_attachment=False, filename=att.file_name or "file"
+        )

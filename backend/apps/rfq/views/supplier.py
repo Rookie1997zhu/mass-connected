@@ -227,6 +227,16 @@ class SupplierQuoteRequestQuoteView(APIView):
                 related_id=rfq.id,
                 send_email=True,
             )
+        elif existing:
+            notify(
+                rfq.buyer,
+                "quote",
+                "报价已修订",
+                f"询价 {rfq.rfq_no} 的方案 {quote.plan_label or quote.id} 已更新至 v{quote.revision_version}，请重新对比确认。",
+                related_type="rfq",
+                related_id=rfq.id,
+                send_email=True,
+            )
         quote = Quote.objects.prefetch_related("attachments").get(pk=quote.pk)
         return success_response(
             QuoteSerializer(quote, context={"request": request}).data,
