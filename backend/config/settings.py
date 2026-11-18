@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     "apps.order",
     "apps.notification",
     "apps.points",
+    "apps.subscription",
     "apps.simplequote",
     "apps.project",
     "apps.contract",

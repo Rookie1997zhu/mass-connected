@@ -46,6 +46,7 @@ urlpatterns = [
     path("", include("apps.order.urls")),
     path("", include("apps.notification.urls")),
     path("", include("apps.points.urls")),
+    path("", include("apps.subscription.urls")),
     path("", include("apps.simplequote.urls")),
     path("", include("apps.project.urls")),
     path("", include("apps.contract.urls")),

@@ -1,4 +1,5 @@
 from datetime import timedelta
+import uuid
 
 from django.db import transaction
 from django.shortcuts import get_object_or_404
@@ -25,6 +26,8 @@ from apps.simplequote.serializers import (
 from apps.simplequote.shipping import ShippingError, estimate_shipping
 from apps.points.services import get_rule_amount, spend_points
 from apps.notification.services import notify
+from apps.subscription.models import FEATURE_SIMPLE_QUOTE
+from apps.subscription.services import consume_feature
 from core.pagination import StandardPagination
 from core.permissions import IsBuyerRole, IsEmailVerified
 from core.responses import error_response, success_response
@@ -182,30 +185,38 @@ class MemberSimpleQuoteListCreateView(APIView):
         result = attach_live_fx(result, currency)
 
         cost = get_rule_amount("SIMPLE_QUOTE")
+        idem_key = (
+            request.headers.get("Idempotency-Key")
+            or request.data.get("idempotency_key")
+            or f"simple_quote:{request.user.id}:{uuid.uuid4().hex}"
+        )
         with transaction.atomic():
-            if cost > 0:
-                spend_points(
-                    request.user,
-                    cost,
-                    source_type="simple_quote",
-                    description=f"生成{TYPE_LABELS.get(quote_type, '报价')}",
+            with consume_feature(
+                request.user,
+                FEATURE_SIMPLE_QUOTE,
+                idempotency_key=str(idem_key)[:64],
+                source_type="simple_quote",
+                points_spender=spend_points,
+                points_amount=cost,
+                points_description=f"生成{TYPE_LABELS.get(quote_type, '报价')}",
+            ) as meter:
+                points_spent = 0 if meter.mode == "subscription" else cost
+                quote = SimpleQuote.objects.create(
+                    quote_no=SimpleQuote.generate_no(),
+                    buyer=request.user,
+                    quote_type=quote_type,
+                    product_name=serializer.validated_data.get("product_name", ""),
+                    inputs=inputs,
+                    result=result,
+                    total_amount=result.get("total", 0),
+                    currency=currency,
+                    status="calculated",
+                    valid_until=timezone.now().date() + timedelta(days=valid_days),
+                    points_spent=points_spent,
                 )
-            quote = SimpleQuote.objects.create(
-                quote_no=SimpleQuote.generate_no(),
-                buyer=request.user,
-                quote_type=quote_type,
-                product_name=serializer.validated_data.get("product_name", ""),
-                inputs=inputs,
-                result=result,
-                total_amount=result.get("total", 0),
-                currency=currency,
-                status="calculated",
-                valid_until=timezone.now().date() + timedelta(days=valid_days),
-                points_spent=cost,
-            )
-            render_pdf(quote)
-            quote.status = "pdf_generated"
-            quote.save()
+                render_pdf(quote)
+                quote.status = "pdf_generated"
+                quote.save()
         return success_response(
             SimpleQuoteSerializer(quote, context={"request": request}).data,
             message="报价已生成",
