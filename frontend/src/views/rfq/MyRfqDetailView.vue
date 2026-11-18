@@ -9,12 +9,15 @@ import FilePreviewModal from '../../components/FilePreviewModal.vue'
 import TextTranslateBlock from '../../components/TextTranslateBlock.vue'
 import {
   acceptQuote,
+  createQuoteCounterOffer,
   downloadRfqQuotePdf,
   fetchMyQuoteDetail,
   fetchMyRfq,
   fetchMyRfqFulfillment,
+  fetchQuoteCounterOffers,
   updateMyRfq,
   uploadRfqAttachment,
+  withdrawQuoteCounterOffer,
 } from '../../api'
 import { useLocaleCurrency } from '../../composables/useLocaleCurrency'
 import { downloadAuthedFile } from '../../utils/downloadAuthedFile'
@@ -59,6 +62,7 @@ const uploading = ref(false)
 const canReattach = computed(
   () => rfq.value && !['won', 'closed'].includes(rfq.value.status),
 )
+const participants = computed(() => rfq.value?.participants || [])
 
 const tabs = [
   { id: 'specs', labelKey: 'fulfillment.tabSpecs' },
@@ -206,6 +210,7 @@ const openDetail = async (quoteId) => {
   try {
     const res = await fetchMyQuoteDetail(rfq.value.id, quoteId)
     quoteDetail.value = res.data
+    await openCounterForm(quoteId)
   } catch (e) {
     detailError.value = resolveApiMessage(e, t, 'quoteDetail.loadFailed')
   } finally {
@@ -217,13 +222,16 @@ const closeDetail = () => {
   detailOpen.value = false
   quoteDetail.value = null
   detailError.value = ''
+  counterOffers.value = []
+  counterForm.value.quoteId = null
 }
 
 const onAccept = async (quoteId) => {
   message.value = ''
   successMessage.value = ''
   try {
-    const res = await acceptQuote(rfq.value.id, quoteId)
+    const idempotencyKey = `accept-${rfq.value.id}-${quoteId}-${Date.now()}`
+    const res = await acceptQuote(rfq.value.id, quoteId, { idempotencyKey })
     const orderNo = res.data?.production_order?.order_no
     successMessage.value = orderNo
       ? t('productionOrder.created', { orderNo })
@@ -233,6 +241,68 @@ const onAccept = async (quoteId) => {
     activeTab.value = 'contract'
   } catch (e) {
     message.value = resolveApiMessage(e, t, 'rfq.acceptFailed')
+  }
+}
+
+const counterForm = ref({
+  quoteId: null,
+  target_total_amount: '',
+  lead_time_days: '',
+  quantity: '',
+  note: '',
+})
+const counterOffers = ref([])
+const counterLoading = ref(false)
+const counterSubmitting = ref(false)
+
+const openCounterForm = async (quoteId) => {
+  counterForm.value = {
+    quoteId,
+    target_total_amount: '',
+    lead_time_days: '',
+    quantity: rfq.value?.quantity || '',
+    note: '',
+  }
+  counterLoading.value = true
+  try {
+    const res = await fetchQuoteCounterOffers(rfq.value.id, quoteId)
+    counterOffers.value = res.data || []
+  } catch {
+    counterOffers.value = []
+  } finally {
+    counterLoading.value = false
+  }
+}
+
+const submitCounterOffer = async () => {
+  if (!counterForm.value.quoteId || counterSubmitting.value) return
+  counterSubmitting.value = true
+  message.value = ''
+  try {
+    const payload = {
+      target_total_amount: Number(counterForm.value.target_total_amount),
+      note: counterForm.value.note || '',
+    }
+    if (counterForm.value.quantity) payload.quantity = Number(counterForm.value.quantity)
+    if (counterForm.value.lead_time_days !== '') {
+      payload.lead_time_days = Number(counterForm.value.lead_time_days)
+    }
+    await createQuoteCounterOffer(rfq.value.id, counterForm.value.quoteId, payload)
+    successMessage.value = t('myRfqs.counterOfferSubmitted')
+    await openCounterForm(counterForm.value.quoteId)
+  } catch (e) {
+    message.value = resolveApiMessage(e, t, 'myRfqs.counterOfferFailed')
+  } finally {
+    counterSubmitting.value = false
+  }
+}
+
+const onWithdrawCounter = async (coId) => {
+  try {
+    await withdrawQuoteCounterOffer(rfq.value.id, coId)
+    if (counterForm.value.quoteId) await openCounterForm(counterForm.value.quoteId)
+  } catch (e) {
+    message.value = resolveApiMessage(e, t, 'myRfqs.counterOfferFailed')
   }
 }
 </script>
@@ -348,6 +418,27 @@ const onAccept = async (quoteId) => {
       </div>
 
       <div v-show="activeTab === 'quotes'" class="tab-panel">
+        <section v-if="participants.length" class="participants-box">
+          <h2 class="section-sub">{{ t('myRfqs.participants') }}</h2>
+          <p class="hint">{{ t('myRfqs.participantsHint') }}</p>
+          <ul class="participant-list">
+            <li v-for="p in participants" :key="p.quote_request_id">
+              <div>
+                <strong>{{ p.supplier_company_name }}</strong>
+                <span class="muted"> · {{ p.status }}</span>
+                <span v-if="p.has_visible_quote" class="muted"> · {{ t('myRfqs.hasQuote') }}</span>
+              </div>
+              <button
+                type="button"
+                class="btn btn-secondary btn-sm"
+                @click="windowOpenChat(p.quote_request_id)"
+              >
+                {{ t('chat.openChat') }}
+              </button>
+            </li>
+          </ul>
+        </section>
+
         <h2 class="section-sub">{{ t('myRfqs.plans') }}</h2>
         <button v-if="rfq.plans?.length" type="button" class="btn btn-secondary btn-sm mb" @click="onDownloadPdf">
           {{ t('myRfqs.downloadPdf') }}
@@ -406,6 +497,13 @@ const onAccept = async (quoteId) => {
               <td>{{ t('myRfqs.paymentTerms') }}</td>
               <td v-for="p in rfq.plans" :key="p.id">{{ p.payment_terms || t('myRfqs.paymentTermsPlatform') }}</td>
             </tr>
+            <tr>
+              <td>{{ t('myRfqs.revision') }}</td>
+              <td v-for="p in rfq.plans" :key="p.id">
+                v{{ p.revision_version || 1 }}
+                <span v-if="p.revised_at" class="muted"> · {{ String(p.revised_at).slice(0, 16).replace('T', ' ') }}</span>
+              </td>
+            </tr>
           </tbody>
         </table>
         <div v-if="rfq.plans?.length" class="plan-grid">
@@ -431,6 +529,7 @@ const onAccept = async (quoteId) => {
               <li>{{ t('rfq.validUntil') }}: {{ p.valid_until || '—' }}</li>
               <li v-if="p.moq">{{ t('myRfqs.moq') }}: {{ p.moq }}</li>
               <li>{{ t('myRfqs.paymentTerms') }}: {{ p.payment_terms || t('myRfqs.paymentTermsPlatform') }}</li>
+              <li>{{ t('myRfqs.revision') }}: v{{ p.revision_version || 1 }}</li>
               <li v-if="p.attachment_count">{{ t('quoteDetail.attachmentCount', { n: p.attachment_count }) }}</li>
             </ul>
             <div class="plan-actions" @click.stop>
@@ -448,6 +547,14 @@ const onAccept = async (quoteId) => {
               <button
                 v-if="p.status === 'sent'"
                 type="button"
+                class="btn btn-secondary btn-sm"
+                @click="openCounterForm(p.id)"
+              >
+                {{ t('myRfqs.counterOffer') }}
+              </button>
+              <button
+                v-if="p.status === 'sent'"
+                type="button"
                 class="btn btn-primary btn-sm"
                 @click="onAccept(p.id)"
               >
@@ -456,6 +563,54 @@ const onAccept = async (quoteId) => {
             </div>
           </article>
         </div>
+
+        <section v-if="counterForm.quoteId" class="counter-box">
+          <h3 class="section-sub">{{ t('myRfqs.counterOfferTitle') }}</h3>
+          <p class="hint">{{ t('myRfqs.counterOfferDisclaimer') }}</p>
+          <div class="edit-grid">
+            <label>
+              {{ t('myRfqs.counterTargetAmount') }}
+              <input v-model="counterForm.target_total_amount" type="number" min="1" />
+            </label>
+            <label>
+              {{ t('rfq.quantity') }}
+              <input v-model="counterForm.quantity" type="number" min="1" />
+            </label>
+            <label>
+              {{ t('rfq.leadTime') }}
+              <input v-model="counterForm.lead_time_days" type="number" min="0" />
+            </label>
+            <label class="full">
+              {{ t('rfq.remark') }}
+              <textarea v-model="counterForm.note" rows="2" />
+            </label>
+          </div>
+          <button
+            type="button"
+            class="btn btn-primary btn-sm"
+            :disabled="counterSubmitting || !counterForm.target_total_amount"
+            @click="submitCounterOffer"
+          >
+            {{ counterSubmitting ? t('common.loading') : t('myRfqs.counterOfferSubmit') }}
+          </button>
+          <p v-if="counterLoading" class="muted">{{ t('common.loading') }}</p>
+          <ul v-else-if="counterOffers.length" class="counter-list">
+            <li v-for="co in counterOffers" :key="co.id">
+              <span>
+                {{ formatMoney({ amount: co.target_total_amount, currency: co.currency }) }}
+                · {{ co.status }}
+              </span>
+              <button
+                v-if="co.status === 'pending'"
+                type="button"
+                class="btn btn-secondary btn-sm"
+                @click="onWithdrawCounter(co.id)"
+              >
+                {{ t('myRfqs.counterOfferWithdraw') }}
+              </button>
+            </li>
+          </ul>
+        </section>
       </div>
 
       <FulfillmentHub
@@ -537,6 +692,25 @@ const onAccept = async (quoteId) => {
   input, textarea { padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); }
 }
 .section-sub { font-size: 1.125rem; margin: 0 0 var(--space-md); }
+.participants-box { margin-bottom: var(--space-xl); }
+.participant-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.65rem 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+}
+.muted { color: var(--color-text); opacity: 0.65; font-size: 0.85rem; }
 .att-list {
   list-style: none;
   padding: 0;
@@ -584,4 +758,20 @@ const onAccept = async (quoteId) => {
   th, td { border: 1px solid var(--color-border); padding: 0.5rem 0.65rem; text-align: left; }
   th { background: var(--color-bg-muted, #f7f7f8); }
 }
+.counter-box {
+  margin-top: var(--space-xl);
+  padding: var(--space-lg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+.counter-list {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-md) 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  li { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
+}
+.hint { font-size: 0.85rem; opacity: 0.75; margin: 0 0 var(--space-md); }
 </style>

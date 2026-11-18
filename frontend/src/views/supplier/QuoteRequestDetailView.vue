@@ -7,9 +7,12 @@ import FilePreviewModal from '../../components/FilePreviewModal.vue'
 import TextTranslateBlock from '../../components/TextTranslateBlock.vue'
 import FulfillmentHub from '../../components/FulfillmentHub.vue'
 import {
+  acceptSupplierCounterOffer,
   deleteSupplierQuoteAttachment,
+  fetchSupplierQuoteCounterOffers,
   fetchSupplierQuoteRequest,
   fetchSupplierQuoteRequestFulfillment,
+  rejectSupplierCounterOffer,
   submitSupplierQuote,
   uploadSupplierQuoteAttachment,
 } from '../../api'
@@ -33,9 +36,52 @@ const previewOpen = ref(false)
 const previewContextType = ref('quote')
 const previewContextId = ref(null)
 const activeTab = ref('specs')
+const counterOffers = ref([])
+const counterLoading = ref(false)
 
 const openPlatformChat = (quoteRequestId) => {
   window.__openPlatformChat?.(quoteRequestId)
+}
+
+const loadCounterOffers = async () => {
+  const quoteId = data.value?.my_quote?.id
+  if (!quoteId) {
+    counterOffers.value = []
+    return
+  }
+  counterLoading.value = true
+  try {
+    const res = await fetchSupplierQuoteCounterOffers(quoteId)
+    counterOffers.value = res.data || []
+  } catch {
+    counterOffers.value = []
+  } finally {
+    counterLoading.value = false
+  }
+}
+
+const onAcceptCounter = async (coId) => {
+  error.value = ''
+  message.value = ''
+  try {
+    await acceptSupplierCounterOffer(coId)
+    message.value = t('quoteRequest.counterAcceptedHint')
+    await loadCounterOffers()
+  } catch (e) {
+    error.value = resolveApiMessage(e, t, 'quoteRequest.counterActionFailed')
+  }
+}
+
+const onRejectCounter = async (coId) => {
+  error.value = ''
+  message.value = ''
+  try {
+    await rejectSupplierCounterOffer(coId)
+    message.value = t('quoteRequest.counterRejected')
+    await loadCounterOffers()
+  } catch (e) {
+    error.value = resolveApiMessage(e, t, 'quoteRequest.counterActionFailed')
+  }
 }
 
 const form = ref({
@@ -96,7 +142,7 @@ const load = async () => {
   const res = await fetchSupplierQuoteRequest(route.params.id)
   data.value = res.data
   if (res.data.my_quote) fillFromQuote(res.data.my_quote)
-  await loadFulfillment()
+  await Promise.all([loadFulfillment(), loadCounterOffers()])
 }
 
 onMounted(async () => {
@@ -347,6 +393,32 @@ const downloadFile = async (file) => {
           </label>
         </section>
 
+        <section v-if="data.my_quote" class="card counter-box">
+          <h2>{{ t('quoteRequest.counterOffers') }}</h2>
+          <p class="hint">{{ t('quoteRequest.counterDisclaimer') }}</p>
+          <p v-if="counterLoading" class="page-empty">{{ t('common.loading') }}</p>
+          <p v-else-if="!counterOffers.length" class="page-empty">{{ t('quoteRequest.counterEmpty') }}</p>
+          <ul v-else class="counter-list">
+            <li v-for="co in counterOffers" :key="co.id">
+              <div>
+                <strong>
+                  {{ formatMoney({ amount: co.target_total_amount, currency: co.currency }) }}
+                </strong>
+                <span class="muted"> · {{ co.status }}</span>
+                <p v-if="co.note" class="hint">{{ co.note }}</p>
+              </div>
+              <div v-if="co.status === 'pending' && canEdit" class="counter-actions">
+                <button type="button" class="btn btn-primary btn-sm" @click="onAcceptCounter(co.id)">
+                  {{ t('quoteRequest.counterAccept') }}
+                </button>
+                <button type="button" class="btn btn-secondary btn-sm" @click="onRejectCounter(co.id)">
+                  {{ t('quoteRequest.counterReject') }}
+                </button>
+              </div>
+            </li>
+          </ul>
+        </section>
+
         <section v-if="canEdit" class="card quote-form">
           <h2>{{ data.my_quote ? t('quoteRequest.updateQuote') : t('quoteRequest.submitQuote') }}</h2>
           <label>
@@ -484,4 +556,23 @@ const downloadFile = async (file) => {
   margin-top: 0.75rem;
   font-size: 0.85rem;
 }
+.counter-box .hint { margin: 0 0 0.75rem; font-size: 0.85rem; opacity: 0.75; }
+.counter-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  li {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+}
+.counter-actions { display: flex; gap: 0.45rem; flex-wrap: wrap; }
+.muted { opacity: 0.65; font-size: 0.85rem; }
 </style>

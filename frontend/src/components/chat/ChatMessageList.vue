@@ -15,7 +15,7 @@ const props = defineProps({
   hasMoreOlder: { type: Boolean, default: true },
 })
 
-const emit = defineEmits(['load-more', 'card-navigate'])
+const emit = defineEmits(['load-more', 'card-navigate', 'download-attachment'])
 
 const { t } = useI18n()
 const listEl = ref(null)
@@ -112,7 +112,21 @@ defineExpose({ scrollToBottom, getScrollAnchor, restoreScrollAnchor })
             @navigate="onCardNavigate"
           />
           <template v-else>
-            <p class="msg-body">{{ messages[vr.index].body }}</p>
+            <p v-if="messages[vr.index].body" class="msg-body">{{ messages[vr.index].body }}</p>
+            <ul
+              v-if="messages[vr.index].attachments?.length"
+              class="msg-atts"
+            >
+              <li v-for="att in messages[vr.index].attachments" :key="att.id">
+                <button
+                  type="button"
+                  class="att-link"
+                  @click="emit('download-attachment', att)"
+                >
+                  {{ att.file_name || t('chat.attachment') }}
+                </button>
+              </li>
+            </ul>
             <small v-if="messages[vr.index].has_contact_hint" class="hint">
               {{ t('chat.contactMasked') }}
             </small>
@@ -175,6 +189,27 @@ defineExpose({ scrollToBottom, getScrollAnchor, restoreScrollAnchor })
   background: linear-gradient(160deg, #dbeafe 0%, #bfdbfe 100%);
   border-color: #93c5fd;
   border-radius: 14px 14px 4px 14px;
+}
+
+.msg-atts {
+  list-style: none;
+  margin: 0.35rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.att-link {
+  border: 0;
+  background: transparent;
+  color: #1d4ed8;
+  font: inherit;
+  font-size: 0.82rem;
+  text-align: left;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 .msg.platform {

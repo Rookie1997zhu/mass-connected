@@ -11,7 +11,9 @@ import {
   openChatDispute,
   resolveChatDispute,
   sendChatMessage,
+  uploadChatAttachment,
 } from '../api'
+import { downloadAuthedFile } from '../utils/downloadAuthedFile'
 import ChatMessageList from './chat/ChatMessageList.vue'
 import ChatComposer from './chat/ChatComposer.vue'
 import OrderPickerSheet from './OrderPickerSheet.vue'
@@ -184,24 +186,52 @@ const openByQuoteRequest = async (qrId) => {
   }
 }
 
+const pushLocalMessage = async (msg) => {
+  if (msg && !messages.value.some((m) => m.id === msg.id)) {
+    messages.value.push(msg)
+    lastMsgId = msg.id
+  }
+  if (msg) bumpConversationLocal(activeId.value, msg, { clearUnread: true })
+  await messageListRef.value?.scrollToBottom()
+}
+
 const onSend = async (body) => {
   if (!body || !activeId.value || sending.value) return
   sending.value = true
   error.value = ''
   try {
     const res = await sendChatMessage(role.value, activeId.value, body)
-    const msg = res.data
-    if (msg && !messages.value.some((m) => m.id === msg.id)) {
-      messages.value.push(msg)
-      lastMsgId = msg.id
-    }
     composerRef.value?.clearDraft()
-    if (msg) bumpConversationLocal(activeId.value, msg, { clearUnread: true })
-    await messageListRef.value?.scrollToBottom()
+    await pushLocalMessage(res.data)
   } catch (e) {
     error.value = resolveApiMessage(e, t, 'chat.sendFailed')
   } finally {
     sending.value = false
+  }
+}
+
+const onAttach = async (file) => {
+  if (!file || !activeId.value || sending.value) return
+  sending.value = true
+  error.value = ''
+  try {
+    const fd = new FormData()
+    fd.append('file', file)
+    const res = await uploadChatAttachment(role.value, activeId.value, fd)
+    await pushLocalMessage(res.data)
+  } catch (e) {
+    error.value = resolveApiMessage(e, t, 'chat.attachFailed')
+  } finally {
+    sending.value = false
+  }
+}
+
+const onDownloadAttachment = async (att) => {
+  if (!att?.file_url) return
+  try {
+    await downloadAuthedFile(att.file_url, att.file_name || 'file')
+  } catch (e) {
+    error.value = resolveApiMessage(e, t, 'chat.attachFailed')
   }
 }
 
@@ -407,6 +437,7 @@ defineExpose({ openByQuoteRequest, selectConversation, loadConversations })
                 :has-more-older="hasMoreOlder"
                 @load-more="onLoadMore"
                 @card-navigate="onCardNavigate"
+                @download-attachment="onDownloadAttachment"
               />
               <OrderPickerSheet
                 :open="showOrderPicker"
@@ -417,7 +448,13 @@ defineExpose({ openByQuoteRequest, selectConversation, loadConversations })
                 @error="(msg) => (error = msg)"
               />
             </div>
-            <ChatComposer ref="composerRef" :sending="sending" @send="onSend" />
+            <p class="attach-hint">{{ t('chat.attachHint') }}</p>
+            <ChatComposer
+              ref="composerRef"
+              :sending="sending"
+              @send="onSend"
+              @attach="onAttach"
+            />
           </template>
         </section>
       </div>
@@ -713,6 +750,15 @@ defineExpose({ openByQuoteRequest, selectConversation, loadConversations })
     font: inherit;
     resize: vertical;
   }
+}
+
+.attach-hint {
+  margin: 0;
+  padding: 0.35rem 0.9rem 0;
+  font-size: 0.72rem;
+  color: #64748b;
+  border-top: 1px solid #e2e8f0;
+  background: #fff;
 }
 
 .chat-error {

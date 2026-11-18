@@ -4,17 +4,31 @@ import { useI18n } from 'vue-i18n'
 
 const props = defineProps({
   sending: { type: Boolean, default: false },
+  readonly: { type: Boolean, default: false },
 })
 
-const emit = defineEmits(['send'])
+const emit = defineEmits(['send', 'attach'])
 
 const { t } = useI18n()
 const draft = ref('')
+const fileInput = ref(null)
 
 const onSubmit = () => {
   const body = draft.value.trim()
-  if (!body || props.sending) return
+  if (!body || props.sending || props.readonly) return
   emit('send', body)
+}
+
+const onPickFile = () => {
+  if (props.sending || props.readonly) return
+  fileInput.value?.click()
+}
+
+const onFileChange = (e) => {
+  const file = e.target.files?.[0]
+  e.target.value = ''
+  if (!file || props.sending || props.readonly) return
+  emit('attach', file)
 }
 
 /** 发送成功后由父组件调用，清空输入框 */
@@ -28,13 +42,29 @@ defineExpose({ clearDraft })
 <template>
   <form class="composer" @submit.prevent="onSubmit">
     <input
+      ref="fileInput"
+      type="file"
+      class="file-input"
+      @change="onFileChange"
+    />
+    <button
+      type="button"
+      class="attach-btn"
+      :disabled="sending || readonly"
+      :title="t('chat.attach')"
+      @click="onPickFile"
+    >
+      {{ t('chat.attachShort') }}
+    </button>
+    <input
       v-model="draft"
       type="text"
       maxlength="4000"
-      :placeholder="t('chat.placeholder')"
+      :disabled="readonly"
+      :placeholder="readonly ? t('chat.readonlyPlaceholder') : t('chat.placeholder')"
       @keydown.enter.exact.prevent="onSubmit"
     />
-    <button type="submit" class="send-btn" :disabled="sending || !draft.trim()">
+    <button type="submit" class="send-btn" :disabled="sending || readonly || !draft.trim()">
       {{ t('chat.send') }}
     </button>
   </form>
@@ -49,7 +79,27 @@ defineExpose({ clearDraft })
   background: #fff;
 }
 
-.composer input {
+.file-input {
+  display: none;
+}
+
+.attach-btn {
+  border: 1px solid #cbd5e1;
+  border-radius: 999px;
+  padding: 0.55rem 0.75rem;
+  background: #f8fafc;
+  color: #334155;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+}
+
+.composer input[type='text'] {
   flex: 1;
   border: 1px solid #cbd5e1;
   border-radius: 999px;

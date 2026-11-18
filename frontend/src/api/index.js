@@ -44,10 +44,26 @@ export const fetchMyRfqs = (params) => http.get('/member/rfqs', { params })
 export const fetchMyRfq = (id) => http.get(`/member/rfqs/${id}`)
 export const fetchMyRfqFulfillment = (id) => http.get(`/member/rfqs/${id}/fulfillment`)
 export const updateMyRfq = (id, data) => http.patch(`/member/rfqs/${id}`, data)
-export const acceptQuote = (rfqId, quoteId) =>
-  http.post(`/member/rfqs/${rfqId}/quotes/${quoteId}/accept`)
+export const acceptQuote = (rfqId, quoteId, { idempotencyKey } = {}) =>
+  http.post(
+    `/member/rfqs/${rfqId}/quotes/${quoteId}/accept`,
+    {},
+    idempotencyKey ? { headers: { 'Idempotency-Key': idempotencyKey } } : undefined,
+  )
 export const fetchMyQuoteDetail = (rfqId, quoteId) =>
   http.get(`/member/rfqs/${rfqId}/quotes/${quoteId}`)
+export const fetchQuoteCounterOffers = (rfqId, quoteId) =>
+  http.get(`/member/rfqs/${rfqId}/quotes/${quoteId}/counter-offers`)
+export const createQuoteCounterOffer = (rfqId, quoteId, data) =>
+  http.post(`/member/rfqs/${rfqId}/quotes/${quoteId}/counter-offers`, data)
+export const withdrawQuoteCounterOffer = (rfqId, counterOfferId) =>
+  http.post(`/member/rfqs/${rfqId}/counter-offers/${counterOfferId}/withdraw`)
+export const fetchSupplierQuoteCounterOffers = (quoteId) =>
+  http.get(`/supplier/quotes/${quoteId}/counter-offers`)
+export const acceptSupplierCounterOffer = (counterOfferId) =>
+  http.post(`/supplier/counter-offers/${counterOfferId}/accept`)
+export const rejectSupplierCounterOffer = (counterOfferId) =>
+  http.post(`/supplier/counter-offers/${counterOfferId}/reject`)
 
 export const fetchDemandHall = (params) => http.get('/public/demand-hall', { params })
 export const fetchDemandDetail = (id) => http.get(`/public/demand-hall/${id}`)
@@ -247,6 +263,10 @@ export const fetchChatMessages = (role, conversationId, params) =>
   http.get(`${chatBase(role)}/conversations/${conversationId}/messages`, { params })
 export const sendChatMessage = (role, conversationId, body) =>
   http.post(`${chatBase(role)}/conversations/${conversationId}/messages`, { body })
+export const uploadChatAttachment = (role, conversationId, formData) =>
+  http.post(`${chatBase(role)}/conversations/${conversationId}/attachments`, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  })
 export const markChatConversationRead = (role, conversationId) =>
   http.post(`${chatBase(role)}/conversations/${conversationId}/read`)
 export const openChatDispute = (role, conversationId, reason = '') =>
