@@ -164,6 +164,41 @@ class SupplierProjectDetailView(APIView):
         )
 
 
+class SupplierProjectTodoCreateView(APIView):
+    """供应商为自己创建项目待办（assignee_type=supplier）。"""
+
+    permission_classes = [IsSupplierRole]
+
+    def post(self, request, pk):
+        project = get_object_or_404(Project, pk=pk, supplier=request.user)
+        data = {
+            "title": request.data.get("title"),
+            "due_date": request.data.get("due_date") or None,
+            "assignee_type": "supplier",
+        }
+        serializer = ProjectTodoSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        todo = serializer.save(project=project, assignee_type="supplier")
+        return success_response(
+            ProjectTodoSerializer(todo).data,
+            status=status.HTTP_201_CREATED,
+            request=request,
+        )
+
+
+class SupplierProjectTodoToggleView(APIView):
+    permission_classes = [IsSupplierRole]
+
+    def post(self, request, pk, todo_id):
+        project = get_object_or_404(Project, pk=pk, supplier=request.user)
+        todo = get_object_or_404(
+            ProjectTodo, pk=todo_id, project=project, assignee_type="supplier"
+        )
+        todo.is_done = not todo.is_done
+        todo.save(update_fields=["is_done"])
+        return success_response(ProjectTodoSerializer(todo).data, request=request)
+
+
 class SupplierProjectTranslateView(APIView):
     permission_classes = [IsSupplierRole]
     throttle_classes = [ScopedRateThrottle]

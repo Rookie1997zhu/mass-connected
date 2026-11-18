@@ -285,6 +285,10 @@ class AdminStatsView(APIView):
         from apps.project.models import Project
         from apps.rfq.models import RFQ
 
+        from apps.chat.models import Conversation
+        from apps.project.models import ProjectIssue
+        from apps.rfq.models import ProductionOrder
+
         data = {
             "rfqs_total": RFQ.objects.count(),
             "rfqs_pending_review": RFQ.objects.filter(
@@ -296,6 +300,13 @@ class AdminStatsView(APIView):
             "payments_pending_confirm": Payment.objects.filter(
                 status="pending_confirm"
             ).count(),
+            "orders_pending_confirm": ProductionOrder.objects.filter(
+                status="pending_confirm"
+            ).count(),
+            "disputes_open": Conversation.objects.filter(
+                dispute_status=Conversation.DISPUTE_OPEN
+            ).count(),
+            "project_issues_open": ProjectIssue.objects.filter(status="open").count(),
             "inquiries_new": Inquiry.objects.filter(status="new").count(),
             "members_total": User.objects.filter(role="member").count(),
             "suppliers_approved": FactoryProfile.objects.filter(
@@ -303,3 +314,104 @@ class AdminStatsView(APIView):
             ).count(),
         }
         return success_response(data, request=request)
+
+
+class AdminOpsQueueView(APIView):
+    """运营例外队列聚合：争议、待确认付款/接单、开放项目问题。"""
+
+    permission_classes = [IsAdminRole]
+
+    def get(self, request):
+        from apps.chat.models import Conversation
+        from apps.payment.models import Payment
+        from apps.project.models import ProjectIssue
+        from apps.rfq.models import ProductionOrder
+
+        limit = 20
+        disputes = (
+            Conversation.objects.filter(dispute_status=Conversation.DISPUTE_OPEN)
+            .select_related("quote_request", "buyer", "supplier")
+            .order_by("-disputed_at", "-id")[:limit]
+        )
+        payments = (
+            Payment.objects.filter(status="pending_confirm")
+            .select_related("buyer", "contract")
+            .order_by("-created_at")[:limit]
+        )
+        orders = (
+            ProductionOrder.objects.filter(status="pending_confirm")
+            .select_related("buyer", "supplier", "rfq")
+            .order_by("-created_at")[:limit]
+        )
+        issues = (
+            ProjectIssue.objects.filter(status="open")
+            .select_related("project", "project__buyer", "project__supplier")
+            .order_by("-created_at")[:limit]
+        )
+
+        return success_response(
+            {
+                "counts": {
+                    "disputes_open": Conversation.objects.filter(
+                        dispute_status=Conversation.DISPUTE_OPEN
+                    ).count(),
+                    "payments_pending_confirm": Payment.objects.filter(
+                        status="pending_confirm"
+                    ).count(),
+                    "orders_pending_confirm": ProductionOrder.objects.filter(
+                        status="pending_confirm"
+                    ).count(),
+                    "project_issues_open": ProjectIssue.objects.filter(status="open").count(),
+                },
+                "disputes": [
+                    {
+                        "id": c.id,
+                        "quote_request_id": c.quote_request_id,
+                        "quote_request_no": getattr(c.quote_request, "request_no", "") or "",
+                        "buyer_email": getattr(c.buyer, "email", "") or "",
+                        "supplier_email": getattr(c.supplier, "email", "") or "",
+                        "disputed_at": c.disputed_at.isoformat() if c.disputed_at else None,
+                        "dispute_reason": (c.dispute_reason or "")[:200],
+                        "href": f"/chat-disputes?conversation={c.id}",
+                    }
+                    for c in disputes
+                ],
+                "payments": [
+                    {
+                        "id": p.id,
+                        "payment_no": p.payment_no,
+                        "amount": p.amount,
+                        "currency": p.currency,
+                        "buyer_email": getattr(p.buyer, "email", "") or "",
+                        "created_at": p.created_at.isoformat() if p.created_at else None,
+                        "href": "/payments",
+                    }
+                    for p in payments
+                ],
+                "orders": [
+                    {
+                        "id": o.id,
+                        "order_no": o.order_no,
+                        "rfq_no": getattr(o.rfq, "rfq_no", "") or "",
+                        "buyer_email": getattr(o.buyer, "email", "") or "",
+                        "supplier_email": getattr(o.supplier, "email", "") or "",
+                        "created_at": o.created_at.isoformat() if o.created_at else None,
+                        "href": "/production-orders",
+                    }
+                    for o in orders
+                ],
+                "project_issues": [
+                    {
+                        "id": i.id,
+                        "title": i.title,
+                        "severity": i.severity,
+                        "project_id": i.project_id,
+                        "project_no": getattr(i.project, "project_no", "") or "",
+                        "created_at": i.created_at.isoformat() if i.created_at else None,
+                        "href": f"/projects?id={i.project_id}",
+                    }
+                    for i in issues
+                ],
+            },
+            request=request,
+        )

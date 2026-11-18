@@ -28,6 +28,8 @@ from apps.project.views import (
     SupplierProjectIssueCreateView,
     SupplierProjectListView,
     SupplierProjectStageUpdateView,
+    SupplierProjectTodoCreateView,
+    SupplierProjectTodoToggleView,
     SupplierProjectTranslateView,
     SupplierProjectUpdateCreateView,
 )
@@ -55,6 +57,11 @@ urlpatterns = [
     path("member/projects/<int:pk>/todos/<int:todo_id>/toggle", MemberProjectTodoToggleView.as_view()),
     path("supplier/projects", SupplierProjectListView.as_view()),
     path("supplier/projects/<int:pk>", SupplierProjectDetailView.as_view()),
+    path("supplier/projects/<int:pk>/todos", SupplierProjectTodoCreateView.as_view()),
+    path(
+        "supplier/projects/<int:pk>/todos/<int:todo_id>/toggle",
+        SupplierProjectTodoToggleView.as_view(),
+    ),
     path("supplier/projects/<int:pk>/translate", SupplierProjectTranslateView.as_view()),
     path("supplier/projects/<int:pk>/files", SupplierProjectFileListCreateView.as_view()),
     path(

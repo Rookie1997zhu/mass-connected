@@ -5,6 +5,7 @@ from apps.accounts.views import (
     AdminFactoryListView,
     AdminLoginView,
     AdminMemberListView,
+    AdminOpsQueueView,
     AdminStatsView,
     AdminSupplierListCreateView,
     AdminSupplierDetailView,
@@ -78,4 +79,5 @@ urlpatterns = [
     ),
     path("admin/members", AdminMemberListView.as_view()),
     path("admin/stats", AdminStatsView.as_view()),
+    path("admin/ops-queue", AdminOpsQueueView.as_view()),
 ]

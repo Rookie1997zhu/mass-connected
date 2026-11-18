@@ -5,14 +5,14 @@ from __future__ import annotations
 from types import SimpleNamespace
 
 ACTION_RFQ_STATUSES = ("quoted", "comparing", "customer_confirming", "negotiating")
-PENDING_QUOTE_REQUEST_STATUSES = ("assigned", "viewed", "needs_revision")
-ACTION_ITEMS_LIMIT = 8
+PENDING_QUOTE_REQUEST_STATUSES = ("assigned", "viewed", "needs_revision", "pending")
+ACTION_ITEMS_LIMIT = 10
 UNREAD_CHATS_LIMIT = 5
 UNREAD_SCAN_LIMIT = 40
 
 
-def _item(kind, id_, title, subtitle, status, priority, href):
-    return {
+def _item(kind, id_, title, subtitle, status, priority, href, *, cta="", meta=None):
+    row = {
         "kind": kind,
         "id": id_,
         "title": title or "",
@@ -20,7 +20,11 @@ def _item(kind, id_, title, subtitle, status, priority, href):
         "status": status or "",
         "priority": priority,
         "href": href,
+        "cta": cta or "",
     }
+    if meta:
+        row["meta"] = meta
+    return row
 
 
 def build_buyer_action_items(user) -> list[dict]:
@@ -51,7 +55,38 @@ def build_buyer_action_items(user) -> list[dict]:
                     subtitle or rfq.status,
                     rfq.status,
                     10,
-                    f"/my/rfqs/{rfq.id}",
+                    f"/my/rfqs/{rfq.id}?tab=quotes",
+                    cta="compare",
+                )
+            )
+    except Exception:  # noqa: BLE001
+        pass
+
+    try:
+        from apps.rfq.models import QuoteCounterOffer
+
+        cos = (
+            QuoteCounterOffer.objects.filter(
+                rfq__buyer=user,
+                status__in={"pending", "accepted"},
+            )
+            .select_related("rfq", "quote")
+            .order_by("-created_at")[:ACTION_ITEMS_LIMIT]
+        )
+        for co in cos:
+            kind = "counter_offer_pending" if co.status == "pending" else "counter_offer_accepted"
+            cta = "withdraw" if co.status == "pending" else "await_revise"
+            items.append(
+                _item(
+                    kind,
+                    co.id,
+                    f"CO-{co.id}",
+                    f"{co.rfq.rfq_no} · {co.target_total_amount} {co.currency}",
+                    co.status,
+                    15 if co.status == "pending" else 16,
+                    f"/my/rfqs/{co.rfq_id}?tab=quotes",
+                    cta=cta,
+                    meta={"rfq_id": co.rfq_id, "quote_id": co.quote_id},
                 )
             )
     except Exception:  # noqa: BLE001
@@ -60,8 +95,14 @@ def build_buyer_action_items(user) -> list[dict]:
     try:
         from apps.payment.models import Payment
 
-        unpaid = Payment.objects.filter(buyer=user, status="unpaid").order_by("-created_at")[:ACTION_ITEMS_LIMIT]
+        unpaid = (
+            Payment.objects.filter(buyer=user, status="unpaid")
+            .select_related("contract", "contract__rfq")
+            .order_by("-created_at")[:ACTION_ITEMS_LIMIT]
+        )
         for pay in unpaid:
+            rfq_id = getattr(getattr(pay, "contract", None), "rfq_id", None)
+            href = f"/my/rfqs/{rfq_id}?tab=payment" if rfq_id else "/my?tab=payments"
             items.append(
                 _item(
                     "payment_unpaid",
@@ -70,13 +111,19 @@ def build_buyer_action_items(user) -> list[dict]:
                     str(pay.amount),
                     pay.status,
                     20,
-                    "/my?tab=payments",
+                    href,
+                    cta="upload_proof",
+                    meta={"rfq_id": rfq_id, "section": "payment"},
                 )
             )
-        pending = Payment.objects.filter(buyer=user, status="pending_confirm").order_by("-created_at")[
-            :ACTION_ITEMS_LIMIT
-        ]
+        pending = (
+            Payment.objects.filter(buyer=user, status="pending_confirm")
+            .select_related("contract", "contract__rfq")
+            .order_by("-created_at")[:ACTION_ITEMS_LIMIT]
+        )
         for pay in pending:
+            rfq_id = getattr(getattr(pay, "contract", None), "rfq_id", None)
+            href = f"/my/rfqs/{rfq_id}?tab=payment" if rfq_id else "/my?tab=payments"
             items.append(
                 _item(
                     "payment_pending_confirm",
@@ -85,7 +132,9 @@ def build_buyer_action_items(user) -> list[dict]:
                     str(pay.amount),
                     pay.status,
                     30,
-                    "/my?tab=payments",
+                    href,
+                    cta="await_confirm",
+                    meta={"rfq_id": rfq_id, "section": "payment"},
                 )
             )
     except Exception:  # noqa: BLE001
@@ -107,6 +156,7 @@ def build_buyer_action_items(user) -> list[dict]:
                     nda.status,
                     40,
                     "/my/nda",
+                    cta="sign",
                 )
             )
     except Exception:  # noqa: BLE001
@@ -115,10 +165,13 @@ def build_buyer_action_items(user) -> list[dict]:
     try:
         from apps.contract.models import Contract
 
-        contracts = Contract.objects.filter(buyer=user, status="pending_sign").order_by("-created_at")[
-            :ACTION_ITEMS_LIMIT
-        ]
+        contracts = (
+            Contract.objects.filter(buyer=user, status="pending_sign")
+            .select_related("rfq")
+            .order_by("-created_at")[:ACTION_ITEMS_LIMIT]
+        )
         for ct in contracts:
+            href = f"/my/rfqs/{ct.rfq_id}?tab=contract" if ct.rfq_id else "/my?tab=contracts"
             items.append(
                 _item(
                     "contract_pending_sign",
@@ -127,7 +180,37 @@ def build_buyer_action_items(user) -> list[dict]:
                     ct.title or "",
                     ct.status,
                     50,
-                    "/my?tab=contracts",
+                    href,
+                    cta="sign",
+                    meta={"rfq_id": ct.rfq_id, "section": "contract"},
+                )
+            )
+    except Exception:  # noqa: BLE001
+        pass
+
+    try:
+        from apps.project.models import ProjectTodo
+
+        todos = (
+            ProjectTodo.objects.filter(
+                project__buyer=user, assignee_type="customer", is_done=False
+            )
+            .select_related("project")
+            .order_by("due_date", "id")[:ACTION_ITEMS_LIMIT]
+        )
+        for todo in todos:
+            prj = todo.project
+            items.append(
+                _item(
+                    "project_todo",
+                    todo.id,
+                    todo.title,
+                    (prj.project_no if prj else "") or "",
+                    "open",
+                    55,
+                    f"/my/projects/{prj.id}" if prj else "/my?tab=projects",
+                    cta="toggle_todo",
+                    meta={"project_id": prj.id if prj else None},
                 )
             )
     except Exception:  # noqa: BLE001
@@ -149,6 +232,7 @@ def build_supplier_action_items(user) -> list[dict]:
             .order_by("-updated_at")[:ACTION_ITEMS_LIMIT]
         )
         for qr in rows:
+            cta = "revise" if qr.status == "quoted" else "quote"
             items.append(
                 _item(
                     "quote_request",
@@ -157,7 +241,74 @@ def build_supplier_action_items(user) -> list[dict]:
                     qr.status,
                     qr.status,
                     10,
-                    f"/supplier/quote-requests/{qr.id}",
+                    f"/supplier/quote-requests/{qr.id}?tab=quotes",
+                    cta=cta,
+                )
+            )
+    except Exception:  # noqa: BLE001
+        pass
+
+    try:
+        from apps.rfq.models import QuoteCounterOffer
+
+        cos = (
+            QuoteCounterOffer.objects.filter(
+                quote__supplier=user,
+                status="pending",
+            )
+            .select_related("rfq", "quote", "quote__quote_request")
+            .order_by("-created_at")[:ACTION_ITEMS_LIMIT]
+        )
+        for co in cos:
+            qr_id = getattr(co.quote, "quote_request_id", None)
+            href = (
+                f"/supplier/quote-requests/{qr_id}?tab=quotes"
+                if qr_id
+                else "/supplier/quote-requests"
+            )
+            items.append(
+                _item(
+                    "counter_offer_pending",
+                    co.id,
+                    f"CO-{co.id}",
+                    f"{co.rfq.rfq_no} · {co.target_total_amount} {co.currency}",
+                    co.status,
+                    12,
+                    href,
+                    cta="respond_counter",
+                    meta={
+                        "quote_id": co.quote_id,
+                        "quote_request_id": qr_id,
+                        "rfq_id": co.rfq_id,
+                    },
+                )
+            )
+        accepted = (
+            QuoteCounterOffer.objects.filter(
+                quote__supplier=user,
+                status="accepted",
+            )
+            .select_related("rfq", "quote")
+            .order_by("-updated_at")[:ACTION_ITEMS_LIMIT]
+        )
+        for co in accepted:
+            qr_id = getattr(co.quote, "quote_request_id", None)
+            href = (
+                f"/supplier/quote-requests/{qr_id}?tab=quotes"
+                if qr_id
+                else "/supplier/quote-requests"
+            )
+            items.append(
+                _item(
+                    "counter_offer_revise",
+                    co.id,
+                    f"CO-{co.id}",
+                    f"{co.rfq.rfq_no} · revise quote",
+                    co.status,
+                    13,
+                    href,
+                    cta="revise",
+                    meta={"quote_request_id": qr_id, "quote_id": co.quote_id},
                 )
             )
     except Exception:  # noqa: BLE001
@@ -166,10 +317,18 @@ def build_supplier_action_items(user) -> list[dict]:
     try:
         from apps.rfq.models import ProductionOrder
 
-        rows = ProductionOrder.objects.filter(supplier=user, status="pending_confirm").order_by(
-            "-created_at"
-        )[:ACTION_ITEMS_LIMIT]
+        rows = (
+            ProductionOrder.objects.filter(supplier=user, status="pending_confirm")
+            .select_related("quote", "quote__quote_request", "rfq")
+            .order_by("-created_at")[:ACTION_ITEMS_LIMIT]
+        )
         for order in rows:
+            qr_id = getattr(getattr(order, "quote", None), "quote_request_id", None)
+            href = (
+                f"/supplier/quote-requests/{qr_id}?tab=quotes"
+                if qr_id
+                else "/supplier/orders"
+            )
             items.append(
                 _item(
                     "production_order",
@@ -178,7 +337,48 @@ def build_supplier_action_items(user) -> list[dict]:
                     order.status,
                     order.status,
                     20,
-                    "/supplier/orders",
+                    href,
+                    cta="confirm_order",
+                    meta={
+                        "quote_request_id": qr_id,
+                        "rfq_id": order.rfq_id,
+                        "section": "order",
+                    },
+                )
+            )
+    except Exception:  # noqa: BLE001
+        pass
+
+    try:
+        from apps.payment.models import Payment
+
+        pays = (
+            Payment.objects.filter(
+                contract__production_order__supplier=user,
+                status="pending_confirm",
+            )
+            .select_related("contract", "contract__rfq", "contract__production_order__quote")
+            .order_by("-created_at")[:ACTION_ITEMS_LIMIT]
+        )
+        for pay in pays:
+            quote = getattr(getattr(pay.contract, "production_order", None), "quote", None)
+            qr_id = getattr(quote, "quote_request_id", None)
+            href = (
+                f"/supplier/quote-requests/{qr_id}?tab=payment"
+                if qr_id
+                else "/supplier/orders"
+            )
+            items.append(
+                _item(
+                    "payment_confirm",
+                    pay.id,
+                    pay.payment_no or f"PAY-{pay.id}",
+                    str(pay.amount),
+                    pay.status,
+                    25,
+                    href,
+                    cta="confirm_payment",
+                    meta={"quote_request_id": qr_id, "section": "payment"},
                 )
             )
     except Exception:  # noqa: BLE001
@@ -203,6 +403,35 @@ def build_supplier_action_items(user) -> list[dict]:
                     issue.status,
                     30,
                     f"/supplier/projects/{prj.id}" if prj else "/supplier/projects",
+                    cta="view",
+                )
+            )
+    except Exception:  # noqa: BLE001
+        pass
+
+    try:
+        from apps.project.models import ProjectTodo
+
+        todos = (
+            ProjectTodo.objects.filter(
+                project__supplier=user, assignee_type="supplier", is_done=False
+            )
+            .select_related("project")
+            .order_by("due_date", "id")[:ACTION_ITEMS_LIMIT]
+        )
+        for todo in todos:
+            prj = todo.project
+            items.append(
+                _item(
+                    "project_todo",
+                    todo.id,
+                    todo.title,
+                    (prj.project_no if prj else "") or "",
+                    "open",
+                    35,
+                    f"/supplier/projects/{prj.id}" if prj else "/supplier/projects",
+                    cta="toggle_todo",
+                    meta={"project_id": prj.id if prj else None},
                 )
             )
     except Exception:  # noqa: BLE001
@@ -221,7 +450,13 @@ def build_unread_chats(user) -> list[dict]:
 
         qs = (
             Conversation.objects.filter(Q(buyer=user) | Q(supplier=user))
-            .select_related("quote_request", "buyer", "supplier", "supplier__factory_profile")
+            .select_related(
+                "quote_request",
+                "quote_request__rfq",
+                "buyer",
+                "supplier",
+                "supplier__factory_profile",
+            )
             .order_by("-last_message_at", "-id")[:UNREAD_SCAN_LIMIT]
         )
         request = SimpleNamespace(user=user)
